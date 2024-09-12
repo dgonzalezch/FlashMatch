@@ -1,0 +1,7 @@
+{
+  "name": "app-flashmatch-mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

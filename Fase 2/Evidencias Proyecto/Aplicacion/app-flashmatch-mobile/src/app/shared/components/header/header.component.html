@@ -1,0 +1,23 @@
+
+@if (typeMenu() == 'main') {
+  <ion-header>
+    <ion-toolbar>
+      <ion-title class="ion-text-center">
+        <ion-img class="custom-img" style="height: 45px;" src="assets/logo/logo-flashmatch.png" alt="logo-flashmatch"></ion-img>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+}
+
+@if (typeMenu() == 'route') {
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/"></ion-back-button>
+      </ion-buttons>
+      <ion-title class="ion-text-center">
+        <ion-img class="custom-img" style="height: 45px;" src="assets/logo/logo-flashmatch.png" alt="logo-flashmatch"></ion-img>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+}
