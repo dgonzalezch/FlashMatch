@@ -1,0 +1,41 @@
+<app-header [typeMenu]="'route'" />
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-grid class="ion-no-padding">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size-xs="auto">
+        <ion-card class="ion-no-margin">
+          <ion-card-content>
+            <ion-row class="ion-align-items-center ion-justify-content-center">
+              <ion-col size="auto">
+                <ion-icon name="key-outline" style="font-size: 25px; margin-right: 10px;"></ion-icon>
+              </ion-col>
+              <ion-col>
+                <ion-text>
+                  <b>Segundo,</b> ingresa los datos para iniciar sesión en FlashMatch.
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size-xs="12">
+        <form [formGroup]="step2Form" class="ion-margin-vertical" id="step2Form" (ngSubmit)="onSubmit()">
+          <ion-input formControlName="correo" class="ion-input-form ion-margin-bottom" label="Correo electrónico" labelPlacement="floating"></ion-input>
+          <ion-input formControlName="repeatCorreo" class="ion-input-form ion-margin-bottom" label="Repite correo electrónico" labelPlacement="floating"></ion-input>
+          <ion-input formControlName="clave" class="ion-input-form ion-margin-bottom" label="Contraseña" labelPlacement="floating"></ion-input>
+          <ion-input formControlName="repeatClave" class="ion-input-form ion-margin-bottom" label="Repetir contraseña" labelPlacement="floating"></ion-input>
+          <!-- <ion-checkbox formControlName="terms" class="ion-margin-vertical" labelPlacement="end">He leído y acepto los términos</ion-checkbox> -->
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="ion-no-border ion-padding">
+  <ion-toolbar>
+    <ion-button class="ion-no-margin" color="tertiary" expand="block"
+      type="submit" form="step2Form" [disabled]="!step2Form.valid">Siguiente
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

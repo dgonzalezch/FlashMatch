@@ -1,0 +1,41 @@
+<app-header [typeMenu]="'route'" />
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-grid class="ion-no-padding">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size-xs="auto">
+        <ion-card class="ion-no-margin">
+          <ion-card-content>
+            <ion-row class="ion-align-items-center ion-justify-content-center">
+              <ion-col size="auto">
+                <ion-icon name="person-outline" style="font-size: 25px; margin-right: 10px;"></ion-icon>
+              </ion-col>
+              <ion-col>
+                <ion-text>
+                  <b>Primero,</b> ingresa tus datos que se asociarán a la cuenta.
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size-xs="12">
+        <form [formGroup]="step1Form" class="ion-margin-vertical" id="step1Form" (ngSubmit)="onSubmit()">
+          <ion-input formControlName="nombre" class="ion-input-form ion-margin-bottom"  label="Nombre" labelPlacement="floating"></ion-input>
+          <ion-input formControlName="apellido" class="ion-input-form ion-margin-bottom" label="Apellido" labelPlacement="floating"></ion-input>
+          <ion-input formControlName="rut" class="ion-input-form ion-margin-bottom" label="RUT" labelPlacement="floating"></ion-input>
+          <ion-input formControlName="telefono" class="ion-input-form" label="Número de teléfono" labelPlacement="floating"></ion-input>
+        </form>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="ion-no-border ion-padding">
+  <ion-toolbar>
+    <ion-button class="ion-no-margin" color="tertiary" expand="block"
+      type="submit" form="step1Form" [disabled]="!step1Form.valid">Siguiente
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

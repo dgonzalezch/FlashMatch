@@ -1,8 +1,11 @@
 import { Routes } from '@angular/router';
+// import { AuthGuard } from './guards/auth.guard';
+// import { RedirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated.guard';
 
 export const routes: Routes = [
   {
     path: 'auth',
+    // canActivate: [RedirectIfAuthenticatedGuard],
     children: [
       {
         path: 'login',
@@ -10,7 +13,25 @@ export const routes: Routes = [
       },
       {
         path: 'registry',
-        loadComponent: () => import('./auth/registry/registry.page')
+        children: [
+          {
+            path: 'step-1',
+            loadComponent: () => import('./auth/registry/step-1/step-1.page')
+          },
+          {
+            path: 'step-2',
+            loadComponent: () => import('./auth/registry/step-2/step-2.page')
+          },
+          {
+            path: 'step-3',
+            loadComponent: () => import('./auth/registry/step-3/step-3.page')
+          },
+          {
+            path: '**',
+            redirectTo: 'step-1',
+            pathMatch: 'full'
+          }
+        ]
       },
       {
         path: '**',
@@ -21,25 +42,12 @@ export const routes: Routes = [
   },
   {
     path: 'home',
-    children: [
-      {
-        path: 'perfil',
-        loadComponent: () => import('./auth/login/login.page')
-      },
-      {
-        path: 'registry',
-        loadComponent: () => import('./auth/registry/registry.page')
-      },
-      {
-        path: '**',
-        redirectTo: 'login',
-        pathMatch: 'full'
-      }
-    ]
+    loadComponent: () => import('./home/home.page'),
+    // canActivate: [AuthGuard]
   },
   {
     path: '**',
-    redirectTo: 'auth/login',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
 ];

@@ -1,0 +1,36 @@
+<app-header [typeMenu]="'route'" />
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-grid class="ion-no-padding">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size-xs="auto">
+        <ion-card class="ion-no-margin">
+          <ion-card-content>
+            <ion-row class="ion-align-items-center ion-justify-content-center">
+              <ion-col size="auto">
+                <ion-icon name="camera-outline" style="font-size: 25px; margin-right: 10px;"></ion-icon>
+              </ion-col>
+              <ion-col>
+                <ion-text>
+                  <b>Tercero,</b> habilita el acceso a la cámara para verificar tu identidad.
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size-xs="12">
+        <form class="ion-margin-vertical" id="formRegistry" (ngSubmit)="onSubmit()">
+
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="ion-no-border ion-padding">
+  <ion-toolbar>
+    <ion-button [routerLink]="['/auth/registry/step-3']" class="ion-no-margin" color="tertiary" expand="block"
+      type="submit" form="formRegistry">Siguiente</ion-button>
+  </ion-toolbar>
+</ion-footer>

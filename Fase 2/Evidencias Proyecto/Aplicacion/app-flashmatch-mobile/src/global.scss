@@ -99,3 +99,7 @@
 	--ion-color-dark-shade: #292929;
 	--ion-color-dark-tint: #444444;
 }
+
+.ion-input-form {
+  border-bottom: var(--border-width) var(--border-style) var(--border-color);
+}
