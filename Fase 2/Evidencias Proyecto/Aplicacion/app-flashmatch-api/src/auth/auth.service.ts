@@ -64,9 +64,9 @@ export class AuthService {
     }
   }
 
-  async checkAuthStatus(usuario: Usuario) {
+  async refreshToken(usuario: Usuario) {
     return {
-      ...usuario,
+      // ...usuario,
       token: this.getJwtToken({ id: usuario.id })
     };
   }

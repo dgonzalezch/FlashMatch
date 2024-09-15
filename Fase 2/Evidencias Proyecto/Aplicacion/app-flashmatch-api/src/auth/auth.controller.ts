@@ -22,10 +22,10 @@ export class AuthController {
     return this.authService.login(loginUsuarioDto);
   }
 
-  @Get('check-status')
+  @Get('refresh-token')
   @Auth()
-  checkAuthStatus(@GetUser() usuario: Usuario) {
-    return this.authService.checkAuthStatus(usuario);
+  refreshToken(@GetUser() usuario: Usuario) {
+    return this.authService.refreshToken(usuario);
   }
 
   @Get('private3')
