@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
+import { from, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,29 +12,29 @@ export class StorageService {
     this.init();
   }
 
-  async init() {
+  private async init() {
     // Inicializa el almacenamiento
     const storage = await this.storage.create();
     this._storage = storage;
   }
 
-  // Guardar token
-  async saveToken(token: string) {
-    await this._storage?.set('bearer_token', token);
+  // Guardar token (con observable)
+  saveToken(token: string): Observable<void> {
+    return from(this._storage?.set('bearer_token', token) ?? Promise.resolve());
   }
 
-  // Obtener token
-  async getToken(): Promise<string | null> {
-    return await this._storage?.get('bearer_token');
+  // Obtener token (con observable)
+  getToken(): Observable<string | null> {
+    return from(this._storage?.get('bearer_token') ?? Promise.resolve(null));
   }
 
-  // Eliminar token
-  async removeToken() {
-    await this._storage?.remove('bearer_token');
+  // Eliminar token (con observable)
+  removeToken(): Observable<void> {
+    return from(this._storage?.remove('bearer_token') ?? Promise.resolve());
   }
 
-  // Guardar cualquier variable
-  async set(key: string, value: any) {
-    await this._storage?.set(key, value);
+  // Guardar cualquier variable (con observable)
+  set(key: string, value: any): Observable<void> {
+    return from(this._storage?.set(key, value) ?? Promise.resolve());
   }
 }

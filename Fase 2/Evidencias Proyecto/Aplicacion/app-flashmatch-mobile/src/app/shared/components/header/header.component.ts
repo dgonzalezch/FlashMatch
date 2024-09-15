@@ -1,5 +1,7 @@
-import { Component, input, OnInit } from '@angular/core';
-import { IonTitle, IonImg, IonToolbar, IonHeader, IonButtons, IonBackButton } from "@ionic/angular/standalone";
+import { Component, inject, input, OnInit, signal } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { IonTitle, IonImg, IonToolbar, IonHeader, IonButtons, IonBackButton, IonMenuButton } from "@ionic/angular/standalone";
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -10,15 +12,14 @@ import { IonTitle, IonImg, IonToolbar, IonHeader, IonButtons, IonBackButton } fr
     IonTitle,
     IonImg,
     IonToolbar,
-    IonHeader
+    IonHeader,
+    IonMenuButton
   ]
 })
 export class HeaderComponent  implements OnInit {
 
   public typeMenu = input.required<string>();
 
-  constructor() { }
-
-  ngOnInit() {}
+  ngOnInit() { }
 
 }

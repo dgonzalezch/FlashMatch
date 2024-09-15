@@ -48,44 +48,24 @@ export default class Step2Page implements OnInit {
         clave: this.step2Form.get('clave')?.value
       };
 
-      this.registerAndLogin(fullFormDataRegister);
+      this.registerUser(fullFormDataRegister);
     } else {
       console.log('Formulario inválido en step-2');
     }
   }
 
-
-  private registerAndLogin(formData: any) {
-    return this.authService.registerUser(formData)
+  private registerUser(formData: any) {
+    this.authService.registerUser(formData)
       .pipe(
-        switchMap(() => this.handleRegistrationSuccess(formData)),
-        catchError(error => this.handleError(error))
+        switchMap(() => {
+          this.router.navigate(['/home']);
+          return [];
+        }),
+        catchError(error => {
+          console.error('Error durante el registro', error);
+          return throwError(() => new Error(error.message));
+        })
       )
-      .subscribe({
-        next: () => this.handleLoginSuccess(),
-        error: error => this.handleLoginError(error)
-      });
-  }
-
-  private handleRegistrationSuccess(formData: any) {
-    const loginData = {
-      correo: formData.correo,
-      clave: formData.clave
-    };
-
-    return this.authService.loginUser(loginData);
-  }
-
-  private handleError(error: any) {
-    console.error('Error durante el proceso de registro o login', error);
-    return throwError(() => new Error(error.message));
-  }
-
-  private handleLoginSuccess() {
-    this.router.navigate(['/home']);
-  }
-
-  private handleLoginError(error: any) {
-    console.error('Error al iniciar sesión después del registro', error);
+      .subscribe();
   }
 }

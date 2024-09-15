@@ -27,7 +27,7 @@ export default class Step1Page implements OnInit {
   ngOnInit() { }
 
   onSubmit() {
-    this.router.navigate(['/auth/registry/step-2'], {
+    this.router.navigate(['/auth/register/step-2'], {
       state: { step1FormData: this.step1Form.value }
     });
   }

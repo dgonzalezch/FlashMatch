@@ -4,7 +4,7 @@ import {
   IonRouterOutlet,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { cameraOutline, home, keyOutline, personOutline, shieldCheckmarkOutline } from 'ionicons/icons';
+import { home, homeOutline, cameraOutline, keyOutline, personOutline, shieldCheckmarkOutline, logOutOutline } from 'ionicons/icons';
 
 
 @Component({
@@ -18,6 +18,6 @@ import { cameraOutline, home, keyOutline, personOutline, shieldCheckmarkOutline 
 })
 export class AppComponent {
   constructor() {
-    addIcons({ home, personOutline, keyOutline, shieldCheckmarkOutline, cameraOutline });
+    addIcons({ home, homeOutline, personOutline, keyOutline, shieldCheckmarkOutline, cameraOutline, logOutOutline });
   }
 }

@@ -1,10 +1,11 @@
 import { Routes } from '@angular/router';
-// import { AuthGuard } from './guards/auth.guard';
-// import { RedirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated.guard';
+import { AuthGuard } from './guards/auth.guard';
+import { RedirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated.guard';
 
 export const routes: Routes = [
   {
     path: 'auth',
+    loadComponent: () => import('./auth/auth.layout'),
     // canActivate: [RedirectIfAuthenticatedGuard],
     children: [
       {
@@ -12,19 +13,19 @@ export const routes: Routes = [
         loadComponent: () => import('./auth/login/login.page')
       },
       {
-        path: 'registry',
+        path: 'register',
         children: [
           {
             path: 'step-1',
-            loadComponent: () => import('./auth/registry/step-1/step-1.page')
+            loadComponent: () => import('./auth/register/step-1/step-1.page')
           },
           {
             path: 'step-2',
-            loadComponent: () => import('./auth/registry/step-2/step-2.page')
+            loadComponent: () => import('./auth/register/step-2/step-2.page')
           },
           {
             path: 'step-3',
-            loadComponent: () => import('./auth/registry/step-3/step-3.page')
+            loadComponent: () => import('./auth/register/step-3/step-3.page')
           },
           {
             path: '**',
@@ -41,13 +42,33 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'home',
-    loadComponent: () => import('./home/home.page'),
-    // canActivate: [AuthGuard]
+    path: 'private',
+    loadComponent: () => import('./private/private.layout'),
+    // canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'home',
+        loadComponent: () => import('./private/home/home.page'),
+      },
+      {
+        path: 'profile',
+        loadComponent: () => import('./private/profile/profile.page')
+      },
+      {
+        path: 'team',
+        loadComponent: () => import('./private/team/team.page')
+      },
+      {
+        path: '**',
+        redirectTo: 'home',
+        pathMatch: 'full'
+      }
+    ]
+
   },
   {
     path: '**',
-    redirectTo: 'home',
-    pathMatch: 'full',
-  },
+    redirectTo: 'private/home',
+    pathMatch: 'full'
+  }
 ];

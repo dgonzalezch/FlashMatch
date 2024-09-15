@@ -1,22 +1,37 @@
-
-@if (typeMenu() == 'main') {
+@if (typeMenu() == 'public') {
   <ion-header>
     <ion-toolbar>
       <ion-title class="ion-text-center">
-        <ion-img class="custom-img" style="height: 45px;" src="assets/logo/logo-flashmatch.png" alt="logo-flashmatch"></ion-img>
+        <ion-img class="custom-img" style="height: 45px;" src="assets/logo/logo-flashmatch.png"
+          alt="logo-flashmatch"></ion-img>
       </ion-title>
     </ion-toolbar>
   </ion-header>
 }
 
-@if (typeMenu() == 'route') {
+@if (typeMenu() == 'public-route') {
   <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-back-button defaultHref="/"></ion-back-button>
+        <ion-back-button defaultHref="auth"></ion-back-button>
       </ion-buttons>
       <ion-title class="ion-text-center">
-        <ion-img class="custom-img" style="height: 45px;" src="assets/logo/logo-flashmatch.png" alt="logo-flashmatch"></ion-img>
+        <ion-img class="custom-img" style="height: 45px;" src="assets/logo/logo-flashmatch.png"
+          alt="logo-flashmatch"></ion-img>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+}
+
+@if (typeMenu() == 'private') {
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title class="ion-text-center">
+        <ion-img class="custom-img" style="height: 45px;" src="assets/logo/logo-flashmatch.png"
+          alt="logo-flashmatch"></ion-img>
       </ion-title>
     </ion-toolbar>
   </ion-header>
