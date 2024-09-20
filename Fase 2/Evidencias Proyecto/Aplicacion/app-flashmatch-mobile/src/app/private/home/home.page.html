@@ -1,3 +1,34 @@
 <ion-content [fullscreen]="true" class="ion-padding">
-  Bienvenido a la app!
+  <ion-title class="ion-text-center">Bienvenido/a Daniel!</ion-title>
+
+  @for (section of sections; track $index) {
+    <ion-card class="ion-no-margin ion-margin-vertical" button (click)="navigateTo(section.route)">
+      <ion-card-content class="ion-no-padding">
+        <ion-grid>
+          <ion-row class="ion-align-items-center ion-justify-content-between">
+            
+            <!-- Primera columna con barra de color -->
+            <ion-col size="1">
+              <div [style.background-color]="section.color" style="width: 10px; height: 45px;"></div>
+            </ion-col>
+  
+            <!-- Segunda columna para imagen -->
+            <ion-col size="auto" class="ion-text-center">
+              <ion-img class="custom-img" style="height: 45px;" [src]="section.image" [alt]="section.title"></ion-img>
+            </ion-col>
+    
+            <!-- Tercera columna con el título -->
+            <ion-col size="5" class="ion-text-center">
+              <h3>{{ section.title }}</h3>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  }
 </ion-content>
+<ion-footer class="ion-no-border ion-padding">
+  <ion-toolbar>
+    sad
+  </ion-toolbar>
+</ion-footer>

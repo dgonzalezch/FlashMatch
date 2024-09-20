@@ -13,8 +13,9 @@ export class MenuComponent  implements OnInit {
 
   menuItems = signal([
     { icon: 'home', label: 'Inicio', route: '/private/home' },
-    { icon: 'person-outline', label: 'Perfil', route: '/private/profile' },
-    { icon: 'log-out-outline', label: 'Cerrar sesión', route: '/settings' },
+    { icon: 'person-outline', label: 'Cuenta', route: '/private/profile' },
+    { icon: 'settings-outline', label: 'Ajustes', route: '/private/settings' },
+    { icon: 'log-out-outline', label: 'Cerrar sesión', route: '/auth' },
     // { icon: 'help-circle-outline', label: 'Ayuda', route: '/help' }
   ]);
 
