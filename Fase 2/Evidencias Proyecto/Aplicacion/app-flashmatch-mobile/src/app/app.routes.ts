@@ -55,8 +55,12 @@ export const routes: Routes = [
         loadComponent: () => import('./private/profile/profile.page')
       },
       {
-        path: 'team',
-        loadComponent: () => import('./private/team/team.page')
+        path: 'matches',
+        loadComponent: () => import('./private/matches/matches.page')
+      },
+      {
+        path: 'notifications',
+        loadComponent: () => import('./private/notifications/notifications.page')
       },
       {
         path: '**',
@@ -70,5 +74,5 @@ export const routes: Routes = [
     path: '**',
     redirectTo: 'private/home',
     pathMatch: 'full'
-  }
+  },
 ];

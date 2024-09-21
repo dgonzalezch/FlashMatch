@@ -1,6 +1,6 @@
 import { Component, inject, input, OnInit, signal } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { IonTitle, IonImg, IonToolbar, IonHeader, IonButtons, IonBackButton, IonMenuButton } from "@ionic/angular/standalone";
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { IonTitle, IonImg, IonToolbar, IonHeader, IonButtons, IonBackButton, IonMenuButton, IonButton, IonIcon, IonPopover, IonList, IonItem, IonLabel } from "@ionic/angular/standalone";
 import { filter } from 'rxjs';
 
 @Component({
@@ -8,12 +8,13 @@ import { filter } from 'rxjs';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   standalone: true,
-  imports: [IonBackButton, IonButtons,
+  imports: [IonLabel, IonItem, IonList, IonPopover, IonIcon, IonButton, IonBackButton, IonButtons,
     IonTitle,
     IonImg,
     IonToolbar,
     IonHeader,
-    IonMenuButton
+    IonMenuButton,
+    RouterLink
   ]
 })
 export class HeaderComponent  implements OnInit {

@@ -1,17 +1,74 @@
-<ion-content [fullscreen]="true" class="ion-padding">
+<ion-content [fullscreen]="true" class="ion-padding" color="light">
+  <ion-grid>
+    <!-- Fila para la imagen de perfil y el nombre del usuario -->
+    <ion-row class="ion-align-items-center ion-justify-content-start">
+      <ion-col size="auto">
+        <ion-avatar>
+          <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="Perfil">
+        </ion-avatar>
+      </ion-col>
+      <ion-col size="auto">
+        <h5 class="ion-no-margin ion-padding-start">Nombre de Usuario</h5>
+        <ion-text class="ion-text-center">
+          <h6 class="ion-no-margin custom-title">Título</h6>
+        </ion-text>
+      </ion-col>
 
-  <ion-segment (ionChange)="onSegmentChange($event)" value="data">
+    </ion-row>
+
+    <hr class="custom-hr">
+
+
+
+  @for (section of sections; track $index) {
+    <ion-row>
+      <ion-col>
+        <h6 class="ion-no-margin ion-margin-top"><b>{{ section.title }}</b></h6>
+      </ion-col>
+    </ion-row>
+
+    <!-- Opciones de la sección -->
+    <ion-row>
+      <ion-col>
+        <ion-card class="custom-card">
+          <ion-card-content>
+            <ion-list lines="none">
+              @for (option of section.options; track $index) {
+                <ion-item button [routerLink]="option.route" >
+                  <ion-icon [name]="option.icon" slot="start"></ion-icon>
+                  <ion-label>{{ option.label }}</ion-label>
+                </ion-item>
+              }
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  }
+
+  </ion-grid>
+</ion-content>
+
+
+
+
+
+
+
+<!-- <ion-content [fullscreen]="true" class="ion-padding"> -->
+
+  <!-- <ion-segment (ionChange)="onSegmentChange($event)" value="data">
     <ion-segment-button  value="data">
       <ion-label>Mis datos</ion-label>
     </ion-segment-button>
     <ion-segment-button value="password">
       <ion-label>Contraseña</ion-label>
     </ion-segment-button>
-  </ion-segment>
+  </ion-segment> -->
 
 
-  @if (selectedSegment() == 'data') {
-    <ion-card class="custom-card ion-no-margin ion-margin-vertical">
+  <!-- @if (selectedSegment() == 'data') { -->
+    <!-- <ion-card class="custom-card ion-no-margin ion-margin-vertical">
       <ion-card-content class="ion-no-padding">
         <ion-list class="ion-no-padding">
           <ion-item lines="full">
@@ -37,30 +94,33 @@
           </ion-item>
         </ion-list>
       </ion-card-content>
-    </ion-card>
-  }
-  @if (selectedSegment() == 'password') {
-    <ion-card class="custom-card ion-no-margin ion-margin-vertical">
+    </ion-card> -->
+  <!-- } -->
+  <!-- @if (selectedSegment() == 'password') { -->
+    <!-- <ion-card class="custom-card ion-no-margin ion-margin-vertical">
       <ion-card-content class="">
         <form>
           <ion-input type="password" class="ion-input-form ion-margin-bottom" label="Contraseña actual" labelPlacement="floating" >
-            <!-- <ion-input-password-toggle slot="end"></ion-input-password-toggle> -->
           </ion-input>
           <ion-input type="password" class="ion-input-form ion-margin-bottom" label="Contraseña nueva" labelPlacement="floating"></ion-input>
           <ion-input type="password" class="ion-input-form ion-margin-bottom" label="Repite contraseña nueva" labelPlacement="floating"></ion-input>
         </form>
       </ion-card-content>
-    </ion-card>
-  }
-</ion-content>
+    </ion-card> -->
+  <!-- } -->
 
-@if (selectedSegment() == 'password') {
-  <ion-footer class="ion-no-border ion-padding">
+
+
+
+<!-- </ion-content> -->
+
+<!-- @if (selectedSegment() == 'password') { -->
+  <!-- <ion-footer class="ion-no-border ion-padding">
     <ion-toolbar>
       <ion-button class="ion-no-margin" color="tertiary" expand="block"
         type="submit" form="step1Form">Guardar
       </ion-button>
     </ion-toolbar>
-  </ion-footer>
-}
+  </ion-footer> -->
+<!-- } -->
 

@@ -33,6 +33,11 @@
         <ion-img class="custom-img" style="height: 45px;" src="assets/logo/logo-flashmatch.png"
           alt="logo-flashmatch"></ion-img>
       </ion-title>
+      <ion-buttons slot="end">
+        <ion-button shape="round" [routerLink]="['/private/notifications']">
+          <ion-icon slot="icon-only" name="notifications-outline" ></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
 }

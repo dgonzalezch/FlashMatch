@@ -4,7 +4,38 @@
   overflow: hidden; /* Asegura que los hijos respeten el borde redondeado */
 }
 
+// ion-card {
+//   box-shadow: none;
+// }
+
+
 ion-card {
+  margin: 0px;
   box-shadow: none;
 }
 
+ion-card-content {
+  padding: 0px;
+}
+
+ion-list {
+  padding: 0px;
+}
+
+.custom-divider {
+  margin-bottom: 10px;
+}
+
+.custom-hr {
+  border: none;
+  border-top: 0.1px solid var(--ion-color-medium);
+  margin: 16px 0px 0px 0px;
+  width: 100%;
+}
+
+.custom-title {
+  font-size: 0.9rem;
+  color: #666666;
+  font-weight: 400;
+  margin-top: 4px;
+}
