@@ -35,6 +35,10 @@ export const routes: Routes = [
         ]
       },
       {
+        path: 'recovery-password',
+        loadComponent: () => import('./auth/recovery-password/recovery-password.page')
+      },
+      {
         path: '**',
         redirectTo: 'login',
         pathMatch: 'full'

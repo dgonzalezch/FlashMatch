@@ -1,6 +1,5 @@
 <ion-content [fullscreen]="true" class="ion-padding" color="light">
   <ion-grid>
-    <!-- Fila para la imagen de perfil y el nombre del usuario -->
     <ion-row class="ion-align-items-center ion-justify-content-start">
       <ion-col size="auto">
         <ion-avatar>
@@ -13,12 +12,9 @@
           <h6 class="ion-no-margin custom-title">Título</h6>
         </ion-text>
       </ion-col>
-
     </ion-row>
 
     <hr class="custom-hr">
-
-
 
   @for (section of sections; track $index) {
     <ion-row>
@@ -27,7 +23,6 @@
       </ion-col>
     </ion-row>
 
-    <!-- Opciones de la sección -->
     <ion-row>
       <ion-col>
         <ion-card class="custom-card">
