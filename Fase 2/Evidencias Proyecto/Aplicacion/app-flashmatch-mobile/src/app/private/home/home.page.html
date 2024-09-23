@@ -6,7 +6,7 @@
     <ion-card-content class="ion-no-padding">
       <ion-list class="ion-no-padding">
         @for (match of upcomingMatches; track $index) {
-          <ion-item [lines]="$index === upcomingMatches.length - 1 ? 'none' : 'full'" [routerLink]="['/private/matches']"  button>
+          <ion-item [lines]="$index === upcomingMatches.length - 1 ? 'none' : 'full'" [routerLink]="['/private/search']"  button>
             <ion-label>
               <h3>{{ match.title }}</h3>
               <p>{{ match.date | date:'shortDate' }} - {{ match.location }}</p>
@@ -27,7 +27,7 @@
     <ion-card-content class="ion-no-padding">
       <ion-list class="ion-no-padding">
         @for (match of pastMatches; track $index) {
-          <ion-item [lines]="$index === pastMatches.length - 1 ? 'none' : 'full'" [routerLink]="['/private/matches']" button>
+          <ion-item [lines]="$index === pastMatches.length - 1 ? 'none' : 'full'" [routerLink]="['/private/search']" button>
             <ion-label>
               <h3>{{ match.title }}</h3>
               <p>{{ match.date | date:'shortDate' }} - {{ match.result }}</p>
@@ -44,7 +44,7 @@
   </ion-card>
 
   <h6 class="ion-margin-start"><b>Rendimiento</b></h6>
-  <ion-card class="ion-no-margin ion-margin-vertical" [routerLink]="['/private/matches']" button>
+  <ion-card class="ion-no-margin ion-margin-vertical" [routerLink]="['/private/search']" button>
     <ion-card-content>
       <p>Puntaje promedio: {{ userPerformance.averageScore }} / 10</p>
       <p>Partidos Jugados: {{ userPerformance.matchesPlayed }}</p>
@@ -57,7 +57,7 @@
     <ion-card-content class="ion-no-padding">
       <ion-list class="ion-no-padding">
         @for (invitation of invitations; track $index) {
-          <ion-item [lines]="$index === invitations.length - 1 ? 'none' : 'full'" [routerLink]="['/private/matches']" button>
+          <ion-item [lines]="$index === invitations.length - 1 ? 'none' : 'full'" [routerLink]="['/private/search']" button>
             <ion-label>
               <h3>{{ invitation.match.title }}</h3>
               <p>Invitado por: {{ invitation.inviterName }}</p>

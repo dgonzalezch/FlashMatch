@@ -12,9 +12,9 @@ import { IonContent, IonList, IonItem, IonHeader, IonToolbar, IonTitle, IonGrid,
 export class MenuComponent  implements OnInit {
 
   menuItems = signal([
-    { icon: 'home', label: 'Inicio', route: '/private/home' },
+    { icon: 'home-outline', label: 'Inicio', route: '/private/home' },
+    { icon: 'search-outline', label: 'Buscador', route: '/private/search' },
     { icon: 'person-outline', label: 'Perfil', route: '/private/profile' },
-    { icon: 'person-outline', label: 'Partidos', route: '/private/matches' },
     { icon: 'log-out-outline', label: 'Cerrar sesión', route: '/auth' },
     // { icon: 'help-circle-outline', label: 'Ayuda', route: '/help' }
   ]);

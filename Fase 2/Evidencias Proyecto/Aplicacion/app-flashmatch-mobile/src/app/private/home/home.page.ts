@@ -16,14 +16,6 @@ export default class HomePage implements OnInit {
 
   router = inject(Router)
 
-  sections = [
-    { color: '#FF5733', image: 'assets/logo/logo-flashmatch.png', title: 'Partidos', route: 'private/matches' },
-    { color: '#33C3FF', image: 'assets/logo/logo-flashmatch.png', title: 'Equipos', route: '/crear-equipo' },
-    { color: '#5F33A6', image: 'assets/logo/logo-flashmatch.png', title: 'Estadísticas', route: '/ver-estadisticas' },
-    { color: '#FF33A6', image: 'assets/logo/logo-flashmatch.png', title: 'Invitaciones', route: '/ver-invitaciones' },
-    { color: '#FF90B6', image: 'assets/logo/logo-flashmatch.png', title: 'Historial', route: '/ver-historial' }
-  ];
-
   userPerformance = {
     averageScore: 8.5,
     matchesPlayed: 20,

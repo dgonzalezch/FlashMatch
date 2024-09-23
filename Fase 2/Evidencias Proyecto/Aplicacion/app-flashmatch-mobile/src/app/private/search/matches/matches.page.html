@@ -1,0 +1,76 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <ion-button expand="block" (click)="setOpen(true)">Búsqueda Manual</ion-button>
+
+  <!-- Resultados de la Búsqueda -->
+  @if (results.length > 0) {
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Resultados</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let result of results">
+            <ion-label>
+              <h2>{{ result.name }}</h2>
+              <p>{{ result.location }} - {{ result.date }}</p>
+              <p>Nivel: {{ result.skillLevel }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  }
+  @else {
+    <ion-card *ngIf="results.length === 0">
+      <ion-card-content>
+        <p>No se encontraron resultados. Intenta con otros filtros.</p>
+      </ion-card-content>
+    </ion-card>
+  }
+
+
+  <ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Búsqueda Manual</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setOpen(false)">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding" >
+
+        <ion-segment value="datetime">
+          <ion-segment-button value="datetime">
+            <ion-icon name="calendar-outline"></ion-icon>
+          </ion-segment-button>
+          <ion-segment-button value="ubication">
+            <ion-icon name="location-outline"></ion-icon>
+          </ion-segment-button>
+          <ion-segment-button value="search-range">
+            <ion-icon name="locate-outline"></ion-icon>
+           </ion-segment-button>
+          <ion-segment-button value="match-type">
+            <ion-icon name="funnel-outline"></ion-icon>
+          </ion-segment-button>
+        </ion-segment>
+
+
+      </ion-content>
+
+      <ion-footer class="ion-no-border ion-padding">
+        <ion-toolbar>
+          <ion-button (click)="setOpen(false)" expand="block">
+            Buscar por parámetros
+          </ion-button>
+        </ion-toolbar>
+      </ion-footer>
+    </ng-template>
+  </ion-modal>
+
+
+
+</ion-content>

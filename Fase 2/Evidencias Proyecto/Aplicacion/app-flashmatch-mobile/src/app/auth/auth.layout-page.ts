@@ -6,8 +6,8 @@ import { HeaderComponent } from '../shared/components/header/header.component';
 
 @Component({
   selector: 'app-auth',
-  templateUrl: './auth.layout.html',
-  styleUrls: ['./auth.layout.scss'],
+  templateUrl: './auth.layout-page.html',
+  styleUrls: ['./auth.layout-page.scss'],
   standalone: true,
   imports: [IonImg, IonRouterOutlet, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent]
 })

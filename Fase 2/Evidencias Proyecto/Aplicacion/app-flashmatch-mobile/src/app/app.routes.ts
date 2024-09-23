@@ -5,7 +5,7 @@ import { RedirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated
 export const routes: Routes = [
   {
     path: 'auth',
-    loadComponent: () => import('./auth/auth.layout'),
+    loadComponent: () => import('./auth/auth.layout-page'),
     // canActivate: [RedirectIfAuthenticatedGuard],
     children: [
       {
@@ -47,7 +47,7 @@ export const routes: Routes = [
   },
   {
     path: 'private',
-    loadComponent: () => import('./private/private.layout'),
+    loadComponent: () => import('./private/private.layout-page'),
     // canActivate: [AuthGuard],
     children: [
       {
@@ -59,8 +59,26 @@ export const routes: Routes = [
         loadComponent: () => import('./private/profile/profile.page')
       },
       {
-        path: 'matches',
-        loadComponent: () => import('./private/matches/matches.page')
+        path: 'search',
+        loadComponent: () => import('./private/search/search.layout-page'),
+        children: [
+          {
+            path: 'matches',
+            loadComponent: () => import('./private/search/matches/matches.page')
+          },
+          {
+            path: 'teams',
+            loadComponent: () => import('./private/search/teams/teams.page')
+          },
+          {
+            path: 'users',
+            loadComponent: () => import('./private/search/users/users.page')
+          },
+          {
+            path: 'courts',
+            loadComponent: () => import('./private/search/courts/courts.page')
+          }
+        ]
       },
       {
         path: 'notifications',
@@ -72,7 +90,6 @@ export const routes: Routes = [
         pathMatch: 'full'
       }
     ]
-
   },
   {
     path: '**',

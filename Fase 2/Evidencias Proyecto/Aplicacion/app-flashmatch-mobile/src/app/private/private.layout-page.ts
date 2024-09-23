@@ -8,8 +8,8 @@ import { MenuComponent } from '../shared/components/menu/menu.component';
 
 @Component({
   selector: 'app-private',
-  templateUrl: './private.layout.html',
-  styleUrls: ['./private.layout.scss'],
+  templateUrl: './private.layout-page.html',
+  styleUrls: ['./private.layout-page.scss'],
   standalone: true,
   imports: [IonText, IonCard, IonCol, IonRow, IonGrid, IonMenu, IonMenuButton, IonImg, IonButtons, IonItem, IonList, IonRouterOutlet, IonLabel, IonIcon, IonTabButton, IonTabBar, IonTabs, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, HeaderComponent, MenuComponent]
 })
