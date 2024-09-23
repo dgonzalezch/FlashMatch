@@ -12,7 +12,6 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonDate
 })
 export default class MatchesPage implements OnInit {
 
-
   isModalOpen = false;
 
   setOpen(isOpen: boolean) {

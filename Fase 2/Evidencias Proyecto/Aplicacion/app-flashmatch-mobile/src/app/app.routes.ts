@@ -77,6 +77,11 @@ export const routes: Routes = [
           {
             path: 'courts',
             loadComponent: () => import('./private/search/courts/courts.page')
+          },
+          {
+            path: '**',
+            redirectTo: 'matches',
+            pathMatch: 'full'
           }
         ]
       },

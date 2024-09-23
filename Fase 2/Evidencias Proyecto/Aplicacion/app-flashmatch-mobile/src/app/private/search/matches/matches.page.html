@@ -10,19 +10,21 @@
       </ion-card-header>
       <ion-card-content>
         <ion-list>
-          <ion-item *ngFor="let result of results">
-            <ion-label>
-              <h2>{{ result.name }}</h2>
-              <p>{{ result.location }} - {{ result.date }}</p>
-              <p>Nivel: {{ result.skillLevel }}</p>
-            </ion-label>
-          </ion-item>
+          @for (result of results; track $index) {
+            <ion-item>
+              <ion-label>
+                <h2>{{ result.name }}</h2>
+                <p>{{ result.location }} - {{ result.date }}</p>
+                <p>Nivel: {{ result.skillLevel }}</p>
+              </ion-label>
+            </ion-item>
+          }
         </ion-list>
       </ion-card-content>
     </ion-card>
   }
   @else {
-    <ion-card *ngIf="results.length === 0">
+    <ion-card>
       <ion-card-content>
         <p>No se encontraron resultados. Intenta con otros filtros.</p>
       </ion-card-content>

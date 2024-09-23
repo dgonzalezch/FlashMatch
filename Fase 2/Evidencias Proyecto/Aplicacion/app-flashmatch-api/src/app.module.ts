@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DeportesModule } from './deportes/deportes.module';
-import { EquiposModule } from './equipos/equipos.module';
 import { AuthModule } from './auth/auth.module';
+import { EquipoModule } from './equipo/equipo.module';
 
 @Module({
   imports: [
@@ -18,9 +17,8 @@ import { AuthModule } from './auth/auth.module';
       autoLoadEntities: true,
       synchronize: true
     }),
-    DeportesModule,
-    EquiposModule,
     AuthModule,
+    EquipoModule,
   ],
   providers: [],
 })
