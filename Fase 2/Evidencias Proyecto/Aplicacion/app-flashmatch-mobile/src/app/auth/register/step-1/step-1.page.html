@@ -1,6 +1,6 @@
 <app-header [typeMenu]="'public-route'"/>
 
-<ion-content [fullscreen]="true" class="ion-padding" color="light">
+<ion-content [fullscreen]="true" class="ion-padding" >
   <ion-grid class="ion-no-padding">
     <ion-row class="ion-justify-content-center">
       <ion-col size-xs="auto">
@@ -22,13 +22,80 @@
 
       <ion-col size-xs="12">
         <form [formGroup]="step1Form" class="ion-margin-vertical" id="step1Form" (ngSubmit)="onSubmit()">
-          <ion-input formControlName="nombre" class="ion-input-form ion-margin-bottom"  label="Nombre" labelPlacement="floating"></ion-input>
-          <ion-input formControlName="apellido" class="ion-input-form ion-margin-bottom" label="Apellido" labelPlacement="floating"></ion-input>
-          <ion-input formControlName="rut" class="ion-input-form ion-margin-bottom" label="RUT" labelPlacement="floating"></ion-input>
-          <ion-input formControlName="telefono" class="ion-input-form" label="Número de teléfono" labelPlacement="floating"></ion-input>
+
+          <!-- NOMBRE -->
+          <ion-input type="text" formControlName="nombre" class="ion-input-form" label="Nombre*" labelPlacement="floating"/>
+          @if (step1Form.get('nombre')?.touched && step1Form.get('nombre')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1Form.get('nombre')?.hasError('required')) {
+                  *El nombre es requerido.
+                }
+                @case (step1Form.get('nombre')?.hasError('minlength')) {
+                  *El nombre debe tener al menos 2 caracteres.
+                }
+                @case (step1Form.get('nombre')?.hasError('maxlength')) {
+                  *El nombre no puede ser mayor a 50 caracteres.
+                }
+              }
+            </ion-text>
+          }
+
+          <!-- APELLIDO -->
+          <ion-input type="text" formControlName="apellido" class="ion-input-form" label="Apellido*" labelPlacement="floating"/>
+          @if (step1Form.get('apellido')?.touched && step1Form.get('apellido')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1Form.get('apellido')?.hasError('required')) {
+                  *El apellido es requerido.
+                }
+                @case (step1Form.get('apellido')?.hasError('minlength')) {
+                  *El apellido debe tener al menos 2 caracteres.
+                }
+                @case (step1Form.get('apellido')?.hasError('maxlength')) {
+                  *El apellido no puede ser mayor a 50 caracteres.
+                }
+              }
+            </ion-text>
+          }
+
+          <!-- RUT -->
+          <ion-input type="text" formControlName="rut" class="ion-input-form" label="RUT*" labelPlacement="floating"/>
+          @if (step1Form.get('rut')?.touched && step1Form.get('rut')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1Form.get('rut')?.hasError('required')) {
+                  *El RUT es requerido.
+                }
+                @case (step1Form.get('rut')?.hasError('minlength')) {
+                  *El RUT debe tener al menos 8 caracteres.
+                }
+                @case (step1Form.get('rut')?.hasError('maxlength')) {
+                  *El RUT no puede tener más de 9 caracteres.
+                }
+              }
+            </ion-text>
+          }
+
+          <!-- TELEFONO -->
+          <ion-input type="text" formControlName="telefono" class="ion-input-form" label="Número de teléfono*" labelPlacement="floating"/>
+          @if (step1Form.get('telefono')?.touched && step1Form.get('telefono')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1Form.get('telefono')?.hasError('required')) {
+                  *El teléfono es requerido.
+                }
+                @case (step1Form.get('telefono')?.hasError('minlength')) {
+                  *El teléfono debe tener al menos 9 caracteres.
+                }
+                @case (step1Form.get('telefono')?.hasError('maxlength')) {
+                  *El teléfono no puede tener más de 12 caracteres.
+                }
+              }
+            </ion-text>
+          }
         </form>
       </ion-col>
-
     </ion-row>
   </ion-grid>
 </ion-content>

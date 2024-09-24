@@ -18,10 +18,10 @@ export default class Step1Page implements OnInit {
   private router = inject(Router);  // Inyecta el Router
 
   step1Form = this.fb.group({
-    nombre: ['', [Validators.required, Validators.minLength(2)]],
-    apellido: ['', [Validators.required, Validators.minLength(2)]],
+    nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+    apellido: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
     rut: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(9)]],
-    telefono: ['', [Validators.required]]
+    telefono: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(10)]]
   });
 
   ngOnInit() { }
@@ -31,6 +31,7 @@ export default class Step1Page implements OnInit {
       state: { step1FormData: this.step1Form.value }
     });
   }
+
 }
 
 export class CustomValidators {

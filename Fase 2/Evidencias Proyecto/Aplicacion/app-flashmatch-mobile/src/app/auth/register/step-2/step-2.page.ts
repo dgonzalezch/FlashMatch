@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButton, IonInput, IonCol, IonRow, IonGrid, IonText, IonCardContent, IonCard, IonIcon, IonCheckbox, IonCardSubtitle, IonCardTitle, IonCardHeader } from '@ionic/angular/standalone';
+import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButton, IonInput, IonCol, IonRow, IonGrid, IonText, IonCardContent, IonCard, IonIcon, IonCheckbox, IonCardSubtitle, IonCardTitle, IonCardHeader, IonInputPasswordToggle } from '@ionic/angular/standalone';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
@@ -12,7 +12,7 @@ import { catchError, switchMap, throwError } from 'rxjs';
   templateUrl: './step-2.page.html',
   styleUrls: ['./step-2.page.scss'],
   standalone: true,
-  imports: [IonText, IonIcon, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonFooter, IonCard, IonButton, IonCheckbox, IonInput, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, RouterLink, ReactiveFormsModule],
+  imports: [IonText, IonIcon, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonFooter, IonCard, IonButton, IonCheckbox, IonInput, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, RouterLink, ReactiveFormsModule, IonInputPasswordToggle],
 })
 export default class Step2Page implements OnInit {
   private fb = inject(FormBuilder);
@@ -27,9 +27,20 @@ export default class Step2Page implements OnInit {
     clave: ['', [
       Validators.required,
       Validators.minLength(8),
-      Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$')
+      Validators.maxLength(25),
+      Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&.])[A-Za-z\\d@$!%*?&.]*$'),
     ]],
-    repeatClave: ['', [Validators.required]]
+    repeatClave: ['', [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.maxLength(25),
+      Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&.])[A-Za-z\\d@$!%*?&.]*$'),
+    ]],
+  }, {
+    validators: [
+      matchValues('correo', 'repeatCorreo'),
+      matchValues('clave', 'repeatClave')
+    ]
   });
 
   ngOnInit() {
@@ -69,3 +80,24 @@ export default class Step2Page implements OnInit {
       .subscribe();
   }
 }
+
+// Validador para comprobar que dos campos coinciden
+export function matchValues(field1: string, field2: string): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value1 = control.get(field1)?.value;
+    const value2 = control.get(field2)?.value;
+
+    if (value1 && value2) {
+      if (value1 !== value2) {
+        if (field1 === 'correo' && field2 === 'repeatCorreo') {
+          return { emailMismatch: true };
+        }
+        if (field1 === 'clave' && field2 === 'repeatClave') {
+          return { passwordMismatch: true };
+        }
+      }
+    }
+    return null; // Sin errores
+  };
+}
+
