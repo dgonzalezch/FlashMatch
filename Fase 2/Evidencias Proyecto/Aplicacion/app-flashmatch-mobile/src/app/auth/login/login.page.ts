@@ -1,16 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonImg, IonContent, IonTitle, IonAvatar, IonGrid, IonCol, IonRow, IonInput, IonItem, IonList, IonText, IonHeader, IonButtons, IonToolbar, IonMenuButton, IonButton, IonCheckbox, IonLabel, IonCardContent, IonCard } from '@ionic/angular/standalone';
-import { RouterLink } from '@angular/router';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { IonImg, IonContent, IonTitle, IonAvatar, IonGrid, IonCol, IonRow, IonInput, IonItem, IonList, IonText, IonHeader, IonButtons, IonToolbar, IonMenuButton, IonButton, IonCheckbox, IonLabel, IonCardContent, IonCard, IonInputPasswordToggle, IonAlert, AlertController } from '@ionic/angular/standalone';
+import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
+import { FormValidatorService } from 'src/app/shared/common/form-validator-service.service';
+import { PreventSpacesDirective } from 'src/app/shared/common/prevent-spaces.directive';
+import { AuthService } from 'src/app/services/auth.service';
+import { catchError, EMPTY, switchMap, throwError } from 'rxjs';
+import { AlertService } from 'src/app/shared/common/alert.service';
+import { responseError } from 'src/app/interfaces/error.interface';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [
+  imports: [IonAlert,
     IonCard,
     IonCardContent,
     IonLabel,
@@ -34,15 +40,45 @@ import { HeaderComponent } from 'src/app/shared/components/header/header.compone
     IonInput,
     IonMenuButton,
     RouterLink,
-    HeaderComponent
+    HeaderComponent,
+    PreventSpacesDirective,
+    FormsModule,
+    ReactiveFormsModule,
+    IonInputPasswordToggle
   ]
 })
 export default class LoginPage implements OnInit {
 
-  constructor() { }
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private authService = inject(AuthService);
+  private alertService = inject(AlertService);
+
+  loginForm = this.fb.group({
+    correo: ['', [
+      Validators.required,
+      Validators.email,
+      Validators.maxLength(25),
+    ]],
+    clave: ['', [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.maxLength(25),
+      Validators.pattern(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)
+    ]],
+  });
 
   ngOnInit() {
   }
 
-  onSubmit(){ }
+  onSubmit() {
+    this.authService.loginUser(this.loginForm.value).subscribe({
+      next: (resp) => {
+        this.router.navigate(['/private/home']);
+      },
+      error: (err: responseError) => {
+        this.alertService.error(err.message);
+      }
+    })
+  }
 }

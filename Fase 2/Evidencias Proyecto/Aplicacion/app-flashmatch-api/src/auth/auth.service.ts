@@ -41,27 +41,22 @@ export class AuthService {
   }
 
   async login(loginUsuarioDto: LoginUsuarioDto) {
-    try {
-      const { clave, correo } = loginUsuarioDto;
+    const { clave, correo } = loginUsuarioDto;
+    const usuario = await this.usuarioRepository.findOne({
+      where: { correo },
+      select: { correo: true, clave: true, id: true }
+    });
 
-      const usuario = await this.usuarioRepository.findOne({
-        where: { correo },
-        select: { correo: true, clave: true, id: true }
-      });
+    if (!usuario)
+      throw new UnauthorizedException('Error al iniciar sesión, (email) incorrecto.')
 
-      if (!usuario)
-        throw new UnauthorizedException('Error al iniciar sesión, (email) incorrecto.')
+    if (!bcrypt.compareSync(clave, usuario.clave))
+      throw new UnauthorizedException('Error al iniciar sesión, (contraseña) incorrecta.')
 
-      if (!bcrypt.compareSync(clave, usuario.clave))
-        throw new UnauthorizedException('Error al iniciar sesión, (contraseña) incorrecta.')
-
-      return {
-        ...usuario,
-        token: this.getJwtToken({ id: usuario.id })
-      };
-    } catch (error) {
-      this.handleDBErrors(error);
-    }
+    return {
+      ...usuario,
+      token: this.getJwtToken({ id: usuario.id })
+    };
   }
 
   async refreshToken(usuario: Usuario) {

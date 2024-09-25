@@ -21,8 +21,9 @@
       </ion-col>
 
       <ion-col size-xs="12">
+        <!-- CORREO -->
         <form [formGroup]="step2Form" class="ion-margin-vertical" id="step2Form" (ngSubmit)="onSubmit()">
-          <ion-input type="email" formControlName="correo" class="ion-input-form" label="Correo electrónico*" labelPlacement="floating"/>
+          <ion-input type="email" class="ion-input-form" formControlName="correo" preventSpaces label="Correo electrónico*" labelPlacement="floating" maxlength="25" [clearInput]="true"/>
           @if (step2Form.get('correo')?.touched && step2Form.get('correo')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
@@ -30,12 +31,14 @@
                   *El correo es requerido.
                 }
                 @case (step2Form.get('correo')?.hasError('email')) {
-                  *Debes ingresar un correo válido
+                  *Debes ingresar un correo válido.
                 }
               }
             </ion-text>
           }
-          <ion-input type="email" formControlName="repeatCorreo" class="ion-input-form" label="Repite correo electrónico*" labelPlacement="floating"/>
+
+          <!-- REPETIR CORREO -->
+          <ion-input type="email" class="ion-input-form" formControlName="repeatCorreo" preventSpaces label="Repite correo electrónico*" labelPlacement="floating"  maxlength="25" [clearInput]="true"/>
           @if (step2Form.get('repeatCorreo')?.touched && step2Form.get('repeatCorreo')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
@@ -45,10 +48,15 @@
                 @case (step2Form.get('repeatCorreo')?.hasError('email')) {
                   *Debes ingresar un correo válido
                 }
+                @case (step2Form.get('repeatCorreo')?.hasError('mismatch')) {
+                  *Los correos no coinciden.
+                }
               }
             </ion-text>
           }
-          <ion-input type="password" formControlName="clave" class="ion-input-form" label="Contraseña*" labelPlacement="floating">
+
+          <!-- CLAVE -->
+          <ion-input type="password" class="ion-input-form" formControlName="clave" preventSpaces label="Contraseña*" labelPlacement="floating" [clearInput]="true">
             @if (step2Form.get('clave')?.value) {
               <ion-input-password-toggle slot="end"></ion-input-password-toggle>
             }
@@ -66,12 +74,14 @@
                   *La contraseña no puede tener más de 25 caracteres.
                 }
                 @case (step2Form.get('clave')?.hasError('pattern')) {
-                  *La contraseña debe tener al menos una letra minúscula, una letra mayúscula, un número y un carácter especial (como $, !, %, *, ?, &).
+                  *La contraseña debe tener al menos una letra minúscula, una letra mayúscula y un número.
                 }
               }
             </ion-text>
           }
-          <ion-input type="password" formControlName="repeatClave" class="ion-input-form" label="Repetir contraseña*" labelPlacement="floating">
+
+          <!-- REPETIR CLAVE -->
+          <ion-input type="password" class="ion-input-form" formControlName="repeatClave" preventSpaces label="Repetir contraseña*" labelPlacement="floating" [clearInput]="true">
             @if (step2Form.get('repeatClave')?.value) {
               <ion-input-password-toggle slot="end"></ion-input-password-toggle>
             }
@@ -91,7 +101,7 @@
                 @case (step2Form.get('repeatClave')?.hasError('pattern')) {
                   *La contraseña debe tener al menos una letra minúscula, una letra mayúscula, un número y un carácter especial (como $, !, %, *, ?, &).
                 }
-                @case (step2Form.get('repeatClave')?.hasError('passwordMismatch')) {
+                @case (step2Form.get('repeatClave')?.hasError('mismatch')) {
                   *Las contraseñas no coinciden.
                 }
               }

@@ -24,7 +24,7 @@
         <form [formGroup]="step1Form" class="ion-margin-vertical" id="step1Form" (ngSubmit)="onSubmit()">
 
           <!-- NOMBRE -->
-          <ion-input type="text" formControlName="nombre" class="ion-input-form" label="Nombre*" labelPlacement="floating"/>
+          <ion-input type="text" formControlName="nombre" class="ion-input-form" preventSpaces label="Nombre*" labelPlacement="floating" [clearInput]="true"/>
           @if (step1Form.get('nombre')?.touched && step1Form.get('nombre')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
@@ -42,7 +42,7 @@
           }
 
           <!-- APELLIDO -->
-          <ion-input type="text" formControlName="apellido" class="ion-input-form" label="Apellido*" labelPlacement="floating"/>
+          <ion-input type="text" formControlName="apellido" class="ion-input-form" preventSpaces label="Apellido*" labelPlacement="floating" [clearInput]="true"/>
           @if (step1Form.get('apellido')?.touched && step1Form.get('apellido')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
@@ -60,25 +60,22 @@
           }
 
           <!-- RUT -->
-          <ion-input type="text" formControlName="rut" class="ion-input-form" label="RUT*" labelPlacement="floating"/>
+          <ion-input type="text" formControlName="rut" class="ion-input-form" preventSpaces formatRut label="RUT*" maxlength="12" labelPlacement="floating" [clearInput]="true"/>
           @if (step1Form.get('rut')?.touched && step1Form.get('rut')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
                 @case (step1Form.get('rut')?.hasError('required')) {
                   *El RUT es requerido.
                 }
-                @case (step1Form.get('rut')?.hasError('minlength')) {
-                  *El RUT debe tener al menos 8 caracteres.
-                }
-                @case (step1Form.get('rut')?.hasError('maxlength')) {
-                  *El RUT no puede tener más de 9 caracteres.
+                @case (step1Form.get('rut')?.hasError('invalidRUT') ) {
+                  El RUT ingresado no es válido.
                 }
               }
             </ion-text>
           }
 
           <!-- TELEFONO -->
-          <ion-input type="text" formControlName="telefono" class="ion-input-form" label="Número de teléfono*" labelPlacement="floating"/>
+          <ion-input type="tel" formControlName="telefono" class="ion-input-form" preventSpaces onlyNumbers label="Número de teléfono*" placeholder="9123456" labelPlacement="floating" maxlength="9" [clearInput]="true"/>
           @if (step1Form.get('telefono')?.touched && step1Form.get('telefono')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
@@ -87,9 +84,6 @@
                 }
                 @case (step1Form.get('telefono')?.hasError('minlength')) {
                   *El teléfono debe tener al menos 9 caracteres.
-                }
-                @case (step1Form.get('telefono')?.hasError('maxlength')) {
-                  *El teléfono no puede tener más de 12 caracteres.
                 }
               }
             </ion-text>

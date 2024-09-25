@@ -18,7 +18,7 @@ import { EquipoModule } from './equipo/equipo.module';
       synchronize: true
     }),
     AuthModule,
-    EquipoModule,
+    // EquipoModule,
   ],
   providers: [],
 })

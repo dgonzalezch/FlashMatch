@@ -4,14 +4,50 @@
   <ion-grid>
     <ion-row class="ion-justify-content-center">
       <ion-col size-xs="12" size-sm="8" size-md="6" size-lg="4">
-        <ion-card style="margin: 0px;" class="ion-padding">
-          <form (ngSubmit)="onSubmit()">
-            <ion-input type="email" class="ion-input-form ion-margin-bottom" label="Email" labelPlacement="floating"></ion-input>
-            <ion-input type="password" class="ion-input-form ion-margin-bottom" label="Contraseña" labelPlacement="floating"></ion-input>
+        <ion-card class="ion-padding ion-no-margin">
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <!-- CORREO -->
+            <ion-input formControlName="correo" type="email" preventSpaces class="ion-input-form" label="Email" maxlength="25" labelPlacement="floating"/>
+            @if (loginForm.get('correo')?.touched && loginForm.get('correo')?.invalid) {
+              <ion-text class="text-small" color="danger">
+                @switch (true) {
+                  @case (loginForm.get('correo')?.hasError('required')) {
+                    *El correo es requerido.
+                  }
+                  @case (loginForm.get('correo')?.hasError('email')) {
+                    *Debes ingresar un correo válido.
+                  }
+                }
+              </ion-text>
+            }
+
+            <!-- CLAVE -->
+            <ion-input formControlName="clave" type="password" preventSpaces class="ion-input-form" label="Contraseña" labelPlacement="floating">
+              @if (loginForm.get('clave')?.value) {
+                <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+              }
+            </ion-input>
+            @if (loginForm.get('clave')?.touched && loginForm.get('clave')?.invalid) {
+              <ion-text class="text-small" color="danger">
+                @switch (true) {
+                  @case (loginForm.get('clave')?.hasError('required')) {
+                    *Debes ingresar una contraseña.
+                  }
+                  @case (loginForm.get('clave')?.hasError('minlength') || loginForm.get('clave')?.hasError('maxlength')) {
+                    *El largo de la contraseña es incorrecto.
+                  }
+                  @case (loginForm.get('clave')?.hasError('pattern')) {
+                    *La contraseña debe tener al menos una letra minúscula, una letra mayúscula y un número.
+                  }
+                }
+              </ion-text>
+            }
+
             <ion-checkbox class="ion-margin-vertical" labelPlacement="end">Recordar contraseña</ion-checkbox>
-            <ion-button color="tertiary ion-margin-vertical" [routerLink]="['/home']" expand="block">INGRESAR</ion-button>
-            <ion-button color="secondary ion-margin-bottom" [routerLink]="['/auth/register']" expand="block" type="submit">REGÍSTRATE</ion-button>
+
+            <ion-button type="submit" [disabled]="loginForm.invalid" color="tertiary ion-no-margin ion-margin-bottom ion-margin-vertical" expand="block">INGRESAR</ion-button>
           </form>
+          <ion-button color="secondary ion-margin-bottom ion-no-margin" [routerLink]="['/auth/register']" expand="block" type="submit">REGÍSTRATE</ion-button>
           <div class="ion-text-center ion-margin-top">
             <a [routerLink]="['/auth/recovery-password']">¿Olvidaste tu contraseña?</a>
           </div>

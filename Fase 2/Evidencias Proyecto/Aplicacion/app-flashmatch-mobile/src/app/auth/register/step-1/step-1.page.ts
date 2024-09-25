@@ -4,40 +4,46 @@ import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, Validat
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonGrid, IonRow, IonCol, IonInput, IonCheckbox, IonButton, IonCard, IonFooter, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonIcon, IonText, IonNavLink } from '@ionic/angular/standalone';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
 import { Router, RouterLink } from '@angular/router';
+import { PreventSpacesDirective } from 'src/app/shared/common/prevent-spaces.directive';
+import { FormatRutDirective } from 'src/app/shared/common/format-rut.directive.ts.directive';
+import { FormValidatorService } from 'src/app/shared/common/form-validator-service.service';
+import { OnlyNumbersDirective } from 'src/app/shared/common/only-numbers.directive';
 
 @Component({
   selector: 'app-step-1',
   templateUrl: './step-1.page.html',
   styleUrls: ['./step-1.page.scss'],
   standalone: true,
-  imports: [IonNavLink, IonText, IonIcon, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonFooter, IonCard, IonButton, IonCheckbox, IonInput, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, RouterLink, ReactiveFormsModule]
+  imports: [IonNavLink, IonText, IonIcon, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonFooter, IonCard, IonButton, IonCheckbox, IonInput, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, RouterLink, ReactiveFormsModule, PreventSpacesDirective, FormatRutDirective, OnlyNumbersDirective]
 })
 export default class Step1Page implements OnInit {
 
   private fb = inject(FormBuilder);
   private router = inject(Router);  // Inyecta el Router
+  private formValidatorService = inject(FormValidatorService)
 
   step1Form = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
     apellido: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-    rut: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(9)]],
+    rut: ['', [
+      Validators.required,
+      this.formValidatorService.validateRUT()
+    ]],
     telefono: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(10)]]
   });
 
   ngOnInit() { }
 
   onSubmit() {
+    // Limpiar el RUT
+    const cleanedRut = this.formValidatorService.cleanRut(this.step1Form.value.rut!);
+
+    // Actualizar el valor del formulario con el RUT limpio
+    this.step1Form.patchValue({ rut: cleanedRut });
+    console.log(this.step1Form.value);
     this.router.navigate(['/auth/register/step-2'], {
       state: { step1FormData: this.step1Form.value }
     });
   }
 
-}
-
-export class CustomValidators {
-  static phoneNumberValidator(control: AbstractControl): ValidationErrors | null {
-    const phoneRegex = /^\+?[1-9]\d{1,14}$/;  // Ejemplo de regex internacional
-    const valid = phoneRegex.test(control.value);
-    return valid ? null : { invalidPhoneNumber: true };
-  }
 }

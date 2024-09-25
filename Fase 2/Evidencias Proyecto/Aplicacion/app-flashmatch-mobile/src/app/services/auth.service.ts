@@ -34,18 +34,14 @@ export class AuthService {
     return this.http.post<any>(this.urlBaseAuth + ENDPOINT.AUTH_LOGIN, loginUserFormData).pipe(
       switchMap(response => {
         if (response?.token) {
-          debugger
           return this.storageService.saveToken(response.token).pipe(
             switchMap(() => of(response)) // Devuelve la respuesta después de guardar el token
           );
         }
         return of(response);
       }),
-      catchError((error: HttpErrorResponse) => {
-        // Limpia el token en caso de error, aunque en login esto puede no ser necesario
-        return this.storageService.removeToken().pipe(
-          switchMap(() => throwError(() => new Error(error.message)))
-        );
+      catchError(({ error }: HttpErrorResponse) => {
+        return throwError(() => error);
       }),
       timeout(environment.apiTime)
     );
