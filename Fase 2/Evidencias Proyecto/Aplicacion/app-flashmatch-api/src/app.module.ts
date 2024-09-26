@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { EquipoModule } from './equipo/equipo.module';
+import { DeporteModule } from './deporte/deporte.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { EquipoModule } from './equipo/equipo.module';
       synchronize: true
     }),
     AuthModule,
-    // EquipoModule,
+    DeporteModule,
+    EquipoModule
   ],
   providers: [],
 })

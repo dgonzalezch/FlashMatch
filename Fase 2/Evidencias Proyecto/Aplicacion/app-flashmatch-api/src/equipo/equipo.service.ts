@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { CreateEquipoDto } from './dto/create-equipo.dto';
 import { UpdateEquipoDto } from './dto/update-equipo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class EquipoService {
+  private readonly logger = new Logger('EquipoService');
 
   constructor(
     @InjectRepository(Equipo)
@@ -28,15 +29,15 @@ export class EquipoService {
     return `This action returns all equipo`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} equipo`;
   }
 
-  update(id: number, updateEquipoDto: UpdateEquipoDto) {
+  update(id: string, updateEquipoDto: UpdateEquipoDto) {
     return `This action updates a #${id} equipo`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} equipo`;
   }
 

@@ -6,11 +6,12 @@ import { Repository } from 'typeorm';
 import { Deporte } from './entities/deporte.entity';
 import { ResponseMessage } from 'src/common/interfaces/response.interface';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { isUUID } from 'class-validator';
 
 @Injectable()
-export class DeportesService {
+export class DeporteService {
 
-  private readonly logger = new Logger('DeportesService');
+  private readonly logger = new Logger('DeporteService');
 
   constructor(
     @InjectRepository(Deporte)
@@ -47,8 +48,8 @@ export class DeportesService {
     try {
       let deporte: Deporte
 
-      if (Number.isInteger(Number(term))) {
-        deporte = await this.deporteRepository.findOneBy({ id_deporte: Number(term) });
+      if (isUUID(term)) {
+        deporte = await this.deporteRepository.findOneBy({ id: term });
       } else {
         const queryBuilder = await this.deporteRepository.createQueryBuilder();
         deporte = await queryBuilder
@@ -66,14 +67,14 @@ export class DeportesService {
     }
   }
 
-  async update(id_deporte: number, updateDeporteDto: UpdateDeporteDto) {
+  async update(id: string, updateDeporteDto: UpdateDeporteDto) {
     try {
       const deporte = await this.deporteRepository.preload({
-        id_deporte: id_deporte,
+        id: id,
         ...updateDeporteDto
       })
   
-      if(!deporte) throw new NotFoundException(`Producto con id ${id_deporte} no encontrado.`)
+      if(!deporte) throw new NotFoundException(`Producto con id ${id} no encontrado.`)
 
       await this.deporteRepository.save(deporte);
 
@@ -83,11 +84,11 @@ export class DeportesService {
     }
   }
 
-  async remove(id_deporte: number): Promise<ResponseMessage<Deporte>> {
+  async remove(id: string): Promise<ResponseMessage<Deporte>> {
     try {
-      const deporte = await this.deporteRepository.findOneBy({ id_deporte });
+      const deporte = await this.deporteRepository.findOneBy({ id });
       
-      if (!deporte) throw new NotFoundException(`Deporte con id ${id_deporte} no se pudo eliminar porque no existe en la base de datos.`)
+      if (!deporte) throw new NotFoundException(`Deporte con id ${id} no se pudo eliminar porque no existe en la base de datos.`)
 
       await this.deporteRepository.remove(deporte);
       return { data: deporte, message: 'Registro eliminado' }

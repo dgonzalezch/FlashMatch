@@ -1,16 +1,13 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class Equipo {
+export class Deporte {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
     @Column('text', { unique: true, nullable: false })
-    nombre: string;
+    nombre_deporte: string;
 
-    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
-    creado_en: Date;
-
-    @Column('text', { nullable: false })
-    logo: string;
+    @Column('text', { unique: true, nullable: false })
+    icono: string;
 }

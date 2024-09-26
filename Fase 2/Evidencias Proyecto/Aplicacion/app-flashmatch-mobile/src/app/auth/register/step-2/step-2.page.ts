@@ -8,6 +8,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { catchError, switchMap, throwError } from 'rxjs';
 import { FormValidatorService } from 'src/app/shared/common/form-validator-service.service';
 import { PreventSpacesDirective } from 'src/app/shared/common/prevent-spaces.directive';
+import { responseError } from 'src/app/interfaces/error.interface';
+import { AlertService } from 'src/app/shared/common/alert.service';
 
 
 @Component({
@@ -21,7 +23,8 @@ export default class Step2Page implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private authService = inject(AuthService);
-  private formValidatorService = inject(FormValidatorService)
+  private formValidatorService = inject(FormValidatorService);
+  private alertService = inject(AlertService);
 
   step1FormData: any;
 
@@ -74,17 +77,13 @@ export default class Step2Page implements OnInit {
   }
 
   private registerUser(formData: any) {
-    this.authService.registerUser(formData)
-      .pipe(
-        switchMap(() => {
-          this.router.navigate(['/home']);
-          return [];
-        }),
-        catchError(error => {
-          console.error('Error durante el registro', error);
-          return throwError(() => new Error(error.message));
-        })
-      )
-      .subscribe();
+    this.authService.registerUser(formData).subscribe({
+      next: (resp) => {
+        this.router.navigate(['/private/home']);
+      },
+      error: (err: responseError) => {
+        this.alertService.error(err.message);
+      }
+    })
   }
 }

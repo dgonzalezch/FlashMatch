@@ -23,8 +23,8 @@ export class AuthService {
         }
         return of(response);
       }),
-      catchError((error: HttpErrorResponse) => {
-        return throwError(() => new Error(error.message));
+      catchError(({ error }: HttpErrorResponse) => {
+        return throwError(() => error);
       }),
       timeout(environment.apiTime)
     );
