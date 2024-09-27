@@ -1,12 +1,12 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Query, ParseUUIDPipe } from '@nestjs/common';
-import { DeporteService } from './deporte.service';
+import { DeportesService } from './deportes.service';
 import { CreateDeporteDto } from './dto/create-deporte.dto';
 import { UpdateDeporteDto } from './dto/update-deporte.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 
-@Controller('deporte')
-export class DeporteController {
-  constructor(private readonly deporteService: DeporteService) { }
+@Controller('deportes')
+export class DeportesController {
+  constructor(private readonly deporteService: DeportesService) { }
 
   @Post()
   create(@Body() createDeporteDto: CreateDeporteDto) {

@@ -1,46 +1,52 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Equipo } from "src/equipos/entities/equipo.entity";
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity('usuario')
+@Entity('usuarios')
 export class Usuario {
     @PrimaryGeneratedColumn('uuid')
-    id: string;
+    id_usuario: string;
 
-    @Column('text')
+    @Column({ type: 'varchar', length: 50 })
     nombre: string;
 
-    @Column('text')
-    apellido: string
+    @Column({ type: 'varchar', length: 50 })
+    apellido: string;
 
-    @Column('text', {
-        unique: true
-    })
-    rut: string
+    @Column({ type: 'varchar', unique: true, length: 9 })
+    rut: string;
 
-    @Column('text', {
-        unique: true
-    })
-    telefono: string
+    @Column({ type: 'varchar', unique: true, length: 15 })
+    telefono: string;
 
-    @Column('text', {
-        unique: true
-    })
+    @Column({ type: 'varchar', unique: true, length: 100 })
     correo: string;
 
-    @Column('text', {
-        select: false
-    })
+    @Column({ type: 'varchar', length: 255, select: false })
     clave: string;
 
-    @Column('text', {
-        array: true,
-        default: ['usuario']
-    })
+    @Column({ type: 'text', array: true,  default: ['usuario'] })
     roles: string[];
 
-    @Column('bool', {
-        default: true
-    })
+    @Column({ type: 'text', nullable: true })
+    imagen_perfil: string;
+
+    @Column({ type: 'boolean', default: true })
     activo: boolean;
+
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    creado_en: Date;
+
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+    actualizado_en: Date;
+    
+    @OneToMany(() => Equipo, (equipo) => equipo.creador, { cascade: true })
+    equipos: Equipo[];
+
+    // @OneToMany(() => VerificacionIdentidad, verificacion => verificacion.usuario)
+    // verificaciones: VerificacionIdentidad[];
+
+    // @OneToMany(() => Reserva, reserva => reserva.usuario)
+    // reservas: Reserva[];
 
     @BeforeInsert()
     checkFieldsBeforeInsert() {

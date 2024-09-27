@@ -2,8 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { EquipoModule } from './equipo/equipo.module';
-import { DeporteModule } from './deporte/deporte.module';
+import { EquiposModule } from './equipos/equipos.module';
+import { DeportesModule } from './deportes/deportes.module';
+import { CanchasModule } from './canchas/canchas.module';
+import { PartidosModule } from './partidos/partidos.module';
 
 @Module({
   imports: [
@@ -19,8 +21,10 @@ import { DeporteModule } from './deporte/deporte.module';
       synchronize: true
     }),
     AuthModule,
-    DeporteModule,
-    EquipoModule
+    DeportesModule,
+    EquiposModule,
+    CanchasModule,
+    PartidosModule
   ],
   providers: [],
 })
