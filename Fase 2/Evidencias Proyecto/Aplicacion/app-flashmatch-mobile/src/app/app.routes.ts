@@ -55,35 +55,42 @@ export const routes: Routes = [
         loadComponent: () => import('./private/home/home.page'),
       },
       {
-        path: 'profile',
-        loadComponent: () => import('./private/profile/profile.page')
+        path: 'matches',
+        loadComponent: () => import('./private/matches/matches.page')
       },
       {
-        path: 'search',
-        loadComponent: () => import('./private/search/search.layout-page'),
+        path: 'courts',
+        loadComponent: () => import('./private/courts/courts.page')
+      },
+      {
+        path: 'teams',
         children: [
           {
-            path: 'matches',
-            loadComponent: () => import('./private/search/matches/matches.page')
+            path: 'create-team',
+            loadComponent: () => import('./private/teams/create-team/create-team.page')
           },
           {
-            path: 'teams',
-            loadComponent: () => import('./private/search/teams/teams.page')
+            path: 'update-team',
+            loadComponent: () => import('./private/teams/update-team/update-team.page')
           },
           {
-            path: 'users',
-            loadComponent: () => import('./private/search/users/users.page')
-          },
-          {
-            path: 'courts',
-            loadComponent: () => import('./private/search/courts/courts.page')
+            path: 'list-teams',
+            loadComponent: () => import('./private/teams/list-teams/list-teams.page')
           },
           {
             path: '**',
-            redirectTo: 'matches',
+            redirectTo: 'list-teams',
             pathMatch: 'full'
           }
         ]
+      },
+      {
+        path: 'players',
+        loadComponent: () => import('./private/players/players.page')
+      },
+      {
+        path: 'profile',
+        loadComponent: () => import('./private/profile/profile.page')
       },
       {
         path: 'notifications',

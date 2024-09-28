@@ -1,0 +1,48 @@
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      @for (equipo of equipos; track $index) {
+        <ion-col size="12" size-md="6">
+          <ion-card button (click)="viewTeamDetails(equipo.id_equipo)">
+            <ion-card-header>
+              <ion-item lines="none" >
+                <ion-avatar slot="start" class="team-logo">
+                  <img [src]="equipo.logo_equipo" alt="Logo del equipo">
+                </ion-avatar>
+
+                <ion-label>
+                  <ion-card-title>{{ equipo.nombre_equipo }}</ion-card-title>
+                  <ion-card-subtitle>{{ equipo.deporte.nombre_deporte }}</ion-card-subtitle>
+                </ion-label>
+              </ion-item>
+            </ion-card-header>
+
+            <ion-card-content>
+              <p>Integrantes: {{ equipo.integrantes.length }}</p>
+              <p>Creado por: {{ equipo.creador.nombre_usuario }}</p>
+              <p>Fecha de creación: {{ equipo.creado_en | date: 'dd/MM/yyyy' }}</p>
+            </ion-card-content>
+
+            <ion-footer class="ion-text-right">
+              <ion-button fill="outline" (click)="viewTeamDetails(equipo.id_equipo)">
+                Unirse
+              </ion-button>
+            </ion-footer>
+          </ion-card>
+        </ion-col>
+      }@empty {
+        <ion-col>
+          <ion-item>
+            <ion-label>No hay equipos disponibles.</ion-label>
+          </ion-item>
+        </ion-col>
+      }
+    </ion-row>
+  </ion-grid>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [routerLink]="['/private/teams/create-team']" routerLinkActive="router-link-active" (click)="createTeam()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

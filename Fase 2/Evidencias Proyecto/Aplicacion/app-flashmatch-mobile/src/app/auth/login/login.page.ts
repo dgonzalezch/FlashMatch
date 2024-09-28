@@ -9,7 +9,7 @@ import { PreventSpacesDirective } from 'src/app/shared/common/prevent-spaces.dir
 import { AuthService } from 'src/app/services/auth.service';
 import { catchError, EMPTY, switchMap, throwError } from 'rxjs';
 import { AlertService } from 'src/app/shared/common/alert.service';
-import { responseError } from 'src/app/interfaces/error.interface';
+import { responseError } from 'src/app/interfaces/response-error.interface';
 
 @Component({
   selector: 'app-login',

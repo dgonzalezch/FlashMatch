@@ -14,13 +14,12 @@ import { OnlyNumbersDirective } from 'src/app/shared/common/only-numbers.directi
   templateUrl: './step-1.page.html',
   styleUrls: ['./step-1.page.scss'],
   standalone: true,
-  imports: [IonNavLink, IonText, IonIcon, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonFooter, IonCard, IonButton, IonCheckbox, IonInput, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, RouterLink, ReactiveFormsModule, PreventSpacesDirective, FormatRutDirective, OnlyNumbersDirective]
+  imports: [IonNavLink, IonText, IonIcon, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonFooter, IonCard, IonButton, IonCheckbox, IonInput, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, HeaderComponent, RouterLink, FormatRutDirective, OnlyNumbersDirective, CommonModule, FormsModule, ReactiveFormsModule, PreventSpacesDirective ]
 })
 export default class Step1Page implements OnInit {
-
   private fb = inject(FormBuilder);
-  private router = inject(Router);  // Inyecta el Router
-  private formValidatorService = inject(FormValidatorService)
+  private router = inject(Router);
+  private formValidatorService = inject(FormValidatorService);
 
   step1Form = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
@@ -40,7 +39,6 @@ export default class Step1Page implements OnInit {
 
     // Actualizar el valor del formulario con el RUT limpio
     this.step1Form.patchValue({ rut: cleanedRut });
-    console.log(this.step1Form.value);
     this.router.navigate(['/auth/register/step-2'], {
       state: { step1FormData: this.step1Form.value }
     });

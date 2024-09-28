@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsUUID, MinLength } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString, IsUUID, MinLength } from "class-validator";
 
 export class CreateEquipoDto {
     @IsString()
@@ -7,6 +7,9 @@ export class CreateEquipoDto {
 
     @IsString()
     logo_equipo?: string;
+
+    @IsString()
+    descripcion_equipo?: string;
 
     @IsUUID()
     @IsNotEmpty()

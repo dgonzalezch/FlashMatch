@@ -13,6 +13,9 @@ export class Equipo {
     @Column({ type: 'text', nullable: true })
     logo_equipo: string;
 
+    @Column({ type: 'text', nullable: true })
+    descripcion_equipo: string;
+
     @CreateDateColumn({ type: 'timestamp' })
     creado_en: Date;
 

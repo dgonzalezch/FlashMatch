@@ -34,13 +34,6 @@ export class FormValidatorService {
     };
   }
 
-  // Método para prevenir espacios
-  preventSpaces(event: KeyboardEvent): void {
-    if (event.code === 'Space') {
-      event.preventDefault(); // Evita la introducción de espacios
-    }
-  }
-
   validateRUT(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const rut = control.value;

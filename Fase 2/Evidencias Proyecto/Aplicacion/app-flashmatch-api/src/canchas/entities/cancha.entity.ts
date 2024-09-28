@@ -29,6 +29,6 @@ export class Cancha {
     longitud: number;
 
     @ManyToOne(() => Usuario)
-    id_admin_cancha: Usuario;
+    usuario: Usuario;
 }
 

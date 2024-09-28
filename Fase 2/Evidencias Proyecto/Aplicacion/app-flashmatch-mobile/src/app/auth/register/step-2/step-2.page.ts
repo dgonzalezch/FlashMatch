@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { catchError, switchMap, throwError } from 'rxjs';
 import { FormValidatorService } from 'src/app/shared/common/form-validator-service.service';
 import { PreventSpacesDirective } from 'src/app/shared/common/prevent-spaces.directive';
-import { responseError } from 'src/app/interfaces/error.interface';
+import { responseError } from 'src/app/interfaces/response-error.interface';
 import { AlertService } from 'src/app/shared/common/alert.service';
 
 

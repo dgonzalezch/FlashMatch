@@ -1,5 +1,7 @@
 export enum CONTEXT {
-  API_AUTH = '/api/auth/'
+  API_AUTH = '/api/auth/',
+  API_EQUIPOS = '/api/equipos/',
+  API_DEPORTES = '/api/deportes'
 }
 
 export enum ENDPOINT {

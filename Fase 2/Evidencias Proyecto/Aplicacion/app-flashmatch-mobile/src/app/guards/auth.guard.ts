@@ -12,23 +12,24 @@ export class AuthGuard implements CanActivate {
   private storageService = inject(StorageService);
   private router = inject(Router);
 
-  canActivate(): Observable<boolean> {
-    return this.storageService.getToken().pipe(
-      map(token => {
-        if (token) {
-          // Token existe, permite el acceso
-          return true;
-        } else {
-          // Token no existe, redirige al login
-          this.router.navigate(['/auth/login']);
-          return false;
-        }
-      }),
-      catchError(() => {
-        // En caso de error, redirige al login
-        this.router.navigate(['/auth/login']);
-        return of(false);
-      })
-    );
+  canActivate() {
+    // return this.storageService.getToken().pipe(
+    //   map(token => {
+    //     if (token) {
+    //       // Token existe, permite el acceso
+    //       return true;
+    //     } else {
+    //       // Token no existe, redirige al login
+    //       this.router.navigate(['/auth/login']);
+    //       return false;
+    //     }
+    //   }),
+    //   catchError(() => {
+    //     // En caso de error, redirige al login
+    //     this.router.navigate(['/auth/login']);
+    //     return of(false);
+    //   })
+    // );
+    return true;
   }
 }
