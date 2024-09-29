@@ -3,9 +3,10 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { EquiposModule } from './equipos/equipos.module';
-import { DeportesModule } from './deportes/deportes.module';
 import { CanchasModule } from './canchas/canchas.module';
 import { PartidosModule } from './partidos/partidos.module';
+import { RangosEdadModule } from './rangos-edad/rangos-edad.module';
+import { DeportesModule } from './deportes/deportes.module';
 
 @Module({
   imports: [
@@ -21,10 +22,11 @@ import { PartidosModule } from './partidos/partidos.module';
       synchronize: true
     }),
     AuthModule,
-    DeportesModule,
     EquiposModule,
     CanchasModule,
-    PartidosModule
+    PartidosModule,
+    RangosEdadModule,
+    DeportesModule
   ],
   providers: [],
 })

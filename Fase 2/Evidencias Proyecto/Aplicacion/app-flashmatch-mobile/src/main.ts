@@ -8,14 +8,19 @@ import { AppComponent } from './app/app.component';
 import { provideHttpClient } from '@angular/common/http';
 import { IonicStorageModule, provideStorage } from '@ionic/storage-angular';
 import { importProvidersFrom } from '@angular/core';
+import { Drivers } from '@ionic/storage';
+
 
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
+    importProvidersFrom(IonicStorageModule.forRoot({
+      name: 'storagedb',
+      driverOrder: [Drivers.IndexedDB]
+    })),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(),
-    importProvidersFrom(IonicStorageModule.forRoot()),
   ],
 });
 defineCustomElements(window);

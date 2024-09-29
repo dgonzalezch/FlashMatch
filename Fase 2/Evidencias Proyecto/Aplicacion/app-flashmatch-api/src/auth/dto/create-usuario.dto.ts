@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsEmail, IsMobilePhone, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, Matches, MaxLength, MinLength } from "class-validator";
+import { IsArray, IsBoolean, IsEmail, IsMobilePhone, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, Matches, MaxLength, MinLength, IsDateString } from "class-validator";
 
 export class CreateUsuarioDto {
     @IsString()
@@ -41,4 +41,8 @@ export class CreateUsuarioDto {
     @IsString()
     @IsOptional()
     imagen_perfil?: string;
+
+    @IsDateString()
+    @IsNotEmpty()
+    fecha_nacimiento: string;
 }

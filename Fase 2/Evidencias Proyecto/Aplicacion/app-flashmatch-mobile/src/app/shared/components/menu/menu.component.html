@@ -25,19 +25,13 @@
             <ion-label>{{ item.label }}</ion-label>
           </ion-item>
         </ion-menu-toggle>
-      }@empty {
-        <ion-item>
-          <li>
-            <ion-label>Error en menu</ion-label>
-          </li>
-        </ion-item>
-        <ion-menu-toggle>
-          <ion-item button routerLink="/auth">
-            <ion-icon name="log-out-outline" slot="start"></ion-icon>
-            <ion-label>Salir</ion-label>
-          </ion-item>
-        </ion-menu-toggle>
       }
+      <ion-menu-toggle>
+        <ion-item button (click)="logOut()">
+          <ion-icon name="log-out-outline" slot="start"></ion-icon>
+          <ion-label>Cerrar Sesión</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
     </ion-list>
 
   </ion-content>

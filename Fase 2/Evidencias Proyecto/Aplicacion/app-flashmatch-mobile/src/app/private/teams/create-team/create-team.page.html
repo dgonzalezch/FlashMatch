@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true" class="ion-padding" >
+<ion-content [fullscreen]="true" class="ion-padding">
   <ion-grid class="ion-no-padding">
     <ion-row class="ion-justify-content-center">
       <ion-col size-xs="auto">
@@ -61,6 +61,22 @@
             </ion-text>
           }
 
+          <!-- RANGO EDAD -->
+          <ion-select formControlName="id_rango" class="ion-input-form" label="Rango edad del equipo*" label-placement="floating" cancelText="cancelar" okText="seleccionar">
+            @for (rangoEdad of listRangosEdad(); track $index) {
+              <ion-select-option [value]="rangoEdad.id_rango">{{rangoEdad.descripcion}}</ion-select-option>
+            }
+          </ion-select>
+          @if (teamForm.get('id_rango')?.touched && teamForm.get('id_rango')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (teamForm.get('id_rango')?.hasError('required')) {
+                  *Debes seleccionar un rango de edad.
+                }
+              }
+            </ion-text>
+          }
+
           <!-- DESCRIPCION -->
           <ion-textarea formControlName="descripcion_equipo" class="ion-input-form" label="Descripción" labelPlacement="floating" placeholder="Añade aquí tu descripción del equipo."/>
           @if (teamForm.get('descripcion_equipo')?.touched && teamForm.get('descripcion_equipo')?.invalid) {
@@ -80,8 +96,8 @@
 
 <ion-footer class="ion-no-border ion-padding">
   <ion-toolbar>
-    <ion-button class="ion-no-margin" color="tertiary" expand="block"
-      type="submit" form="step1Form" [disabled]="!teamForm.valid">Siguiente
+    <ion-button class="ion-no-margin" color="tertiary" expand="block" type="submit" form="teamForm" [disabled]="!teamForm.valid">
+      Siguiente
     </ion-button>
   </ion-toolbar>
 </ion-footer>

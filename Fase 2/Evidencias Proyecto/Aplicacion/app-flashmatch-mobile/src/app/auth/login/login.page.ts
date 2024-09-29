@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { catchError, EMPTY, switchMap, throwError } from 'rxjs';
 import { AlertService } from 'src/app/shared/common/alert.service';
 import { responseError } from 'src/app/interfaces/response-error.interface';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-login',
@@ -53,6 +54,7 @@ export default class LoginPage implements OnInit {
   private router = inject(Router);
   private authService = inject(AuthService);
   private alertService = inject(AlertService);
+  private storageService = inject(StorageService);
 
   loginForm = this.fb.group({
     correo: ['', [
@@ -73,10 +75,13 @@ export default class LoginPage implements OnInit {
 
   onSubmit() {
     this.authService.loginUser(this.loginForm.value).subscribe({
-      next: (resp) => {
+      next: async (response) => {
+        await this.storageService.set('token', response.token);
+        await this.storageService.set('user', response.id_usuario);
         this.router.navigate(['/private/home']);
       },
       error: (err: responseError) => {
+        debugger
         this.alertService.error(err.message);
       }
     })

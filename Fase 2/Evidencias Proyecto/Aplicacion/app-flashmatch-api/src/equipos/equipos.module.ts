@@ -7,12 +7,13 @@ import { ErrorHandlingService } from 'src/common/services/error-handling.service
 import { AuthModule } from 'src/auth/auth.module';
 import { Usuario } from 'src/auth/entities/usuario.entity';
 import { Deporte } from 'src/deportes/entities/deporte.entity';
+import { RangoEdad } from 'src/rangos-edad/entities/rango-edad.entity';
 
 @Module({
   controllers: [EquiposController],
   providers: [EquiposService, ErrorHandlingService],
   imports: [
-    TypeOrmModule.forFeature([Equipo, Usuario, Deporte]),
+    TypeOrmModule.forFeature([Equipo, Usuario, Deporte, RangoEdad]),
     AuthModule
   ]
 })

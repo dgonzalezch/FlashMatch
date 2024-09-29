@@ -3,12 +3,14 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError, timeout } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CONTEXT, ENDPOINT } from '../shared/configs/api-config';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private http = inject(HttpClient);
+  private storageService = inject(StorageService);
   private urlBaseAuth = CONTEXT.API_AUTH;
 
   registerUser(registerFormData: any): Observable<any> {

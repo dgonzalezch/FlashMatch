@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonGrid, IonRow, IonCol, IonInput, IonCheckbox, IonButton, IonCard, IonFooter, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonIcon, IonText, IonNavLink } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonGrid, IonRow, IonCol, IonInput, IonCheckbox, IonButton, IonCard, IonFooter, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonIcon, IonText, IonNavLink, IonModal, IonDatetime, IonDatetimeButton, IonLabel } from '@ionic/angular/standalone';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
 import { Router, RouterLink } from '@angular/router';
 import { PreventSpacesDirective } from 'src/app/shared/common/prevent-spaces.directive';
@@ -14,7 +14,7 @@ import { OnlyNumbersDirective } from 'src/app/shared/common/only-numbers.directi
   templateUrl: './step-1.page.html',
   styleUrls: ['./step-1.page.scss'],
   standalone: true,
-  imports: [IonNavLink, IonText, IonIcon, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonFooter, IonCard, IonButton, IonCheckbox, IonInput, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, HeaderComponent, RouterLink, FormatRutDirective, OnlyNumbersDirective, CommonModule, FormsModule, ReactiveFormsModule, PreventSpacesDirective ]
+  imports: [IonLabel, IonDatetimeButton, IonDatetime, IonModal, IonNavLink, IonText, IonIcon, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonFooter, IonCard, IonButton, IonCheckbox, IonInput, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, HeaderComponent, RouterLink, FormatRutDirective, OnlyNumbersDirective, CommonModule, FormsModule, ReactiveFormsModule, PreventSpacesDirective ]
 })
 export default class Step1Page implements OnInit {
   private fb = inject(FormBuilder);
@@ -28,8 +28,16 @@ export default class Step1Page implements OnInit {
       Validators.required,
       this.formValidatorService.validateRUT()
     ]],
-    telefono: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(10)]]
+    telefono: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(10)]],
+    fecha_nacimiento: ['', [Validators.required]]
   });
+
+
+  onDateChange(event: any) {
+    const dateWithTime = new Date(event.detail.value);
+    dateWithTime.setHours(0, 0, 0, 0);
+    this.step1Form.get('fecha_nacimiento')?.setValue(dateWithTime.toISOString());
+  }
 
   ngOnInit() { }
 

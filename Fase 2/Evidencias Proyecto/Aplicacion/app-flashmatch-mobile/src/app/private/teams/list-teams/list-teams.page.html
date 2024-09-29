@@ -1,13 +1,13 @@
-<ion-content [fullscreen]="true">
-  <ion-grid>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-grid >
     <ion-row>
-      @for (equipo of equipos; track $index) {
+      @for (equipo of listEquipos(); track $index) {
         <ion-col size="12" size-md="6">
-          <ion-card button (click)="viewTeamDetails(equipo.id_equipo)">
+          <ion-card class="ion-no-margin" button (click)="viewTeamDetails(equipo.id_equipo)">
             <ion-card-header>
               <ion-item lines="none" >
                 <ion-avatar slot="start" class="team-logo">
-                  <img [src]="equipo.logo_equipo" alt="Logo del equipo">
+                  <img [src]="'https://ionicframework.com/docs/img/demos/avatar.svg'" alt="Logo del equipo">
                 </ion-avatar>
 
                 <ion-label>
@@ -18,13 +18,13 @@
             </ion-card-header>
 
             <ion-card-content>
-              <p>Integrantes: {{ equipo.integrantes.length }}</p>
-              <p>Creado por: {{ equipo.creador.nombre_usuario }}</p>
+              <p>Integrantes: 3</p>
+              <p>Creado por: {{ equipo.creador.nombre }}</p>
               <p>Fecha de creación: {{ equipo.creado_en | date: 'dd/MM/yyyy' }}</p>
             </ion-card-content>
 
             <ion-footer class="ion-text-right">
-              <ion-button fill="outline" (click)="viewTeamDetails(equipo.id_equipo)">
+              <ion-button fill="outline">
                 Unirse
               </ion-button>
             </ion-footer>

@@ -74,6 +74,37 @@
             </ion-text>
           }
 
+          <!-- FECHA NACIMIENTO -->
+          <div class="ion-margin-vertical">
+            <ion-label [color]="step1Form.get('fecha_nacimiento')?.invalid ? 'danger' : ''">Fecha nacimiento*</ion-label>
+            <ion-datetime-button datetime="datetime" style="margin-top: 8px;"/>
+            <ion-modal [keepContentsMounted]="true">
+              <ng-template>
+                <ion-datetime id="datetime" cancelText="cancelar" doneText="confirmar" presentation="date" (ionChange)="onDateChange($event)" [showDefaultButtons]="true"  />
+              </ng-template>
+            </ion-modal>
+            @if (step1Form.get('fecha_nacimiento')?.invalid) {
+              <ion-text class="text-small" color="danger">
+                @switch (true) {
+                  @case (step1Form.get('fecha_nacimiento')?.hasError('required')) {
+                    *Selecciona una fecha de nacimiento.
+                  }
+                }
+              </ion-text>
+            }
+          </div>
+
+          <!-- <ion-input type="date" formControlName="fecha_nacimiento" class="ion-input-form" label="Fecha nacimiento*" labelPlacement="floating"/>
+          @if (step1Form.get('fecha_nacimiento')?.touched && step1Form.get('fecha_nacimiento')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1Form.get('fecha_nacimiento')?.hasError('required')) {
+                  *La fecha de nacimiento es requerida.
+                }
+              }
+            </ion-text>
+          } -->
+
           <!-- TELEFONO -->
           <ion-input type="tel" formControlName="telefono" class="ion-input-form" preventSpaces onlyNumbers label="Número de teléfono*" placeholder="9123456" labelPlacement="floating" maxlength="9" [clearInput]="true"/>
           @if (step1Form.get('telefono')?.touched && step1Form.get('telefono')?.invalid) {

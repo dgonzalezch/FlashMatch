@@ -111,3 +111,12 @@
 .text-small {
   font-size: .75rem;
 }
+
+.error-label {
+  --ion-color-base: var(--ion-color-danger, #c5000f) !important;
+  --ion-color-base-rgb: var(--ion-color-danger-rgb, 197, 0, 15) !important;
+  --ion-color-contrast: var(--ion-color-danger-contrast, #fff) !important;
+  --ion-color-contrast-rgb: var(--ion-color-danger-contrast-rgb, 255, 255, 255) !important;
+  --ion-color-shade: var(--ion-color-danger-shade, #ad000d) !important;
+  --ion-color-tint: var(--ion-color-danger-tint, #cb1a27) !important;
+}

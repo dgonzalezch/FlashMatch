@@ -18,4 +18,8 @@ export class CreateEquipoDto {
     @IsUUID()
     @IsNotEmpty()
     id_deporte: string;
+
+    @IsUUID()
+    @IsNotEmpty()
+    id_rango: string;
 }

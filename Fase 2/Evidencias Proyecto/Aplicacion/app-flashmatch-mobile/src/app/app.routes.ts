@@ -6,7 +6,7 @@ export const routes: Routes = [
   {
     path: 'auth',
     loadComponent: () => import('./auth/auth.layout-page'),
-    // canActivate: [RedirectIfAuthenticatedGuard],
+    canActivate: [RedirectIfAuthenticatedGuard],
     children: [
       {
         path: 'login',
@@ -48,7 +48,7 @@ export const routes: Routes = [
   {
     path: 'private',
     loadComponent: () => import('./private/private.layout-page'),
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'home',

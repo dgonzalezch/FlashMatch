@@ -1,6 +1,7 @@
 import { Usuario } from "src/auth/entities/usuario.entity";
-import { Deporte } from "src/deportes/entities/deporte.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Deporte } from "src/deportes/entities/deporte.entity";
+import { RangoEdad } from "src/rangos-edad/entities/rango-edad.entity";
 
 @Entity('equipos')
 export class Equipo {
@@ -26,4 +27,8 @@ export class Equipo {
     @ManyToOne(() => Deporte, (deporte) => deporte.equipos, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'id_deporte' })
     deporte: Deporte;
+
+    @ManyToOne(() => RangoEdad, (rangosEdad) => rangosEdad.id_rango, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'id_rango' })
+    rangoEdad: RangoEdad;
 }

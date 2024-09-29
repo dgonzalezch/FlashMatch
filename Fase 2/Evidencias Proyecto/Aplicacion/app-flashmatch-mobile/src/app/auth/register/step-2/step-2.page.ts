@@ -73,11 +73,7 @@ export default class Step2Page implements OnInit {
       clave: this.step2Form.get('clave')?.value
     };
 
-    this.registerUser(fullFormDataRegister);
-  }
-
-  private registerUser(formData: any) {
-    this.authService.registerUser(formData).subscribe({
+    this.authService.registerUser(fullFormDataRegister).subscribe({
       next: (resp) => {
         this.router.navigate(['/private/home']);
       },

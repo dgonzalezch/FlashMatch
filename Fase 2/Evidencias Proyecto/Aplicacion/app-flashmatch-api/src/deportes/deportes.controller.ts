@@ -6,30 +6,30 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Controller('deportes')
 export class DeportesController {
-  constructor(private readonly deporteService: DeportesService) { }
+  constructor(private readonly deportesService: DeportesService) { }
 
   @Post()
   create(@Body() createDeporteDto: CreateDeporteDto) {
-    return this.deporteService.create(createDeporteDto);
+    return this.deportesService.create(createDeporteDto);
   }
 
   @Get()
   findAll(@Query() paginationDto: PaginationDto) {
-    return this.deporteService.findAll(paginationDto);
+    return this.deportesService.findAll(paginationDto);
   }
 
   @Get(':term')
   findOne(@Param('term') term: string) {
-    return this.deporteService.findOne(term);
+    return this.deportesService.findOne(term);
   }
 
   @Patch(':id')
   update(@Param('id', ParseUUIDPipe) id: string, @Body() updateDeporteDto: UpdateDeporteDto) {
-    return this.deporteService.update(id, updateDeporteDto);
+    return this.deportesService.update(id, updateDeporteDto);
   }
 
   @Delete(':id')
   remove(@Param('id', ParseUUIDPipe) id: string) {
-    return this.deporteService.remove(id);
+    return this.deportesService.remove(id);
   }
 }

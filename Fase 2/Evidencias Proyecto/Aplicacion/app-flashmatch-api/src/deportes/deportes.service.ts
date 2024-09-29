@@ -24,7 +24,7 @@ export class DeportesService {
       const deporte = this.deporteRepository.create(createDeporteDto);
       await this.deporteRepository.save(deporte);
 
-      return { message: 'Deporte creado exitosamente', data: deporte };
+      return { message: 'Deporte creado exitosamente.', data: deporte };
     } catch (error) {
       this.errorHandlingService.handleDBErrors(error);
     }
@@ -38,9 +38,9 @@ export class DeportesService {
         skip: offset
       });
 
-      return { message: 'Registros obtenidos exitosamente', data: deportes };
+      return { message: 'Registros obtenidos exitosamente.', data: deportes };
     } catch (error) {
-      this.logger.error('Error al obtener los deportes', error);
+      this.logger.error('Error al obtener los deportes.', error);
       throw new InternalServerErrorException('Error al obtener los deportes, por favor verifica los logs.');
     }
   }
@@ -62,7 +62,7 @@ export class DeportesService {
 
     if (!deporte) throw new NotFoundException(`Deporte no encontrado.`);
 
-    return { message: 'Registro encontrado', data: deporte };
+    return { message: 'Registro encontrado.', data: deporte };
   }
 
   async update(id_deporte: string, updateDeporteDto: UpdateDeporteDto): Promise<ResponseMessage<Deporte>> {
@@ -75,7 +75,7 @@ export class DeportesService {
 
     try {
       await this.deporteRepository.save(deporte);
-      return { message: 'Deporte actualizado exitosamente', data: deporte };
+      return { message: 'Deporte actualizado exitosamente.', data: deporte };
     } catch (error) {
       this.errorHandlingService.handleDBErrors(error);
     }
@@ -88,7 +88,7 @@ export class DeportesService {
       if (!deporte) throw new NotFoundException(`Deporte con id ${id_deporte} no se pudo eliminar porque no existe en la base de datos.`);
 
       await this.deporteRepository.remove(deporte);
-      return { message: 'Deporte eliminado exitosamente', data: deporte };
+      return { message: 'Deporte eliminado exitosamente.', data: deporte };
     } catch (error) {
       this.errorHandlingService.handleDBErrors(error);
     }

@@ -1,7 +1,7 @@
-import { Component, inject, input, OnInit, signal } from '@angular/core';
-import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { Component, input, OnInit, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { IonTitle, IonImg, IonToolbar, IonHeader, IonButtons, IonBackButton, IonMenuButton, IonButton, IonIcon, IonPopover, IonList, IonItem, IonLabel } from "@ionic/angular/standalone";
-import { filter } from 'rxjs';
+
 
 @Component({
   selector: 'app-header',
