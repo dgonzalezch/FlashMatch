@@ -86,7 +86,17 @@ export const routes: Routes = [
       },
       {
         path: 'players',
-        loadComponent: () => import('./private/players/players.page')
+        children: [
+          {
+            path: 'list-users',
+            loadComponent: () => import('./private/users/list-users/list-users.page')
+          },
+          {
+            path: '**',
+            redirectTo: 'list-users',
+            pathMatch: 'full'
+          }
+        ]
       },
       {
         path: 'profile',
@@ -108,4 +118,5 @@ export const routes: Routes = [
     redirectTo: 'private/home',
     pathMatch: 'full'
   },
+
 ];

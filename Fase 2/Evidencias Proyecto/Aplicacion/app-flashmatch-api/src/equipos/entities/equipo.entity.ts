@@ -17,14 +17,23 @@ export class Equipo {
     @Column({ type: 'text', nullable: true })
     descripcion_equipo: string;
 
-    @CreateDateColumn({ type: 'timestamp' })
+    @Column({ type: 'decimal', precision: 10, scale: 8, nullable: true })
+    latitud: number;
+
+    @Column({ type: 'decimal', precision: 11, scale: 8, nullable: true })
+    longitud: number;
+
+    @Column({ type: 'boolean', default: true })
+    activo: boolean;
+
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     creado_en: Date;
 
-    @ManyToOne(() => Usuario, (usuario) => usuario.equipos, { onDelete: 'CASCADE' })
+    @ManyToOne(() => Usuario, (usuario) => usuario.id_usuario, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'id_creador' })
     creador: Usuario;
 
-    @ManyToOne(() => Deporte, (deporte) => deporte.equipos, { onDelete: 'CASCADE' })
+    @ManyToOne(() => Deporte, (deporte) => deporte.id_deporte, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'id_deporte' })
     deporte: Deporte;
 

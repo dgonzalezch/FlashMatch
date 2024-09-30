@@ -1,3 +1,12 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/private/teams/list-teams"/>
+    </ion-buttons>
+    <ion-title>Crear equipo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content [fullscreen]="true" class="ion-padding">
   <ion-grid class="ion-no-padding">
     <ion-row class="ion-justify-content-center">
@@ -97,7 +106,7 @@
 <ion-footer class="ion-no-border ion-padding">
   <ion-toolbar>
     <ion-button class="ion-no-margin" color="tertiary" expand="block" type="submit" form="teamForm" [disabled]="!teamForm.valid">
-      Siguiente
+      Confirmar
     </ion-button>
   </ion-toolbar>
 </ion-footer>

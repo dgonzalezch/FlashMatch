@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonDatetime, IonButton, IonInput, IonRange, IonSelect, IonSelectOption, IonItemDivider, IonCardTitle, IonCardContent, IonList, IonCard, IonCardHeader, IonModal, IonButtons, IonFooter, IonDatetimeButton, IonSegmentButton, IonIcon, IonSegment } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel, IonDatetime, IonButton, IonInput, IonRange, IonSelect, IonSelectOption, IonItemDivider, IonCardTitle, IonCardContent, IonList, IonCard, IonCardHeader, IonModal, IonButtons, IonFooter, IonDatetimeButton, IonSegmentButton, IonIcon, IonSegment, IonText } from '@ionic/angular/standalone';
+import { HeaderComponent } from 'src/app/shared/components/header/header.component';
 
 @Component({
   selector: 'app-matches',
   templateUrl: './matches.page.html',
   styleUrls: ['./matches.page.scss'],
   standalone: true,
-  imports: [IonSegment, IonIcon, IonSegmentButton, IonDatetimeButton, IonFooter, IonButtons, IonModal, IonCardHeader, IonCard, IonList, IonCardContent, IonCardTitle, IonItemDivider, IonRange, IonSelect, IonSelectOption, IonInput, IonButton, IonDatetime, IonLabel, IonItem, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonText, IonSegment, IonIcon, IonSegmentButton, IonDatetimeButton, IonFooter, IonButtons, IonModal, IonCardHeader, IonCard, IonList, IonCardContent, IonCardTitle, IonItemDivider, IonRange, IonSelect, IonSelectOption, IonInput, IonButton, IonDatetime, IonLabel, IonItem, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent]
 })
 export default class MatchesPage implements OnInit {
 

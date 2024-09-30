@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-item button lines="none">
+      <ion-icon color="primary" slot="start" name="location-outline" />
+      <ion-text color="medium">
+        {{ 'Phillipe Cousteau #12552' || 'Seleccionar ubicación' }}
+      </ion-text>
+    </ion-item>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-searchbar placeholder="Buscar usuarios..." (ionInput)="filterUsuarios($event)"></ion-searchbar>
+      </ion-col>
+
+      <!-- Iterar sobre la lista de usuarios -->
+      @for (usuario of listUsuarios; track $index) {
+        <ion-col size="12" size-md="6">
+          <ion-card button (click)="viewUserDetails(usuario.id_usuario)">
+            <ion-card-header class="ion-no-padding">
+              <ion-item lines="none">
+                <!-- Mostrar avatar del usuario -->
+                <ion-avatar slot="start">
+                  <img [src]="usuario.avatar || 'https://ionicframework.com/docs/img/demos/avatar.svg'" alt="Imagen perfil">
+                </ion-avatar>
+
+                <!-- Mostrar información del usuario -->
+                <ion-label>
+                  <ion-card-title>{{ usuario.nombre }}</ion-card-title>
+                  <ion-card-subtitle>{{ usuario.posicion }}</ion-card-subtitle>
+                </ion-label>
+              </ion-item>
+            </ion-card-header>
+
+            <ion-card-content>
+              <p>Ciudad: {{ usuario.ciudad }}</p>
+              <p>Partidos jugados: {{ usuario.partidos_jugados }}</p>
+              <p>Ranking: {{ usuario.ranking }}</p>
+            </ion-card-content>
+
+            <!-- Botón para invitar al usuario al equipo -->
+            <ion-footer class="ion-text-right">
+              <ion-button fill="outline" (click)="invitarUsuario(usuario.id_usuario)">
+                Invitar al equipo
+              </ion-button>
+            </ion-footer>
+          </ion-card>
+        </ion-col>
+      }@empty {
+        <!-- Mostrar si no hay usuarios disponibles -->
+        <ion-col>
+          <ion-item lines="none">
+            <ion-label>No hay usuarios disponibles.</ion-label>
+          </ion-item>
+        </ion-col>
+      }
+    </ion-row>
+  </ion-grid>
+</ion-content>

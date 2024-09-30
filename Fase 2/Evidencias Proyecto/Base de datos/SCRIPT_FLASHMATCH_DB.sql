@@ -38,6 +38,8 @@ CREATE TABLE usuarios (
     clave TEXT NOT NULL,
     roles TEXT[] DEFAULT ARRAY['usuario'],
     imagen_perfil TEXT,
+    latitud DECIMAL(10, 8) CHECK (latitud BETWEEN -90 AND 90),
+    longitud DECIMAL(11, 8) CHECK (longitud BETWEEN -180 AND 180),
     activo BOOLEAN DEFAULT TRUE,
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -108,10 +110,14 @@ CREATE TABLE equipos (
     id_equipo UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre_equipo VARCHAR(100) UNIQUE NOT NULL,
     logo_equipo TEXT,
+    descripcion_equipo TEXT,
+    latitud DECIMAL(10, 8) CHECK (latitud BETWEEN -90 AND 90),
+    longitud DECIMAL(11, 8) CHECK (longitud BETWEEN -180 AND 180),
+    activo BOOLEAN DEFAULT TRUE,
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     id_creador UUID REFERENCES usuarios(id_usuario) NOT NULL,
     id_deporte UUID REFERENCES deportes(id_deporte) NOT NULL,
-    id_rango UUID REFERENCES rangos_edad(id_rango)
+    id_rango UUID REFERENCES rangos_edad(id_rango) NOT NULL
 );
 
 -- Tabla de reservas de horarios de canchas
@@ -124,7 +130,7 @@ CREATE TABLE reservas_horarios (
     hora_fin TIME NOT NULL,
     reservado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     estado_reserva VARCHAR(20) DEFAULT 'pendiente', -- Estado de la reserva (pendiente, aceptada, rechazada)
-    mensaje VARCHAR(255), -- Comentarios o razones del administrador
+    mensaje VARCHAR(255),
     UNIQUE (id_cancha, fecha_reserva, hora_inicio)
 );
 
@@ -154,7 +160,9 @@ CREATE TABLE partidos (
     estado VARCHAR(50) NOT NULL,
     id_nivel_habilidad UUID REFERENCES niveles_habilidad(id_nivel),
     id_rango UUID REFERENCES rangos_edad(id_rango),
-    CHECK (equipo_1_id <> equipo_2_id)
+    CHECK (equipo_1_id <> equipo_2_id),
+    descripcion TEXT,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Tabla de participación de usuarios en partidos

@@ -15,7 +15,7 @@ export class Usuario {
     @Column({ type: 'varchar', unique: true, length: 9 })
     rut: string;
 
-    @Column({ type: 'date' })  // Se añade la fecha de nacimiento
+    @Column({ type: 'date' })
     fecha_nacimiento: Date;
 
     @Column({ type: 'varchar', unique: true, length: 15 })
@@ -32,6 +32,12 @@ export class Usuario {
 
     @Column({ type: 'text', nullable: true })
     imagen_perfil: string;
+
+    @Column({ type: 'decimal', precision: 10, scale: 8, nullable: true })
+    latitud: number;
+
+    @Column({ type: 'decimal', precision: 11, scale: 8, nullable: true })
+    longitud: number;
 
     @Column({ type: 'boolean', default: true })
     activo: boolean;

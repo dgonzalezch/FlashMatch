@@ -7,6 +7,7 @@ import { CanchasModule } from './canchas/canchas.module';
 import { PartidosModule } from './partidos/partidos.module';
 import { RangosEdadModule } from './rangos-edad/rangos-edad.module';
 import { DeportesModule } from './deportes/deportes.module';
+import { UsuariosModule } from './usuarios/usuarios.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { DeportesModule } from './deportes/deportes.module';
     CanchasModule,
     PartidosModule,
     RangosEdadModule,
-    DeportesModule
+    DeportesModule,
+    UsuariosModule
   ],
   providers: [],
 })

@@ -1,10 +1,24 @@
-<ion-content [fullscreen]="true" class="ion-padding">
-  <ion-grid >
+<ion-header>
+  <ion-toolbar>
+    <ion-item button lines="none">
+      <ion-icon color="primary" slot="start" name="location-outline" />
+      <ion-text color="medium">
+        {{ 'Phillipe Cousteau #12552' || 'Seleccionar ubicación' }}
+      </ion-text>
+    </ion-item>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
     <ion-row>
+      <ion-col size="12">
+        <ion-searchbar placeholder="Buscar equipos..."/>
+      </ion-col>
       @for (equipo of listEquipos(); track $index) {
         <ion-col size="12" size-md="6">
-          <ion-card class="ion-no-margin" button (click)="viewTeamDetails(equipo.id_equipo)">
-            <ion-card-header>
+          <ion-card button (click)="viewTeamDetails(equipo.id_equipo)">
+            <ion-card-header class="ion-no-padding">
               <ion-item lines="none" >
                 <ion-avatar slot="start" class="team-logo">
                   <img [src]="'https://ionicframework.com/docs/img/demos/avatar.svg'" alt="Logo del equipo">
@@ -32,7 +46,7 @@
         </ion-col>
       }@empty {
         <ion-col>
-          <ion-item>
+          <ion-item lines="none">
             <ion-label>No hay equipos disponibles.</ion-label>
           </ion-item>
         </ion-col>
@@ -41,7 +55,7 @@
   </ion-grid>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button [routerLink]="['/private/teams/create-team']" routerLinkActive="router-link-active" (click)="createTeam()">
+    <ion-fab-button [routerLink]="['/private/teams/create-team']" routerLinkActive="router-link-active">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

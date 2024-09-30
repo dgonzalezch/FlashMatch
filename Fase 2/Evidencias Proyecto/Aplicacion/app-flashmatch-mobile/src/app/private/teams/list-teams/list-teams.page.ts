@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonFab, IonFabButton, IonAvatar, IonCol, IonRow, IonFooter, IonCardContent, IonCardTitle, IonCardSubtitle, IonCardHeader, IonCard, IonGrid } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonFab, IonFabButton, IonAvatar, IonCol, IonRow, IonFooter, IonCardContent, IonCardTitle, IonCardSubtitle, IonCardHeader, IonCard, IonGrid, IonProgressBar, IonSpinner, IonSearchbar, IonText } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { StorageService } from 'src/app/services/storage.service';
 import { TeamsService } from '../../../services/teams.service';
@@ -15,9 +15,9 @@ import { Equipo } from 'src/app/interfaces/equipo.interface';
   templateUrl: './list-teams.page.html',
   styleUrls: ['./list-teams.page.scss'],
   standalone: true,
-  imports: [IonGrid, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonFooter, IonRow, IonCol, IonAvatar, IonFabButton, IonFab, IonLabel, IonItem, IonList, IonIcon, IonButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink]
+  imports: [IonText, IonSearchbar, IonSpinner, IonProgressBar, IonGrid, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonFooter, IonRow, IonCol, IonAvatar, IonFabButton, IonFab, IonLabel, IonItem, IonList, IonIcon, IonButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink]
 })
-export default class ListTeamsPage implements OnInit {
+export default class ListTeamsPage {
   storageService = inject(StorageService);
   teamsService = inject(TeamsService);
   alertService = inject(AlertService);
@@ -45,7 +45,7 @@ export default class ListTeamsPage implements OnInit {
   //   }
   // ];
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.loadTeams();
   }
 
@@ -53,6 +53,7 @@ export default class ListTeamsPage implements OnInit {
     this.teamsService.getTeams().subscribe({
       next: (resp: responseSuccess) => {
         this.listEquipos.set(resp.data);
+        debugger
       },
       error: (err: responseError) => {
         this.alertService.error(err.message);
@@ -60,13 +61,7 @@ export default class ListTeamsPage implements OnInit {
     })
   }
 
-  createTeam() {
-    // Redirigir a la página de creación de equipos
-    console.log('Crear equipo');
-  }
-
   viewTeamDetails(id_equipo: string) {
-    // Redirigir a la página de detalles del equipo
     console.log(`Ver detalles del equipo con ID: ${id_equipo}`);
   }
 }
