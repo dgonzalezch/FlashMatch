@@ -56,7 +56,7 @@
           }
 
           <!-- CLAVE -->
-          <ion-input type="password" class="ion-input-form" formControlName="clave" preventSpaces label="Contraseña*" labelPlacement="floating" [clearInput]="true">
+          <ion-input type="password" class="ion-input-form" formControlName="clave" preventSpaces label="Contraseña*" labelPlacement="floating">
             @if (step2Form.get('clave')?.value) {
               <ion-input-password-toggle slot="end"></ion-input-password-toggle>
             }
@@ -81,7 +81,7 @@
           }
 
           <!-- REPETIR CLAVE -->
-          <ion-input type="password" class="ion-input-form" formControlName="repeatClave" preventSpaces label="Repetir contraseña*" labelPlacement="floating" [clearInput]="true">
+          <ion-input type="password" class="ion-input-form" formControlName="repeatClave" preventSpaces label="Repetir contraseña*" labelPlacement="floating">
             @if (step2Form.get('repeatClave')?.value) {
               <ion-input-password-toggle slot="end"></ion-input-password-toggle>
             }
@@ -117,7 +117,7 @@
 <ion-footer class="ion-no-border ion-padding">
   <ion-toolbar>
     <ion-button class="ion-no-margin" color="tertiary" expand="block"
-      type="submit" form="step2Form" [disabled]="!step2Form.valid">Siguiente
+      type="submit" form="step2Form" [disabled]="!step2Form.valid">Crear Usuario
     </ion-button>
   </ion-toolbar>
 </ion-footer>

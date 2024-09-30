@@ -20,22 +20,28 @@ export default class ProfilePage implements OnInit {
     {
       title: 'CUENTA',
       options: [
-        { label: 'Editar Perfil', icon: 'home-outline', route: '/editar-perfil' },
-        { label: 'Cambiar Foto de Perfil', icon: 'home-outline', route: '/cambiar-foto' }
+        { label: 'Editar Perfil', icon: 'create-outline', route: '/editar-perfil' },
+        // { label: 'Cambiar Foto de Perfil', icon: 'home-outline', route: '/cambiar-foto' }
       ]
     },
     {
       title: 'SEGURIDAD',
       options: [
-        { label: 'Cambiar Contraseña', icon: 'home-outline', route: '/cambiar-contrasena' },
-        { label: 'Autenticación de Dos Factores', icon: 'home-outline', route: '/autenticacion-dos-factores' }
+        { label: 'Cambiar Contraseña', icon: 'key-outline', route: '/cambiar-contrasena' },
+        { label: 'Autenticación', icon: 'shield-checkmark-outline', route: '/autenticacion-dos-factores' }
       ]
     },
     {
       title: 'PRIVACIDAD',
       options: [
-        { label: 'Configuración de Privacidad', icon: 'home-outline', route: '/configuracion-privacidad' },
+        { label: 'Configuración de Privacidad', icon: 'lock-closed-outline', route: '/configuracion-privacidad' },
         { label: 'Lista de Bloqueados', icon: 'home-outline', route: '/lista-bloqueados' }
+      ]
+    },
+    {
+      title: 'DISPOSITIVO',
+      options: [
+        { label: 'Ajustes de mi dispositivo', icon: 'phone-portrait-outline', route: '/configuracion-privacidad' },
       ]
     }
   ];
