@@ -34,7 +34,7 @@ export default class ProfilePage implements OnInit {
     {
       title: 'PRIVACIDAD',
       options: [
-        { label: 'Configuración de Privacidad', icon: 'lock-closed-outline', route: '/configuracion-privacidad' },
+        { label: 'Configuración', icon: 'lock-closed-outline', route: '/configuracion-privacidad' },
         { label: 'Lista de Bloqueados', icon: 'home-outline', route: '/lista-bloqueados' }
       ]
     },

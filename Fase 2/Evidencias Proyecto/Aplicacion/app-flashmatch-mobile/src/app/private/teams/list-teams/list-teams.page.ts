@@ -9,13 +9,14 @@ import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { responseError } from 'src/app/interfaces/response-error.interface';
 import { AlertService } from '../../../shared/common/alert.service';
 import { Equipo } from 'src/app/interfaces/equipo.interface';
+import { MapComponent } from 'src/app/shared/components/map/map.component';
 
 @Component({
   selector: 'app-list-teams',
   templateUrl: './list-teams.page.html',
   styleUrls: ['./list-teams.page.scss'],
   standalone: true,
-  imports: [IonText, IonSearchbar, IonSpinner, IonProgressBar, IonGrid, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonFooter, IonRow, IonCol, IonAvatar, IonFabButton, IonFab, IonLabel, IonItem, IonList, IonIcon, IonButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink]
+  imports: [IonText, IonSearchbar, IonSpinner, IonProgressBar, IonGrid, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonFooter, IonRow, IonCol, IonAvatar, IonFabButton, IonFab, IonLabel, IonItem, IonList, IonIcon, IonButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, MapComponent]
 })
 export default class ListTeamsPage {
   storageService = inject(StorageService);

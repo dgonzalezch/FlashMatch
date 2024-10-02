@@ -33,13 +33,14 @@ CREATE TABLE usuarios (
     apellido VARCHAR(50) NOT NULL,
     rut VARCHAR(9) UNIQUE NOT NULL,
     fecha_nacimiento DATE NOT NULL,
-    telefono VARCHAR(15) UNIQUE NOT NULL,
     correo VARCHAR(100) UNIQUE NOT NULL,
+    telefono VARCHAR(15) UNIQUE NOT NULL,
     clave TEXT NOT NULL,
-    roles TEXT[] DEFAULT ARRAY['usuario'],
-    imagen_perfil TEXT,
+    ubicacion VARCHAR(255),
     latitud DECIMAL(10, 8) CHECK (latitud BETWEEN -90 AND 90),
     longitud DECIMAL(11, 8) CHECK (longitud BETWEEN -180 AND 180),
+    imagen_perfil TEXT,
+    roles TEXT[] DEFAULT ARRAY['usuario'],
     activo BOOLEAN DEFAULT TRUE,
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -47,15 +48,15 @@ CREATE TABLE usuarios (
 -- Tabla de rangos de edad
 CREATE TABLE rangos_edad (
     id_rango UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    descripcion VARCHAR(50) UNIQUE NOT NULL,
     edad_minima INT NOT NULL,
     edad_maxima INT NOT NULL
+    descripcion TEXT,
 );
 
 -- Tabla de niveles de habilidad
 CREATE TABLE niveles_habilidad (
     id_nivel UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    descripcion VARCHAR(50) UNIQUE NOT NULL
+    descripcion TEXT,
 );
 
 -- Tabla de deportes
@@ -69,13 +70,14 @@ CREATE TABLE deportes (
 CREATE TABLE canchas (
     id_cancha UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre_cancha VARCHAR(100) NOT NULL,
-    ubicacion VARCHAR(255),
-    id_deporte UUID REFERENCES deportes(id_deporte),
     precio_por_hora NUMERIC(10, 2) NOT NULL,
-    disponible BOOLEAN DEFAULT TRUE,
+    ubicacion VARCHAR(255),
     latitud DECIMAL(10, 8) CHECK (latitud BETWEEN -90 AND 90),
     longitud DECIMAL(11, 8) CHECK (longitud BETWEEN -180 AND 180),
-    id_administrador UUID REFERENCES usuarios(id_usuario)
+    descripcion TEXT,
+    disponible BOOLEAN DEFAULT TRUE,
+    id_deporte UUID REFERENCES deportes(id_deporte),
+    id_administrador_cancha UUID REFERENCES usuarios(id_usuario)
 );
 
 -- Tabla de disponibilidad de horarios de canchas
@@ -101,7 +103,7 @@ CREATE TABLE imagenes_canchas (
     id_imagen UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     id_cancha UUID REFERENCES canchas(id_cancha),
     url_imagen TEXT NOT NULL,
-    descripcion VARCHAR(255),
+    descripcion TEXT,
     subida_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -110,9 +112,10 @@ CREATE TABLE equipos (
     id_equipo UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre_equipo VARCHAR(100) UNIQUE NOT NULL,
     logo_equipo TEXT,
-    descripcion_equipo TEXT,
+    ubicacion VARCHAR(255),
     latitud DECIMAL(10, 8) CHECK (latitud BETWEEN -90 AND 90),
     longitud DECIMAL(11, 8) CHECK (longitud BETWEEN -180 AND 180),
+    descripcion TEXT,
     activo BOOLEAN DEFAULT TRUE,
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     id_creador UUID REFERENCES usuarios(id_usuario) NOT NULL,
@@ -222,9 +225,9 @@ CREATE TABLE opiniones_valoraciones (
 CREATE TABLE parametros_rendimiento (
     id_parametro UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre_parametro VARCHAR(100) UNIQUE NOT NULL,
-    descripcion TEXT,
     valor_minimo NUMERIC(5, 2) DEFAULT 0.0,
     valor_maximo NUMERIC(5, 2) DEFAULT 100.0
+    descripcion TEXT,
 );
 
 -- Tabla de estadísticas detalladas de usuarios
@@ -239,8 +242,8 @@ CREATE TABLE estadisticas_detalladas_usuarios (
 CREATE TABLE titulos_perfil (
     id_titulo UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre_titulo VARCHAR(100) UNIQUE NOT NULL,
-    descripcion TEXT,
     criterio_partidos_jugados INT DEFAULT 0,
+    descripcion TEXT,
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -265,7 +268,7 @@ CREATE TABLE documentos_identidad (
 );
 
 -- INSERT DE INFORMACIÓN INICIAL
-INSERT INTO rangos_edad (descripcion, edad_minima, edad_maxima) VALUES 
+INSERT INTO rangos_edad (edad_minima, edad_maxima, descripcion) VALUES 
 ('18 - 25 años', 18, 25),
 ('26 - 35 años', 26, 35),
 ('36 - 45 años', 36, 45),

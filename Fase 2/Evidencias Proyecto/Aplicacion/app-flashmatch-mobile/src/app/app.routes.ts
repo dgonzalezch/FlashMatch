@@ -118,5 +118,4 @@ export const routes: Routes = [
     redirectTo: 'private/home',
     pathMatch: 'full'
   },
-
 ];
