@@ -1,4 +1,4 @@
-import { IsDecimal, IsNotEmpty, IsOptional, IsString, IsUUID, MinLength } from "class-validator";
+import { IsDecimal, IsNotEmpty, IsOptional, IsString, IsUUID, MaxLength, MinLength } from "class-validator";
 
 export class CreateEquipoDto {
     @IsString()
@@ -6,18 +6,25 @@ export class CreateEquipoDto {
     nombre_equipo: string;
 
     @IsString()
+    @IsOptional()
     logo_equipo?: string;
 
     @IsString()
-    descripcion_equipo?: string;
-
     @IsOptional()
+    @MaxLength(255)
+    ubicacion?: string;
+
     @IsDecimal({ decimal_digits: '10,8', force_decimal: true }, { message: 'Latitud debe ser un número decimal con 8 dígitos de precisión.' })
+    @IsOptional()
     latitud?: number;
 
-    @IsOptional()
     @IsDecimal({ decimal_digits: '11,8', force_decimal: true }, { message: 'Longitud debe ser un número decimal con 8 dígitos de precisión.' })
+    @IsOptional()
     longitud?: number;
+
+    @IsString()
+    @IsOptional()
+    descripcion?: string;
 
     @IsUUID()
     @IsNotEmpty()

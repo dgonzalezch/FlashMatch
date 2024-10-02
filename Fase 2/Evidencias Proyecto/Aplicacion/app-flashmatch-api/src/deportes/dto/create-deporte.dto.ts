@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MinLength } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator";
 import { Equipo } from "src/equipos/entities/equipo.entity";
 
 export class CreateDeporteDto {
@@ -7,5 +7,6 @@ export class CreateDeporteDto {
     nombre_deporte: string;
 
     @IsString()
-    icono: string;
+    @IsOptional()
+    icono?: string;
 }

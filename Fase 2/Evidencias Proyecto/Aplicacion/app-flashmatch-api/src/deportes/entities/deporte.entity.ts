@@ -9,7 +9,7 @@ export class Deporte {
     @Column({ type: 'varchar', unique: true, length: 100 })
     nombre_deporte: string;
 
-    @Column({ type: 'text', nullable: false })
+    @Column({ type: 'text', nullable: true })
     icono: string;
 
     @OneToMany(() => Equipo, (equipo) => equipo.deporte, { cascade: true })

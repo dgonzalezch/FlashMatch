@@ -19,14 +19,14 @@ export class CreateUsuarioDto {
     fecha_nacimiento: string;
 
     @IsString()
-    @IsNotEmpty()
-    @IsMobilePhone()
-    telefono: string;
-
-    @IsString()
     @IsEmail()
     @IsNotEmpty()
     correo: string;
+
+    @IsString()
+    @IsNotEmpty()
+    @IsMobilePhone()
+    telefono: string;
 
     @IsString()
     @IsNotEmpty()
@@ -38,19 +38,27 @@ export class CreateUsuarioDto {
     })
     clave: string;
 
-    @IsArray()
+    @IsString()
     @IsOptional()
-    roles?: string[] = ['usuario'];
+    ubicacion?: string;
+
+    @IsDecimal({ decimal_digits: '10,8', force_decimal: true }, { message: 'Latitud debe ser un número decimal con 8 dígitos de precisión.' })
+    @IsOptional()
+    latitud?: number;
+
+    @IsDecimal({ decimal_digits: '11,8', force_decimal: true }, { message: 'Longitud debe ser un número decimal con 8 dígitos de precisión.' })
+    @IsOptional()
+    longitud?: number;
 
     @IsString()
     @IsOptional()
     imagen_perfil?: string;
 
+    @IsArray()
     @IsOptional()
-    @IsDecimal({ decimal_digits: '10,8', force_decimal: true }, { message: 'Latitud debe ser un número decimal con 8 dígitos de precisión.' })
-    latitud?: number;
+    roles?: string[] = ['usuario'];
 
+    @IsBoolean()
     @IsOptional()
-    @IsDecimal({ decimal_digits: '11,8', force_decimal: true }, { message: 'Longitud debe ser un número decimal con 8 dígitos de precisión.' })
-    longitud?: number;
+    activo?: boolean = true;
 }

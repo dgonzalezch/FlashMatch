@@ -6,14 +6,14 @@ export class RangoEdad {
     @PrimaryGeneratedColumn('uuid')
     id_rango: string;
 
-    @Column({ type: 'varchar', length: 50, nullable: false, })
-    descripcion: string;
-
     @Column({ type: 'int', nullable: false })
     edad_minima: string;
 
     @Column({ type: 'int', nullable: false })
     edad_maxima: string;
+
+    @Column({ type: 'text', nullable: false })
+    descripcion: string;
 
     @OneToMany(() => Equipo, (equipo) => equipo.rangoEdad, { cascade: true })
     equipos: Equipo[];

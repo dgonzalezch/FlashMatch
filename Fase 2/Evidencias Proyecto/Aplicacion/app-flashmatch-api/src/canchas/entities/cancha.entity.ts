@@ -1,6 +1,6 @@
 import { Usuario } from "src/auth/entities/usuario.entity";
 import { Deporte } from "src/deportes/entities/deporte.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('canchas')
 export class Cancha {
@@ -10,25 +10,29 @@ export class Cancha {
     @Column({ type: 'varchar', length: 100 })
     nombre_cancha: string;
 
-    @Column({ type: 'varchar', length: 255, nullable: true })
-    ubicacion: string;
-
-    @ManyToOne(() => Deporte)
-    id_deporte: Deporte;
-
     @Column({ type: 'numeric', precision: 10, scale: 2 })
     precio_por_hora: number;
 
-    @Column({ type: 'boolean', default: true })
-    disponible: boolean;
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    ubicacion: string;
 
     @Column({ type: 'decimal', precision: 10, scale: 8, nullable: true })
     latitud: number;
 
     @Column({ type: 'decimal', precision: 11, scale: 8, nullable: true })
     longitud: number;
+    
+    @Column({ type: 'text', nullable: true })
+    descripcion: string;
 
-    @ManyToOne(() => Usuario)
-    usuario: Usuario;
+    @Column({ type: 'boolean', default: true })
+    disponible: boolean;
+
+    @ManyToOne(() => Deporte, (deporte) => deporte.id_deporte, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'id_deporte' })
+    deporte: Deporte;
+    
+    @ManyToOne(() => Usuario, (usuario) => usuario.id_usuario, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'id_administrador_cancha' })
+    administrador_cancha: Usuario;
 }
-

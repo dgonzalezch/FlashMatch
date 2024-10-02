@@ -14,14 +14,17 @@ export class Equipo {
     @Column({ type: 'text', nullable: true })
     logo_equipo: string;
 
-    @Column({ type: 'text', nullable: true })
-    descripcion_equipo: string;
-
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    ubicacion: string;
+    
     @Column({ type: 'decimal', precision: 10, scale: 8, nullable: true })
     latitud: number;
 
     @Column({ type: 'decimal', precision: 11, scale: 8, nullable: true })
     longitud: number;
+
+    @Column({ type: 'text', nullable: true })
+    descripcion: string;
 
     @Column({ type: 'boolean', default: true })
     activo: boolean;
