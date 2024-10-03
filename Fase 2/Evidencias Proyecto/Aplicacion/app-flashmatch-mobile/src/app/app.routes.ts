@@ -56,26 +56,36 @@ export const routes: Routes = [
       },
       {
         path: 'matches',
-        loadComponent: () => import('./private/matches/matches.page')
+        loadComponent: () => import('./private/partidos/partidos.page')
       },
       {
         path: 'courts',
-        loadComponent: () => import('./private/courts/courts.page')
+        children: [
+          {
+            path: 'list-courts',
+            loadComponent: () => import('./private/canchas/list-canchas/list-canchas.page')
+          },
+          {
+            path: '**',
+            redirectTo: 'list-courts',
+            pathMatch: 'full'
+          }
+        ]
       },
       {
         path: 'teams',
         children: [
           {
             path: 'create-team',
-            loadComponent: () => import('./private/teams/create-team/create-team.page')
+            loadComponent: () => import('./private/equipos/create-equipo/create-equipo.page')
           },
           {
             path: 'update-team',
-            loadComponent: () => import('./private/teams/update-team/update-team.page')
+            loadComponent: () => import('./private/equipos/update-equipo/update-equipo.page')
           },
           {
             path: 'list-teams',
-            loadComponent: () => import('./private/teams/list-teams/list-teams.page')
+            loadComponent: () => import('./private/equipos/list-equipos/list-equipos.page')
           },
           {
             path: '**',
@@ -89,7 +99,11 @@ export const routes: Routes = [
         children: [
           {
             path: 'list-users',
-            loadComponent: () => import('./private/users/list-users/list-users.page')
+            loadComponent: () => import('./private/usuarios/list-usuarios/list-usuarios.page')
+          },
+          {
+            path: 'detail-user',
+            loadComponent: () => import('./private/usuarios/detail-usuario/detail-usuario.page')
           },
           {
             path: '**',
@@ -100,7 +114,11 @@ export const routes: Routes = [
       },
       {
         path: 'profile',
-        loadComponent: () => import('./private/profile/profile.page')
+        loadComponent: () => import('./private/perfil/perfil.page')
+      },
+      {
+        path: 'configurations',
+        loadComponent: () => import('./private/configurations/configurations.page')
       },
       {
         path: 'notifications',

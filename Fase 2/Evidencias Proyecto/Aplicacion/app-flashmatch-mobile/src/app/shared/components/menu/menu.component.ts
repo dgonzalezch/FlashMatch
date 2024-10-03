@@ -20,7 +20,8 @@ export class MenuComponent implements OnInit {
     { icon: 'albums-outline', label: 'Canchas', route: '/private/courts' },
     { icon: 'people-circle-outline', label: 'Equipos', route: '/private/teams' },
     { icon: 'walk-outline', label: 'Jugadores', route: '/private/players' },
-    { icon: 'settings-outline', label: 'Ajustes', route: '/private/profile' },
+    { icon: 'person-outline', label: 'Perfil', route: '/private/profile' },
+    { icon: 'settings-outline', label: 'Configuraciones', route: '/private/configurations' },
     // { icon: 'log-out-outline', label: 'Cerrar sesión', route: '/auth' },
     // { icon: 'help-circle-outline', label: 'Ayuda', route: '/help' }
   ]);

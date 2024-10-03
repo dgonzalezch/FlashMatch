@@ -7,8 +7,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class TeamsService {
-
+export class EquiposService {
   private http = inject(HttpClient);
   private urlBaseEquipos = CONTEXT.API_EQUIPOS;
   private urlBaseDeportes = CONTEXT.API_DEPORTES;
@@ -30,7 +29,7 @@ export class TeamsService {
     );
   }
 
-  createTeam(teamFormData: any): Observable<any> {
+  createEquipo(teamFormData: any): Observable<any> {
     return this.http.post<any>(this.urlBaseEquipos, teamFormData).pipe(
       map(response => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
@@ -38,7 +37,7 @@ export class TeamsService {
     );
   }
 
-  getTeams(): Observable<any> {
+  getEquipos(): Observable<any> {
     return this.http.get<any>(this.urlBaseEquipos).pipe(
       map((response) => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),

@@ -28,14 +28,14 @@
       </ion-col>
 
       <ion-col size-xs="12">
-        <form [formGroup]="teamForm" class="ion-margin-vertical" id="teamForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="equipoForm" class="ion-margin-vertical" id="teamForm" (ngSubmit)="onSubmit()">
 
           <!-- NOMBRE_EQUIPO -->
           <ion-input type="text" formControlName="nombre_equipo" class="ion-input-form" preventSpaces label="Nombre del equipo*" labelPlacement="floating" [clearInput]="true"/>
-          @if (teamForm.get('nombre_equipo')?.touched && teamForm.get('nombre_equipo')?.invalid) {
+          @if (equipoForm.get('nombre_equipo')?.touched && equipoForm.get('nombre_equipo')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
-                @case (teamForm.get('nombre_equipo')?.hasError('required')) {
+                @case (equipoForm.get('nombre_equipo')?.hasError('required')) {
                   *Debes ingresar un nombre de equipo.
                 }
               }
@@ -44,10 +44,10 @@
 
           <!-- LOGO_EQUIPO -->
           <ion-input type="text" formControlName="logo_equipo" class="ion-input-form" preventSpaces label="Logo del equipo*" labelPlacement="floating" [clearInput]="true"/>
-          @if (teamForm.get('logo_equipo')?.touched && teamForm.get('logo_equipo')?.invalid) {
+          @if (equipoForm.get('logo_equipo')?.touched && equipoForm.get('logo_equipo')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
-                @case (teamForm.get('logo_equipo')?.hasError('required')) {
+                @case (equipoForm.get('logo_equipo')?.hasError('required')) {
                   *El apellido es requerido.
                 }
               }
@@ -60,10 +60,10 @@
               <ion-select-option [value]="deporte.id_deporte">{{deporte.nombre_deporte}}</ion-select-option>
             }
           </ion-select>
-          @if (teamForm.get('id_deporte')?.touched && teamForm.get('id_deporte')?.invalid) {
+          @if (equipoForm.get('id_deporte')?.touched && equipoForm.get('id_deporte')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
-                @case (teamForm.get('id_deporte')?.hasError('required')) {
+                @case (equipoForm.get('id_deporte')?.hasError('required')) {
                   *Debes seleccionar un deporte.
                 }
               }
@@ -76,10 +76,10 @@
               <ion-select-option [value]="rangoEdad.id_rango">{{rangoEdad.descripcion}}</ion-select-option>
             }
           </ion-select>
-          @if (teamForm.get('id_rango')?.touched && teamForm.get('id_rango')?.invalid) {
+          @if (equipoForm.get('id_rango')?.touched && equipoForm.get('id_rango')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
-                @case (teamForm.get('id_rango')?.hasError('required')) {
+                @case (equipoForm.get('id_rango')?.hasError('required')) {
                   *Debes seleccionar un rango de edad.
                 }
               }
@@ -88,10 +88,10 @@
 
           <!-- DESCRIPCION -->
           <ion-textarea formControlName="descripcion_equipo" class="ion-input-form" label="Descripción" labelPlacement="floating" placeholder="Añade aquí tu descripción del equipo."/>
-          @if (teamForm.get('descripcion_equipo')?.touched && teamForm.get('descripcion_equipo')?.invalid) {
+          @if (equipoForm.get('descripcion_equipo')?.touched && equipoForm.get('descripcion_equipo')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
-                @case (teamForm.get('descripcion_equipo')?.hasError('required')) {
+                @case (equipoForm.get('descripcion_equipo')?.hasError('required')) {
                   *Debes añadir una descripción.
                 }
               }
@@ -105,7 +105,7 @@
 
 <ion-footer class="ion-no-border ion-padding">
   <ion-toolbar>
-    <ion-button class="ion-no-margin" color="tertiary" expand="block" type="submit" form="teamForm" [disabled]="!teamForm.valid">
+    <ion-button class="ion-no-margin" color="tertiary" expand="block" type="submit" form="teamForm" [disabled]="!equipoForm.valid">
       Confirmar
     </ion-button>
   </ion-toolbar>

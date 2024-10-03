@@ -1,6 +1,6 @@
 <ion-content [fullscreen]="true" class="ion-padding" color="light">
   <ion-grid>
-    <ion-row class="ion-align-items-center ion-justify-content-start">
+    <!-- <ion-row class="ion-align-items-center ion-justify-content-start">
       <ion-col size="auto">
         <ion-avatar>
           <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="Perfil">
@@ -14,12 +14,12 @@
       </ion-col>
     </ion-row>
 
-    <hr class="custom-hr">
+    <hr class="custom-hr"> -->
 
   @for (section of sections; track $index) {
     <ion-row>
       <ion-col>
-        <h6 class="ion-no-margin ion-margin-top"><b>{{ section.title }}</b></h6>
+        <h6 class="ion-no-margin"><b>{{ section.title }}</b></h6>
       </ion-col>
     </ion-row>
 

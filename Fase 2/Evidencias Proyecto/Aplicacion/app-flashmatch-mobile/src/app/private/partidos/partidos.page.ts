@@ -6,13 +6,13 @@ import { HeaderComponent } from 'src/app/shared/components/header/header.compone
 import { MapComponent } from 'src/app/shared/components/map/map.component';
 
 @Component({
-  selector: 'app-matches',
-  templateUrl: './matches.page.html',
-  styleUrls: ['./matches.page.scss'],
+  selector: 'app-partidos',
+  templateUrl: './partidos.page.html',
+  styleUrls: ['./partidos.page.scss'],
   standalone: true,
   imports: [IonText, IonSegment, IonIcon, IonSegmentButton, IonDatetimeButton, IonFooter, IonButtons, IonModal, IonCardHeader, IonCard, IonList, IonCardContent, IonCardTitle, IonItemDivider, IonRange, IonSelect, IonSelectOption, IonInput, IonButton, IonDatetime, IonLabel, IonItem, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent, MapComponent]
 })
-export default class MatchesPage implements OnInit {
+export default class PartidosPage implements OnInit {
 
   isModalOpen = false;
 

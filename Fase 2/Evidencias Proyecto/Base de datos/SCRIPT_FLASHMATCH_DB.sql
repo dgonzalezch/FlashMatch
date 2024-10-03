@@ -18,6 +18,7 @@ DROP TABLE IF EXISTS dias_no_laborables CASCADE;
 DROP TABLE IF EXISTS disponibilidad_horarios_canchas CASCADE;
 DROP TABLE IF EXISTS canchas CASCADE;
 DROP TABLE IF EXISTS estadisticas_detalladas_usuarios CASCADE;
+DROP TABLE IF EXISTS deportes_posiciones_usuarios CASCADE;
 DROP TABLE IF EXISTS parametros_rendimiento CASCADE;
 DROP TABLE IF EXISTS documentos_identidad CASCADE;
 DROP TABLE IF EXISTS rangos_edad CASCADE;
@@ -178,6 +179,15 @@ CREATE TABLE participacion_usuarios_partidos (
     confirmado BOOLEAN DEFAULT FALSE
 );
 
+-- Tabla de deportes jugados por los usuarios
+CREATE TABLE deportes_posiciones_usuarios (
+    id_deporte_posicion UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id_usuario UUID REFERENCES usuarios(id_usuario),
+    id_deporte UUID REFERENCES deportes(id_deporte),
+    posicion VARCHAR(50),
+    UNIQUE (id_usuario, id_deporte)
+);
+
 -- Tabla de notificaciones
 CREATE TABLE notificaciones (
     id_notificacion UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -234,8 +244,10 @@ CREATE TABLE parametros_rendimiento (
 CREATE TABLE estadisticas_detalladas_usuarios (
     id_estadistica_detallada UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     id_usuario UUID REFERENCES usuarios(id_usuario),
+    id_deporte UUID REFERENCES deportes(id_deporte),
     id_parametro UUID REFERENCES parametros_rendimiento(id_parametro),
-    parametro_valor NUMERIC(5, 2) NOT NULL CHECK (parametro_valor >= 0 AND parametro_valor <= 100)
+    parametro_valor NUMERIC(5, 2) NOT NULL CHECK (parametro_valor >= 0 AND parametro_valor <= 100),
+    UNIQUE (id_usuario, id_deporte, id_parametro)
 );
 
 -- Tabla de títulos de perfil

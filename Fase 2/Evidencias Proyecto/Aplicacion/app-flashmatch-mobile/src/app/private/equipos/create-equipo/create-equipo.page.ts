@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonIcon, IonText, IonFooter, IonButton, IonInput, IonTextarea, IonSelect, IonSelectOption, IonBackButton, IonButtons } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
-import { TeamsService } from '../../../services/teams.service';
+import { EquiposService } from '../../../services/equipos.service';
 import { responseError } from 'src/app/interfaces/response-error.interface';
 import { AlertService } from 'src/app/shared/common/alert.service';
 import { PreventSpacesDirective } from 'src/app/shared/common/prevent-spaces.directive';
@@ -13,18 +13,18 @@ import { RangoEdad } from 'src/app/interfaces/rango-edad.interface';
 import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
-  selector: 'app-create-team',
-  templateUrl: './create-team.page.html',
-  styleUrls: ['./create-team.page.scss'],
+  selector: 'app-create-equipo',
+  templateUrl: './create-equipo.page.html',
+  styleUrls: ['./create-equipo.page.scss'],
   standalone: true,
   imports: [IonButtons, IonBackButton, IonButton, IonFooter, IonSelect, IonSelectOption, IonText, IonIcon, IonCardContent, IonCard, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, IonInput, IonTextarea, CommonModule, FormsModule, ReactiveFormsModule, PreventSpacesDirective]
 })
-export default class CreateTeamPage implements OnInit {
+export default class CreateEquipoPage implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  private teamsService = inject(TeamsService);
   private alertService = inject(AlertService);
   private storageService = inject(StorageService);
+  private equiposService = inject(EquiposService);
 
   listDeportes = signal<Deporte[]>([]);
   listRangosEdad = signal<RangoEdad[]>([]);
@@ -34,7 +34,7 @@ export default class CreateTeamPage implements OnInit {
     this.getListRangosEdad();
   }
 
-  teamForm = this.fb.group({
+  equipoForm = this.fb.group({
     nombre_equipo: ['', [Validators.required]],
     logo_equipo: [''],
     id_deporte: ['', [Validators.required]],
@@ -43,7 +43,7 @@ export default class CreateTeamPage implements OnInit {
   });
 
   getListDeportes(): void {
-    this.teamsService.getDeportes().subscribe({
+    this.equiposService.getDeportes().subscribe({
       next: (resp: responseSuccess) => {
         this.listDeportes.set(resp.data);
       },
@@ -54,7 +54,7 @@ export default class CreateTeamPage implements OnInit {
   }
 
   getListRangosEdad(): void {
-    this.teamsService.getRangosEdad().subscribe({
+    this.equiposService.getRangosEdad().subscribe({
       next: (resp: responseSuccess) => {
         this.listRangosEdad.set(resp.data);
       },
@@ -66,11 +66,11 @@ export default class CreateTeamPage implements OnInit {
 
   async onSubmit() {
     const fullFormTeam = {
-      ...this.teamForm.value,
+      ...this.equipoForm.value,
       id_creador: await this.storageService.get('user')
     };
 
-    this.teamsService.createTeam(fullFormTeam).subscribe({
+    this.equiposService.createEquipo(fullFormTeam).subscribe({
       next: (resp: responseSuccess) => {
         this.alertService.message(resp.message);
         this.router.navigate(['/private/teams']);

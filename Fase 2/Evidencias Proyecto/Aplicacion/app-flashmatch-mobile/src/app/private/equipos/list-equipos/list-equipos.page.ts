@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonFab, IonFabButton, IonAvatar, IonCol, IonRow, IonFooter, IonCardContent, IonCardTitle, IonCardSubtitle, IonCardHeader, IonCard, IonGrid, IonProgressBar, IonSpinner, IonSearchbar, IonText } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { StorageService } from 'src/app/services/storage.service';
-import { TeamsService } from '../../../services/teams.service';
+import { EquiposService } from '../../../services/equipos.service';
 import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { responseError } from 'src/app/interfaces/response-error.interface';
 import { AlertService } from '../../../shared/common/alert.service';
@@ -12,16 +12,16 @@ import { Equipo } from 'src/app/interfaces/equipo.interface';
 import { MapComponent } from 'src/app/shared/components/map/map.component';
 
 @Component({
-  selector: 'app-list-teams',
-  templateUrl: './list-teams.page.html',
-  styleUrls: ['./list-teams.page.scss'],
+  selector: 'app-list-equipos',
+  templateUrl: './list-equipos.page.html',
+  styleUrls: ['./list-equipos.page.scss'],
   standalone: true,
   imports: [IonText, IonSearchbar, IonSpinner, IonProgressBar, IonGrid, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonFooter, IonRow, IonCol, IonAvatar, IonFabButton, IonFab, IonLabel, IonItem, IonList, IonIcon, IonButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, MapComponent]
 })
-export default class ListTeamsPage {
-  storageService = inject(StorageService);
-  teamsService = inject(TeamsService);
-  alertService = inject(AlertService);
+export default class ListEquiposPage {
+  private storageService = inject(StorageService);
+  private alertService = inject(AlertService);
+  private equiposService = inject(EquiposService);
 
   listEquipos = signal<Equipo[]>([]);
 
@@ -47,14 +47,13 @@ export default class ListTeamsPage {
   // ];
 
   ionViewWillEnter() {
-    this.loadTeams();
+    this.loadEquipos();
   }
 
-  loadTeams() {
-    this.teamsService.getTeams().subscribe({
+  loadEquipos() {
+    this.equiposService.getEquipos().subscribe({
       next: (resp: responseSuccess) => {
         this.listEquipos.set(resp.data);
-        debugger
       },
       error: (err: responseError) => {
         this.alertService.error(err.message);

@@ -9,6 +9,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { IonicStorageModule, provideStorage } from '@ionic/storage-angular';
 import { importProvidersFrom } from '@angular/core';
 import { Drivers } from '@ionic/storage';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 
 bootstrapApplication(AppComponent, {
@@ -21,6 +22,7 @@ bootstrapApplication(AppComponent, {
     })),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(),
+    [provideCharts(withDefaultRegisterables())],
   ],
 });
 defineCustomElements(window);

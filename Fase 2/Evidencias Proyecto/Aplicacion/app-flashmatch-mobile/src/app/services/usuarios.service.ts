@@ -7,13 +7,11 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class UsersService {
-
+export class UsuariosService {
   private http = inject(HttpClient);
   private urlBaseUsuarios = CONTEXT.API_USUARIOS;
 
-
-  getDeportes(): Observable<any> {
+  getUsuarios(): Observable<any> {
     return this.http.get<any>(this.urlBaseUsuarios).pipe(
       map((response) => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),

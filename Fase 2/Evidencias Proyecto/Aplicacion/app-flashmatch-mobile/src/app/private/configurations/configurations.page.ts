@@ -6,13 +6,13 @@ import { HeaderComponent } from 'src/app/shared/components/header/header.compone
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.page.html',
-  styleUrls: ['./profile.page.scss'],
+  selector: 'app-configurations',
+  templateUrl: './configurations.page.html',
+  styleUrls: ['./configurations.page.scss'],
   standalone: true,
   imports: [IonAvatar, IonButton, IonFooter, IonInput, IonText, IonItemDivider, IonList, IonItem, IonIcon, IonImg, IonCol, IonRow, IonGrid, IonCardContent, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonSegmentButton, IonSegment, IonContent, IonHeader, IonTitle, IonToolbar, IonInputPasswordToggle, CommonModule, FormsModule, HeaderComponent, RouterLink]
 })
-export default class ProfilePage implements OnInit {
+export default class ConfigurationsPage implements OnInit {
 
   selectedSegment = signal<'data' | 'password'>('data');
 

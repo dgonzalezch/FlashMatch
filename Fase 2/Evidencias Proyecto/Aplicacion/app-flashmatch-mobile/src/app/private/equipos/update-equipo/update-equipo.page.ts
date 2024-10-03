@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
 @Component({
-  selector: 'app-update-team',
-  templateUrl: './update-team.page.html',
-  styleUrls: ['./update-team.page.scss'],
+  selector: 'app-update-equipo',
+  templateUrl: './update-equipo.page.html',
+  styleUrls: ['./update-equipo.page.scss'],
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
-export default class UpdateTeamPage implements OnInit {
+export default class UpdateEquipoPage implements OnInit {
 
   constructor() { }
 

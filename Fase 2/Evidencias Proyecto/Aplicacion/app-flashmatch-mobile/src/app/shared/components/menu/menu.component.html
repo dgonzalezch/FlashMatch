@@ -18,16 +18,14 @@
 
   <ion-content>
     <ion-list lines="none" class="menu-list">
-      <div>
-        @for (item of menuItems(); track $index) {
-          <ion-menu-toggle auto-hide="false">
-            <ion-item button [routerLink]="item.route" detail>
-              <ion-icon [name]="item.icon" slot="start" size="large"></ion-icon>
-              <ion-label class="menu-item-label">{{ item.label }}</ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-        }
-      </div>
+      @for (item of menuItems(); track $index) {
+        <ion-menu-toggle auto-hide="false">
+          <ion-item button [routerLink]="item.route" detail>
+            <ion-icon [name]="item.icon" slot="start" size="large"></ion-icon>
+            <ion-label class="menu-item-label">{{ item.label }}</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      }
 
       <ion-menu-toggle>
         <ion-item button (click)="logOut()"  detail>
