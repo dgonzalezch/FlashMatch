@@ -8,6 +8,8 @@ import { PartidosModule } from './partidos/partidos.module';
 import { RangosEdadModule } from './rangos-edad/rangos-edad.module';
 import { DeportesModule } from './deportes/deportes.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
+import { DeportesPosicionesModule } from './deportes-posiciones/deportes-posiciones.module';
+import { DeportesPosicionesUsuariosModule } from './deportes-posiciones-usuarios/deportes-posiciones-usuarios.module';
 
 @Module({
   imports: [
@@ -28,7 +30,9 @@ import { UsuariosModule } from './usuarios/usuarios.module';
     PartidosModule,
     RangosEdadModule,
     DeportesModule,
-    UsuariosModule
+    UsuariosModule,
+    DeportesPosicionesModule,
+    DeportesPosicionesUsuariosModule
   ],
   providers: [],
 })

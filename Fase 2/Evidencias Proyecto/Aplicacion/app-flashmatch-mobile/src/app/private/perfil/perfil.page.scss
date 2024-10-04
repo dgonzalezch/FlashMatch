@@ -1,4 +1,24 @@
+.user-avatar-container {
+  position: relative;
+}
+
+.edit-avatar-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
 canvas {
   max-width: 100%;
-  height: auto;
+  max-height: 360px;
+  margin-top: 10px;
+}
+.title-container {
+  display: flex; /* Usar flexbox para alinear elementos */
+  justify-content: space-between; /* Espaciado entre el título y el botón */
+  align-items: center; /* Alinear verticalmente */
+}
+
+.edit-button {
+  margin-left: 10px; /* Espaciado a la izquierda del botón */
 }

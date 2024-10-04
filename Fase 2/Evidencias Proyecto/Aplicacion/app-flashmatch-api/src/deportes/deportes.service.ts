@@ -33,9 +33,14 @@ export class DeportesService {
   async findAll(paginationDto: PaginationDto): Promise<ResponseMessage<Deporte[]>> {
     try {
       const { limit = 10, offset = 0 } = paginationDto;
+
       const deportes = await this.deporteRepository.find({
         take: limit,
-        skip: offset
+        skip: offset,
+        relations: {
+          equipos: true,
+          deportePosiciones: true
+        },
       });
 
       return { message: 'Registros obtenidos exitosamente.', data: deportes };

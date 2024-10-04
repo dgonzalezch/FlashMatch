@@ -179,14 +179,23 @@ CREATE TABLE participacion_usuarios_partidos (
     confirmado BOOLEAN DEFAULT FALSE
 );
 
--- Tabla de deportes jugados por los usuarios
+-- Tabla de posiciones asociadas a los deportes
+CREATE TABLE deportes_posiciones (
+    id_posicion UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id_deporte UUID REFERENCES deportes(id_deporte) ON DELETE CASCADE,
+    nombre VARCHAR(50) NOT NULL,
+    UNIQUE (id_deporte, nombre)
+);
+
+-- Tabla que registra las posiciones jugadas por los usuarios en deportes específicos
 CREATE TABLE deportes_posiciones_usuarios (
     id_deporte_posicion UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_usuario UUID REFERENCES usuarios(id_usuario),
-    id_deporte UUID REFERENCES deportes(id_deporte),
-    posicion VARCHAR(50),
-    UNIQUE (id_usuario, id_deporte)
+    id_usuario UUID REFERENCES usuarios(id_usuario) ON DELETE CASCADE,
+    id_deporte UUID REFERENCES deportes(id_deporte) ON DELETE CASCADE,
+    id_posicion UUID REFERENCES deportes_posiciones(id_posicion) ON DELETE CASCADE,
+    UNIQUE (id_usuario, id_deporte, id_posicion)
 );
+
 
 -- Tabla de notificaciones
 CREATE TABLE notificaciones (
@@ -300,3 +309,11 @@ INSERT INTO deportes (nombre_deporte, icono) VALUES
 INSERT INTO titulos_perfil (nombre_titulo, descripcion) VALUES 
 ('Novato', 'Jugó su primer partido'), 
 ('Experto', 'Jugó más de 100 partidos');
+
+
+-- Insertar posiciones para el deporte "Fútbol 11" 
+INSERT INTO deportes_posiciones (id_deporte, nombre) VALUES 
+('60fb0572-e0e1-4b14-baac-8baf24d516e3', 'Portero'),
+('60fb0572-e0e1-4b14-baac-8baf24d516e3', 'Defensa'),
+('60fb0572-e0e1-4b14-baac-8baf24d516e3', 'Centrocampista'),
+('60fb0572-e0e1-4b14-baac-8baf24d516e3', 'Delantero');
