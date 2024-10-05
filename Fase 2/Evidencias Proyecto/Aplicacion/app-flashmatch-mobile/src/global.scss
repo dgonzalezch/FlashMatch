@@ -120,3 +120,19 @@
   --ion-color-shade: var(--ion-color-danger-shade, #ad000d) !important;
   --ion-color-tint: var(--ion-color-danger-tint, #cb1a27) !important;
 }
+
+.rating-star-gold {
+  color: #FFD700; /* Color dorado */
+}
+
+.rating-star-silver {
+  color: #C0C0C0; /* Color plateado */
+}
+
+.rating-star-bronze {
+  color: #CD7F32; /* Color bronce */
+}
+
+.rating-star-gray {
+  color: #D3D3D3; /* Color gris claro */
+}

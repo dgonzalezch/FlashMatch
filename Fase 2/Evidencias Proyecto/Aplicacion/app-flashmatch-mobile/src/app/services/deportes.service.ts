@@ -3,25 +3,27 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError, timeout } from 'rxjs';
 import { CONTEXT, ENDPOINT } from 'src/app/shared/configs/api-config';
 import { environment } from 'src/environments/environment';
+import { Deporte } from '../interfaces/deporte.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UsuariosService {
+export class DeportesService {
   private http = inject(HttpClient);
-  private urlBaseUsuarios = CONTEXT.API_USUARIOS;
+  private urlBaseDeportes = CONTEXT.API_DEPORTES;
+  private urlBaseDeportesPosicionesUsuarios = CONTEXT.API_DEPORTES_POSICIONES_USUARIOS;
 
-  getUsuarios(): Observable<any> {
-    return this.http.get<any>(this.urlBaseUsuarios).pipe(
+  getAllDeportes(): Observable<any> {
+    return this.http.get<Deporte[]>(this.urlBaseDeportes).pipe(
       map((response) => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)
     );
   }
 
-  getUsuario(term: any): Observable<any> {
-    return this.http.get<any>(this.urlBaseUsuarios + term).pipe(
-      map((response) => response),
+  createDeportePosicionUsuario(deportesPosicionesUsuariosForm: any): Observable<any> {
+    return this.http.post<any>(this.urlBaseDeportesPosicionesUsuarios, deportesPosicionesUsuariosForm).pipe(
+      map(response => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)
     );

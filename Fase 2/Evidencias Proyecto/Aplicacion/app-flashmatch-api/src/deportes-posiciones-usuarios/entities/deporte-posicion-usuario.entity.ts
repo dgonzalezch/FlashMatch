@@ -4,6 +4,7 @@ import { Deporte } from 'src/deportes/entities/deporte.entity';
 import { DeportePosicion } from 'src/deportes-posiciones/entities/deporte-posicion.entity';
 
 @Entity('deportes_posiciones_usuarios')
+@Unique(['usuario', 'deporte'])
 export class DeportePosicionUsuario {
   @PrimaryGeneratedColumn('uuid')
   id_deporte_posicion: string;

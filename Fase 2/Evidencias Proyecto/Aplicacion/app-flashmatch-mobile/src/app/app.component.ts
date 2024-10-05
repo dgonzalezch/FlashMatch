@@ -4,7 +4,7 @@ import {
   IonRouterOutlet,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { home, homeOutline, cameraOutline, keyOutline, personOutline, shieldCheckmarkOutline, logOutOutline, callOutline, mailOutline, locationOutline, settingsOutline, notificationsOutline, footballOutline, alarmOutline, fileTrayOutline, peopleOutline, peopleCircleOutline, walkOutline, albumsOutline, searchOutline, calendarOutline, locateOutline, funnelOutline, eyeOutline, contractOutline, add, createOutline, lockClosedOutline, phonePortraitOutline } from 'ionicons/icons';
+import { home, homeOutline, cameraOutline, keyOutline, personOutline, shieldCheckmarkOutline, logOutOutline, callOutline, mailOutline, locationOutline, settingsOutline, notificationsOutline, footballOutline, alarmOutline, fileTrayOutline, peopleOutline, peopleCircleOutline, walkOutline, albumsOutline, searchOutline, calendarOutline, locateOutline, funnelOutline, eyeOutline, contractOutline, add, createOutline, lockClosedOutline, phonePortraitOutline, statsChartOutline, timerOutline, pencilOutline, star, starOutline, trashOutline, medalOutline, starHalf } from 'ionicons/icons';
 import { StorageService } from './services/storage.service';
 
 
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
 
 
   constructor(storageService: StorageService) {
-    addIcons({ home, homeOutline, personOutline, keyOutline, shieldCheckmarkOutline, cameraOutline, logOutOutline, callOutline, mailOutline, locationOutline, settingsOutline, notificationsOutline, footballOutline, alarmOutline, fileTrayOutline, peopleOutline, peopleCircleOutline, walkOutline, albumsOutline, searchOutline, calendarOutline, locateOutline, funnelOutline, eyeOutline, contractOutline, add, createOutline, lockClosedOutline, phonePortraitOutline });
+    addIcons({ home, homeOutline, personOutline, keyOutline, shieldCheckmarkOutline, cameraOutline, logOutOutline, callOutline, mailOutline, locationOutline, settingsOutline, notificationsOutline, footballOutline, alarmOutline, fileTrayOutline, peopleOutline, peopleCircleOutline, walkOutline, albumsOutline, searchOutline, calendarOutline, locateOutline, funnelOutline, eyeOutline, contractOutline, add, createOutline, lockClosedOutline, phonePortraitOutline, statsChartOutline, timerOutline, pencilOutline, star, starOutline, trashOutline, medalOutline, starHalf });
   }
 
   async ngOnInit() {

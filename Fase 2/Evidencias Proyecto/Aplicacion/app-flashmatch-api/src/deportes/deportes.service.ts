@@ -39,7 +39,7 @@ export class DeportesService {
         skip: offset,
         relations: {
           equipos: true,
-          deportePosiciones: true
+          deportesPosiciones: true
         },
       });
 

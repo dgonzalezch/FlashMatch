@@ -2,24 +2,16 @@
   border: 1px solid #ccc; /* Opcional: añade un borde personalizado */
   border-radius: 5px; /* Mantiene el borde redondeado */
   overflow: hidden; /* Asegura que los hijos respeten el borde redondeado */
-}
-
-// ion-card {
-//   box-shadow: none;
-// }
-
-
-ion-card {
   margin: 0px;
   box-shadow: none;
-}
 
-ion-card-content {
-  padding: 0px;
-}
+  ion-card-content {
+    padding: 0px;
+  }
 
-ion-list {
-  padding: 0px;
+  ion-list {
+    padding: 0px;
+  }
 }
 
 .custom-divider {

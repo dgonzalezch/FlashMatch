@@ -1,34 +1,35 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Query } from '@nestjs/common';
 import { DeportesPosicionesService } from './deportes-posiciones.service';
-import { CreateDeportesPosicioneDto } from './dto/create-deporte-posicion.dto';
-import { UpdateDeportesPosicioneDto } from './dto/update-deporte-posicion.dto';
+import { CreateDeportePosicionDto } from './dto/create-deporte-posicion.dto';
+import { UpdateDeportePosicionDto } from './dto/update-deporte-posicion.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Controller('deportes-posiciones')
 export class DeportesPosicionesController {
   constructor(private readonly deportesPosicionesService: DeportesPosicionesService) {}
 
   @Post()
-  create(@Body() createDeportesPosicioneDto: CreateDeportesPosicioneDto) {
-    return this.deportesPosicionesService.create(createDeportesPosicioneDto);
+  create(@Body() createDeportePosicionDto: CreateDeportePosicionDto) {
+    return this.deportesPosicionesService.create(createDeportePosicionDto);
   }
 
   @Get()
-  findAll() {
-    return this.deportesPosicionesService.findAll();
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.deportesPosicionesService.findAll(paginationDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.deportesPosicionesService.findOne(+id);
+  @Get(':term')
+  findOne(@Param('term') term: string) {
+    return this.deportesPosicionesService.findOne(term);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDeportesPosicioneDto: UpdateDeportesPosicioneDto) {
-    return this.deportesPosicionesService.update(+id, updateDeportesPosicioneDto);
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() updateDeportePosicionDto: UpdateDeportePosicionDto) {
+    return this.deportesPosicionesService.update(id, updateDeportePosicionDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.deportesPosicionesService.remove(+id);
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.deportesPosicionesService.remove(id);
   }
 }

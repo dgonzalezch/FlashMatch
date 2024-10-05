@@ -196,7 +196,6 @@ CREATE TABLE deportes_posiciones_usuarios (
     UNIQUE (id_usuario, id_deporte, id_posicion)
 );
 
-
 -- Tabla de notificaciones
 CREATE TABLE notificaciones (
     id_notificacion UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -290,30 +289,33 @@ CREATE TABLE documentos_identidad (
 
 -- INSERT DE INFORMACIÓN INICIAL
 INSERT INTO rangos_edad (edad_minima, edad_maxima, descripcion) VALUES 
-('18 - 25 años', 18, 25),
-('26 - 35 años', 26, 35),
-('36 - 45 años', 36, 45),
-('46 - 55 años', 46, 55),
-('56 años o más', 56, 120);
+(18, 25, '18 - 25 años'),
+(26, 35, '26 - 35 años'),
+(36, 45, '36 - 45 años'),
+(46, 55, '46 - 55 años'),
+(56, 120, '56 años o más');
+
+INSERT INTO deportes (nombre_deporte, icono) VALUES 
+('Fútbol 11', 'football-outline'), 
+('Fútbol 7', 'football-outline'), 
+('Fútbol 5', 'football-outline');
+
+
+INSERT INTO deportes_posiciones (id_posicion, id_deporte, nombre) VALUES
+(uuid_generate_v4(), (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), 'Portero'),
+(uuid_generate_v4(), (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), 'Defensa'),
+(uuid_generate_v4(), (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), 'Centrocampista'),
+(uuid_generate_v4(), (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), 'Delantero');
+
+INSERT INTO deportes_posiciones_usuarios (id_deporte_posicion, id_usuario, id_deporte, id_posicion) VALUES
+(uuid_generate_v4(), (SELECT id_usuario FROM usuarios WHERE nombre = 'Daniel'), (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), (SELECT id_posicion FROM deportes_posiciones WHERE nombre = 'Delantero'));
+
 
 INSERT INTO niveles_habilidad (descripcion) VALUES 
 ('Principiante'),
 ('Intermedio'),
 ('Avanzado');
 
-INSERT INTO deportes (nombre_deporte, icono) VALUES 
-('Fútbol 11', 'ion-icon-futbol'), 
-('Fútbol 7', 'ion-icon-futbol'), 
-('Fútbol 5', 'ion-icon-futbol');
-
 INSERT INTO titulos_perfil (nombre_titulo, descripcion) VALUES 
 ('Novato', 'Jugó su primer partido'), 
 ('Experto', 'Jugó más de 100 partidos');
-
-
--- Insertar posiciones para el deporte "Fútbol 11" 
-INSERT INTO deportes_posiciones (id_deporte, nombre) VALUES 
-('60fb0572-e0e1-4b14-baac-8baf24d516e3', 'Portero'),
-('60fb0572-e0e1-4b14-baac-8baf24d516e3', 'Defensa'),
-('60fb0572-e0e1-4b14-baac-8baf24d516e3', 'Centrocampista'),
-('60fb0572-e0e1-4b14-baac-8baf24d516e3', 'Delantero');

@@ -1,34 +1,36 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Query } from '@nestjs/common';
 import { DeportesPosicionesUsuariosService } from './deportes-posiciones-usuarios.service';
-import { CreateDeportesPosicionesUsuarioDto } from './dto/create-deporte-posicion-usuario.dto';
-import { UpdateDeportesPosicionesUsuarioDto } from './dto/update-deporte-posicion-usuario.dto';
+import { CreateDeportePosicionUsuarioDto } from './dto/create-deporte-posicion-usuario.dto';
+import { UpdateDeportePosicionUsuarioDto } from './dto/update-deporte-posicion-usuario.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Controller('deportes-posiciones-usuarios')
 export class DeportesPosicionesUsuariosController {
   constructor(private readonly deportesPosicionesUsuariosService: DeportesPosicionesUsuariosService) {}
 
   @Post()
-  create(@Body() createDeportesPosicionesUsuarioDto: CreateDeportesPosicionesUsuarioDto) {
-    return this.deportesPosicionesUsuariosService.create(createDeportesPosicionesUsuarioDto);
+  create(@Body() createDeportePosicionUsuarioDto: CreateDeportePosicionUsuarioDto) {
+    return this.deportesPosicionesUsuariosService.create(createDeportePosicionUsuarioDto);
   }
 
   @Get()
-  findAll() {
-    return this.deportesPosicionesUsuariosService.findAll();
+  findAll(@Query() paginationDto: PaginationDto) {
+    // Aquí se reintroduce la lógica de paginación
+    return this.deportesPosicionesUsuariosService.findAll(paginationDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.deportesPosicionesUsuariosService.findOne(+id);
+  @Get(':term')
+  findOne(@Param('term') term: string) {
+    return this.deportesPosicionesUsuariosService.findOne(term);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDeportesPosicionesUsuarioDto: UpdateDeportesPosicionesUsuarioDto) {
-    return this.deportesPosicionesUsuariosService.update(+id, updateDeportesPosicionesUsuarioDto);
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() updateDeportePosicionUsuarioDto: UpdateDeportePosicionUsuarioDto) {
+    return this.deportesPosicionesUsuariosService.update(id, updateDeportePosicionUsuarioDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.deportesPosicionesUsuariosService.remove(+id);
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.deportesPosicionesUsuariosService.remove(id);
   }
 }

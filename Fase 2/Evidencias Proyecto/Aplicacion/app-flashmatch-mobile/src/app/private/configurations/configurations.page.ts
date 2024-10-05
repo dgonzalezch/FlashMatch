@@ -13,7 +13,6 @@ import { RouterLink } from '@angular/router';
   imports: [IonAvatar, IonButton, IonFooter, IonInput, IonText, IonItemDivider, IonList, IonItem, IonIcon, IonImg, IonCol, IonRow, IonGrid, IonCardContent, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonSegmentButton, IonSegment, IonContent, IonHeader, IonTitle, IonToolbar, IonInputPasswordToggle, CommonModule, FormsModule, HeaderComponent, RouterLink]
 })
 export default class ConfigurationsPage implements OnInit {
-
   selectedSegment = signal<'data' | 'password'>('data');
 
   sections = [

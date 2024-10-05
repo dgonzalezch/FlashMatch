@@ -10,16 +10,7 @@ import { environment } from 'src/environments/environment';
 export class EquiposService {
   private http = inject(HttpClient);
   private urlBaseEquipos = CONTEXT.API_EQUIPOS;
-  private urlBaseDeportes = CONTEXT.API_DEPORTES;
   private urlBaseRangosEdad = CONTEXT.API_RANGOS_EDAD
-
-  getDeportes(): Observable<any> {
-    return this.http.get<any>(this.urlBaseDeportes).pipe(
-      map((response) => response),
-      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
-      timeout(environment.apiTime)
-    );
-  }
 
   getRangosEdad(): Observable<any> {
     return this.http.get<any>(this.urlBaseRangosEdad).pipe(

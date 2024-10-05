@@ -114,7 +114,26 @@ export const routes: Routes = [
       },
       {
         path: 'profile',
-        loadComponent: () => import('./private/perfil/perfil.page')
+        loadComponent: () => import('./private/perfil/perfil.layout-page'),
+        children: [
+          {
+            path: 'user-info',
+            loadComponent: () => import('./private/perfil/info-usuario/info-usuario.page')
+          },
+          {
+            path: 'statistics',
+            loadComponent: () => import('./private/perfil/estadisticas/estadisticas.page')
+          },
+          {
+            path: 'historical',
+            loadComponent: () => import('./private/perfil/historial/historial.page')
+          },
+          {
+            path: '**',
+            redirectTo: 'user-info',
+            pathMatch: 'full'
+          }
+        ]
       },
       {
         path: 'configurations',

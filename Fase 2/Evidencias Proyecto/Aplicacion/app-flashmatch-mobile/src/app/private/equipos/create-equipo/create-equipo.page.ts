@@ -11,6 +11,7 @@ import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { Deporte } from '../../../interfaces/deporte.interface';
 import { RangoEdad } from 'src/app/interfaces/rango-edad.interface';
 import { StorageService } from 'src/app/services/storage.service';
+import { DeportesService } from 'src/app/services/deportes.service';
 
 @Component({
   selector: 'app-create-equipo',
@@ -19,17 +20,18 @@ import { StorageService } from 'src/app/services/storage.service';
   standalone: true,
   imports: [IonButtons, IonBackButton, IonButton, IonFooter, IonSelect, IonSelectOption, IonText, IonIcon, IonCardContent, IonCard, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, IonInput, IonTextarea, CommonModule, FormsModule, ReactiveFormsModule, PreventSpacesDirective]
 })
-export default class CreateEquipoPage implements OnInit {
+export default class CreateEquipoPage {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private alertService = inject(AlertService);
   private storageService = inject(StorageService);
   private equiposService = inject(EquiposService);
+  private deportesService = inject(DeportesService);
 
   listDeportes = signal<Deporte[]>([]);
   listRangosEdad = signal<RangoEdad[]>([]);
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.getListDeportes();
     this.getListRangosEdad();
   }
@@ -39,11 +41,11 @@ export default class CreateEquipoPage implements OnInit {
     logo_equipo: [''],
     id_deporte: ['', [Validators.required]],
     id_rango: ['', [Validators.required]],
-    descripcion_equipo: ['', [Validators.required]]
+    descripcion: ['', [Validators.required]]
   });
 
   getListDeportes(): void {
-    this.equiposService.getDeportes().subscribe({
+    this.deportesService.getAllDeportes().subscribe({
       next: (resp: responseSuccess) => {
         this.listDeportes.set(resp.data);
       },

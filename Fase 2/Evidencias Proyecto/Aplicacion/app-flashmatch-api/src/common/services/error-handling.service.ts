@@ -5,7 +5,7 @@ export class ErrorHandlingService {
   handleDBErrors(error: any): never {
     // Error de duplicidad (constraint unique violation)
     if (error.code === '23505') {
-      throw new BadRequestException('Ya existe un registro con este valor: ' + error.detail);
+      throw new BadRequestException('Ya existe un registro con este valor.');
     }
 
     // Error de violación de restricción de llave foránea
@@ -20,7 +20,7 @@ export class ErrorHandlingService {
 
     // Error de exceso de datos
     if (error.code === '22001') {
-      throw new BadRequestException('El valor es demasiado largo para la columna: ' + error.detail);
+      throw new BadRequestException('El valor es demasiado largo para la columna.');
     }
 
     // Error de sintaxis

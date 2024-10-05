@@ -27,85 +27,93 @@
         </ion-card>
       </ion-col>
 
-      <ion-col size-xs="12">
-        <form [formGroup]="equipoForm" class="ion-margin-vertical" id="teamForm" (ngSubmit)="onSubmit()">
-
-          <!-- NOMBRE_EQUIPO -->
-          <ion-input type="text" formControlName="nombre_equipo" class="ion-input-form" preventSpaces label="Nombre del equipo*" labelPlacement="floating" [clearInput]="true"/>
-          @if (equipoForm.get('nombre_equipo')?.touched && equipoForm.get('nombre_equipo')?.invalid) {
-            <ion-text class="text-small" color="danger">
-              @switch (true) {
-                @case (equipoForm.get('nombre_equipo')?.hasError('required')) {
-                  *Debes ingresar un nombre de equipo.
+      <form [formGroup]="equipoForm" class="ion-margin-vertical" id="equipoForm" (ngSubmit)="onSubmit()">
+        <ion-row>
+          <ion-col size="12">
+            <!-- NOMBRE_EQUIPO -->
+            <ion-input type="text" formControlName="nombre_equipo" class="ion-input-form" preventSpaces label="Nombre del equipo*" labelPlacement="floating" [clearInput]="true"/>
+            @if (equipoForm.get('nombre_equipo')?.touched && equipoForm.get('nombre_equipo')?.invalid) {
+              <ion-text class="text-small" color="danger">
+                @switch (true) {
+                  @case (equipoForm.get('nombre_equipo')?.hasError('required')) {
+                    *Debes ingresar un nombre de equipo.
+                  }
                 }
-              }
-            </ion-text>
-          }
-
-          <!-- LOGO_EQUIPO -->
-          <ion-input type="text" formControlName="logo_equipo" class="ion-input-form" preventSpaces label="Logo del equipo*" labelPlacement="floating" [clearInput]="true"/>
-          @if (equipoForm.get('logo_equipo')?.touched && equipoForm.get('logo_equipo')?.invalid) {
-            <ion-text class="text-small" color="danger">
-              @switch (true) {
-                @case (equipoForm.get('logo_equipo')?.hasError('required')) {
-                  *El apellido es requerido.
-                }
-              }
-            </ion-text>
-          }
-
-          <!-- DEPORTE -->
-          <ion-select formControlName="id_deporte" class="ion-input-form" label="Deporte dedicado*" label-placement="floating" cancelText="cancelar" okText="seleccionar">
-            @for (deporte of listDeportes(); track $index) {
-              <ion-select-option [value]="deporte.id_deporte">{{deporte.nombre_deporte}}</ion-select-option>
+              </ion-text>
             }
-          </ion-select>
-          @if (equipoForm.get('id_deporte')?.touched && equipoForm.get('id_deporte')?.invalid) {
-            <ion-text class="text-small" color="danger">
-              @switch (true) {
-                @case (equipoForm.get('id_deporte')?.hasError('required')) {
-                  *Debes seleccionar un deporte.
+          </ion-col>
+          <ion-col size="12">
+            <!-- LOGO_EQUIPO -->
+            <ion-input type="text" formControlName="logo_equipo" class="ion-input-form" preventSpaces label="Logo del equipo*" labelPlacement="floating" [clearInput]="true"/>
+            @if (equipoForm.get('logo_equipo')?.touched && equipoForm.get('logo_equipo')?.invalid) {
+              <ion-text class="text-small" color="danger">
+                @switch (true) {
+                  @case (equipoForm.get('logo_equipo')?.hasError('required')) {
+                    *El apellido es requerido.
+                  }
                 }
-              }
-            </ion-text>
-          }
-
-          <!-- RANGO EDAD -->
-          <ion-select formControlName="id_rango" class="ion-input-form" label="Rango edad del equipo*" label-placement="floating" cancelText="cancelar" okText="seleccionar">
-            @for (rangoEdad of listRangosEdad(); track $index) {
-              <ion-select-option [value]="rangoEdad.id_rango">{{rangoEdad.descripcion}}</ion-select-option>
+              </ion-text>
             }
-          </ion-select>
-          @if (equipoForm.get('id_rango')?.touched && equipoForm.get('id_rango')?.invalid) {
-            <ion-text class="text-small" color="danger">
-              @switch (true) {
-                @case (equipoForm.get('id_rango')?.hasError('required')) {
-                  *Debes seleccionar un rango de edad.
-                }
-              }
-            </ion-text>
-          }
+          </ion-col>
 
-          <!-- DESCRIPCION -->
-          <ion-textarea formControlName="descripcion_equipo" class="ion-input-form" label="Descripción" labelPlacement="floating" placeholder="Añade aquí tu descripción del equipo."/>
-          @if (equipoForm.get('descripcion_equipo')?.touched && equipoForm.get('descripcion_equipo')?.invalid) {
-            <ion-text class="text-small" color="danger">
-              @switch (true) {
-                @case (equipoForm.get('descripcion_equipo')?.hasError('required')) {
-                  *Debes añadir una descripción.
-                }
+          <ion-col size="12">
+            <!-- DEPORTE -->
+            <ion-select formControlName="id_deporte" class="ion-input-form" label="Deporte dedicado*" label-placement="floating" cancelText="cancelar" okText="seleccionar">
+              @for (deporte of listDeportes(); track $index) {
+                <ion-select-option [value]="deporte.id_deporte">{{deporte.nombre_deporte}}</ion-select-option>
               }
-            </ion-text>
-          }
-        </form>
-      </ion-col>
+            </ion-select>
+            @if (equipoForm.get('id_deporte')?.touched && equipoForm.get('id_deporte')?.invalid) {
+              <ion-text class="text-small" color="danger">
+                @switch (true) {
+                  @case (equipoForm.get('id_deporte')?.hasError('required')) {
+                    *Debes seleccionar un deporte.
+                  }
+                }
+              </ion-text>
+            }
+          </ion-col>
+
+          <ion-col size="12">
+            <!-- RANGO EDAD -->
+            <ion-select formControlName="id_rango" class="ion-input-form" label="Rango edad del equipo*" label-placement="floating" cancelText="cancelar" okText="seleccionar">
+              @for (rangoEdad of listRangosEdad(); track $index) {
+                <ion-select-option [value]="rangoEdad.id_rango">{{rangoEdad.descripcion}}</ion-select-option>
+              }
+            </ion-select>
+            @if (equipoForm.get('id_rango')?.touched && equipoForm.get('id_rango')?.invalid) {
+              <ion-text class="text-small" color="danger">
+                @switch (true) {
+                  @case (equipoForm.get('id_rango')?.hasError('required')) {
+                    *Debes seleccionar un rango de edad.
+                  }
+                }
+              </ion-text>
+            }
+          </ion-col>
+
+          <ion-col size="12">
+            <!-- DESCRIPCION -->
+            <ion-textarea formControlName="descripcion" class="ion-input-form" label="Descripción" labelPlacement="floating" placeholder="Añade aquí tu descripción del equipo."/>
+            @if (equipoForm.get('descripcion')?.touched && equipoForm.get('descripcion')?.invalid) {
+              <ion-text class="text-small" color="danger">
+                @switch (true) {
+                  @case (equipoForm.get('descripcion')?.hasError('required')) {
+                    *Debes añadir una descripción.
+                  }
+                }
+              </ion-text>
+            }
+          </ion-col>
+        </ion-row>
+      </form>
     </ion-row>
   </ion-grid>
 </ion-content>
 
 <ion-footer class="ion-no-border ion-padding">
   <ion-toolbar>
-    <ion-button class="ion-no-margin" color="tertiary" expand="block" type="submit" form="teamForm" [disabled]="!equipoForm.valid">
+    <ion-button class="ion-no-margin" color="tertiary" expand="block" type="submit" form="equipoForm" [disabled]="!equipoForm.valid">
       Confirmar
     </ion-button>
   </ion-toolbar>
