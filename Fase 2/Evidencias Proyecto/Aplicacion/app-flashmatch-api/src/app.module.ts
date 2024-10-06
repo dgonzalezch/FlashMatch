@@ -10,6 +10,8 @@ import { DeportesModule } from './deportes/deportes.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { DeportesPosicionesModule } from './deportes-posiciones/deportes-posiciones.module';
 import { DeportesPosicionesUsuariosModule } from './deportes-posiciones-usuarios/deportes-posiciones-usuarios.module';
+import { ParametrosRendimientoModule } from './parametros-rendimiento/parametros-rendimiento.module';
+import { EstadisticasDetalladasUsuariosModule } from './estadisticas-detalladas-usuarios/estadisticas-detalladas-usuarios.module';
 
 @Module({
   imports: [
@@ -32,7 +34,9 @@ import { DeportesPosicionesUsuariosModule } from './deportes-posiciones-usuarios
     DeportesModule,
     UsuariosModule,
     DeportesPosicionesModule,
-    DeportesPosicionesUsuariosModule
+    DeportesPosicionesUsuariosModule,
+    ParametrosRendimientoModule,
+    EstadisticasDetalladasUsuariosModule
   ],
   providers: [],
 })

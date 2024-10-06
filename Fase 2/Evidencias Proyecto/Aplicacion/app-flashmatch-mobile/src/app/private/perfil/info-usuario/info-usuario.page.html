@@ -71,9 +71,9 @@
             @for (deportePosicion of infoUsuario()?.deportesPosicionesUsuarios; track $index) {
               <ion-item button lines="full">
                 <!-- Agrega un ion-icon para mostrar el ícono del deporte -->
-                <ion-icon slot="start"[name]="deportePosicion.deporte.icono"/>
+                <ion-icon slot="start"[name]="deportePosicion.posicion.deporte.icono"/>
                 <ion-label>
-                  <h4>{{ deportePosicion.deporte.nombre_deporte }}</h4>
+                  <h4>{{ deportePosicion.posicion.deporte.nombre_deporte }}</h4>
                   <p class="ion-no-margin">{{ deportePosicion.posicion.nombre }}</p>
                 </ion-label>
                 <ion-buttons slot="end">

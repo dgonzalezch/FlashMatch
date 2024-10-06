@@ -1,6 +1,7 @@
 import { Equipo } from "src/equipos/entities/equipo.entity";
 import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { DeportePosicionUsuario } from '../../deportes-posiciones-usuarios/entities/deporte-posicion-usuario.entity';
+import { EstadisticaDetalladaUsuario } from "src/estadisticas-detalladas-usuarios/entities/estadistica-detallada-usuario.entity";
 
 @Entity('usuarios')
 export class Usuario {
@@ -55,6 +56,8 @@ export class Usuario {
     @OneToMany(() => DeportePosicionUsuario, (deportePosicionUsuario) => deportePosicionUsuario.usuario, { cascade: true })
     deportesPosicionesUsuarios: DeportePosicionUsuario[];
 
+    @OneToMany(() => EstadisticaDetalladaUsuario, (estadisticaDetalladaUsuario) => estadisticaDetalladaUsuario.usuario, { cascade: true })
+    estadisticasDetalladasUsuarios: EstadisticaDetalladaUsuario[];
     // @OneToMany(() => VerificacionIdentidad, verificacion => verificacion.usuario)
     // verificaciones: VerificacionIdentidad[];
 

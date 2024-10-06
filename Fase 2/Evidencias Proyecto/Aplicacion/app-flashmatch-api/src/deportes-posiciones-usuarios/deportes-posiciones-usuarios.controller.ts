@@ -15,7 +15,6 @@ export class DeportesPosicionesUsuariosController {
 
   @Get()
   findAll(@Query() paginationDto: PaginationDto) {
-    // Aquí se reintroduce la lógica de paginación
     return this.deportesPosicionesUsuariosService.findAll(paginationDto);
   }
 

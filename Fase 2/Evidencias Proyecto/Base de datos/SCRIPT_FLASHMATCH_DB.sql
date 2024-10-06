@@ -241,11 +241,11 @@ CREATE TABLE opiniones_valoraciones (
 
 -- Tabla de parámetros de rendimiento
 CREATE TABLE parametros_rendimiento (
-    id_parametro UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    nombre_parametro VARCHAR(100) UNIQUE NOT NULL,
-    valor_minimo NUMERIC(5, 2) DEFAULT 0.0,
-    valor_maximo NUMERIC(5, 2) DEFAULT 100.0
+    id_parametro_rendimiento UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id_deporte UUID REFERENCES deportes(id_deporte),
+    nombre_parametro VARCHAR(100) NOT NULL,
     descripcion TEXT,
+    UNIQUE (nombre_parametro, id_deporte)
 );
 
 -- Tabla de estadísticas detalladas de usuarios
@@ -319,3 +319,18 @@ INSERT INTO niveles_habilidad (descripcion) VALUES
 INSERT INTO titulos_perfil (nombre_titulo, descripcion) VALUES 
 ('Novato', 'Jugó su primer partido'), 
 ('Experto', 'Jugó más de 100 partidos');
+
+-- Parámetros para Fútbol 11 (id_deporte = 'uuid_futbol')
+INSERT INTO parametros_rendimiento (id_parametro_rendimiento, nombre_parametro, id_deporte) VALUES
+(uuid_generate_v4(), 'Velocidad', '2a8a4997-a98b-48ab-b41b-1765b0cee635'),
+(uuid_generate_v4(), 'Resistencia', '2a8a4997-a98b-48ab-b41b-1765b0cee635'),
+(uuid_generate_v4(), 'Táctica', '2a8a4997-a98b-48ab-b41b-1765b0cee635'),
+(uuid_generate_v4(), 'Técnica', '2a8a4997-a98b-48ab-b41b-1765b0cee635');
+
+
+-- Estadísticas para el Usuario 1 en Fútbol (id_usuario = 'uuid_usuario_1', id_deporte = 'uuid_futbol')
+INSERT INTO estadisticas_detalladas_usuarios (id_estadistica_detallada, id_usuario, id_deporte, id_parametro_rendimiento, parametro_valor) VALUES
+(uuid_generate_v4(), '3f7cff18-bf3c-4864-a1d0-87097d2fd218', '2a8a4997-a98b-48ab-b41b-1765b0cee635', '6fe10060-0566-41cb-b222-5bd6b812eba8', 90),  -- Velocidad
+(uuid_generate_v4(), '3f7cff18-bf3c-4864-a1d0-87097d2fd218', '2a8a4997-a98b-48ab-b41b-1765b0cee635', '4473a370-66c5-4f04-a984-4e7209ca5bc7', 85),  -- Resistencia
+(uuid_generate_v4(), '3f7cff18-bf3c-4864-a1d0-87097d2fd218', '2a8a4997-a98b-48ab-b41b-1765b0cee635', '6e87d7bc-036b-4353-9654-0135bb4c8ee2', 78),  -- Táctica
+(uuid_generate_v4(), '3f7cff18-bf3c-4864-a1d0-87097d2fd218', '2a8a4997-a98b-48ab-b41b-1765b0cee635', '704c0e56-7e25-43c2-a7a2-0570b19373b6', 3);   -- Técnica

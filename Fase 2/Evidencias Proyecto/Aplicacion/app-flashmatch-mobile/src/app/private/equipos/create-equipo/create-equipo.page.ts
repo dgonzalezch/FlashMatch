@@ -12,6 +12,7 @@ import { Deporte } from '../../../interfaces/deporte.interface';
 import { RangoEdad } from 'src/app/interfaces/rango-edad.interface';
 import { StorageService } from 'src/app/services/storage.service';
 import { DeportesService } from 'src/app/services/deportes.service';
+import { RangosEdadService } from 'src/app/services/rangos-edad.service';
 
 @Component({
   selector: 'app-create-equipo',
@@ -27,6 +28,7 @@ export default class CreateEquipoPage {
   private storageService = inject(StorageService);
   private equiposService = inject(EquiposService);
   private deportesService = inject(DeportesService);
+  private rangosEdadService = inject(RangosEdadService);
 
   listDeportes = signal<Deporte[]>([]);
   listRangosEdad = signal<RangoEdad[]>([]);
@@ -56,7 +58,7 @@ export default class CreateEquipoPage {
   }
 
   getListRangosEdad(): void {
-    this.equiposService.getRangosEdad().subscribe({
+    this.rangosEdadService.getRangosEdad().subscribe({
       next: (resp: responseSuccess) => {
         this.listRangosEdad.set(resp.data);
       },

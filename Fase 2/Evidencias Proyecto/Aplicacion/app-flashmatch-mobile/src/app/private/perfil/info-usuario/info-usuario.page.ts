@@ -9,6 +9,7 @@ import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { responseError } from 'src/app/interfaces/response-error.interface';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
+import { DeportesPosicionesUsuariosService } from 'src/app/services/deportes-posiciones-usuarios.service';
 
 @Component({
   selector: 'app-info-usuario',
@@ -23,6 +24,7 @@ export default class InfoUsuarioPage {
   private storageService = inject(StorageService);
   private usuariosService = inject(UsuariosService);
   private deportesService = inject(DeportesService);
+  private deportesPosicionesUsuariosService = inject(DeportesPosicionesUsuariosService);
 
   listDeportes = signal<any[]>([]);
   listPosiciones = signal<any[]>([]);
@@ -43,38 +45,13 @@ export default class InfoUsuarioPage {
   }
 
   user = {
-    name: 'Juan',
-    surname: 'Pérez',
-    rut: '12.345.678-9',
-    birthDate: new Date('1990-01-01'), // Cambia la fecha según sea necesario
-    email: 'juan.perez@example.com',
-    phone: '123456789',
-    location: 'Santiago, Chile',
     titles: ['Título 1', 'Título 2'],
     rating: 4.5,
-    sports: [
-      { name: 'Fútbol', position: 'Delantero', }
-    ],
-    teams: [
-      {
-        name: 'Los Leones',
-        logoUrl: '',
-        description: 'Equipo de fútbol amateur de la ciudad.',
-        location: 'Santiago, Chile'
-      },
-      {
-        name: 'Las Águilas',
-        logoUrl: '',
-        description: 'Equipo de básquetbol de la región.',
-        location: 'Valparaíso, Chile'
-      }
-    ],
   };
 
   getInfoUsuario() {
     this.usuariosService.getUsuario(this.idUsuario()).subscribe({
       next: (resp: responseSuccess) => {
-        debugger
         this.infoUsuario.set(resp.data);
       },
       error: (err: responseError) => {
@@ -135,7 +112,7 @@ export default class InfoUsuarioPage {
       id_usuario: await this.storageService.get('user')
     };
 
-    this.deportesService.createDeportePosicionUsuario(fullFormDeportesPosicionesUsuarios).subscribe({
+    this.deportesPosicionesUsuariosService.createDeportePosicionUsuario(fullFormDeportesPosicionesUsuarios).subscribe({
       next: (resp: responseSuccess) => {
         this.alertService.message(resp.message);
         this.isModalOpen.set(false);

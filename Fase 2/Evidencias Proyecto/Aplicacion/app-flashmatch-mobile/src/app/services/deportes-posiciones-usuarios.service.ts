@@ -7,21 +7,13 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class EquiposService {
+export class DeportesPosicionesUsuariosService {
   private http = inject(HttpClient);
-  private urlBaseEquipos = CONTEXT.API_EQUIPOS;
+  private urlBaseDeportesPosicionesUsuarios = CONTEXT.API_DEPORTES_POSICIONES_USUARIOS;
 
-  createEquipo(teamFormData: any): Observable<any> {
-    return this.http.post<any>(this.urlBaseEquipos, teamFormData).pipe(
+  createDeportePosicionUsuario(deportesPosicionesUsuariosForm: any): Observable<any> {
+    return this.http.post<any>(this.urlBaseDeportesPosicionesUsuarios, deportesPosicionesUsuariosForm).pipe(
       map(response => response),
-      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
-      timeout(environment.apiTime)
-    );
-  }
-
-  getEquipos(): Observable<any> {
-    return this.http.get<any>(this.urlBaseEquipos).pipe(
-      map((response) => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)
     );

@@ -27,9 +27,11 @@ export class UsuariosService {
         relations: {
           equipos: true,
           deportesPosicionesUsuarios: {
-            deporte: true,  // Incluye la relación con Deporte
-            posicion: true  // Incluye la relación con Posición
+            posicion: true
           },
+          estadisticasDetalladasUsuarios: {
+            parametroRendimiento: true
+          }
         },
       });
   
@@ -46,7 +48,15 @@ export class UsuariosService {
     if (isUUID(term)) {
       usuario = await this.usuarioRepository.findOne({
         where: { id_usuario: term },
-        relations: ['equipos', 'deportesPosicionesUsuarios.deporte', 'deportesPosicionesUsuarios.posicion'],
+        relations: {
+          equipos: true,
+          deportesPosicionesUsuarios: {
+            posicion: true
+          },
+          estadisticasDetalladasUsuarios: {
+            parametroRendimiento: true
+          }
+        },
       });
     } else {
       const queryBuilder = this.usuarioRepository.createQueryBuilder('usuario');
