@@ -7,10 +7,10 @@ export class RangoEdad {
     id_rango: string;
 
     @Column({ type: 'int', nullable: false })
-    edad_minima: string;
+    edad_minima: number;
 
     @Column({ type: 'int', nullable: false })
-    edad_maxima: string;
+    edad_maxima: number;
 
     @Column({ type: 'text', nullable: false })
     descripcion: string;

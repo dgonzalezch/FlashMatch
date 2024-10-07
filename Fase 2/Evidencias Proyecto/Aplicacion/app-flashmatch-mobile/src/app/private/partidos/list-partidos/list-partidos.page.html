@@ -2,9 +2,8 @@
 
 <ion-content [fullscreen]="true" class="ion-padding">
 
-  <ion-button expand="block" (click)="setOpen(true)">Búsqueda Manual</ion-button>
+  <ion-button color="secondary" expand="block" [routerLink]="['/private/matches/create-match/step-1']">Crear partido</ion-button>
 
-  <!-- Resultados de la Búsqueda -->
   @if (results.length > 0) {
     <ion-card>
       <ion-card-header>

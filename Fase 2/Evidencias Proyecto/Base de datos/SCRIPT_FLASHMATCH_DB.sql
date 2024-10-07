@@ -64,6 +64,9 @@ CREATE TABLE niveles_habilidad (
 CREATE TABLE deportes (
     id_deporte UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre_deporte VARCHAR(100) UNIQUE NOT NULL,
+    cantidad_min_jugadores INT NOT NULL,
+    cantidad_max_jugadores INT NOT NULL,
+    descripcion TEXT,
     icono TEXT NOT NULL
 );
 

@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/private/matches/create-match/step-1"/>
+    </ion-buttons>
+    <ion-title>Crear partido (2)</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size-xs="auto">
+        <ion-card>
+          <ion-card-content>
+            <ion-row class="ion-align-items-center ion-justify-content-center">
+              <ion-col size="auto">
+                <ion-icon name="albums-outline" style="font-size: 25px; margin-right: 10px;"/>
+              </ion-col>
+              <ion-col>
+                <ion-text>
+                  <b>Segundo,</b> selecciona una cancha de tu preferencia para reservar la hora.
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- Seleccionar ubicación -->
+    <ion-row>
+      <ion-col size="12">
+        <ion-accordion-group class="ion-no-margin" expand="inset">
+          <ion-accordion value="location" class="ion-no-margin">
+            <ion-item slot="header" color="tertiary">
+              <ion-icon name="location-outline" class="ion-margin-end"></ion-icon>
+              <ion-label>
+                <h3>Ubicación*</h3>
+                <p>{{ selectedLocation ? selectedLocation : 'No seleccionada' }}</p>
+              </ion-label>
+            </ion-item>
+            <div class="ion-padding" slot="content">
+              <ion-item lines="none">
+                <ion-label>Usar ubicación actual</ion-label>
+                <ion-toggle [(ngModel)]="useCurrentLocation" (ionChange)="onLocationToggle($event)" slot="end"></ion-toggle>
+              </ion-item>
+
+              <div *ngIf="!useCurrentLocation">
+                <ion-button  expand="block" color="secondary" (click)="openLocationPicker()">
+                  Seleccionar Ubicación
+                  <ion-icon name="navigate-circle-outline" slot="end"/>
+                </ion-button>
+              </div>
+            </div>
+          </ion-accordion>
+        </ion-accordion-group>
+      </ion-col>
+    </ion-row>
+
+
+
+    <!-- Listado de canchas -->
+    <ion-row>
+      <ion-col size="12">
+        <ion-list>
+          <ion-item button *ngFor="let cancha of canchas">
+            <ion-thumbnail slot="start">
+              <img [src]="'https://ionicframework.com/docs/img/demos/thumbnail.svg'" alt="cancha">
+            </ion-thumbnail>
+            <ion-label>
+              <h2>{{ cancha.nombre }}</h2>
+              <p>{{ cancha.descripcion }}</p>
+              <p>Tipo de cancha: {{ cancha.tipoCancha }}</p>
+              <p><b>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }}</b> por hora</p>
+              <ion-button color="secondary" size="small">
+                <ion-icon slot="start" name="ticket-outline"></ion-icon>
+                Reservar
+              </ion-button>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="ion-no-border ion-padding-horizontal">
+  <ion-toolbar>
+    <ion-button color="tertiary" expand="block" type="submit" form="step1Form" [routerLink]="['/private/matches/create-match/step-3']">
+      Siguiente
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

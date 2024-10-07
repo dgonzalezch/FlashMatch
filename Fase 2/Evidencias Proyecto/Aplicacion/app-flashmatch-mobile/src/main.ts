@@ -10,7 +10,11 @@ import { IonicStorageModule, provideStorage } from '@ionic/storage-angular';
 import { importProvidersFrom } from '@angular/core';
 import { Drivers } from '@ionic/storage';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
+import { LOCALE_ID } from '@angular/core'; // Importa LOCALE_ID
+import localeES from '@angular/common/locales/es-CL'; // Importa la configuración regional
 
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeES);
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -22,7 +26,8 @@ bootstrapApplication(AppComponent, {
     })),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(),
-    [provideCharts(withDefaultRegisterables())],
+    provideCharts(withDefaultRegisterables()),
+    { provide: LOCALE_ID, useValue: 'es-CL' } // Establece la configuración regional aquí
   ],
 });
 defineCustomElements(window);

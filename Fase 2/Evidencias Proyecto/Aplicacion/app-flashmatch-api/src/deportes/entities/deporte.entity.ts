@@ -12,6 +12,15 @@ export class Deporte {
     @Column({ type: 'varchar', unique: true, length: 100 })
     nombre_deporte: string;
 
+    @Column({ type: 'int', nullable: false })
+    cantidad_min_jugadores : number;
+
+    @Column({ type: 'int', nullable: false })
+    cantidad_max_jugadores : number;
+
+    @Column({ type: 'text', nullable: true })
+    descripcion: string;
+
     @Column({ type: 'text', nullable: true })
     icono: string;
 

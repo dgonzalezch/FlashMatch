@@ -56,7 +56,35 @@ export const routes: Routes = [
       },
       {
         path: 'matches',
-        loadComponent: () => import('./private/partidos/partidos.page')
+        children: [
+          {
+            path: 'list-matches',
+            loadComponent: () => import('./private/partidos/list-partidos/list-partidos.page')
+          },
+          {
+            path: 'create-match',
+            children: [
+              {
+                path: 'step-1',
+                loadComponent: () => import('./private/partidos/create-partido/step-1/step-1.page')
+              },
+              {
+                path: 'step-2',
+                loadComponent: () => import('./private/partidos/create-partido/step-2/step-2.page')
+              },
+              {
+                path: 'step-3',
+                loadComponent: () => import('./private/partidos/create-partido/step-3/step-3.page')
+              },
+            ]
+          },
+          {
+            path: '**',
+            redirectTo: 'list-matches',
+            pathMatch: 'full'
+          }
+        ]
+
       },
       {
         path: 'courts',
