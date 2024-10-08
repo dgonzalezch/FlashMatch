@@ -58,37 +58,84 @@
       </ion-col>
     </ion-row>
 
-
-
     <!-- Listado de canchas -->
     <ion-row>
       <ion-col size="12">
-        <ion-list>
-          <ion-item button *ngFor="let cancha of canchas">
-            <ion-thumbnail slot="start">
-              <img [src]="'https://ionicframework.com/docs/img/demos/thumbnail.svg'" alt="cancha">
-            </ion-thumbnail>
-            <ion-label>
-              <h2>{{ cancha.nombre }}</h2>
-              <p>{{ cancha.descripcion }}</p>
-              <p>Tipo de cancha: {{ cancha.tipoCancha }}</p>
-              <p><b>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }}</b> por hora</p>
-              <ion-button color="secondary" size="small">
-                <ion-icon slot="start" name="ticket-outline"></ion-icon>
-                Reservar
-              </ion-button>
-            </ion-label>
-          </ion-item>
-        </ion-list>
+        <ion-segment (ionChange)="segmentChanged($event)" value="list">
+          <ion-segment-button value="list">
+            <ion-icon name="list-outline"/>
+          </ion-segment-button>
+          <ion-segment-button value="grid">
+            <ion-icon name="grid-outline"/>
+          </ion-segment-button>
+        </ion-segment>
       </ion-col>
+
+      @if (selectedSegment() == 'list') {
+        <ion-col size="12">
+          <ion-list>
+            @for (cancha of canchas; track $index) {
+              <ion-item button>
+                <ion-thumbnail slot="start">
+                  <img [src]="'https://ionicframework.com/docs/img/demos/thumbnail.svg'" alt="cancha">
+                </ion-thumbnail>
+                <ion-label>
+                  <h2>{{ cancha.nombre }}</h2>
+                  <p>{{ cancha.descripcion }}</p>
+                  <p>Tipo de cancha: {{ cancha.tipoCancha }}</p>
+                  <p><b>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }}</b> por hora</p>
+                  <ion-button color="secondary" size="small">
+                    <ion-icon slot="start" name="ticket-outline"></ion-icon>
+                    Reservar
+                  </ion-button>
+                </ion-label>
+              </ion-item>
+            }
+          </ion-list>
+        </ion-col>
+      }
+
+      @if (selectedSegment() == 'grid') {
+        @for (cancha of canchas; track $index) {
+          <ion-col size="12">
+            <ion-card button class="ion-no-margin">
+              <!-- Contenedor de imagen -->
+              <div class="image-container">
+                <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+
+                <!-- Div para destacar el precio sobre la imagen -->
+                <div class="price-badge">
+                  <p>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }} / hora</p>
+                </div>
+              </div>
+
+              <ion-card-header>
+                <ion-card-title>{{ cancha.nombre }}</ion-card-title>
+                <ion-card-subtitle>{{ cancha.tipoCancha }}</ion-card-subtitle>
+              </ion-card-header>
+
+              <ion-card-content>
+                {{ cancha.descripcion }}
+              </ion-card-content>
+
+              <ion-footer class="ion-no-border ion-padding footer-aligned-end">
+                <ion-button color="secondary">
+                  <ion-icon slot="start" name="ticket-outline"/>
+                  Reservar
+                </ion-button>
+              </ion-footer>
+            </ion-card>
+          </ion-col>
+        }
+      }
     </ion-row>
 
   </ion-grid>
 </ion-content>
 
-<ion-footer class="ion-no-border ion-padding-horizontal">
+<ion-footer class="ion-no-border">
   <ion-toolbar>
-    <ion-button color="tertiary" expand="block" type="submit" form="step1Form" [routerLink]="['/private/matches/create-match/step-3']">
+    <ion-button class="ion-padding-horizontal" color="tertiary" expand="block" type="submit" form="step1Form" [routerLink]="['/private/matches/create-match/step-3']">
       Siguiente
     </ion-button>
   </ion-toolbar>
