@@ -19,7 +19,7 @@ import { IonTitle, IonImg, IonToolbar, IonHeader, IonButtons, IonBackButton, Ion
 })
 export class HeaderComponent  implements OnInit {
 
-  public typeMenu = input.required<string>();
+  public typeHeader = input.required<string>();
 
   ngOnInit() { }
 

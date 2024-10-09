@@ -1,10 +1,10 @@
-<app-header [typeMenu]="'public-route'"/>
+<app-header [typeHeader]="'public-route'"/>
 
-<ion-content [fullscreen]="true" class="ion-padding" >
-  <ion-grid class="ion-no-padding">
+<ion-content [fullscreen]="true">
+  <ion-grid>
     <ion-row class="ion-justify-content-center">
-      <ion-col size-xs="auto">
-        <ion-card class="ion-no-margin">
+      <ion-col size="auto">
+        <ion-card>
           <ion-card-content>
             <ion-row class="ion-align-items-center ion-justify-content-center">
               <ion-col size="auto">
@@ -19,11 +19,12 @@
           </ion-card-content>
         </ion-card>
       </ion-col>
+    </ion-row>
 
-      <ion-col size-xs="12">
-        <form [formGroup]="step1Form" class="ion-margin-vertical" id="step1Form" (ngSubmit)="onSubmit()">
-
-          <!-- NOMBRE -->
+    <form [formGroup]="step1Form" id="step1Form" (ngSubmit)="onSubmit()">
+      <ion-row>
+        <!-- NOMBRE -->
+        <ion-col size="12">
           <ion-input type="text" formControlName="nombre" class="ion-input-form" preventSpaces label="Nombre*" labelPlacement="floating" [clearInput]="true"/>
           @if (step1Form.get('nombre')?.touched && step1Form.get('nombre')?.invalid) {
             <ion-text class="text-small" color="danger">
@@ -40,8 +41,10 @@
               }
             </ion-text>
           }
+        </ion-col>
 
-          <!-- APELLIDO -->
+        <!-- APELLIDO -->
+        <ion-col size="12">
           <ion-input type="text" formControlName="apellido" class="ion-input-form" preventSpaces label="Apellido*" labelPlacement="floating" [clearInput]="true"/>
           @if (step1Form.get('apellido')?.touched && step1Form.get('apellido')?.invalid) {
             <ion-text class="text-small" color="danger">
@@ -58,8 +61,10 @@
               }
             </ion-text>
           }
+        </ion-col>
 
-          <!-- RUT -->
+        <!-- RUT -->
+        <ion-col size="12">
           <ion-input type="text" formControlName="rut" class="ion-input-form" preventSpaces formatRut label="RUT*" maxlength="12" labelPlacement="floating" [clearInput]="true"/>
           @if (step1Form.get('rut')?.touched && step1Form.get('rut')?.invalid) {
             <ion-text class="text-small" color="danger">
@@ -73,9 +78,11 @@
               }
             </ion-text>
           }
+        </ion-col>
 
-          <!-- FECHA NACIMIENTO -->
-          <div class="ion-margin-vertical">
+        <!-- FECHA NACIMIENTO -->
+        <ion-col size="12">
+          <div class="ion-margin-top">
             <ion-label [color]="step1Form.get('fecha_nacimiento')?.invalid ? 'danger' : ''">Fecha nacimiento*</ion-label>
             <ion-datetime-button datetime="datetime" style="margin-top: 8px;"/>
             <ion-modal [keepContentsMounted]="true">
@@ -93,19 +100,10 @@
               </ion-text>
             }
           </div>
+        </ion-col>
 
-          <!-- <ion-input type="date" formControlName="fecha_nacimiento" class="ion-input-form" label="Fecha nacimiento*" labelPlacement="floating"/>
-          @if (step1Form.get('fecha_nacimiento')?.touched && step1Form.get('fecha_nacimiento')?.invalid) {
-            <ion-text class="text-small" color="danger">
-              @switch (true) {
-                @case (step1Form.get('fecha_nacimiento')?.hasError('required')) {
-                  *La fecha de nacimiento es requerida.
-                }
-              }
-            </ion-text>
-          } -->
-
-          <!-- TELEFONO -->
+        <!-- TELEFONO -->
+        <ion-col size="12">
           <ion-input type="tel" formControlName="telefono" class="ion-input-form" preventSpaces onlyNumbers label="Número de teléfono*" placeholder="9123456" labelPlacement="floating" maxlength="9" [clearInput]="true"/>
           @if (step1Form.get('telefono')?.touched && step1Form.get('telefono')?.invalid) {
             <ion-text class="text-small" color="danger">
@@ -119,9 +117,11 @@
               }
             </ion-text>
           }
-        </form>
-      </ion-col>
-    </ion-row>
+        </ion-col>
+      </ion-row>
+    </form>
+
+
   </ion-grid>
 </ion-content>
 

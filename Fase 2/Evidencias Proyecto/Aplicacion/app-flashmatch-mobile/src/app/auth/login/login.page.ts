@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonImg, IonContent, IonTitle, IonAvatar, IonGrid, IonCol, IonRow, IonInput, IonItem, IonList, IonText, IonHeader, IonButtons, IonToolbar, IonMenuButton, IonButton, IonCheckbox, IonLabel, IonCardContent, IonCard, IonInputPasswordToggle, IonAlert, AlertController } from '@ionic/angular/standalone';
+import { IonImg, IonContent, IonTitle, IonAvatar, IonGrid, IonCol, IonRow, IonInput, IonItem, IonList, IonText, IonHeader, IonButtons, IonToolbar, IonMenuButton, IonButton, IonCheckbox, IonLabel, IonCardContent, IonCard, IonInputPasswordToggle, IonAlert, AlertController, IonRouterOutlet } from '@ionic/angular/standalone';
 import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
 import { FormValidatorService } from 'src/app/shared/common/form-validator-service.service';
@@ -11,13 +11,14 @@ import { catchError, EMPTY, switchMap, throwError } from 'rxjs';
 import { AlertService } from 'src/app/shared/common/alert.service';
 import { responseError } from 'src/app/interfaces/response-error.interface';
 import { StorageService } from 'src/app/services/storage.service';
+import { MenuComponent } from 'src/app/shared/components/menu/menu.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonAlert,
+  imports: [IonRouterOutlet, IonAlert,
     IonCard,
     IonCardContent,
     IonLabel,
@@ -45,7 +46,8 @@ import { StorageService } from 'src/app/services/storage.service';
     PreventSpacesDirective,
     FormsModule,
     ReactiveFormsModule,
-    IonInputPasswordToggle
+    IonInputPasswordToggle,
+    MenuComponent
   ]
 })
 export default class LoginPage implements OnInit {

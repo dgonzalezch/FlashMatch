@@ -3,8 +3,17 @@ ion-checkbox::part(container) {
 }
 
 ::part(background) {
-  background-image: url(./../../../assets/images/fondo-login.jpeg);
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  // background-color: var(--ion-color-dark);
+  // background-image: url(./../../../assets/images/fondo-login.jpeg);
+  // background-position: center;
+  // background-size: cover;
+  // background-repeat: no-repeat;
+}
+
+.content-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }

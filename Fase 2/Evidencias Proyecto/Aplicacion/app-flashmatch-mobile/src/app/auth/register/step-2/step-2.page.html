@@ -1,10 +1,10 @@
-<app-header [typeMenu]="'public-route'"/>
+<app-header [typeHeader]="'public-route'"/>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <ion-grid class="ion-no-padding">
+<ion-content [fullscreen]="true">
+  <ion-grid>
     <ion-row class="ion-justify-content-center">
-      <ion-col size-xs="auto">
-        <ion-card class="ion-no-margin">
+      <ion-col size="auto">
+        <ion-card>
           <ion-card-content>
             <ion-row class="ion-align-items-center ion-justify-content-center">
               <ion-col size="auto">
@@ -19,10 +19,12 @@
           </ion-card-content>
         </ion-card>
       </ion-col>
+    </ion-row>
 
-      <ion-col size-xs="12">
+    <form [formGroup]="step2Form" id="step2Form" (ngSubmit)="onSubmit()">
+      <ion-row>
         <!-- CORREO -->
-        <form [formGroup]="step2Form" class="ion-margin-vertical" id="step2Form" (ngSubmit)="onSubmit()">
+        <ion-col size="12">
           <ion-input type="email" class="ion-input-form" formControlName="correo" preventSpaces label="Correo electrónico*" labelPlacement="floating" maxlength="25" [clearInput]="true"/>
           @if (step2Form.get('correo')?.touched && step2Form.get('correo')?.invalid) {
             <ion-text class="text-small" color="danger">
@@ -36,8 +38,10 @@
               }
             </ion-text>
           }
+        </ion-col>
 
-          <!-- REPETIR CORREO -->
+        <!-- REPEAT CORREO -->
+        <ion-col size="12">
           <ion-input type="email" class="ion-input-form" formControlName="repeatCorreo" preventSpaces label="Repite correo electrónico*" labelPlacement="floating"  maxlength="25" [clearInput]="true"/>
           @if (step2Form.get('repeatCorreo')?.touched && step2Form.get('repeatCorreo')?.invalid) {
             <ion-text class="text-small" color="danger">
@@ -54,8 +58,10 @@
               }
             </ion-text>
           }
+        </ion-col>
 
-          <!-- CLAVE -->
+        <!-- CLAVE -->
+        <ion-col size="12">
           <ion-input type="password" class="ion-input-form" formControlName="clave" preventSpaces label="Contraseña*" labelPlacement="floating">
             @if (step2Form.get('clave')?.value) {
               <ion-input-password-toggle slot="end"></ion-input-password-toggle>
@@ -79,8 +85,10 @@
               }
             </ion-text>
           }
+        </ion-col>'
 
-          <!-- REPETIR CLAVE -->
+        <!-- REPEAT CLAVE -->
+        <ion-col>
           <ion-input type="password" class="ion-input-form" formControlName="repeatClave" preventSpaces label="Repetir contraseña*" labelPlacement="floating">
             @if (step2Form.get('repeatClave')?.value) {
               <ion-input-password-toggle slot="end"></ion-input-password-toggle>
@@ -107,10 +115,9 @@
               }
             </ion-text>
           }
-          <!-- <ion-checkbox formControlName="terms" class="ion-margin-vertical" labelPlacement="end">He leído y acepto los términos</ion-checkbox> -->
-        </form>
-      </ion-col>
-    </ion-row>
+        </ion-col>
+      </ion-row>
+    </form>
   </ion-grid>
 </ion-content>
 
