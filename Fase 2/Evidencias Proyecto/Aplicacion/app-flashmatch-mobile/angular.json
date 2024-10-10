@@ -8,7 +8,10 @@
       "schematics": {
         "@ionic/angular-toolkit:page": {
           "styleext": "scss",
-          "standalone": true
+          "standalone": true,
+          "component": {
+            "changeDetection": "OnPush"
+          }
         }
       },
       "root": "",

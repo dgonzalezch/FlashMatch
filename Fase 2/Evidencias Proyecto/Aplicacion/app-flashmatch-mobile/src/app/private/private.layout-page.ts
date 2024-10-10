@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonRouterOutlet, IonList, IonItem, IonButtons, IonImg, IonMenu, IonMenuButton, IonGrid, IonRow, IonCol, IonCard, IonText } from '@ionic/angular/standalone';
@@ -11,12 +11,10 @@ import { MenuComponent } from '../shared/components/menu/menu.component';
   templateUrl: './private.layout-page.html',
   styleUrls: ['./private.layout-page.scss'],
   standalone: true,
-  imports: [IonText, IonCard, IonCol, IonRow, IonGrid, IonMenu, IonMenuButton, IonImg, IonButtons, IonItem, IonList, IonRouterOutlet, IonLabel, IonIcon, IonTabButton, IonTabBar, IonTabs, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, HeaderComponent, MenuComponent]
+  imports: [IonText, IonCard, IonCol, IonRow, IonGrid, IonMenu, IonMenuButton, IonImg, IonButtons, IonItem, IonList, IonRouterOutlet, IonLabel, IonIcon, IonTabButton, IonTabBar, IonTabs, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, HeaderComponent, MenuComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class PrivatePage implements OnInit {
-
-  constructor() { }
-
   ngOnInit() {
   }
 

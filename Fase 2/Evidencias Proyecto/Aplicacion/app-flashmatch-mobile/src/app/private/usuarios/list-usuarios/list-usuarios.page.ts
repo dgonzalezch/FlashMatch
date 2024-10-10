@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonRow, IonGrid, IonSearchbar, IonCol, IonCard, IonCardHeader, IonItem, IonAvatar, IonLabel, IonCardTitle, IonCardSubtitle, IonCardContent, IonFooter, IonButton, IonFab, IonFabButton, IonIcon, IonText } from '@ionic/angular/standalone';
@@ -16,7 +16,8 @@ import { StorageService } from 'src/app/services/storage.service';
   templateUrl: './list-usuarios.page.html',
   styleUrls: ['./list-usuarios.page.scss'],
   standalone: true,
-  imports: [IonText, IonIcon, IonFabButton, IonFab, IonButton, IonFooter, IonCardContent, IonCardSubtitle, IonCardTitle, IonLabel, IonAvatar, IonItem, IonCardHeader, IonCard, IonCol, IonSearchbar, IonGrid, IonRow, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, HeaderComponent, MapComponent]
+  imports: [IonText, IonIcon, IonFabButton, IonFab, IonButton, IonFooter, IonCardContent, IonCardSubtitle, IonCardTitle, IonLabel, IonAvatar, IonItem, IonCardHeader, IonCard, IonCol, IonSearchbar, IonGrid, IonRow, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, HeaderComponent, MapComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ListUsuariosPage {
   private storageService = inject(StorageService);

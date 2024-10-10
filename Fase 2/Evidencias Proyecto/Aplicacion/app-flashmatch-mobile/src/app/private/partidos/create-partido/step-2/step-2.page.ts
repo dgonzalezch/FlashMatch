@@ -1,7 +1,7 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonCard, IonGrid, IonRow, IonCol, IonText, IonCardContent, IonIcon, IonButton, IonFooter, IonLabel, IonItem, IonList, IonToggle, IonThumbnail, IonDatetimeButton, IonModal, IonDatetime, IonAccordion, IonAccordionGroup, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSegment, IonSegmentButton } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonCard, IonGrid, IonRow, IonCol, IonText, IonCardContent, IonIcon, IonButton, IonFooter, IonLabel, IonItem, IonList, IonToggle, IonThumbnail, IonDatetimeButton, IonModal, IonDatetime, IonAccordion, IonAccordionGroup, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSegment, IonSegmentButton, IonAlert, IonSpinner } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 
 // Definición de la interfaz Cancha
@@ -22,11 +22,29 @@ interface Cancha {
   templateUrl: './step-2.page.html',
   styleUrls: ['./step-2.page.scss'],
   standalone: true,
-  imports: [IonSegmentButton, IonSegment, IonCardSubtitle, IonCardTitle, IonCardHeader, IonAccordionGroup, IonAccordion, IonDatetime, IonModal, IonDatetimeButton, IonList, IonItem, IonLabel, IonFooter, IonButton, IonIcon, IonCardContent, IonText, IonCol, IonRow, IonGrid, IonCard, IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, IonToggle, IonThumbnail]
+  imports: [IonSpinner, IonAlert, IonSegmentButton, IonSegment, IonCardSubtitle, IonCardTitle, IonCardHeader, IonAccordionGroup, IonAccordion, IonDatetime, IonModal, IonDatetimeButton, IonList, IonItem, IonLabel, IonFooter, IonButton, IonIcon, IonCardContent, IonText, IonCol, IonRow, IonGrid, IonCard, IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, IonToggle, IonThumbnail],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class Step2Page implements OnInit {
 
   selectedSegment = signal<string>('list');
+
+  alertConfirmButtons = signal([
+    {
+      text: 'Cancel',
+      role: 'cancel',
+      handler: () => {
+        console.log('Alert canceled');
+      },
+    },
+    {
+      text: 'OK',
+      role: 'confirm',
+      handler: (asd:any) => {
+        console.log('Alert confirmed');
+      },
+    },
+  ]);
 
   // Lista de canchas
   canchas: Cancha[] = [
@@ -54,7 +72,7 @@ export default class Step2Page implements OnInit {
     },
   ];
 
-  useCurrentLocationValue: boolean = false; // Controla el uso de la ubicación actual
+  useCurrentLocationValue: boolean = false;
   selectedLocation: string | null = null;
 
   ngOnInit() {

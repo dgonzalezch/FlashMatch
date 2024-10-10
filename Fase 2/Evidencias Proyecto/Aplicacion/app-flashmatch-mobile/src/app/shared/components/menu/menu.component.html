@@ -18,34 +18,20 @@
 
   <ion-content>
     <ion-list lines="none" class="menu-list">
-      @switch (typeMenu()) {
-        @case('public') {
-          @for (item of menuItemsPublic(); track $index) {
-            <ion-menu-toggle auto-hide="false">
-              <ion-item button [routerLink]="item.route" detail>
-                <ion-icon [name]="item.icon" slot="start" size="large"/>
-                <ion-label class="menu-item-label">{{ item.label }}</ion-label>
-              </ion-item>
-            </ion-menu-toggle>
-          }
-        }
-        @case ('private') {
-          @for (item of menuItemsPrivate(); track $index) {
-            <ion-menu-toggle auto-hide="false">
-              <ion-item button [routerLink]="item.route" detail>
-                <ion-icon [name]="item.icon" slot="start" size="large"/>
-                <ion-label class="menu-item-label">{{ item.label }}</ion-label>
-              </ion-item>
-            </ion-menu-toggle>
-          }
-          <ion-menu-toggle>
-            <ion-item button (click)="logOut()"  detail>
-              <ion-icon name="log-out-outline" slot="start" size="large"/>
-              <ion-label class="menu-item-label">Cerrar Sesión</ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-        }
-      }
+    @for (item of menuItemsPrivate(); track $index) {
+      <ion-menu-toggle auto-hide="false">
+        <ion-item button [routerLink]="item.route" detail>
+          <ion-icon [name]="item.icon" slot="start" size="large"/>
+          <ion-label class="menu-item-label">{{ item.label }}</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+    }
+    <ion-menu-toggle>
+      <ion-item button (click)="logOut()" detail>
+        <ion-icon name="log-out-outline" slot="start" size="large"/>
+        <ion-label class="menu-item-label">Cerrar Sesión</ion-label>
+      </ion-item>
+    </ion-menu-toggle>
     </ion-list>
   </ion-content>
 
@@ -57,3 +43,6 @@
     </ion-toolbar>
   </ion-footer>
 </ion-menu>
+
+
+

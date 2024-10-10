@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonBackButton, IonButtons } from '@ionic/angular/standalone';
@@ -8,7 +8,8 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonBackButton, IonButtons 
   templateUrl: './step-3.page.html',
   styleUrls: ['./step-3.page.scss'],
   standalone: true,
-  imports: [IonButtons, IonBackButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonButtons, IonBackButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class Step3Page implements OnInit {
 

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, OnInit, signal } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonIcon, IonText, IonFooter, IonButton, IonInput, IonTextarea, IonSelect, IonSelectOption, IonBackButton, IonButtons } from '@ionic/angular/standalone';
@@ -19,7 +19,8 @@ import { RangosEdadService } from 'src/app/services/rangos-edad.service';
   templateUrl: './create-equipo.page.html',
   styleUrls: ['./create-equipo.page.scss'],
   standalone: true,
-  imports: [IonButtons, IonBackButton, IonButton, IonFooter, IonSelect, IonSelectOption, IonText, IonIcon, IonCardContent, IonCard, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, IonInput, IonTextarea, CommonModule, FormsModule, ReactiveFormsModule, PreventSpacesDirective]
+  imports: [IonButtons, IonBackButton, IonButton, IonFooter, IonSelect, IonSelectOption, IonText, IonIcon, IonCardContent, IonCard, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, IonInput, IonTextarea, CommonModule, FormsModule, ReactiveFormsModule, PreventSpacesDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class CreateEquipoPage {
   private fb = inject(FormBuilder);

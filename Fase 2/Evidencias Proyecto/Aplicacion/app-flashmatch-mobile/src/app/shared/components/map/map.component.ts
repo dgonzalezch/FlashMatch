@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { IonHeader, IonText, IonIcon, IonItem, IonToolbar } from "@ionic/angular/standalone";
 
 @Component({
@@ -10,7 +10,8 @@ import { IonHeader, IonText, IonIcon, IonItem, IonToolbar } from "@ionic/angular
     IonText,
     IonHeader,
     IonIcon
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MapComponent  implements OnInit {
 

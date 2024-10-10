@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonGrid, IonRow, IonCol, IonInput, IonCheckbox, IonButton, IonCard, IonFooter, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonIcon, IonText, IonNavLink, IonModal, IonDatetime, IonDatetimeButton, IonLabel } from '@ionic/angular/standalone';
@@ -14,7 +14,8 @@ import { OnlyNumbersDirective } from 'src/app/shared/common/only-numbers.directi
   templateUrl: './step-1.page.html',
   styleUrls: ['./step-1.page.scss'],
   standalone: true,
-  imports: [IonLabel, IonDatetimeButton, IonDatetime, IonModal, IonNavLink, IonText, IonIcon, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonFooter, IonCard, IonButton, IonCheckbox, IonInput, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, HeaderComponent, RouterLink, FormatRutDirective, OnlyNumbersDirective, CommonModule, FormsModule, ReactiveFormsModule, PreventSpacesDirective ]
+  imports: [IonLabel, IonDatetimeButton, IonDatetime, IonModal, IonNavLink, IonText, IonIcon, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonFooter, IonCard, IonButton, IonCheckbox, IonInput, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, HeaderComponent, RouterLink, FormatRutDirective, OnlyNumbersDirective, CommonModule, FormsModule, ReactiveFormsModule, PreventSpacesDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class Step1Page implements OnInit {
   private fb = inject(FormBuilder);

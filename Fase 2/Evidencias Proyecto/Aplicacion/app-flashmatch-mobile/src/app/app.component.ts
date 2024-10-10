@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import {
   IonApp,
   IonRouterOutlet,
@@ -15,13 +15,13 @@ import { StorageService } from './services/storage.service';
   imports: [
     IonApp,
     IonRouterOutlet,
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
   storageService = inject(StorageService);
 
-
-  constructor(storageService: StorageService) {
+  constructor() {
     addIcons({ home, homeOutline, personOutline, keyOutline, shieldCheckmarkOutline, cameraOutline, logOutOutline, callOutline, mailOutline, locationOutline, settingsOutline, notificationsOutline, footballOutline, alarmOutline, fileTrayOutline, peopleOutline, peopleCircleOutline, walkOutline, albumsOutline, searchOutline, calendarOutline, locateOutline, funnelOutline, eyeOutline, contractOutline, add, createOutline, lockClosedOutline, phonePortraitOutline, statsChartOutline, timerOutline, pencilOutline, star, starOutline, trashOutline, medalOutline, starHalf, informationCircleOutline, mapOutline, navigateCircleOutline, pinOutline, navigateOutline, ticketOutline, listOutline, gridOutline, logInOutline, appsOutline, idCardOutline, personAddOutline, helpCircleOutline, helpOutline });
   }
 

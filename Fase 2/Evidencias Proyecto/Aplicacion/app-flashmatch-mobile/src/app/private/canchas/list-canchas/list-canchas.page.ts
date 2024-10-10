@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonRow, IonSearchbar, IonTitle, IonToolbar, IonItem, IonLabel } from '@ionic/angular/standalone';
@@ -14,7 +14,8 @@ import { responseError } from 'src/app/interfaces/response-error.interface';
   templateUrl: './list-canchas.page.html',
   styleUrls: ['./list-canchas.page.scss'],
   standalone: true,
-  imports: [IonLabel, IonItem, IonSearchbar, IonCol, IonGrid, IonRow, IonCardSubtitle, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, MapComponent]
+  imports: [IonLabel, IonItem, IonSearchbar, IonCol, IonGrid, IonRow, IonCardSubtitle, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, MapComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ListCanchasPage {
   private storageService = inject(StorageService);

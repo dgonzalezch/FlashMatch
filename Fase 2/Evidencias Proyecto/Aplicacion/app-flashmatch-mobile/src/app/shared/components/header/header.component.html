@@ -1,42 +1,44 @@
-@if (typeHeader() == 'public') {
-  <ion-header>
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-menu-button/>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
-}
-
-@if (typeHeader() == 'public-route') {
-  <ion-header>
-    <ion-toolbar>
-      <ion-buttons class="route-buttons" slot="start">
-        <ion-back-button defaultHref="auth"></ion-back-button>
-      </ion-buttons>
-      <ion-title class="ion-text-center">
-        <ion-img class="custom-img" style="height: 45px;" src="assets/logo/logo-flashmatch.png"
-          alt="logo-flashmatch"/>
-      </ion-title>
-    </ion-toolbar>
-  </ion-header>
-}
-
-@if (typeHeader() == 'private') {
-  <ion-header>
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-menu-button/>
-      </ion-buttons>
-      <ion-title class="ion-text-center">
-        <ion-img class="custom-img" style="height: 45px;" src="assets/logo/logo-flashmatch.png"
-          alt="logo-flashmatch"/>
-      </ion-title>
-      <ion-buttons slot="end">
-        <ion-button shape="round" [routerLink]="['/private/notifications']">
-          <ion-icon slot="icon-only" name="notifications-outline"/>
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
+@switch (typeHeader()) {
+  @case ('public') {
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="end">
+          <ion-button size="large" shape="round" >
+            <ion-icon slot="icon-only" name="help-circle-outline"/>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+  }
+  @case ('public-route') {
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons class="route-buttons" slot="start">
+          <ion-back-button defaultHref="auth"/>
+        </ion-buttons>
+        <ion-title class="ion-text-center">
+          <ion-img class="custom-img" style="height: 45px;" src="assets/logo/logo-flashmatch.png"
+            alt="logo-flashmatch"/>
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
+  }
+  @case ('private') {
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button/>
+        </ion-buttons>
+        <ion-title class="ion-text-center">
+          <ion-img class="custom-img" style="height: 45px;" src="assets/logo/logo-flashmatch.png"
+            alt="logo-flashmatch"/>
+        </ion-title>
+        <ion-buttons slot="end">
+          <ion-button shape="round" [routerLink]="['/private/notifications']">
+            <ion-icon slot="icon-only" name="notifications-outline"/>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+  }
 }

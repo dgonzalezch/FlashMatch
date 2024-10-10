@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonGrid, IonRow, IonCol, IonAvatar, IonButton, IonIcon, IonChip, IonCardHeader, IonCard, IonCardTitle, IonCardContent, IonList, IonItem, IonLabel, IonText, IonNote, IonButtons, IonAccordion, IonAccordionGroup, IonTextarea, IonModal, IonFooter, IonSelectOption, IonSelect } from '@ionic/angular/standalone';
@@ -16,7 +16,8 @@ import { DeportesPosicionesUsuariosService } from 'src/app/services/deportes-pos
   templateUrl: './info-usuario.page.html',
   styleUrls: ['./info-usuario.page.scss'],
   standalone: true,
-  imports: [IonFooter, IonModal, IonTextarea, IonAccordionGroup, IonAccordion, IonButtons, IonNote, IonText, IonLabel, IonItem, IonList, IonCardContent, IonCardTitle, IonCard, IonCardHeader, IonChip, IonIcon, IonButton, IonAvatar, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, IonSelect, IonSelectOption, CommonModule, FormsModule, ReactiveFormsModule,]
+  imports: [IonFooter, IonModal, IonTextarea, IonAccordionGroup, IonAccordion, IonButtons, IonNote, IonText, IonLabel, IonItem, IonList, IonCardContent, IonCardTitle, IonCard, IonCardHeader, IonChip, IonIcon, IonButton, IonAvatar, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, IonSelect, IonSelectOption, CommonModule, FormsModule, ReactiveFormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class InfoUsuarioPage {
   private fb = inject(FormBuilder);

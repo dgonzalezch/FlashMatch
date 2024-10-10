@@ -10,7 +10,7 @@
 <ion-content [fullscreen]="true">
   <ion-grid>
     <ion-row class="ion-justify-content-center">
-      <ion-col size-xs="auto">
+      <ion-col size="auto">
         <ion-card>
           <ion-card-content>
             <ion-row class="ion-align-items-center ion-justify-content-center">
@@ -33,7 +33,7 @@
       <ion-col size="12">
         <ion-accordion-group class="ion-no-margin" expand="inset">
           <ion-accordion value="location" class="ion-no-margin">
-            <ion-item slot="header" color="tertiary">
+            <ion-item slot="header" color="primary">
               <ion-icon name="location-outline" class="ion-margin-end"></ion-icon>
               <ion-label>
                 <h3>Ubicación*</h3>
@@ -75,7 +75,7 @@
         <ion-col size="12">
           <ion-list>
             @for (cancha of canchas; track $index) {
-              <ion-item button>
+              <ion-item>
                 <ion-thumbnail slot="start">
                   <img [src]="'https://ionicframework.com/docs/img/demos/thumbnail.svg'" alt="cancha">
                 </ion-thumbnail>
@@ -98,12 +98,9 @@
       @if (selectedSegment() == 'grid') {
         @for (cancha of canchas; track $index) {
           <ion-col size="12">
-            <ion-card button class="ion-no-margin">
-              <!-- Contenedor de imagen -->
+            <ion-card class="ion-no-margin">
               <div class="image-container">
                 <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
-
-                <!-- Div para destacar el precio sobre la imagen -->
                 <div class="price-badge">
                   <p>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }} / hora</p>
                 </div>
@@ -129,7 +126,6 @@
         }
       }
     </ion-row>
-
   </ion-grid>
 </ion-content>
 

@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { IonContent, IonList, IonItem, IonHeader, IonToolbar, IonTitle, IonGrid, IonRow, IonCol, IonImg, IonIcon, IonLabel, IonMenu, IonButton, IonMenuToggle, IonFooter, IonListHeader, IonCardHeader, IonCard, IonText } from "@ionic/angular/standalone";
 import { StorageService } from 'src/app/services/storage.service';
@@ -8,17 +8,16 @@ import { StorageService } from 'src/app/services/storage.service';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
   standalone: true,
-  imports: [IonText, IonCard, IonCardHeader, IonListHeader, IonFooter, IonButton, IonLabel, IonIcon, IonImg, IonCol, IonRow, IonGrid, IonTitle, IonToolbar, IonHeader, IonMenu, IonContent, IonList, IonItem, IonMenuToggle, RouterLink]
+  imports: [IonText, IonCard, IonCardHeader, IonListHeader, IonFooter, IonButton, IonLabel, IonIcon, IonImg, IonCol, IonRow, IonGrid, IonTitle, IonToolbar, IonHeader, IonMenu, IonContent, IonList, IonItem, IonMenuToggle, RouterLink],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenuComponent {
   private storageService = inject(StorageService);
   private router = inject(Router);
 
-  typeMenu = input.required<'public' | 'private'>()
-
   menuItemsPublic = signal([
     { icon: 'apps-outline', label: 'Inicio', route: '/auth/login' },
-    { icon: 'id-card-outline', label: 'Registrarse', route: '/auth/register/step-1' },
+    // { icon: 'id-card-outline', label: 'Registrarse', route: '/auth/register/step-1' },
     { icon: 'help-circle-outline', label: 'Ayuda', route: '/private/teams' },
   ]);
 

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, Validators } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonRange, IonItem, IonLabel, IonCol, IonRow, IonGrid, IonAccordion, IonAccordionGroup, IonIcon, IonList, IonButton, IonText, IonCardContent, IonCard, IonCardHeader, IonCardTitle, IonTabs, IonTabBar, IonTabButton, IonSelect, IonSelectOption, IonNote, IonButtons } from '@ionic/angular/standalone';
@@ -15,7 +15,8 @@ import { responseError } from 'src/app/interfaces/response-error.interface';
   templateUrl: './estadisticas.page.html',
   styleUrls: ['./estadisticas.page.scss'],
   standalone: true,
-  imports: [IonButtons, IonNote, IonTabButton, IonTabBar, IonTabs, IonCardTitle, IonCardHeader, IonCard, IonCardContent, IonText, IonButton, IonList, IonIcon, IonAccordionGroup, IonAccordion, IonGrid, IonRow, IonCol, IonLabel, IonItem, IonRange, IonContent, IonHeader, IonTitle, IonToolbar, IonSelect, IonSelectOption, CommonModule, FormsModule, BaseChartDirective]
+  imports: [IonButtons, IonNote, IonTabButton, IonTabBar, IonTabs, IonCardTitle, IonCardHeader, IonCard, IonCardContent, IonText, IonButton, IonList, IonIcon, IonAccordionGroup, IonAccordion, IonGrid, IonRow, IonCol, IonLabel, IonItem, IonRange, IonContent, IonHeader, IonTitle, IonToolbar, IonSelect, IonSelectOption, CommonModule, FormsModule, BaseChartDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class EstadisticasPage {
   private fb = inject(FormBuilder);
@@ -81,7 +82,6 @@ export default class EstadisticasPage {
       }
     })
   }
-
 
   updateChartData() {
     if (this.selectedDeporte() && this.infoUsuario()) {

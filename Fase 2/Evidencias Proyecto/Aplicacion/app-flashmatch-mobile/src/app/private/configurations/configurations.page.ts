@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonSegment, IonSegmentButton, IonLabel, IonCardTitle, IonCardHeader, IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonImg, IonIcon, IonItem, IonList, IonItemDivider, IonText, IonInput, IonFooter, IonButton, IonInputPasswordToggle, IonAvatar } from '@ionic/angular/standalone';
@@ -10,7 +10,8 @@ import { RouterLink } from '@angular/router';
   templateUrl: './configurations.page.html',
   styleUrls: ['./configurations.page.scss'],
   standalone: true,
-  imports: [IonAvatar, IonButton, IonFooter, IonInput, IonText, IonItemDivider, IonList, IonItem, IonIcon, IonImg, IonCol, IonRow, IonGrid, IonCardContent, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonSegmentButton, IonSegment, IonContent, IonHeader, IonTitle, IonToolbar, IonInputPasswordToggle, CommonModule, FormsModule, HeaderComponent, RouterLink]
+  imports: [IonAvatar, IonButton, IonFooter, IonInput, IonText, IonItemDivider, IonList, IonItem, IonIcon, IonImg, IonCol, IonRow, IonGrid, IonCardContent, IonCard, IonCardHeader, IonCardTitle, IonLabel, IonSegmentButton, IonSegment, IonContent, IonHeader, IonTitle, IonToolbar, IonInputPasswordToggle, CommonModule, FormsModule, HeaderComponent, RouterLink],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ConfigurationsPage implements OnInit {
   selectedSegment = signal<'data' | 'password'>('data');

@@ -1,6 +1,6 @@
-import { Component, input, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IonTitle, IonImg, IonToolbar, IonHeader, IonButtons, IonBackButton, IonMenuButton, IonButton, IonIcon, IonPopover, IonList, IonItem, IonLabel, IonProgressBar, IonText } from "@ionic/angular/standalone";
+import { IonTitle, IonImg, IonToolbar, IonHeader, IonButtons, IonBackButton, IonMenuButton, IonButton, IonIcon, IonPopover, IonList, IonItem, IonLabel, IonProgressBar, IonText, MenuController } from "@ionic/angular/standalone";
 
 
 @Component({
@@ -14,11 +14,11 @@ import { IonTitle, IonImg, IonToolbar, IonHeader, IonButtons, IonBackButton, Ion
     IonToolbar,
     IonHeader,
     IonMenuButton,
-    RouterLink
-  ]
+    RouterLink,
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent  implements OnInit {
-
   public typeHeader = input.required<string>();
 
   ngOnInit() { }

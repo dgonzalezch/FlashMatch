@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButton, IonInput, IonCol, IonRow, IonGrid, IonText, IonCardContent, IonCard, IonIcon, IonCheckbox, IonCardSubtitle, IonCardTitle, IonCardHeader, IonInputPasswordToggle } from '@ionic/angular/standalone';
@@ -18,6 +18,7 @@ import { AlertService } from 'src/app/shared/common/alert.service';
   styleUrls: ['./step-2.page.scss'],
   standalone: true,
   imports: [IonText, IonIcon, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonFooter, IonCard, IonButton, IonCheckbox, IonInput, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, HeaderComponent, RouterLink, FormsModule, ReactiveFormsModule, IonInputPasswordToggle, PreventSpacesDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class Step2Page implements OnInit {
   private fb = inject(FormBuilder);

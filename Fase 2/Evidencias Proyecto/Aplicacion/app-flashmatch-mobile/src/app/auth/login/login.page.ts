@@ -1,7 +1,7 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonImg, IonContent, IonTitle, IonAvatar, IonGrid, IonCol, IonRow, IonInput, IonItem, IonList, IonText, IonHeader, IonButtons, IonToolbar, IonMenuButton, IonButton, IonCheckbox, IonLabel, IonCardContent, IonCard, IonInputPasswordToggle, IonAlert, AlertController, IonRouterOutlet } from '@ionic/angular/standalone';
+import { IonImg, IonContent, IonTitle, IonAvatar, IonGrid, IonCol, IonRow, IonInput, IonItem, IonList, IonText, IonHeader, IonButtons, IonToolbar, IonMenuButton, IonButton, IonCheckbox, IonLabel, IonCardContent, IonCard, IonInputPasswordToggle, IonAlert, AlertController, IonRouterOutlet, IonMenu, IonMenuToggle } from '@ionic/angular/standalone';
 import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
 import { FormValidatorService } from 'src/app/shared/common/form-validator-service.service';
@@ -47,8 +47,11 @@ import { MenuComponent } from 'src/app/shared/components/menu/menu.component';
     FormsModule,
     ReactiveFormsModule,
     IonInputPasswordToggle,
-    MenuComponent
-  ]
+    MenuComponent,
+    IonMenu,
+    IonMenuToggle
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class LoginPage implements OnInit {
 

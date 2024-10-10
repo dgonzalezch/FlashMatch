@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonFab, IonFabButton, IonAvatar, IonCol, IonRow, IonFooter, IonCardContent, IonCardTitle, IonCardSubtitle, IonCardHeader, IonCard, IonGrid, IonProgressBar, IonSpinner, IonSearchbar, IonText } from '@ionic/angular/standalone';
@@ -16,7 +16,8 @@ import { MapComponent } from 'src/app/shared/components/map/map.component';
   templateUrl: './list-equipos.page.html',
   styleUrls: ['./list-equipos.page.scss'],
   standalone: true,
-  imports: [IonText, IonSearchbar, IonSpinner, IonProgressBar, IonGrid, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonFooter, IonRow, IonCol, IonAvatar, IonFabButton, IonFab, IonLabel, IonItem, IonList, IonIcon, IonButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, MapComponent]
+  imports: [IonText, IonSearchbar, IonSpinner, IonProgressBar, IonGrid, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonFooter, IonRow, IonCol, IonAvatar, IonFabButton, IonFab, IonLabel, IonItem, IonList, IonIcon, IonButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, MapComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ListEquiposPage {
   private storageService = inject(StorageService);

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonListHeader, IonItem, IonLabel, IonBadge, IonIcon, IonItemDivider, IonCardContent, IonCard, IonAccordion, IonAccordionGroup } from '@ionic/angular/standalone';
@@ -9,7 +9,8 @@ import { RouterLink } from '@angular/router';
   templateUrl: './notifications.page.html',
   styleUrls: ['./notifications.page.scss'],
   standalone: true,
-  imports: [IonAccordionGroup, IonAccordion, IonCard, IonCardContent, IonItemDivider, RouterLink, IonIcon, IonBadge, IonLabel, IonItem, IonListHeader, IonList, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonAccordionGroup, IonAccordion, IonCard, IonCardContent, IonItemDivider, RouterLink, IonIcon, IonBadge, IonLabel, IonItem, IonListHeader, IonList, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class NotificationsPage implements OnInit {
 
