@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonCard, IonGrid, IonRow, IonCol, IonText, IonCardContent, IonIcon, IonButton, IonFooter, IonLabel, IonItem, IonList, IonToggle, IonThumbnail, IonDatetimeButton, IonModal, IonDatetime, IonAccordion, IonAccordionGroup, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSegment, IonSegmentButton, IonAlert, IonSpinner } from '@ionic/angular/standalone';
-import { RouterLink } from '@angular/router';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonCard, IonGrid, IonRow, IonCol, IonText, IonCardContent, IonIcon, IonButton, IonFooter, IonLabel, IonItem, IonList, IonToggle, IonThumbnail, IonDatetimeButton, IonModal, IonDatetime, IonAccordion, IonAccordionGroup, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSegment, IonSegmentButton, IonAlert, IonSpinner, LoadingController } from '@ionic/angular/standalone';
+import { Router, RouterLink } from '@angular/router';
 
 // Definición de la interfaz Cancha
 interface Cancha {
@@ -26,9 +26,10 @@ interface Cancha {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class Step2Page implements OnInit {
+  loadingController = inject(LoadingController);
+  router = inject(Router);
 
   selectedSegment = signal<string>('list');
-
   alertConfirmButtons = signal([
     {
       text: 'Cancel',
@@ -45,6 +46,23 @@ export default class Step2Page implements OnInit {
       },
     },
   ]);
+  selectedCanchaId: string | null = null;
+
+  async reservarCancha(idCancha: string) {
+    const loading = await this.loadingController.create({
+      message: 'Enviando solicitud de reserva...',
+      duration: 3000
+    });
+
+    // Mostrar el loading modal
+    await loading.present();
+
+    // Esperar a que el modal de carga desaparezca
+    await loading.onDidDismiss();
+
+    // Redirigir a la ruta deseada
+    this.router.navigate(['/private/matches/create-match/step-3']);
+  }
 
   // Lista de canchas
   canchas: Cancha[] = [

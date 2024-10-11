@@ -1,0 +1,54 @@
+
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center ion-align-items-center">
+      <ion-col size="auto" class="ion-text-center ion-margin-top">
+        <ion-icon color="tertiary" name="checkmark-circle-outline" style="font-size: 60px;"></ion-icon>
+        <ion-text>
+          <h1><strong>¡Solicitud de reserva enviada con éxito!</strong></h1>
+        </ion-text>
+
+      </ion-col>
+      <ion-col size="12" class="ion-text-center">
+        <ion-note color="medium" class="ion-margin-top ion-text-center">
+          La solicitud de reserva ha sido enviada al administrador de la cancha elegida. Si tu solicitud es aceptada o rechazada, se te notificará.
+        </ion-note>
+      </ion-col>
+    </ion-row>
+
+    <!-- Detalles de la cancha en ion-card -->
+    <ion-row>
+      <ion-col size="12">
+        <ion-card>
+          <div class="image-container">
+            <img alt="Imagen de la cancha" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+            <div class="price-badge">
+              <p>$20.000 / hora</p>
+            </div>
+          </div>
+
+          <ion-card-header>
+            <ion-card-title>Cancha Municipal</ion-card-title>
+            <ion-card-subtitle>Fútbol 11 (Pasto sintético)</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <p><strong>Descripción:</strong> Cancha descripcion</p>
+            <p><strong>Precio por hora:</strong> $20.000</p>
+            <p><strong>Ubicación:</strong> Phillipe Cousteau #12089</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<!-- Footer con el botón para ver el estado de la reserva -->
+<ion-footer class="ion-no-border ion-padding">
+  <ion-toolbar >
+    <ion-button expand="block" color="primary" [routerLink]="['private/matches/list-matches']">
+      Ver en partidos
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

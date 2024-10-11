@@ -19,7 +19,7 @@
               </ion-col>
               <ion-col>
                 <ion-text>
-                  <b>Segundo,</b> selecciona una cancha de tu preferencia para reservar la hora.
+                  <b>Segundo,</b> reserva una cancha de tu preferencia para seguir al último paso.
                 </ion-text>
               </ion-col>
             </ion-row>
@@ -84,8 +84,8 @@
                   <p>{{ cancha.descripcion }}</p>
                   <p>Tipo de cancha: {{ cancha.tipoCancha }}</p>
                   <p><b>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }}</b> por hora</p>
-                  <ion-button color="secondary" size="small">
-                    <ion-icon slot="start" name="ticket-outline"></ion-icon>
+                  <ion-button color="secondary" size="small" (click)="reservarCancha(cancha.id_cancha)">
+                    <ion-icon slot="start" name="ticket-outline"/>
                     Reservar
                   </ion-button>
                 </ion-label>
@@ -116,7 +116,7 @@
               </ion-card-content>
 
               <ion-footer class="ion-no-border ion-padding footer-aligned-end">
-                <ion-button color="secondary">
+                <ion-button color="secondary" (click)="reservarCancha(cancha.id_cancha)">
                   <ion-icon slot="start" name="ticket-outline"/>
                   Reservar
                 </ion-button>
@@ -129,10 +129,10 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer class="ion-no-border">
+<!-- <ion-footer class="ion-no-border">
   <ion-toolbar>
     <ion-button class="ion-padding-horizontal" color="tertiary" expand="block" type="submit" form="step1Form" [routerLink]="['/private/matches/create-match/step-3']">
       Siguiente
     </ion-button>
   </ion-toolbar>
-</ion-footer>
+</ion-footer> -->
