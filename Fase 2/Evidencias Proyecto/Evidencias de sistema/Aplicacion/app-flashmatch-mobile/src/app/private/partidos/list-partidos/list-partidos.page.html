@@ -3,14 +3,16 @@
 <ion-content [fullscreen]="true">
   <ion-grid>
 
-    <!-- Título de la sección: Canchas pendientes de aceptación -->
+    <ion-col size="12">
+      <ion-searchbar placeholder="Buscar usuarios..."/>
+    </ion-col>
+
     <ion-row>
       <ion-col size="12">
-        <h5 class="ion-no-margin ion-margin-top">Partidos en espera de confirmación</h5>
+        <h5 class="ion-no-margin">Partidos en espera de confirmación</h5>
       </ion-col>
     </ion-row>
 
-    <!-- Partidos pendientes de aceptación cancha -->
     <ion-row>
       <ion-col size="12">
         @for (partidos of partidosPendientesAceptacion; track $index) {
@@ -27,15 +29,15 @@
                 </ion-col>
                 <ion-col size="6">
                   <p>
-                    <ion-icon name="football-outline" style="vertical-align: middle; margin-right: 8px;"></ion-icon>
+                    <ion-icon name="football-outline" style="vertical-align: middle; margin-right: 8px;"/>
                     Fútbol 11
                   </p>
                   <p>
-                    <ion-icon name="sparkles-outline" style="vertical-align: middle; margin-right: 8px;"></ion-icon>
+                    <ion-icon name="sparkles-outline" style="vertical-align: middle; margin-right: 8px;"/>
                     Entretención
                   </p>
                   <p>
-                    <ion-icon name="walk-outline" style="vertical-align: middle; margin-right: 8px;"></ion-icon>
+                    <ion-icon name="walk-outline" style="vertical-align: middle; margin-right: 8px;"/>
                     26 a 34 años
                   </p>
                 </ion-col>
@@ -51,20 +53,44 @@
       </ion-col>
     </ion-row>
 
-    <!-- Título de la sección: Partidos disponibles -->
     <ion-row>
       <ion-col size="12">
-        <h5 class="ion-no-margin ion-margin-top">Partidos disponibles</h5>
+        <h5 class="ion-no-margin">Partidos disponibles</h5>
       </ion-col>
     </ion-row>
 
-    <!-- Partidos disponibles -->
     <ion-row>
       <ion-col size="12">
         @for (partidos of partidosDisponibles; track $index) {
           <ion-card button>
-            <ion-card-content>
-              {{ partidos.nombre }} <!-- Ejemplo: Mostrar el nombre del partido -->
+            <ion-badge class="icon-text-custom" color="tertiary">
+              <ion-icon name="calendar-outline" size="small"/>
+              {{ partidos.fecha }}
+            </ion-badge>
+            <ion-card-content class="ion-no-padding">
+              <ion-row class="ion-align-items-center">
+                <ion-col size="2" class="ion-text-center">
+                  <ion-icon color="tertiary" name="checkmark-done-circle-outline" size="large"/>
+                </ion-col>
+                <ion-col size="6">
+                  <p>
+                    <ion-icon name="football-outline" style="vertical-align: middle; margin-right: 8px;"/>
+                    Fútbol 11
+                  </p>
+                  <p>
+                    <ion-icon name="sparkles-outline" style="vertical-align: middle; margin-right: 8px;"/>
+                    Entretención
+                  </p>
+                  <p>
+                    <ion-icon name="walk-outline" style="vertical-align: middle; margin-right: 8px;"/>
+                    26 a 34 años
+                  </p>
+                </ion-col>
+
+                <ion-col size="4" class="ion-text-center">
+                  <ion-badge color="tertiary">Agendado</ion-badge>
+                </ion-col>
+              </ion-row>
             </ion-card-content>
           </ion-card>
         }

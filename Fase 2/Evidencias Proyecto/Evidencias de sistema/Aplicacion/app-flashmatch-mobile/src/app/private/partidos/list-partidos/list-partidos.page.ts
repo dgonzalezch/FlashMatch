@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonFooter, IonSegmentButton, IonIcon, IonButtons, IonSegment, IonModal, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonList, IonItem, IonLabel, IonGrid, IonRow, IonCol, IonCardSubtitle, IonText, IonProgressBar, IonChip, IonSpinner, IonBadge } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonFooter, IonSegmentButton, IonIcon, IonButtons, IonSegment, IonModal, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonList, IonItem, IonLabel, IonGrid, IonRow, IonCol, IonCardSubtitle, IonText, IonProgressBar, IonChip, IonSpinner, IonBadge, IonSearchbar } from '@ionic/angular/standalone';
 import { MapComponent } from 'src/app/shared/components/map/map.component';
 import { RouterLink } from '@angular/router';
 
@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './list-partidos.page.html',
   styleUrls: ['./list-partidos.page.scss'],
   standalone: true,
-  imports: [IonBadge, IonSpinner, IonChip, IonProgressBar, IonText, IonCardSubtitle, IonCol, IonRow, IonGrid, IonLabel, IonItem, IonList, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonModal, IonSegment, IonButtons, IonIcon, IonSegmentButton, IonFooter, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, MapComponent, RouterLink],
+  imports: [IonSearchbar, IonBadge, IonSpinner, IonChip, IonProgressBar, IonText, IonCardSubtitle, IonCol, IonRow, IonGrid, IonLabel, IonItem, IonList, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonModal, IonSegment, IonButtons, IonIcon, IonSegmentButton, IonFooter, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, MapComponent, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ListPartidosPage implements OnInit {
@@ -24,20 +24,6 @@ export default class ListPartidosPage implements OnInit {
       fecha: '2024-10-15 10:00',
       ubicacion: 'Cancha Municipal',
       descripcion: 'Partido amistoso de fútbol para niños de 8 a 12 años.',
-    },
-    {
-      id: '2',
-      nombre: 'Torneo de Fútbol Amateur',
-      fecha: '2024-10-20 15:00',
-      ubicacion: 'Cancha de Césped Sintético',
-      descripcion: 'Torneo abierto para equipos amateurs de la región.',
-    },
-    {
-      id: '3',
-      nombre: 'Partido de Liga Local',
-      fecha: '2024-10-22 18:00',
-      ubicacion: 'Estadio Municipal',
-      descripcion: 'Partido de liga local entre equipos de la comunidad.',
     }
   ];
 
@@ -49,7 +35,6 @@ export default class ListPartidosPage implements OnInit {
   setOpen(isOpen: boolean) {
     this.isModalOpen = isOpen;
   }
-
 
   results = [
     {
