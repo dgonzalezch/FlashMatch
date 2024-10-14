@@ -1,0 +1,109 @@
+<app-map/>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+
+    <ion-col size="12">
+      <ion-searchbar placeholder="Buscar usuarios..."/>
+    </ion-col>
+
+    <ion-row>
+      <ion-col size="12">
+        <h5 class="ion-no-margin">Partidos en espera de confirmación</h5>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        @for (partidos of partidosPendientesAceptacion; track $index) {
+          <ion-card button [routerLink]="'/private/matches/detail-match/12'">
+            <ion-badge class="icon-text-custom" color="secondary">
+              <ion-icon name="calendar-outline" size="small"/>
+              {{ partidos.fecha }}
+            </ion-badge>
+            <ion-card-content class="ion-no-padding">
+              <ion-row class="ion-align-items-center">
+                <ion-col size="2" class="ion-text-center">
+                  <ion-icon color="primary" size="large" name="hourglass-outline"/>
+                  <!-- <ion-spinner color="primary"/> -->
+                </ion-col>
+                <ion-col size="6">
+                  <p>
+                    <ion-icon name="football-outline" style="vertical-align: middle; margin-right: 8px;"/>
+                    Fútbol 11
+                  </p>
+                  <p>
+                    <ion-icon name="sparkles-outline" style="vertical-align: middle; margin-right: 8px;"/>
+                    Entretención
+                  </p>
+                  <p>
+                    <ion-icon name="walk-outline" style="vertical-align: middle; margin-right: 8px;"/>
+                    26 a 34 años
+                  </p>
+                </ion-col>
+
+                <ion-col size="4" class="ion-text-center">
+                  <ion-badge color="primary">Pendiente</ion-badge>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+            <ion-progress-bar type="indeterminate"/>
+          </ion-card>
+        }
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <h5 class="ion-no-margin">Partidos disponibles</h5>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        @for (partidos of partidosDisponibles; track $index) {
+          <ion-card button [routerLink]="'/private/matches/detail-match/12'">
+            <ion-badge class="icon-text-custom" color="tertiary">
+              <ion-icon name="calendar-outline" size="small"/>
+              {{ partidos.fecha }}
+            </ion-badge>
+            <ion-card-content class="ion-no-padding">
+              <ion-row class="ion-align-items-center">
+                <ion-col size="2" class="ion-text-center">
+                  <ion-icon color="tertiary" name="checkmark-done-circle-outline" size="large"/>
+                </ion-col>
+                <ion-col size="6">
+                  <p>
+                    <ion-icon name="football-outline" style="vertical-align: middle; margin-right: 8px;"/>
+                    Fútbol 11
+                  </p>
+                  <p>
+                    <ion-icon name="sparkles-outline" style="vertical-align: middle; margin-right: 8px;"/>
+                    Entretención
+                  </p>
+                  <p>
+                    <ion-icon name="walk-outline" style="vertical-align: middle; margin-right: 8px;"/>
+                    26 a 34 años
+                  </p>
+                </ion-col>
+                <ion-col size="4" class="ion-text-center">
+                  <ion-badge color="tertiary">Agendado</ion-badge>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+        }
+      </ion-col>
+    </ion-row>
+
+    <!-- Botón para crear partido -->
+    <ion-row class="ion-justify-content-center ion-margin-top">
+      <ion-col size="12">
+        <ion-button color="secondary" expand="block" [routerLink]="['/private/matches/create-match/step-1']">
+          Crear partido
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>

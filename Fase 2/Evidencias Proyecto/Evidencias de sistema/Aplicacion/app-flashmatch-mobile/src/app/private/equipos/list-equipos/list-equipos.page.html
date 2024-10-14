@@ -1,0 +1,54 @@
+<app-map/>
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" class="ion-no-padding">
+        <ion-searchbar placeholder="Buscar equipos..."/>
+      </ion-col>
+      @for (equipo of listEquipos(); track $index) {
+        <ion-col size="12" class="ion-text-end">
+          <ion-button color="secondary" [routerLink]="['/private/teams/create-team']">Crear equipo</ion-button>
+        </ion-col>
+        <ion-col size="12">
+          <ion-card button (click)="viewTeamDetails(equipo.id_equipo)">
+            <ion-card-header class="ion-no-padding">
+              <ion-item lines="none" >
+                <ion-avatar slot="start" class="team-logo">
+                  <img [src]="'https://ionicframework.com/docs/img/demos/avatar.svg'" alt="Logo del equipo">
+                </ion-avatar>
+
+                <ion-label>
+                  <ion-card-title>{{ equipo.nombre_equipo }}</ion-card-title>
+                  <ion-card-subtitle>{{ equipo.deporte.nombre_deporte }}</ion-card-subtitle>
+                </ion-label>
+              </ion-item>
+            </ion-card-header>
+
+            <ion-card-content>
+              <p>Integrantes: 3</p>
+              <p>Fecha de creación: {{ equipo.creado_en | date: 'dd/MM/yyyy' }}</p>
+            </ion-card-content>
+
+            <ion-footer class="ion-text-right">
+              <ion-button fill="outline">
+                Unirse
+              </ion-button>
+            </ion-footer>
+          </ion-card>
+        </ion-col>
+      }@empty {
+        <ion-col>
+          <ion-item lines="none">
+            <ion-label>No hay equipos disponibles.</ion-label>
+          </ion-item>
+        </ion-col>
+      }
+    </ion-row>
+  </ion-grid>
+<!--
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [routerLink]="['/private/teams/create-team']" routerLinkActive="router-link-active">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab> -->
+</ion-content>

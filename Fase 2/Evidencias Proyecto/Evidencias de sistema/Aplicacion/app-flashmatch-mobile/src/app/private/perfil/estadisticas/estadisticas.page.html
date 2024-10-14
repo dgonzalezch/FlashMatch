@@ -1,0 +1,97 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Estadísticas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-select label="Deporte" label-placement="floating" fill="outline" cancelText="cancelar" (ionChange)="selectedDeporte.set($event.detail.value); updateChartData()">
+          @for (deportePosicion of infoUsuario()?.deportesPosicionesUsuarios; track $index) {
+            <ion-select-option [value]="deportePosicion.posicion">{{deportePosicion.posicion.deporte.nombre_deporte}}</ion-select-option>
+          }
+        </ion-select>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    @if (selectedDeporte()) {
+      <ion-row>
+        <ion-col size="12">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h4 class="ion-no-margin">Rendimiento</h4>
+            <ion-button color="secondary" size="small">
+              <ion-icon slot="start" name="pencil-outline"></ion-icon>
+              Editar
+            </ion-button>
+          </div>
+        </ion-col>
+        <ion-col size="12">
+          <canvas baseChart
+            [datasets]="radarChartData()"
+            [options]="radarChartOptions()"
+            [labels]="radarChartLabels()"
+            [type]="'radar'">
+          </canvas>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-card class="ion-no-margin" color="tertiary">
+            <ion-card-header>
+              <ion-card-title>Velocidad</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <h1 class="ion-text-center">{{ velocidadValue() }}%</h1>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size="6">
+          <ion-card class="ion-no-margin" color="tertiary">
+            <ion-card-header>
+              <ion-card-title>Resistencia</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <h1 class="ion-text-center">{{ resistenciaValue() }}%</h1>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size="6">
+          <ion-card class="ion-no-margin" color="tertiary">
+            <ion-card-header>
+              <ion-card-title>Técnica</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <h1 class="ion-text-center">{{ tecnicaValue() }}%</h1>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col size="6">
+          <ion-card class="ion-no-margin" color="tertiary">
+            <ion-card-header>
+              <ion-card-title>Táctica</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <h1 class="ion-text-center">{{ tacticaValue() }}%</h1>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    }
+    @else {
+      <ion-row>
+        <ion-col size="12">
+          <ion-note color="medium" class="ion-margin-top ion-text-center">
+            *Debes seleccionar un deporte de tu lista para ver las estadísticas.
+          </ion-note>
+        </ion-col>
+      </ion-row>
+    }
+  </ion-grid>
+</ion-content>

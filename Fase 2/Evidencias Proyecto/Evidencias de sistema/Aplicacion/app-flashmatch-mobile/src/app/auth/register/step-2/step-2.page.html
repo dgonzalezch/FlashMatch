@@ -1,0 +1,130 @@
+<app-header [typeHeader]="'public-route'"/>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="auto">
+        <ion-card>
+          <ion-card-content>
+            <ion-row class="ion-align-items-center ion-justify-content-center">
+              <ion-col size="auto">
+                <ion-icon name="key-outline" style="font-size: 25px; margin-right: 10px;"></ion-icon>
+              </ion-col>
+              <ion-col>
+                <ion-text>
+                  <b>Segundo,</b> ingresa los datos para iniciar sesión en FlashMatch.
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <form [formGroup]="step2Form" id="step2Form" (ngSubmit)="onSubmit()">
+      <ion-row>
+        <!-- CORREO -->
+        <ion-col size="12">
+          <ion-input type="email" class="ion-input-form" formControlName="correo" preventSpaces label="Correo electrónico*" labelPlacement="floating" maxlength="25" [clearInput]="true"/>
+          @if (step2Form.get('correo')?.touched && step2Form.get('correo')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step2Form.get('correo')?.hasError('required')) {
+                  *El correo es requerido.
+                }
+                @case (step2Form.get('correo')?.hasError('email')) {
+                  *Debes ingresar un correo válido.
+                }
+              }
+            </ion-text>
+          }
+        </ion-col>
+
+        <!-- REPEAT CORREO -->
+        <ion-col size="12">
+          <ion-input type="email" class="ion-input-form" formControlName="repeatCorreo" preventSpaces label="Repite correo electrónico*" labelPlacement="floating"  maxlength="25" [clearInput]="true"/>
+          @if (step2Form.get('repeatCorreo')?.touched && step2Form.get('repeatCorreo')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step2Form.get('repeatCorreo')?.hasError('required')) {
+                  *Repetir correo es requerido.
+                }
+                @case (step2Form.get('repeatCorreo')?.hasError('email')) {
+                  *Debes ingresar un correo válido
+                }
+                @case (step2Form.get('repeatCorreo')?.hasError('mismatch')) {
+                  *Los correos no coinciden.
+                }
+              }
+            </ion-text>
+          }
+        </ion-col>
+
+        <!-- CLAVE -->
+        <ion-col size="12">
+          <ion-input type="password" class="ion-input-form" formControlName="clave" preventSpaces label="Contraseña*" labelPlacement="floating">
+            @if (step2Form.get('clave')?.value) {
+              <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+            }
+          </ion-input>
+          @if (step2Form.get('clave')?.touched && step2Form.get('clave')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step2Form.get('clave')?.hasError('required')) {
+                  *Debes ingresar una contraseña.
+                }
+                @case (step2Form.get('clave')?.hasError('minlength')) {
+                  *La contraseña debe tener al menos 8 caracteres.
+                }
+                @case (step2Form.get('clave')?.hasError('maxlength')) {
+                  *La contraseña no puede tener más de 25 caracteres.
+                }
+                @case (step2Form.get('clave')?.hasError('pattern')) {
+                  *La contraseña debe tener al menos una letra minúscula, una letra mayúscula y un número.
+                }
+              }
+            </ion-text>
+          }
+        </ion-col>'
+
+        <!-- REPEAT CLAVE -->
+        <ion-col>
+          <ion-input type="password" class="ion-input-form" formControlName="repeatClave" preventSpaces label="Repetir contraseña*" labelPlacement="floating">
+            @if (step2Form.get('repeatClave')?.value) {
+              <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+            }
+          </ion-input>
+          @if (step2Form.get('repeatClave')?.touched && step2Form.get('repeatClave')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step2Form.get('repeatClave')?.hasError('required')) {
+                  *Debes ingresar una contraseña.
+                }
+                @case (step2Form.get('repeatClave')?.hasError('minlength')) {
+                  *La contraseña debe tener al menos 8 caracteres.
+                }
+                @case (step2Form.get('repeatClave')?.hasError('maxlength')) {
+                  *La contraseña no puede tener más de 25 caracteres.
+                }
+                @case (step2Form.get('repeatClave')?.hasError('pattern')) {
+                  *La contraseña debe tener al menos una letra minúscula, una letra mayúscula, un número y un carácter especial (como $, !, %, *, ?, &).
+                }
+                @case (step2Form.get('repeatClave')?.hasError('mismatch')) {
+                  *Las contraseñas no coinciden.
+                }
+              }
+            </ion-text>
+          }
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="ion-no-border ion-padding">
+  <ion-toolbar>
+    <ion-button class="ion-no-margin" color="tertiary" expand="block"
+      type="submit" form="step2Form" [disabled]="!step2Form.valid">Crear Usuario
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

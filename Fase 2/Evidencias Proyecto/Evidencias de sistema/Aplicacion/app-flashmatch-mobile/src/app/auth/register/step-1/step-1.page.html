@@ -1,0 +1,134 @@
+<app-header [typeHeader]="'public-route'"/>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="auto">
+        <ion-card>
+          <ion-card-content>
+            <ion-row class="ion-align-items-center ion-justify-content-center">
+              <ion-col size="auto">
+                <ion-icon name="person-outline" style="font-size: 25px; margin-right: 10px;"></ion-icon>
+              </ion-col>
+              <ion-col>
+                <ion-text>
+                  <b>Primero,</b> ingresa tus datos que se asociarán a la cuenta.
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <form [formGroup]="step1Form" id="step1Form" (ngSubmit)="onSubmit()">
+      <ion-row>
+        <!-- NOMBRE -->
+        <ion-col size="12">
+          <ion-input type="text" formControlName="nombre" class="ion-input-form" preventSpaces label="Nombre*" labelPlacement="floating" [clearInput]="true"/>
+          @if (step1Form.get('nombre')?.touched && step1Form.get('nombre')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1Form.get('nombre')?.hasError('required')) {
+                  *El nombre es requerido.
+                }
+                @case (step1Form.get('nombre')?.hasError('minlength')) {
+                  *El nombre debe tener al menos 2 caracteres.
+                }
+                @case (step1Form.get('nombre')?.hasError('maxlength')) {
+                  *El nombre no puede ser mayor a 50 caracteres.
+                }
+              }
+            </ion-text>
+          }
+        </ion-col>
+
+        <!-- APELLIDO -->
+        <ion-col size="12">
+          <ion-input type="text" formControlName="apellido" class="ion-input-form" preventSpaces label="Apellido*" labelPlacement="floating" [clearInput]="true"/>
+          @if (step1Form.get('apellido')?.touched && step1Form.get('apellido')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1Form.get('apellido')?.hasError('required')) {
+                  *El apellido es requerido.
+                }
+                @case (step1Form.get('apellido')?.hasError('minlength')) {
+                  *El apellido debe tener al menos 2 caracteres.
+                }
+                @case (step1Form.get('apellido')?.hasError('maxlength')) {
+                  *El apellido no puede ser mayor a 50 caracteres.
+                }
+              }
+            </ion-text>
+          }
+        </ion-col>
+
+        <!-- RUT -->
+        <ion-col size="12">
+          <ion-input type="text" formControlName="rut" class="ion-input-form" preventSpaces formatRut label="RUT*" maxlength="12" labelPlacement="floating" [clearInput]="true"/>
+          @if (step1Form.get('rut')?.touched && step1Form.get('rut')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1Form.get('rut')?.hasError('required')) {
+                  *El RUT es requerido.
+                }
+                @case (step1Form.get('rut')?.hasError('invalidRUT') ) {
+                  El RUT ingresado no es válido.
+                }
+              }
+            </ion-text>
+          }
+        </ion-col>
+
+        <!-- FECHA NACIMIENTO -->
+        <ion-col size="12">
+          <div class="ion-margin-top">
+            <ion-label [color]="step1Form.get('fecha_nacimiento')?.invalid ? 'danger' : ''">Fecha nacimiento*</ion-label>
+            <ion-datetime-button datetime="datetime" style="margin-top: 8px;"/>
+            <ion-modal [keepContentsMounted]="true">
+              <ng-template>
+                <ion-datetime id="datetime" cancelText="cancelar" doneText="confirmar" presentation="date" (ionChange)="onDateChange($event)" [showDefaultButtons]="true"  />
+              </ng-template>
+            </ion-modal>
+            @if (step1Form.get('fecha_nacimiento')?.invalid) {
+              <ion-text class="text-small" color="danger">
+                @switch (true) {
+                  @case (step1Form.get('fecha_nacimiento')?.hasError('required')) {
+                    *Selecciona una fecha de nacimiento.
+                  }
+                }
+              </ion-text>
+            }
+          </div>
+        </ion-col>
+
+        <!-- TELEFONO -->
+        <ion-col size="12">
+          <ion-input type="tel" formControlName="telefono" class="ion-input-form" preventSpaces onlyNumbers label="Número de teléfono*" placeholder="9123456" labelPlacement="floating" maxlength="9" [clearInput]="true"/>
+          @if (step1Form.get('telefono')?.touched && step1Form.get('telefono')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1Form.get('telefono')?.hasError('required')) {
+                  *El teléfono es requerido.
+                }
+                @case (step1Form.get('telefono')?.hasError('minlength')) {
+                  *El teléfono debe tener al menos 9 caracteres.
+                }
+              }
+            </ion-text>
+          }
+        </ion-col>
+      </ion-row>
+    </form>
+
+
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="ion-no-border ion-padding">
+  <ion-toolbar>
+    <ion-button class="ion-no-margin" color="tertiary" expand="block"
+      type="submit" form="step1Form" [disabled]="!step1Form.valid">Siguiente
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

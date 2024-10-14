@@ -1,0 +1,48 @@
+<ion-menu type="push" contentId="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title class="ion-no-padding">
+        <ion-grid>
+          <ion-row class="ion-align-items-center">
+            <ion-col size="auto">
+              <ion-img class="custom-img" style="height: 35px;" src="assets/icon/favicon.png" alt="logo-flashmatch"></ion-img>
+            </ion-col>
+            <ion-col size="auto">
+              <ion-title class="text-white">Bienvenido(a)!</ion-title>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list lines="none" class="menu-list">
+    @for (item of menuItemsPrivate(); track $index) {
+      <ion-menu-toggle auto-hide="false">
+        <ion-item button [routerLink]="item.route" detail>
+          <ion-icon [name]="item.icon" slot="start" size="large"/>
+          <ion-label class="menu-item-label">{{ item.label }}</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+    }
+    <ion-menu-toggle>
+      <ion-item button (click)="logOut()" detail>
+        <ion-icon name="log-out-outline" slot="start" size="large"/>
+        <ion-label class="menu-item-label">Cerrar Sesión</ion-label>
+      </ion-item>
+    </ion-menu-toggle>
+    </ion-list>
+  </ion-content>
+
+  <ion-footer>
+    <ion-toolbar>
+      <ion-title color="medium" class="ion-text-center" style="font-size: 14px;">
+        Versión 1.0.0
+      </ion-title>
+    </ion-toolbar>
+  </ion-footer>
+</ion-menu>
+
+
+
