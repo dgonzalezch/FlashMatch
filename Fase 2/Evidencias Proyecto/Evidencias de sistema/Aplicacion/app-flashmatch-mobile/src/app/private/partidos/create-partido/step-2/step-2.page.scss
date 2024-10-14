@@ -1,0 +1,23 @@
+.image-container {
+  position: relative;
+}
+
+.price-badge {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.price-badge p {
+  margin: 0;
+}
+
+.footer-aligned-end {
+  display: flex;
+  justify-content: flex-end;
+}

@@ -1,0 +1,9 @@
+.title-container {
+  display: flex; /* Usar flexbox para alinear elementos */
+  justify-content: space-between; /* Espaciado entre el título y el botón */
+  align-items: center; /* Alinear verticalmente */
+}
+
+.edit-button {
+  margin-left: 10px; /* Espaciado a la izquierda del botón */
+}
