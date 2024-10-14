@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { IonHeader, IonText, IonIcon, IonItem, IonToolbar } from "@ionic/angular/standalone";
+import { IonHeader, IonText, IonIcon, IonItem, IonToolbar, IonContent } from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
   standalone: true,
-  imports: [IonToolbar, IonItem,
+  imports: [IonContent, IonToolbar, IonItem,
     IonText,
     IonHeader,
     IonIcon

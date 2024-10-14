@@ -34,15 +34,15 @@ export class EquiposService {
   ) { }
 
   async create(createEquipoDto: CreateEquipoDto): Promise<ResponseMessage<Equipo>> {
-    const { id_creador, id_deporte, id_rango } = createEquipoDto;
+    const { id_creador, id_deporte, id_rango_edad } = createEquipoDto;
 
     const usuario = await this.usuarioRepository.findOneBy({ id_usuario: id_creador });
     const deporte = await this.deporteRepository.findOneBy({ id_deporte });
-    const rangoEdad = await this.rangoEdadRepository.findOneBy({ id_rango });
+    const rangoEdad = await this.rangoEdadRepository.findOneBy({ id_rango_edad });
 
     if (!usuario) throw new NotFoundException(`Usuario con ID ${id_creador} no encontrado.`);
     if (!deporte) throw new NotFoundException(`Deporte con ID ${id_deporte} no encontrado.`);
-    if (!rangoEdad) throw new NotFoundException(`Rango edad con ID ${id_rango} no encontrado.`);
+    if (!rangoEdad) throw new NotFoundException(`Rango edad con ID ${id_rango_edad} no encontrado.`);
 
     try {
       const equipo = this.equipoRepository.create({
@@ -111,7 +111,7 @@ export class EquiposService {
   }
 
   async update(id_equipo: string, updateEquipoDto: UpdateEquipoDto): Promise<ResponseMessage<Equipo>> {
-    const { id_creador, id_deporte, id_rango } = updateEquipoDto;
+    const { id_creador, id_deporte, id_rango_edad } = updateEquipoDto;
 
     let usuario: Usuario;
     let deporte: Deporte;
@@ -127,9 +127,9 @@ export class EquiposService {
       if (!deporte) throw new NotFoundException(`Deporte con ID ${id_deporte} no encontrado.`);
     }
 
-    if (id_rango) {
-      rangoEdad = await this.rangoEdadRepository.findOneBy({ id_rango });
-      if (!deporte) throw new NotFoundException(`Rango edad con ID ${id_rango} no encontrado.`);
+    if (id_rango_edad) {
+      rangoEdad = await this.rangoEdadRepository.findOneBy({ id_rango_edad });
+      if (!deporte) throw new NotFoundException(`Rango edad con ID ${id_rango_edad} no encontrado.`);
     }
 
     const equipo = await this.equipoRepository.preload({

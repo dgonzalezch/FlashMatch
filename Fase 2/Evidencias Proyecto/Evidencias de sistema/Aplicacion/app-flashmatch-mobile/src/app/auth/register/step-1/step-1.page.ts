@@ -17,7 +17,7 @@ import { OnlyNumbersDirective } from 'src/app/shared/common/only-numbers.directi
   imports: [IonLabel, IonDatetimeButton, IonDatetime, IonModal, IonNavLink, IonText, IonIcon, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonFooter, IonCard, IonButton, IonCheckbox, IonInput, IonCol, IonRow, IonGrid, IonContent, IonHeader, IonTitle, IonToolbar, HeaderComponent, RouterLink, FormatRutDirective, OnlyNumbersDirective, CommonModule, FormsModule, ReactiveFormsModule, PreventSpacesDirective],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export default class Step1Page implements OnInit {
+export default class Step1Page {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private formValidatorService = inject(FormValidatorService);
@@ -33,14 +33,11 @@ export default class Step1Page implements OnInit {
     fecha_nacimiento: ['', [Validators.required]]
   });
 
-
   onDateChange(event: any) {
     const dateWithTime = new Date(event.detail.value);
     dateWithTime.setHours(0, 0, 0, 0);
     this.step1Form.get('fecha_nacimiento')?.setValue(dateWithTime.toISOString());
   }
-
-  ngOnInit() { }
 
   onSubmit() {
     // Limpiar el RUT
@@ -52,5 +49,4 @@ export default class Step1Page implements OnInit {
       state: { step1FormData: this.step1Form.value }
     });
   }
-
 }

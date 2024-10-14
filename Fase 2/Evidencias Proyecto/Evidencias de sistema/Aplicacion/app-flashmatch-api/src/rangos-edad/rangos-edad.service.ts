@@ -49,7 +49,7 @@ export class RangosEdadService {
     let rangoEdad: RangoEdad;
 
     if (isUUID(term)) {
-      rangoEdad = await this.rangoEdadRepository.findOneBy({ id_rango: term });
+      rangoEdad = await this.rangoEdadRepository.findOneBy({ id_rango_edad: term });
     } else {
       const queryBuilder = this.rangoEdadRepository.createQueryBuilder();
       rangoEdad = await queryBuilder
@@ -65,13 +65,13 @@ export class RangosEdadService {
     return { message: 'Registro encontrado.', data: rangoEdad };
   }
 
-  async update(id_rango: string, updateRangoEdadDto: UpdateRangoEdadDto): Promise<ResponseMessage<RangoEdad>> {
+  async update(id_rango_edad: string, updateRangoEdadDto: UpdateRangoEdadDto): Promise<ResponseMessage<RangoEdad>> {
     const rangoEdad = await this.rangoEdadRepository.preload({
-      id_rango: id_rango,
+      id_rango_edad: id_rango_edad,
       ...updateRangoEdadDto,
     });
 
-    if (!rangoEdad) throw new NotFoundException(`Rango edad con id ${id_rango} no encontrado.`);
+    if (!rangoEdad) throw new NotFoundException(`Rango edad con id ${id_rango_edad} no encontrado.`);
 
     try {
       await this.rangoEdadRepository.save(rangoEdad);
@@ -81,11 +81,11 @@ export class RangosEdadService {
     }
   }
 
-  async remove(id_rango: string): Promise<ResponseMessage<RangoEdad>> {
+  async remove(id_rango_edad: string): Promise<ResponseMessage<RangoEdad>> {
     try {
-      const rangoEdad = await this.rangoEdadRepository.findOneBy({ id_rango });
+      const rangoEdad = await this.rangoEdadRepository.findOneBy({ id_rango_edad });
 
-      if (!rangoEdad) throw new NotFoundException(`Rango edad con id ${id_rango} no se pudo eliminar porque no existe en la base de datos.`);
+      if (!rangoEdad) throw new NotFoundException(`Rango edad con id ${id_rango_edad} no se pudo eliminar porque no existe en la base de datos.`);
 
       await this.rangoEdadRepository.remove(rangoEdad);
       return { message: 'Rango edad eliminado exitosamente.', data: rangoEdad };

@@ -79,6 +79,10 @@ export const routes: Routes = [
             ]
           },
           {
+            path: 'detail-match/:id',
+            loadComponent: () => import('./private/partidos/detail-partido/detail-partido.page').then( m => m.DetailPartidoPage)
+          },
+          {
             path: '**',
             redirectTo: 'list-matches',
             pathMatch: 'full'

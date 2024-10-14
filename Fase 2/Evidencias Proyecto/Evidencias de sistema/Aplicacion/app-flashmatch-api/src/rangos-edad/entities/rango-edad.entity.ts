@@ -4,7 +4,7 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, Pri
 @Entity('rangos_edad')
 export class RangoEdad {
     @PrimaryGeneratedColumn('uuid')
-    id_rango: string;
+    id_rango_edad: string;
 
     @Column({ type: 'int', nullable: false })
     edad_minima: number;

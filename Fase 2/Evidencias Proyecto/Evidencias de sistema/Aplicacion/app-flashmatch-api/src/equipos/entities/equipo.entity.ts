@@ -40,7 +40,7 @@ export class Equipo {
     @JoinColumn({ name: 'id_deporte' })
     deporte: Deporte;
 
-    @ManyToOne(() => RangoEdad, (rangosEdad) => rangosEdad.id_rango, { onDelete: 'CASCADE' })
+    @ManyToOne(() => RangoEdad, (rangosEdad) => rangosEdad.id_rango_edad, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'id_rango' })
     rangoEdad: RangoEdad;
 }

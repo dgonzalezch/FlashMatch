@@ -36,5 +36,5 @@ export class CreateEquipoDto {
 
     @IsUUID()
     @IsNotEmpty()
-    id_rango: string;
+    id_rango_edad: string;
 }

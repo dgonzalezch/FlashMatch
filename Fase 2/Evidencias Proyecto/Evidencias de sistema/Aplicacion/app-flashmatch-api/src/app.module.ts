@@ -12,6 +12,8 @@ import { DeportesPosicionesModule } from './deportes-posiciones/deportes-posicio
 import { DeportesPosicionesUsuariosModule } from './deportes-posiciones-usuarios/deportes-posiciones-usuarios.module';
 import { ParametrosRendimientoModule } from './parametros-rendimiento/parametros-rendimiento.module';
 import { EstadisticasDetalladasUsuariosModule } from './estadisticas-detalladas-usuarios/estadisticas-detalladas-usuarios.module';
+import { TiposPartidosModule } from './tipos-partidos/tipos-partidos.module';
+import { NivelesHabilidadModule } from './niveles-habilidad/niveles-habilidad.module';
 
 @Module({
   imports: [
@@ -36,7 +38,9 @@ import { EstadisticasDetalladasUsuariosModule } from './estadisticas-detalladas-
     DeportesPosicionesModule,
     DeportesPosicionesUsuariosModule,
     ParametrosRendimientoModule,
-    EstadisticasDetalladasUsuariosModule
+    EstadisticasDetalladasUsuariosModule,
+    TiposPartidosModule,
+    NivelesHabilidadModule
   ],
   providers: [],
 })
