@@ -8,5 +8,5 @@ export class CreateDeportePosicionDto {
     @IsString()
     @IsNotEmpty()
     @Length(1, 50)
-    nombre: string;
+    nombre_posicion: string;
 }

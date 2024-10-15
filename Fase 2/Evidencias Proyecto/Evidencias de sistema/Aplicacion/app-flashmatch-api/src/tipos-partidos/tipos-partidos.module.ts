@@ -7,9 +7,9 @@ import { ErrorHandlingService } from 'src/common/services/error-handling.service
 
 @Module({
   controllers: [TiposPartidosController],
-  providers: [TiposPartidosService],
+  providers: [TiposPartidosService, ErrorHandlingService],
   imports: [
-    TypeOrmModule.forFeature([TipoPartido, ErrorHandlingService])
+    TypeOrmModule.forFeature([TipoPartido])
   ]
 })
 export class TiposPartidosModule {}

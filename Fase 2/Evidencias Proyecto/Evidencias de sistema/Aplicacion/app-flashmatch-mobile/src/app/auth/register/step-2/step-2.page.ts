@@ -76,6 +76,7 @@ export default class Step2Page implements OnInit {
 
     this.authService.registerUser(fullFormDataRegister).subscribe({
       next: (resp) => {
+        this.alertService.message(resp.message);
         this.router.navigate(['/private/home']);
       },
       error: (err: responseError) => {

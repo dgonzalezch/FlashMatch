@@ -32,5 +32,4 @@ export class TiposPartidosController {
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.tiposPartidosService.remove(id);
   }
-  
 }

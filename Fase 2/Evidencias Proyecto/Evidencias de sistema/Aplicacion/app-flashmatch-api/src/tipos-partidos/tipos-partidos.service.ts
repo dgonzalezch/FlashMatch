@@ -65,8 +65,6 @@ export class TiposPartidosService {
     return { message: 'Registro encontrado.', data: tipoPartido };
   }
 
-
-
   async update(id_tipo_partido: string, updateTipoPartidoDto: UpdateTipoPartidoDto): Promise<ResponseMessage<TipoPartido>> {
     const tipoPartido = await this.tipoPartidoRepository.preload({
       id_tipo_partido: id_tipo_partido,

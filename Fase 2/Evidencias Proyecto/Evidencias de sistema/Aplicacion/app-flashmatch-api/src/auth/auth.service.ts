@@ -33,7 +33,8 @@ export class AuthService {
       delete usuario.clave;
 
       return {
-        ...usuario,
+        message: 'Usuario creado con éxito.',
+        data: usuario,
         token: this.getJwtToken({ id_usuario: usuario.id_usuario })
       };
 

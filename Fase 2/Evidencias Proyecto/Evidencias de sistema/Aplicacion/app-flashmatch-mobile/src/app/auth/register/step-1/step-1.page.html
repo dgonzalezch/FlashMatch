@@ -104,7 +104,7 @@
 
         <!-- TELEFONO -->
         <ion-col size="12">
-          <ion-input type="tel" formControlName="telefono" class="ion-input-form" preventSpaces onlyNumbers label="Número de teléfono*" placeholder="9123456" labelPlacement="floating" maxlength="9" [clearInput]="true"/>
+          <ion-input type="tel" formControlName="telefono" class="ion-input-form" preventSpaces onlyNumbers label="Número de teléfono*" placeholder="912345678" labelPlacement="floating" maxlength="9" [clearInput]="true"/>
           @if (step1Form.get('telefono')?.touched && step1Form.get('telefono')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {

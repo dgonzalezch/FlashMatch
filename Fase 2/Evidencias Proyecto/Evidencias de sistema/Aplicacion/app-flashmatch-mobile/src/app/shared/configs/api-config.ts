@@ -6,6 +6,8 @@ export enum CONTEXT {
   API_ESTADISTICAS_DETALLADAS_USUARIOS = '/api/estadisticas-detalladas-usuarios/',
   API_RANGOS_EDAD = '/api/rangos-edad/',
   API_USUARIOS = '/api/usuarios/',
+  API_TIPOS_PARTIDOS = '/api/tipos-partidos/',
+  API_NIVELES_HABILIDAD = '/api/niveles-habilidad/',
   API_CANCHAS = '/api/canchas/'
 }
 

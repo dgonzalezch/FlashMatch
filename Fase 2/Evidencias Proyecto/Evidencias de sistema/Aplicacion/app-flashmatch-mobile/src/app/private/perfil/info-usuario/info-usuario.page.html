@@ -74,7 +74,7 @@
                 <ion-icon slot="start"[name]="deportePosicion.posicion.deporte.icono"/>
                 <ion-label>
                   <h4>{{ deportePosicion.posicion.deporte.nombre_deporte }}</h4>
-                  <p class="ion-no-margin">{{ deportePosicion.posicion.nombre }}</p>
+                  <p class="ion-no-margin">{{ deportePosicion.posicion.nombre_posicion }}</p>
                 </ion-label>
                 <ion-buttons slot="end">
                   <ion-button fill="clear" color="secondary" aria-label="Editar deporte">
@@ -196,7 +196,7 @@
             <ion-col size="12" class="ion-margin-vertical">
               <ion-select formControlName="id_posicion" class="ion-input-form" label="Posición*" label-placement="floating" cancelText="cancelar" okText="seleccionar">
                 @for (posicion of listPosiciones(); track $index) {
-                  <ion-select-option [value]="posicion.id_posicion">{{posicion.nombre}}</ion-select-option>
+                  <ion-select-option [value]="posicion.id_posicion">{{posicion.nombre_posicion}}</ion-select-option>
                 }
               </ion-select>
               @if (deportesPosicionesUsuariosForm.get('id_posicion')?.touched && deportesPosicionesUsuariosForm.get('id_posicion')?.invalid) {

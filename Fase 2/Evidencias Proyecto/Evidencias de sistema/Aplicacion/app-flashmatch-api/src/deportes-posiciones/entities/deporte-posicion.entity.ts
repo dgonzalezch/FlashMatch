@@ -11,5 +11,5 @@ export class DeportePosicion {
     deporte: Deporte;
 
     @Column({ type: 'varchar', length: 50 })
-    nombre: string;
+    nombre_posicion: string;
 }

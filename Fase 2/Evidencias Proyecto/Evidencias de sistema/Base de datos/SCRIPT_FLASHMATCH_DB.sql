@@ -25,6 +25,10 @@ DROP TABLE IF EXISTS rangos_edad CASCADE;
 DROP TABLE IF EXISTS niveles_habilidad CASCADE;
 DROP TABLE IF EXISTS deportes CASCADE;
 DROP TABLE IF EXISTS equipos CASCADE;
+DROP TABLE IF EXISTS tipos_partidos CASCADE;
+DROP TABLE IF EXISTS tipos_emparejamientos CASCADE;
+DROP TABLE IF EXISTS partido_usuarios CASCADE;
+DROP TABLE IF EXISTS partido_equipos CASCADE;
 DROP TABLE IF EXISTS usuarios CASCADE;
 
 -- Tabla de disponibilidad de horarios de canchas
@@ -188,8 +192,6 @@ CREATE TABLE partidos (
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
-
 CREATE TABLE partido_usuarios (
     id_partido UUID REFERENCES partidos(id_partido) ON DELETE CASCADE,
     id_usuario UUID REFERENCES usuarios(id_usuario) ON DELETE CASCADE,
@@ -201,7 +203,6 @@ CREATE TABLE partido_equipos (
     id_equipo UUID REFERENCES equipos(id_equipo) ON DELETE CASCADE,
     PRIMARY KEY (id_partido, id_equipo)
 );
-
 
 -- Tabla de participación de usuarios en partidos
 CREATE TABLE participacion_usuarios_partidos (
@@ -217,7 +218,7 @@ CREATE TABLE participacion_usuarios_partidos (
 CREATE TABLE deportes_posiciones (
     id_posicion UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     id_deporte UUID REFERENCES deportes(id_deporte) ON DELETE CASCADE,
-    nombre VARCHAR(50) NOT NULL,
+    nombre_posicion VARCHAR(50) NOT NULL,
     UNIQUE (id_deporte, nombre)
 );
 
@@ -320,51 +321,3 @@ CREATE TABLE documentos_identidad (
     fecha_expiracion DATE,
     archivo_documento TEXT NOT NULL
 );
-
--- INSERT DE INFORMACIÓN INICIAL
-INSERT INTO rangos_edad (edad_minima, edad_maxima, descripcion) VALUES 
-(18, 25, '18 - 25 años'),
-(26, 35, '26 - 35 años'),
-(36, 45, '36 - 45 años'),
-(46, 55, '46 - 55 años'),
-(56, 120, '56 años o más');
-
-INSERT INTO deportes (nombre_deporte, icono) VALUES 
-('Fútbol 11', 'football-outline'), 
-('Fútbol 7', 'football-outline'), 
-('Fútbol 5', 'football-outline');
-
-
-INSERT INTO deportes_posiciones (id_posicion, id_deporte, nombre) VALUES
-(uuid_generate_v4(), (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), 'Portero'),
-(uuid_generate_v4(), (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), 'Defensa'),
-(uuid_generate_v4(), (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), 'Centrocampista'),
-(uuid_generate_v4(), (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), 'Delantero');
-
-INSERT INTO deportes_posiciones_usuarios (id_deporte_posicion, id_usuario, id_deporte, id_posicion) VALUES
-(uuid_generate_v4(), (SELECT id_usuario FROM usuarios WHERE nombre = 'Daniel'), (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), (SELECT id_posicion FROM deportes_posiciones WHERE nombre = 'Delantero'));
-
-
-INSERT INTO niveles_habilidad (descripcion) VALUES 
-('Principiante'),
-('Intermedio'),
-('Avanzado');
-
-INSERT INTO titulos_perfil (nombre_titulo, descripcion) VALUES 
-('Novato', 'Jugó su primer partido'), 
-('Experto', 'Jugó más de 100 partidos');
-
--- Parámetros para Fútbol 11 (id_deporte = 'uuid_futbol')
-INSERT INTO parametros_rendimiento (id_parametro_rendimiento, nombre_parametro, id_deporte) VALUES
-(uuid_generate_v4(), 'Velocidad', '2a8a4997-a98b-48ab-b41b-1765b0cee635'),
-(uuid_generate_v4(), 'Resistencia', '2a8a4997-a98b-48ab-b41b-1765b0cee635'),
-(uuid_generate_v4(), 'Táctica', '2a8a4997-a98b-48ab-b41b-1765b0cee635'),
-(uuid_generate_v4(), 'Técnica', '2a8a4997-a98b-48ab-b41b-1765b0cee635');
-
-
--- Estadísticas para el Usuario 1 en Fútbol (id_usuario = 'uuid_usuario_1', id_deporte = 'uuid_futbol')
-INSERT INTO estadisticas_detalladas_usuarios (id_estadistica_detallada, id_usuario, id_deporte, id_parametro_rendimiento, parametro_valor) VALUES
-(uuid_generate_v4(), '3f7cff18-bf3c-4864-a1d0-87097d2fd218', '2a8a4997-a98b-48ab-b41b-1765b0cee635', '6fe10060-0566-41cb-b222-5bd6b812eba8', 90),  -- Velocidad
-(uuid_generate_v4(), '3f7cff18-bf3c-4864-a1d0-87097d2fd218', '2a8a4997-a98b-48ab-b41b-1765b0cee635', '4473a370-66c5-4f04-a984-4e7209ca5bc7', 85),  -- Resistencia
-(uuid_generate_v4(), '3f7cff18-bf3c-4864-a1d0-87097d2fd218', '2a8a4997-a98b-48ab-b41b-1765b0cee635', '6e87d7bc-036b-4353-9654-0135bb4c8ee2', 78),  -- Táctica
-(uuid_generate_v4(), '3f7cff18-bf3c-4864-a1d0-87097d2fd218', '2a8a4997-a98b-48ab-b41b-1765b0cee635', '704c0e56-7e25-43c2-a7a2-0570b19373b6', 3);   -- Técnica

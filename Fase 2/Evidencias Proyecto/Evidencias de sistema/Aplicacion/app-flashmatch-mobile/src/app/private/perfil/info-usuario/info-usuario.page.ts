@@ -8,7 +8,6 @@ import { DeportesService } from 'src/app/services/deportes.service';
 import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { responseError } from 'src/app/interfaces/response-error.interface';
 import { UsuariosService } from 'src/app/services/usuarios.service';
-import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { DeportesPosicionesUsuariosService } from 'src/app/services/deportes-posiciones-usuarios.service';
 
 @Component({
