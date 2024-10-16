@@ -1,8 +1,9 @@
-import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreatePartidoDto {
+    @IsDateString()
     @IsNotEmpty()
-    fecha_partido: Date;
+    fecha_nacimiento: string;
 
     @IsNotEmpty()
     @IsUUID()

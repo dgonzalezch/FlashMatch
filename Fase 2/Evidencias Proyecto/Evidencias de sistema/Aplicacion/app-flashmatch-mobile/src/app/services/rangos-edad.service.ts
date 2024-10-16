@@ -11,7 +11,7 @@ export class RangosEdadService {
   private http = inject(HttpClient);
   private urlBaseRangosEdad = CONTEXT.API_RANGOS_EDAD
 
-  getRangosEdad(): Observable<any> {
+  getAllRangosEdad(): Observable<any> {
     return this.http.get<any>(this.urlBaseRangosEdad).pipe(
       map((response) => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),

@@ -14,6 +14,7 @@ import { ParametrosRendimientoModule } from './parametros-rendimiento/parametros
 import { EstadisticasDetalladasUsuariosModule } from './estadisticas-detalladas-usuarios/estadisticas-detalladas-usuarios.module';
 import { TiposPartidosModule } from './tipos-partidos/tipos-partidos.module';
 import { NivelesHabilidadModule } from './niveles-habilidad/niveles-habilidad.module';
+import { TiposEmparejamientosModule } from './tipos-emparejamientos/tipos-emparejamientos.module';
 
 @Module({
   imports: [
@@ -40,7 +41,8 @@ import { NivelesHabilidadModule } from './niveles-habilidad/niveles-habilidad.mo
     ParametrosRendimientoModule,
     EstadisticasDetalladasUsuariosModule,
     TiposPartidosModule,
-    NivelesHabilidadModule
+    NivelesHabilidadModule,
+    TiposEmparejamientosModule
   ],
   providers: [],
 })

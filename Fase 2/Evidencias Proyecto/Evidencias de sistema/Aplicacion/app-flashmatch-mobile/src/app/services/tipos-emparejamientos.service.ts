@@ -7,20 +7,20 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class TiposPartidosService {
+export class TiposEmparejamientosService {
   private http = inject(HttpClient);
-  private urlBaseTiposPartidos = CONTEXT.API_TIPOS_PARTIDOS;
+  private urlBaseTiposEmparejamientos = CONTEXT.API_TIPOS_EMPAREJAMIENTOS;
 
-  getAllTiposPartidos(): Observable<any> {
-    return this.http.get<any>(this.urlBaseTiposPartidos).pipe(
+  getAllTiposEmparejamientos(): Observable<any> {
+    return this.http.get<any>(this.urlBaseTiposEmparejamientos).pipe(
       map((response) => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)
     );
   }
 
-  getTipoPartido(term: any): Observable<any> {
-    return this.http.get<any>(this.urlBaseTiposPartidos + term).pipe(
+  getTipoEmparejamiento(term: any): Observable<any> {
+    return this.http.get<any>(this.urlBaseTiposEmparejamientos + term).pipe(
       map((response) => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)

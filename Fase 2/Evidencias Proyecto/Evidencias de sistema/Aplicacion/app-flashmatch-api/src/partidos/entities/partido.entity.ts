@@ -3,14 +3,9 @@ import { Cancha } from 'src/canchas/entities/cancha.entity';
 import { Deporte } from 'src/deportes/entities/deporte.entity';
 import { NivelHabilidad } from 'src/niveles-habilidad/entities/nivel-habilidad.entity';
 import { RangoEdad } from 'src/rangos-edad/entities/rango-edad.entity';
+import { TipoEmparejamiento } from 'src/tipos-emparejamientos/entities/tipo-emparejamiento.entity';
 import { TipoPartido } from 'src/tipos-partidos/entities/tipo-partido.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
-// import { TipoPartido } from './tipo-partido.entity'; // Asegúrate de tener la entidad TipoPartido
-// import { NivelHabilidad } from './nivel-habilidad.entity'; // Asegúrate de tener la entidad NivelHabilidad
-// import { RangoEdad } from './rango-edad.entity'; // Asegúrate de tener la entidad RangoEdad
-// import { TipoEmparejamiento } from './tipo-emparejamiento.entity'; // Asegúrate de tener la entidad TipoEmparejamiento
-// import { Cancha } from './cancha.entity'; // Asegúrate de tener la entidad Cancha
-// import { Usuario } from './usuario.entity'; // Asegúrate de tener la entidad Usuario
 
 @Entity('partidos')
 export class Partido {
@@ -36,9 +31,9 @@ export class Partido {
     @JoinColumn({ name: 'id_rango_edad' })
     id_rango_edad: RangoEdad;
 
-    // @ManyToOne(() => TipoEmparejamiento, { nullable: false })
-    // @JoinColumn({ name: 'id_tipo_emparejamiento' })
-    // id_tipo_emparejamiento: TipoEmparejamiento;
+    @ManyToOne(() => TipoEmparejamiento, { nullable: false })
+    @JoinColumn({ name: 'id_tipo_emparejamiento' })
+    id_tipo_emparejamiento: TipoEmparejamiento;
 
     @Column({ type: 'text', nullable: true })
     descripcion: string;

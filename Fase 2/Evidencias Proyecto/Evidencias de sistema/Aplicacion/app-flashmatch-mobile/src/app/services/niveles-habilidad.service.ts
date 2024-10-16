@@ -9,9 +9,9 @@ import { environment } from 'src/environments/environment';
 })
 export class NivelesHabilidadService {
   private http = inject(HttpClient);
-  private urlBaseNivelesHabilidad = CONTEXT.API_TIPOS_PARTIDOS;
+  private urlBaseNivelesHabilidad = CONTEXT.API_NIVELES_HABILIDAD;
 
-  getNivelesHabilidad(): Observable<any> {
+  getAllNivelesHabilidad(): Observable<any> {
     return this.http.get<any>(this.urlBaseNivelesHabilidad).pipe(
       map((response) => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),

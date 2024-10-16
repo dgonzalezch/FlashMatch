@@ -1,11 +1,11 @@
 -- Tabla deportes
-INSERT INTO deportes (nombre_deporte, cantidad_min_jugadores, cantidad_max_jugadores, icono) VALUES 
+INSERT INTO deportes (nombre_deporte, cantidad_min_jugadores, cantidad_max_jugadores, icono) VALUES
 ('Fútbol 11', 11, 22, 'football-outline'),
 ('Fútbol 7', 7, 14, 'football-outline'),
 ('Fútbol 5', 5, 10, 'football-outline');
 
 -- Tabla rangos_edad
-INSERT INTO rangos_edad (edad_minima, edad_maxima, descripcion) VALUES 
+INSERT INTO rangos_edad (edad_minima, edad_maxima, descripcion) VALUES
 (18, 25, '18 - 25 años'),
 (26, 35, '26 - 35 años'),
 (36, 45, '36 - 45 años'),
@@ -13,7 +13,7 @@ INSERT INTO rangos_edad (edad_minima, edad_maxima, descripcion) VALUES
 (56, 120, '56 años o más');
 
 -- Tabla niveles_habilidad
-INSERT INTO niveles_habilidad (nombre_nivel_habilidad, descripcion) VALUES 
+INSERT INTO niveles_habilidad (nombre_nivel_habilidad, descripcion) VALUES
 ('Principiante', 'Jugadores con poca experiencia en el deporte'),
 ('Intermedio', 'Jugadores con experiencia moderada y habilidades decentes'),
 ('Avanzado', 'Jugadores con habilidades avanzadas y experiencia considerable'),
@@ -25,6 +25,16 @@ INSERT INTO deportes_posiciones (id_deporte, nombre) VALUES
 ((SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), 'Defensa'),
 ((SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), 'Centrocampista'),
 ((SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), 'Delantero');
+
+-- Tabla tipos_emparejamientos
+INSERT INTO tipos_emparejamientos (nombre_tipo_emparejamiento, descripcion) VALUES
+('Usuarios', 'Emparejamientos con solo usuarios'),
+('Equipos', 'Emparejamientos con solo equipos');
+
+INSERT INTO tipos_partidos (nombre_tipo_partido, descripcion) VALUES
+('Entretención', 'Partido informal o amistoso con el fin de divertirse y pasar el rato'),
+('Entrenamiento', 'Partido utilizado para mejorar habilidades y practicar'),
+('Competitivo', 'Partido oficial o de torneo con el objetivo de ganar y competir');
 
 -- Tabla deportes_posiciones_usuarios
 INSERT INTO deportes_posiciones_usuarios (id_usuario, id_deporte, id_posicion) VALUES

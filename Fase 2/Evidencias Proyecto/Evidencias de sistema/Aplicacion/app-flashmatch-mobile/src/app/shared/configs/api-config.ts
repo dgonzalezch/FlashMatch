@@ -8,6 +8,7 @@ export enum CONTEXT {
   API_USUARIOS = '/api/usuarios/',
   API_TIPOS_PARTIDOS = '/api/tipos-partidos/',
   API_NIVELES_HABILIDAD = '/api/niveles-habilidad/',
+  API_TIPOS_EMPAREJAMIENTOS = '/api/tipos-emparejamientos/',
   API_CANCHAS = '/api/canchas/'
 }
 

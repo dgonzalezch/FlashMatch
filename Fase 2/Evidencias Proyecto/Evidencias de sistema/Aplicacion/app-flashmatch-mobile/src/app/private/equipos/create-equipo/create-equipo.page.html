@@ -79,7 +79,7 @@
           <!-- RANGO EDAD -->
           <ion-select formControlName="id_rango" class="ion-input-form" label="Rango edad del equipo*" label-placement="floating" cancelText="cancelar" okText="seleccionar">
             @for (rangoEdad of listRangosEdad(); track $index) {
-              <ion-select-option [value]="rangoEdad.id_rango">{{rangoEdad.descripcion}}</ion-select-option>
+              <ion-select-option [value]="rangoEdad.id_rango_edad">{{rangoEdad.descripcion}}</ion-select-option>
             }
           </ion-select>
           @if (equipoForm.get('id_rango')?.touched && equipoForm.get('id_rango')?.invalid) {

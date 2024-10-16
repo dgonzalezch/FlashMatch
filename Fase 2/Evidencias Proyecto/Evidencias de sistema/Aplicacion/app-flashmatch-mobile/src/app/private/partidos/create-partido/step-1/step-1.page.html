@@ -28,27 +28,30 @@
       </ion-col>
     </ion-row>
 
-    <form action="">
+    <form [formGroup]="step1FormCreatePartido" id="step1FormCreatePartido" (ngSubmit)="onSubmit()">
       <ion-row>
         <ion-col size="12">
-          <ion-accordion-group class="ion-no-margin" expand="inset">
+          <ion-accordion-group class="ion-no-margin ion-margin-bottom" expand="inset">
             <ion-accordion value="first" class="ion-no-margin">
-              <ion-item slot="header" color="danger">
-                <ion-icon name="calendar-outline" class="ion-margin-end"></ion-icon>
+              <ion-item slot="header" [color]="step1FormCreatePartido.get('fecha_partido')?.invalid ? 'danger' : 'tertiary'">
+                <ion-icon name="calendar-outline" class="ion-margin-end"/>
                 <ion-label>
                   <h3>Fecha partido*</h3>
-                  <p>No seleccionado</p>
+                  @if (step1FormCreatePartido.get('fecha_partido')?.invalid) {
+                    <p>No seleccionado</p>
+                  } @else {
+                    {{step1FormCreatePartido.get('fecha_partido')!.value | date: 'dd/MM/yyyy, HH:mm'}}hrs
+                  }
                 </ion-label>
               </ion-item>
               <div class="ion-padding" slot="content">
                 <ion-datetime-button datetime="datetime"/>
-
                 <ion-modal [keepContentsMounted]="true">
                   <ng-template>
                     <ion-datetime
                       id="datetime"
                       locale="es-ES"
-                      showDefaultButtons="true"
+                      [showDefaultButtons]="true"
                       cancelText="cerrar"
                       doneText="confirmar"
                       presentation="date-time"
@@ -65,6 +68,7 @@
                           minute: '2-digit',
                         },
                       }"
+                      (ionChange)="onDateChange($event)"
                     />
                   </ng-template>
                 </ion-modal>
@@ -74,31 +78,92 @@
         </ion-col>
 
         <ion-col size="12">
-          <ion-select label="Deporte*" label-placement="floating" fill="outline" cancelText="cerrar">
-            <ion-select-option></ion-select-option>
+          <ion-select formControlName="id_deporte" label="Deporte*" label-placement="floating" fill="outline" cancelText="cerrar">
+            @for (deporte of listDeportes(); track $index) {
+              <ion-select-option [value]="deporte.id_deporte">{{deporte.nombre_deporte}}</ion-select-option>
+            }
           </ion-select>
+          @if (step1FormCreatePartido.get('id_deporte')?.touched && step1FormCreatePartido.get('id_deporte')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1FormCreatePartido.get('id_deporte')?.hasError('required')) {
+                  *Debes seleccionar un deporte.
+                }
+              }
+            </ion-text>
+          }
         </ion-col>
 
         <ion-col size="12">
-          <ion-select label="Tipo partido*" label-placement="floating" fill="outline" cancelText="cerrar">
-            <ion-select-option></ion-select-option>
+          <ion-select formControlName="id_tipo_partido" label="Tipo partido*" label-placement="floating" fill="outline" cancelText="cerrar">
+            @for (tipoPartido of listTiposPartidos(); track $index) {
+              <ion-select-option [value]="tipoPartido.id_tipo_partido">{{tipoPartido.nombre_tipo_partido}}</ion-select-option>
+            }
           </ion-select>
+          @if (step1FormCreatePartido.get('id_tipo_partido')?.touched && step1FormCreatePartido.get('id_tipo_partido')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1FormCreatePartido.get('id_tipo_partido')?.hasError('required')) {
+                  *Debes seleccionar un tipo de partido.
+                }
+              }
+            </ion-text>
+          }
         </ion-col>
 
         <ion-col size="12">
-          <ion-select label="Rango edad*" label-placement="floating" fill="outline" cancelText="cerrar">
-            <ion-select-option></ion-select-option>
+          <ion-select formControlName="id_nivel_habilidad" label="Nivel habilidad*" label-placement="floating" fill="outline" cancelText="cerrar">
+            @for (nivelHabilidad of listNivelesHabilidad(); track $index) {
+              <ion-select-option [value]="nivelHabilidad.id_nivel_habilidad">{{nivelHabilidad.nombre_nivel_habilidad}}</ion-select-option>
+            }
           </ion-select>
+          @if (step1FormCreatePartido.get('id_nivel_habilidad')?.touched && step1FormCreatePartido.get('id_nivel_habilidad')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1FormCreatePartido.get('id_nivel_habilidad')?.hasError('required')) {
+                  *Debes seleccionar un nivel de habilidad.
+                }
+              }
+            </ion-text>
+          }
         </ion-col>
 
         <ion-col size="12">
-          <ion-select label="Emparejamiento*"  label-placement="floating" fill="outline" cancelText="cerrar">
-            <ion-select-option></ion-select-option>
+          <ion-select formControlName="id_rango_edad" label="Rango edad*" label-placement="floating" fill="outline" cancelText="cerrar">
+            @for (rangoEdad of listRangosEdad(); track $index) {
+              <ion-select-option [value]="rangoEdad.id_rango_edad">{{rangoEdad.descripcion}}</ion-select-option>
+            }
           </ion-select>
+          @if (step1FormCreatePartido.get('id_rango_edad')?.touched && step1FormCreatePartido.get('id_rango_edad')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1FormCreatePartido.get('id_rango_edad')?.hasError('required')) {
+                  *Debes seleccionar un rango de edad.
+                }
+              }
+            </ion-text>
+          }
         </ion-col>
 
         <ion-col size="12">
-          <ion-textarea label="Descripción" labelPlacement="floating" fill="outline" placeholder="Enter text"></ion-textarea>
+          <ion-select formControlName="id_tipo_emparejamiento" label="Emparejamiento*" label-placement="floating" fill="outline" cancelText="cerrar">
+            @for (tipoEmparejamiento of listTiposEmparejamientos(); track $index) {
+              <ion-select-option [value]="tipoEmparejamiento.id_tipo_emparejamiento">{{tipoEmparejamiento.nombre_tipo_emparejamiento}}</ion-select-option>
+            }
+          </ion-select>
+          @if (step1FormCreatePartido.get('id_tipo_emparejamiento')?.touched && step1FormCreatePartido.get('id_tipo_emparejamiento')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1FormCreatePartido.get('id_tipo_emparejamiento')?.hasError('required')) {
+                  *Debes seleccionar un tipo de emparejamiento.
+                }
+              }
+            </ion-text>
+          }
+        </ion-col>
+
+        <ion-col size="12">
+          <ion-textarea formControlName="descripcion" label="Descripción" labelPlacement="floating" fill="outline" placeholder="Descripción..."/>
         </ion-col>
       </ion-row>
     </form>
@@ -107,7 +172,7 @@
 
 <ion-footer class="ion-no-border">
   <ion-toolbar>
-    <ion-button class="ion-padding-horizontal" color="tertiary" expand="block"
+    <ion-button class="ion-padding-horizontal" color="tertiary" expand="block" [disabled]="!step1FormCreatePartido.valid"
       type="submit" form="step1Form" [routerLink]="['/private/matches/create-match/step-2']">
       Siguiente
     </ion-button>

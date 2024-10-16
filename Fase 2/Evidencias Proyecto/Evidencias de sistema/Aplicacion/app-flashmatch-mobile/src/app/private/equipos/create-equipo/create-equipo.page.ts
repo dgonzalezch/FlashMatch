@@ -59,7 +59,7 @@ export default class CreateEquipoPage {
   }
 
   getListRangosEdad(): void {
-    this.rangosEdadService.getRangosEdad().subscribe({
+    this.rangosEdadService.getAllRangosEdad().subscribe({
       next: (resp: responseSuccess) => {
         this.listRangosEdad.set(resp.data);
       },

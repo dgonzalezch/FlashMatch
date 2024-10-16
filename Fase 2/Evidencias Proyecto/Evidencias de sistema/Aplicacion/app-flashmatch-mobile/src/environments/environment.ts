@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiTime: 10000,
+  googleMapsApiKey: ''
 };
 
 /*
