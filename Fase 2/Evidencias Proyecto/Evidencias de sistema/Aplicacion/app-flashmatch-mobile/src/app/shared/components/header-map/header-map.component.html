@@ -1,15 +1,10 @@
 <ion-header>
   <ion-toolbar>
-    <ion-item button lines="none">
+    <ion-item button lines="none" [routerLink]="['/private/map']" >
       <ion-icon color="primary" slot="start" name="location-outline" />
       <ion-text color="medium">
         {{ 'Phillipe Cousteau #12552' || 'Seleccionar ubicación' }}
       </ion-text>
     </ion-item>
   </ion-toolbar>
-
-
-  <capacitor-google-map id="map"/>
-
-
 </ion-header>

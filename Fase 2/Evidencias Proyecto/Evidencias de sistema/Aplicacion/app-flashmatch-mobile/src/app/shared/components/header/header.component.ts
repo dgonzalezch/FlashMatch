@@ -18,7 +18,7 @@ import { IonTitle, IonImg, IonToolbar, IonHeader, IonButtons, IonBackButton, Ion
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeaderComponent  implements OnInit {
+export class HeaderComponent implements OnInit {
   public typeHeader = input.required<string>();
 
   ngOnInit() { }

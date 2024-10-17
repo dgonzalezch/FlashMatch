@@ -1,0 +1,13 @@
+<ion-content [fullscreen]="true">
+  <capacitor-google-map id="map"/>
+
+  @if (!isLoading()) {
+    <ion-button (click)="centerMapOnCurrentLocation()" expand="block">
+      Centrar en mi ubicación
+    </ion-button>
+  } @else {
+    <div class="loading-overlay">
+      <ion-spinner color="primary"></ion-spinner>
+    </div>
+  }
+</ion-content>

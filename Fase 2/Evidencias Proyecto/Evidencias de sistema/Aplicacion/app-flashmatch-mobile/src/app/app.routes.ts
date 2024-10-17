@@ -55,6 +55,10 @@ export const routes: Routes = [
         loadComponent: () => import('./private/home/home.page'),
       },
       {
+        path: 'map',
+        loadComponent: () => import('./private/map/map.page')
+      },
+      {
         path: 'matches',
         children: [
           {

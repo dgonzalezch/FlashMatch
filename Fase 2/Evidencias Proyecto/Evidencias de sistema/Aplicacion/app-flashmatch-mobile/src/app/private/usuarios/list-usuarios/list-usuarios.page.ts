@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonRow, IonGrid, IonSearchbar, IonCol, IonCard, IonCardHeader, IonItem, IonAvatar, IonLabel, IonCardTitle, IonCardSubtitle, IonCardContent, IonFooter, IonButton, IonFab, IonFabButton, IonIcon, IonText } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
-import { MapComponent } from 'src/app/shared/components/map/map.component';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { responseError } from 'src/app/interfaces/response-error.interface';
@@ -16,7 +15,7 @@ import { StorageService } from 'src/app/services/storage.service';
   templateUrl: './list-usuarios.page.html',
   styleUrls: ['./list-usuarios.page.scss'],
   standalone: true,
-  imports: [IonText, IonIcon, IonFabButton, IonFab, IonButton, IonFooter, IonCardContent, IonCardSubtitle, IonCardTitle, IonLabel, IonAvatar, IonItem, IonCardHeader, IonCard, IonCol, IonSearchbar, IonGrid, IonRow, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, HeaderComponent, MapComponent],
+  imports: [IonText, IonIcon, IonFabButton, IonFab, IonButton, IonFooter, IonCardContent, IonCardSubtitle, IonCardTitle, IonLabel, IonAvatar, IonItem, IonCardHeader, IonCard, IonCol, IonSearchbar, IonGrid, IonRow, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, HeaderComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ListUsuariosPage {

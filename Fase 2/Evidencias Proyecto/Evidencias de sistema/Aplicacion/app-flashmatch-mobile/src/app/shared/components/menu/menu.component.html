@@ -18,20 +18,32 @@
 
   <ion-content>
     <ion-list lines="none" class="menu-list">
-    @for (item of menuItemsPrivate(); track $index) {
-      <ion-menu-toggle auto-hide="false">
-        <ion-item button [routerLink]="item.route" detail>
-          <ion-icon [name]="item.icon" slot="start" size="large"/>
-          <ion-label class="menu-item-label">{{ item.label }}</ion-label>
+      <!-- Item del usuario -->
+      <ion-item button lines="none" class="user-item">
+        <ion-avatar slot="start">
+          <ion-img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="Usuario"></ion-img>
+        </ion-avatar>
+        <ion-label>
+          <h2>Daniel González</h2> <!-- Suponiendo que tienes una variable userName -->
+          <p>Novato</p> <!-- Si quieres mostrar el correo electrónico -->
+        </ion-label>
+      </ion-item>
+
+
+      @for (item of menuItemsPrivate(); track $index) {
+        <ion-menu-toggle auto-hide="false">
+          <ion-item button [routerLink]="item.route" detail>
+            <ion-icon [name]="item.icon" slot="start" size="large"/>
+            <ion-label class="menu-item-label">{{ item.label }}</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      }
+      <ion-menu-toggle>
+        <ion-item button (click)="logOut()" detail>
+          <ion-icon name="log-out-outline" slot="start" size="large"/>
+          <ion-label class="menu-item-label">Cerrar Sesión</ion-label>
         </ion-item>
       </ion-menu-toggle>
-    }
-    <ion-menu-toggle>
-      <ion-item button (click)="logOut()" detail>
-        <ion-icon name="log-out-outline" slot="start" size="large"/>
-        <ion-label class="menu-item-label">Cerrar Sesión</ion-label>
-      </ion-item>
-    </ion-menu-toggle>
     </ion-list>
   </ion-content>
 

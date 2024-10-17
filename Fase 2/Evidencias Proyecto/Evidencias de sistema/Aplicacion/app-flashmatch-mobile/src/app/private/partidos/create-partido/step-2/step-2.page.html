@@ -87,7 +87,7 @@
                     <p>{{ cancha.descripcion }}</p>
                     <p>Tipo de cancha: {{ cancha.tipoCancha }}</p>
                     <p><b>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }}</b> por hora</p>
-                    <ion-button color="secondary" size="small" (click)="reservarCancha(cancha.id_cancha)">
+                    <ion-button color="secondary" size="small" (click)="presentAlertConfirm(cancha)">
                       <ion-icon slot="start" name="ticket-outline"/>
                       Reservar
                     </ion-button>
@@ -95,6 +95,9 @@
                 </ion-item>
               }
             </ion-list>
+            <!-- <ion-infinite-scroll>
+              <ion-infinite-scroll-content loadingText="Please wait..." loadingSpinner="bubbles"/>
+            </ion-infinite-scroll> -->
           </ion-col>
         }
 
@@ -119,7 +122,7 @@
                 </ion-card-content>
 
                 <ion-footer class="ion-no-border ion-padding footer-aligned-end">
-                  <ion-button color="secondary" (click)="reservarCancha(cancha.id_cancha)">
+                  <ion-button color="secondary" (click)="presentAlertConfirm(cancha)">
                     <ion-icon slot="start" name="ticket-outline"/>
                     Reservar
                   </ion-button>
