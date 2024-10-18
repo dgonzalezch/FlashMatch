@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, OnInit, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { IonContent, IonList, IonItem, IonHeader, IonToolbar, IonTitle, IonGrid, IonRow, IonCol, IonImg, IonIcon, IonLabel, IonMenu, IonButton, IonMenuToggle, IonFooter, IonListHeader, IonCardHeader, IonCard, IonText, IonAvatar } from "@ionic/angular/standalone";
+import { IonContent, IonList, IonItem, IonHeader, IonToolbar, IonTitle, IonGrid, IonRow, IonCol, IonImg, IonIcon, IonLabel, IonMenu, IonButton, IonMenuToggle, IonFooter, IonListHeader, IonCardHeader, IonCard, IonText, IonAvatar, IonCardContent } from "@ionic/angular/standalone";
 import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { StorageService } from 'src/app/services/storage.service';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
   standalone: true,
-  imports: [IonAvatar, IonText, IonCard, IonCardHeader, IonListHeader, IonFooter, IonButton, IonLabel, IonIcon, IonImg, IonCol, IonRow, IonGrid, IonTitle, IonToolbar, IonHeader, IonMenu, IonContent, IonList, IonItem, IonMenuToggle, RouterLink],
+  imports: [IonCardContent, IonAvatar, IonText, IonCard, IonCardHeader, IonListHeader, IonFooter, IonButton, IonLabel, IonIcon, IonImg, IonCol, IonRow, IonGrid, IonTitle, IonToolbar, IonHeader, IonMenu, IonContent, IonList, IonItem, IonMenuToggle, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenuComponent {
@@ -27,7 +27,7 @@ export class MenuComponent {
     // { icon: 'albums-outline', label: 'Canchas', route: '/private/courts' },
     { icon: 'people-circle-outline', label: 'Equipos', route: '/private/teams' },
     { icon: 'walk-outline', label: 'Jugadores', route: '/private/players' },
-    { icon: 'person-outline', label: 'Perfil', route: '/private/profile' },
+    // { icon: 'person-outline', label: 'Perfil', route: '/private/profile' },
     // { icon: 'settings-outline', label: 'Configuraciones', route: '/private/configurations' },
     // { icon: 'log-out-outline', label: 'Cerrar sesión', route: '/auth' },
     // { icon: 'help-circle-outline', label: 'Ayuda', route: '/help' }

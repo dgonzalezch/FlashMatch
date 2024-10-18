@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonCard, IonGrid, IonRow, IonCol, IonText, IonCardContent, IonIcon, IonButton, IonFooter, IonLabel, IonItem, IonList, IonToggle, IonThumbnail, IonDatetimeButton, IonModal, IonDatetime, IonAccordion, IonAccordionGroup, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSegment, IonSegmentButton, IonAlert, IonSpinner, LoadingController, IonNote, IonInfiniteScroll, IonInfiniteScrollContent, AlertController } from '@ionic/angular/standalone';
 import { Router, RouterLink } from '@angular/router';
+import { LocationService } from 'src/app/shared/common/location.service';
 
 // Definición de la interfaz Cancha
 interface Cancha {
@@ -29,11 +30,20 @@ export default class Step2Page {
   loadingController = inject(LoadingController);
   router = inject(Router);
   alertController = inject(AlertController);
+  locationService = inject(LocationService);
 
   selectedSegment = signal<string>('list');
+  selectedCanchaId = signal<string>('');
+  useCurrentLocationValue = signal<boolean>(false);
+  selectedLocation = signal<string>('');
 
-  selectedCanchaId: string | null = null;
+  // ionViewWillEnter() {
+  //   if(this.locationService.getLocation().lat && this.locationService.getLocation().lng) {
 
+  //   } else {
+
+  //   }
+  // }
 
   async presentAlertConfirm(cancha: any) {
     const alert = await this.alertController.create({
@@ -55,7 +65,6 @@ export default class Step2Page {
 
     await alert.present();
   }
-
 
   async reservarCancha(idCancha: string) {
     const loading = await this.loadingController.create({
@@ -99,35 +108,13 @@ export default class Step2Page {
     }
   ];
 
-  useCurrentLocationValue: boolean = false;
-  selectedLocation: string | null = null;
-
-  ngOnInit() {
-  }
-
-  // Método para manejar el uso de la ubicación actual
-  useCurrentLocation(event: any) {
-    this.useCurrentLocationValue = event.detail.checked;
-    // Aquí puedes agregar la lógica para usar la ubicación actual
-    if (this.useCurrentLocationValue) {
-      console.log('Usando ubicación actual');
-    } else {
-      console.log('No se usará la ubicación actual');
-    }
-  }
-
-  // Método para abrir un selector de ubicación
-  openLocationPicker() {
-    console.log('Abriendo selector de ubicación');
-    // Aquí puedes agregar la lógica para abrir un selector de ubicación
-  }
-
   onLocationToggle(event: any) {
     if (event.detail.checked) {
-      // Usar la ubicación actual
-      this.selectedLocation = "Ubicación actual"; // Aquí puedes añadir lógica para obtener la ubicación actual
+      this.useCurrentLocationValue.set(true);
+      this.selectedLocation.set('Ubicación actual');
     } else {
-      this.selectedLocation = null; // Reiniciar la ubicación seleccionada
+      this.useCurrentLocationValue.set(false);
+      this.selectedLocation.set('');
     }
   }
 

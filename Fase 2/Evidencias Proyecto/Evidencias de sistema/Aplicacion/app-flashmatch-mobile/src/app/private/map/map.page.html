@@ -1,13 +1,29 @@
+<ion-header>
+  @if (!isLoading()) {
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-button color="primary" (click)="centerMapOnCurrentLocation()">
+          <ion-icon slot="start" name="locate-outline"/>
+          Mi ubicación
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button color="secondary" (click)="confirmUbicationSelection()">
+          <ion-icon slot="start" name="checkmark-outline"/>
+          Seleccionar
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  }
+</ion-header>
+
 <ion-content [fullscreen]="true">
+  <!-- Mapa -->
   <capacitor-google-map id="map"/>
 
-  @if (!isLoading()) {
-    <ion-button (click)="centerMapOnCurrentLocation()" expand="block">
-      Centrar en mi ubicación
-    </ion-button>
-  } @else {
+  @if (isLoading()) {
     <div class="loading-overlay">
-      <ion-spinner color="primary"></ion-spinner>
+      <ion-spinner color="primary"/>
     </div>
   }
 </ion-content>

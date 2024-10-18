@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { RedirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated.guard';
+import { LocationResolver } from './shared/common/location.resolver';
 
 export const routes: Routes = [
   {
@@ -92,7 +93,6 @@ export const routes: Routes = [
             pathMatch: 'full'
           }
         ]
-
       },
       {
         path: 'courts',
@@ -184,7 +184,10 @@ export const routes: Routes = [
         redirectTo: 'home',
         pathMatch: 'full'
       }
-    ]
+    ],
+    resolve: {
+      // location: LocationResolver,
+    },
   },
   {
     path: '**',

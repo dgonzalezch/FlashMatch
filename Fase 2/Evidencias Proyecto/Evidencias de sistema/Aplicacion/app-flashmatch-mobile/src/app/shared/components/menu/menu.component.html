@@ -18,17 +18,20 @@
 
   <ion-content>
     <ion-list lines="none" class="menu-list">
-      <!-- Item del usuario -->
-      <ion-item button lines="none" class="user-item">
+      <ion-item lines="none" class="user-item">
         <ion-avatar slot="start">
           <ion-img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="Usuario"></ion-img>
         </ion-avatar>
         <ion-label>
-          <h2>Daniel González</h2> <!-- Suponiendo que tienes una variable userName -->
-          <p>Novato</p> <!-- Si quieres mostrar el correo electrónico -->
+          <h2>Daniel González</h2>
+          <p>Novato</p>
+          <ion-menu-toggle auto-hide="false">
+            <ion-button class="ion-no-margin" fill="outline" color="primary" size="small" [routerLink]="'/private/profile'">
+              Ver Perfil
+            </ion-button>
+          </ion-menu-toggle>
         </ion-label>
       </ion-item>
-
 
       @for (item of menuItemsPrivate(); track $index) {
         <ion-menu-toggle auto-hide="false">

@@ -1,10 +1,13 @@
-import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { AlertController, IonContent, IonHeader, IonTitle, IonToolbar, NavController } from '@ionic/angular/standalone';
 import { GoogleMap } from '@capacitor/google-maps';
-import { Geolocation } from '@capacitor/geolocation';  // Importa Geolocation
+import { Geolocation } from '@capacitor/geolocation';
 import { environment } from 'src/environments/environment';
+import { LocationService } from 'src/app/shared/common/location.service';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 const apiKey = environment.googleMapsApiKey;
 
@@ -17,14 +20,28 @@ const apiKey = environment.googleMapsApiKey;
   changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export default class MapPage {
+export default class MapPage implements OnInit {
   map!: GoogleMap;
-  markerId!: string;
-  currentLat!: number; // Para almacenar la latitud actual
-  currentLng!: number; // Para almacenar la longitud actual
-  isLoading = signal<boolean>(true); // Estado de carga
+  markerId = signal<string>('');
+  currentLat = signal<number>(0);
+  currentLng = signal<number>(0);
+  currentAddress = signal<string>('');
+  isLoading = signal<boolean>(true);
+  alertController = inject(AlertController);
+  navController = inject(NavController);
+  locationService = inject(LocationService);
 
-  constructor() {}
+  private clickSubject = new Subject<{ lat: number, lng: number }>();
+
+  constructor() {
+    this.clickSubject.pipe(
+      debounceTime(500) // Retraso de 500ms para evitar múltiples solicitudes
+    ).subscribe(({ lat, lng }) => {
+      this.getAddressFromCoordinates(lat, lng);
+      this.updateMarker(lat, lng);
+      this.saveLocation(lat, lng, this.currentAddress());
+    });
+  }
 
   ngOnInit() {
     this.loadCurrentLocation();
@@ -32,8 +49,8 @@ export default class MapPage {
 
   // Inicializa el mapa en las coordenadas actuales
   async initMap(lat: number, lng: number) {
-    this.currentLat = lat; // Almacena latitud inicial
-    this.currentLng = lng; // Almacena longitud inicial
+    this.currentLat.set(lat); // Almacena latitud inicial
+    this.currentLng.set(lng); // Almacena longitud inicial
 
     this.map = await GoogleMap.create({
       id: 'my-map',
@@ -42,8 +59,6 @@ export default class MapPage {
       config: {
         center: { lat, lng },
         zoom: 15,
-
-        // Desactivar pantalla completa y modo satélite
         fullscreenControl: false,
         mapTypeControl: false,
         mapTypeControlOptions: {
@@ -52,7 +67,7 @@ export default class MapPage {
       },
     });
 
-    // Añade un marcador en la ubicación inicial (ubicación actual del usuario)
+    // Añade un marcador en la ubicación inicial
     this.addMarker(lat, lng);
 
     // Establece isLoading en false una vez que el mapa se ha inicializado
@@ -62,9 +77,46 @@ export default class MapPage {
     this.map.setOnMapClickListener((event) => {
       const lat = event.latitude;
       const lng = event.longitude;
-      this.updateMarker(lat, lng); // Actualiza el marcador en la nueva ubicación
-      this.saveLocation(lat, lng); // Guarda la nueva ubicación
+      this.clickSubject.next({ lat, lng });
     });
+  }
+
+  async getAddressFromCoordinates(lat: number, lng: number) {
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.status === 'OK' && data.results.length > 0) {
+        this.currentAddress.set(data.results[0].formatted_address);
+      } else {
+        this.handleError(null, 'No se encontró una dirección para esas coordenadas.');
+      }
+    } catch (error) {
+      this.handleError(error, 'Error al obtener la dirección');
+    }
+  }
+
+  async confirmUbicationSelection() {
+    const alert = await this.alertController.create({
+      header: 'Confirmar ubicación',
+      message: `¿Estás seguro de usar la ubicación seleccionada?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Confirmar',
+          handler: () => {
+            this.locationService.setLocation(this.currentLat(), this.currentLng(), this.currentAddress());
+            this.navController.back();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   // Obtiene la ubicación actual del usuario
@@ -73,9 +125,10 @@ export default class MapPage {
       const position = await Geolocation.getCurrentPosition();
       const { latitude, longitude } = position.coords;
       this.initMap(latitude, longitude); // Inicializa el mapa centrado en la ubicación actual
-      this.saveLocation(latitude, longitude); // Guarda la ubicación inicial
+      await this.getAddressFromCoordinates(latitude, longitude); // Obtiene el nombre de la ubicación actual
+      this.saveLocation(latitude, longitude, this.currentAddress()); // Guarda la ubicación inicial
     } catch (error) {
-      console.error('Error obteniendo la ubicación', error);
+      this.handleError(error, 'Error obteniendo la ubicación');
       this.initMap(33.6, -117.9); // Fallback en caso de error
     }
   }
@@ -90,14 +143,14 @@ export default class MapPage {
       title: 'Mi Ubicación',
       snippet: 'Aquí estás',
     });
-    this.markerId = markerId; // Guarda el id del marcador
+    this.markerId.set(markerId); // Guarda el id del marcador
   }
 
   // Método para actualizar el marcador cuando se hace clic en el mapa
   async updateMarker(lat: number, lng: number) {
     // Elimina el marcador anterior si existe
-    if (this.markerId) {
-      await this.map.removeMarker(this.markerId);
+    if (this.markerId()) {
+      await this.map.removeMarker(this.markerId());
     }
 
     // Añade un nuevo marcador en la nueva ubicación
@@ -111,12 +164,11 @@ export default class MapPage {
     });
 
     // Guarda el nuevo id del marcador
-    this.markerId = newMarkerId;
+    this.markerId.set(newMarkerId);
 
     // Centra el mapa en la nueva ubicación
     await this.map.setCamera({
       coordinate: { lat, lng },
-      // zoom: 15,
     });
   }
 
@@ -134,18 +186,24 @@ export default class MapPage {
       // Actualizar la posición del marcador
       await this.updateMarker(latitude, longitude);
 
-      console.log('Centrado en la ubicación actual:', latitude, longitude);
+      // Obtener y establecer la dirección de la ubicación actual
+      await this.getAddressFromCoordinates(latitude, longitude);
+
+      console.log('Centrado en la ubicación actual:', latitude, longitude, this.currentAddress());
     } catch (error) {
-      console.error('Error al centrar el mapa en la ubicación actual', error);
+      this.handleError(error, 'Error al centrar el mapa en la ubicación actual');
     }
   }
 
   // Método para guardar la ubicación (puedes ajustarlo para tu backend o lógica)
-  saveLocation(lat: number, lng: number) {
-    this.currentLat = lat;
-    this.currentLng = lng;
-    // Aquí puedes enviar las coordenadas a tu backend o almacenarlas
-    console.log('Ubicación guardada:', lat, lng);
-    // Lógica para enviar al backend o guardarlo localmente
+  saveLocation(lat: number, lng: number, address: string) {
+    this.currentLat.set(lat);
+    this.currentLng.set(lng);
+    console.log('Ubicación guardada:', lat, lng, address);
+  }
+
+  // Manejo centralizado de errores
+  handleError(error: any, context: string) {
+    console.error(`Error en ${context}:`, error);
   }
 }

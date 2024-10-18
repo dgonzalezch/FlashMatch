@@ -1,10 +1,16 @@
 <ion-header>
   <ion-toolbar>
-    <ion-item button lines="none" [routerLink]="['/private/map']" >
-      <ion-icon color="primary" slot="start" name="location-outline" />
-      <ion-text color="medium">
+    <ion-item lines="none">
+      <!-- Icono de ubicación -->
+      <ion-icon color="primary" slot="start" name="location-outline" style="margin-right: 8px;"/>
+
+      <!-- Dirección o texto de ubicación -->
+      <ion-text color="primary">
         {{ 'Phillipe Cousteau #12552' || 'Seleccionar ubicación' }}
       </ion-text>
+
+      <!-- Icono para sugerir que se puede cambiar -->
+      <ion-icon button [routerLink]="['/private/map']" color="secondary" slot="end" name="create-outline"/>
     </ion-item>
   </ion-toolbar>
 </ion-header>
