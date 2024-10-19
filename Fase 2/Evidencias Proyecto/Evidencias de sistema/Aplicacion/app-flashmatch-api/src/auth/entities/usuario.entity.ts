@@ -29,13 +29,13 @@ export class Usuario {
     @Column({ type: 'text', select: false })
     clave: string;
 
-    @Column({ type: 'varchar', length: 50, nullable: true })
+    @Column({ type: 'varchar', length: 200, nullable: true })
     ubicacion: string;
-
-    @Column({ type: 'decimal', precision: 10, scale: 8, nullable: true })
+    
+    @Column({ type: 'decimal', precision: 20, scale: 16, nullable: true })
     latitud: number;
-
-    @Column({ type: 'decimal', precision: 11, scale: 8, nullable: true })
+    
+    @Column({ type: 'decimal', precision: 20, scale: 16, nullable: true })
     longitud: number;
     
     @Column({ type: 'text', nullable: true })
@@ -58,8 +58,6 @@ export class Usuario {
 
     @OneToMany(() => EstadisticaDetalladaUsuario, (estadisticaDetalladaUsuario) => estadisticaDetalladaUsuario.usuario, { cascade: true })
     estadisticasDetalladasUsuarios: EstadisticaDetalladaUsuario[];
-    // @OneToMany(() => VerificacionIdentidad, verificacion => verificacion.usuario)
-    // verificaciones: VerificacionIdentidad[];
 
     // @OneToMany(() => Reserva, reserva => reserva.usuario)
     // reservas: Reserva[];

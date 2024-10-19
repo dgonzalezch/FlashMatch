@@ -72,7 +72,6 @@ export default class ListUsuariosPage {
   loadUsuarios() {
     this.usuariosService.getUsuarios().subscribe({
       next: (resp: responseSuccess) => {
-        debugger
         this.listUsuarios.set(resp.data);
       },
       error: (err: responseError) => {

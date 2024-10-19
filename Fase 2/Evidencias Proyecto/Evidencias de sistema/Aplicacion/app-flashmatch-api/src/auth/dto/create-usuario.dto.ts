@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsEmail, IsMobilePhone, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, Matches, MaxLength, MinLength, IsDateString, IsDecimal } from "class-validator";
+import { IsArray, IsBoolean, IsEmail, IsMobilePhone, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, Matches, MaxLength, MinLength, IsDateString, IsDecimal, IsNumber } from "class-validator";
 
 export class CreateUsuarioDto {
     @IsString()
@@ -41,12 +41,12 @@ export class CreateUsuarioDto {
     @IsString()
     @IsOptional()
     ubicacion?: string;
-
-    @IsDecimal({ decimal_digits: '10,8', force_decimal: true }, { message: 'Latitud debe ser un número decimal con 8 dígitos de precisión.' })
+    
+    @IsNumber({ maxDecimalPlaces: 16 }, { message: 'Latitud debe ser un número con un máximo de 16 decimales.' })
     @IsOptional()
     latitud?: number;
-
-    @IsDecimal({ decimal_digits: '11,8', force_decimal: true }, { message: 'Longitud debe ser un número decimal con 8 dígitos de precisión.' })
+    
+    @IsNumber({ maxDecimalPlaces: 16 }, { message: 'Longitud debe ser un número con un máximo de 16 decimales.' })
     @IsOptional()
     longitud?: number;
 

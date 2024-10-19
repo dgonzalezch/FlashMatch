@@ -10,6 +10,7 @@ import { responseError } from 'src/app/interfaces/response-error.interface';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { DeportesPosicionesUsuariosService } from 'src/app/services/deportes-posiciones-usuarios.service';
 import { HeaderMapComponent } from 'src/app/shared/components/header-map/header-map.component';
+import { LocationService } from '../../../shared/common/location.service';
 
 @Component({
   selector: 'app-info-usuario',
@@ -26,11 +27,13 @@ export default class InfoUsuarioPage {
   private usuariosService = inject(UsuariosService);
   private deportesService = inject(DeportesService);
   private deportesPosicionesUsuariosService = inject(DeportesPosicionesUsuariosService);
+  private locationService = inject(LocationService);
 
   listDeportes = signal<any[]>([]);
   listPosiciones = signal<any[]>([]);
   infoUsuario = signal<any>(null);
   idUsuario = signal<string>('');
+  ubication = signal<string>('');
 
   deportesPosicionesUsuariosForm = this.fb.group({
     id_deporte: ['', [Validators.required]],
@@ -39,10 +42,11 @@ export default class InfoUsuarioPage {
 
   isModalOpen = signal<boolean>(false);
 
-  async ionViewWillEnter() {
+   async ionViewWillEnter() {
     this.idUsuario.set(await this.storageService.get('user'));
     this.getInfoUsuario();
     this.getListDeportes();
+    this.ubication.set(this.locationService.getLocation().ubicacion);
   }
 
   user = {

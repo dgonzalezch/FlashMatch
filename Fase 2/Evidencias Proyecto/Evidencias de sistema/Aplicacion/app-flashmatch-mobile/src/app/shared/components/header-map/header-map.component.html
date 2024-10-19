@@ -5,8 +5,8 @@
       <ion-icon color="primary" slot="start" name="location-outline" style="margin-right: 8px;"/>
 
       <!-- Dirección o texto de ubicación -->
-      <ion-text color="primary">
-        {{ 'Phillipe Cousteau #12552' || 'Seleccionar ubicación' }}
+      <ion-text color="primary" style="font-size: small;">
+        {{ ubication() || 'Ubicación no proporcionada' }}
       </ion-text>
 
       <!-- Icono para sugerir que se puede cambiar -->

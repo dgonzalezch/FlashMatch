@@ -1,33 +1,45 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
+import { StorageService } from 'src/app/services/storage.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocationService {
-  private lat!: number;
-  private lng!: number;
-  private address!: string;
+  storageService = inject(StorageService);
+  lat = signal<number>(0);
+  lng = signal<number>(0);
+  address = signal<string>('');
 
   setLocation(lat: number, lng: number, address: string) {
-    this.lat = lat;
-    this.lng = lng;
-    this.address = address;
+    this.lat.set(lat);
+    this.lng.set(lng);
+    this.address.set(address);
   }
 
   getLocation() {
-    console.log('Ubicación:', this.lat, this.lng, this.address);
-    return { lat: this.lat, lng: this.lng, address: this.address };
+    console.log('Ubicación:', this.address(), this.lat(), this.lng());
+    return { ubicacion: this.address(), latitud: this.lat(), longitud: this.lng() };
   }
 
   async loadCurrentLocation() {
     try {
-      const position = await Geolocation.getCurrentPosition();
-      const { latitude, longitude } = position.coords;
-      this.setLocation(latitude, longitude, await this.getAddressFromCoordinates(latitude, longitude));
+      if(!await this.storageService.get('ubicacion')) {
+        const position = await Geolocation.getCurrentPosition();
+        const { latitude, longitude } = position.coords;
+        await this.getAddressFromCoordinates(latitude, longitude);
+        this.setLocation(latitude, longitude, await this.getAddressFromCoordinates(latitude, longitude))
+        debugger
+      } else {
+        const lat = parseFloat(await this.storageService.get('latitud'));
+        const lng = parseFloat(await this.storageService.get('longitud'));
+        this.setLocation(lat, lng, await this.getAddressFromCoordinates(lat, lng))
+        debugger
+      }
+
     } catch (error) {
-      console.error('Error obteniendo la ubicación', error);
+      console.log(error, 'Error obteniendo la ubicación');
     }
   }
 

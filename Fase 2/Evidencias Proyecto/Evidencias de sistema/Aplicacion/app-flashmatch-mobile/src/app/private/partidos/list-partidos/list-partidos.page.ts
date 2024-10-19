@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonFooter, IonSegmentButton, IonIcon, IonButtons, IonSegment, IonModal, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonList, IonItem, IonLabel, IonGrid, IonRow, IonCol, IonCardSubtitle, IonText, IonProgressBar, IonChip, IonSpinner, IonBadge, IonSearchbar } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { HeaderMapComponent } from 'src/app/shared/components/header-map/header-map.component';
+import { LocationService } from '../../../shared/common/location.service';
 
 @Component({
   selector: 'app-list-partidos',
@@ -13,8 +14,10 @@ import { HeaderMapComponent } from 'src/app/shared/components/header-map/header-
   imports: [IonSearchbar, IonBadge, IonSpinner, IonChip, IonProgressBar, IonText, IonCardSubtitle, IonCol, IonRow, IonGrid, IonLabel, IonItem, IonList, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonModal, IonSegment, IonButtons, IonIcon, IonSegmentButton, IonFooter, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderMapComponent, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export default class ListPartidosPage implements OnInit {
+export default class ListPartidosPage {
   isModalOpen = false;
+  locationService = inject(LocationService);
+  ubication = signal<string>('');
 
   partidosPendientesAceptacion = [
     {
@@ -62,7 +65,8 @@ export default class ListPartidosPage implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  ionViewWillEnter() {
+    this.ubication.set(this.locationService.getLocation().ubicacion)
   }
 
 }

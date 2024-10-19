@@ -1,6 +1,7 @@
 import { Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { isUUID } from 'class-validator';
+import { UpdateUsuarioDto } from 'src/auth/dto/update-usuario.dto';
 import { Usuario } from 'src/auth/entities/usuario.entity';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { ResponseMessage } from 'src/common/interfaces/response.interface';
@@ -13,9 +14,9 @@ export class UsuariosService {
 
   constructor(
     @InjectRepository(Usuario)
-    private readonly usuarioRepository: Repository<Usuario>
+    private readonly usuarioRepository: Repository<Usuario>,
+    private readonly errorHandlingService: ErrorHandlingService,
   ) { }
-
 
   async findAll(paginationDto: PaginationDto): Promise<ResponseMessage<Usuario[]>> {
     try {
@@ -72,5 +73,21 @@ export class UsuariosService {
     if (!usuario) throw new NotFoundException(`Usuario no encontrado.`);
   
     return { message: 'Registro encontrado.', data: usuario };
+  }
+
+  async update(id_usuario: string, updateUsuarioDto: UpdateUsuarioDto): Promise<ResponseMessage<Usuario>> {
+    const usuario = await this.usuarioRepository.preload({
+      id_usuario,
+      ...updateUsuarioDto,
+    });
+    
+    if (!usuario) throw new NotFoundException(`Usuario con id ${id_usuario} no encontrado.`);
+  
+    try {
+      await this.usuarioRepository.save(usuario);
+      return { message: 'Usuario actualizado exitosamente.', data: usuario };
+    } catch (error) {
+      this.errorHandlingService.handleDBErrors(error);
+    }
   }
 }

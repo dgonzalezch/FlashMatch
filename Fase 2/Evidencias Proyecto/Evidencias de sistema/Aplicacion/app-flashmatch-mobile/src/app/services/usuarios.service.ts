@@ -26,4 +26,12 @@ export class UsuariosService {
       timeout(environment.apiTime)
     );
   }
+
+  patchUsuario(id_usuario: any, body: any): Observable<any> {
+    return this.http.patch<any>(this.urlBaseUsuarios + id_usuario, body).pipe(
+      map((response) => response),
+      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
+      timeout(environment.apiTime)
+    );
+  }
 }

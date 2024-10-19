@@ -81,8 +81,14 @@ export default class LoginPage implements OnInit {
   onSubmit() {
     this.authService.loginUser(this.loginForm.value).subscribe({
       next: async (response) => {
-        await this.storageService.set('token', response.token);
         await this.storageService.set('user', response.id_usuario);
+        await this.storageService.set('token', response.token);
+        await this.storageService.set('nombre', response.nombre);
+        await this.storageService.set('apellido', response.apellido);
+        await this.storageService.set('roles', response.roles);
+        await this.storageService.set('ubicacion', response.ubicacion);
+        await this.storageService.set('latitud', response.latitud);
+        await this.storageService.set('longitud', response.longitud);
         this.router.navigate(['/private/home']);
       },
       error: (err: responseError) => {

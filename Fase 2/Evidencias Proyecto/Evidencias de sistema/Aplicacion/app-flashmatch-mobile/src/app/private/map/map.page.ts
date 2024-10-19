@@ -8,6 +8,10 @@ import { environment } from 'src/environments/environment';
 import { LocationService } from 'src/app/shared/common/location.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { StorageService } from 'src/app/services/storage.service';
+import { UsuariosService } from '../../services/usuarios.service';
+import { responseError } from 'src/app/interfaces/response-error.interface';
+import { AlertService } from 'src/app/shared/common/alert.service';
 
 const apiKey = environment.googleMapsApiKey;
 
@@ -21,15 +25,19 @@ const apiKey = environment.googleMapsApiKey;
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export default class MapPage implements OnInit {
+  alertController = inject(AlertController);
+  navController = inject(NavController);
+  locationService = inject(LocationService);
+  storageService = inject(StorageService);
+  usuariosService = inject(UsuariosService);
+  alertService = inject(AlertService);
+
   map!: GoogleMap;
   markerId = signal<string>('');
   currentLat = signal<number>(0);
   currentLng = signal<number>(0);
   currentAddress = signal<string>('');
   isLoading = signal<boolean>(true);
-  alertController = inject(AlertController);
-  navController = inject(NavController);
-  locationService = inject(LocationService);
 
   private clickSubject = new Subject<{ lat: number, lng: number }>();
 
@@ -108,8 +116,19 @@ export default class MapPage implements OnInit {
         },
         {
           text: 'Confirmar',
-          handler: () => {
+          handler: async () => {
             this.locationService.setLocation(this.currentLat(), this.currentLng(), this.currentAddress());
+            this.usuariosService.patchUsuario(await this.storageService.get('user'), this.locationService.getLocation()).subscribe({
+              next: async (resp) => {
+                await this.storageService.set('ubicacion', resp.data.ubicacion)
+                await this.storageService.set('latitud', resp.data.latitud)
+                await this.storageService.set('longitud', resp.data.longitud)
+                this.alertService.message(resp.message);
+              },
+              error: (err: responseError) => {
+                this.alertService.error(err.message);
+              }
+            })
             this.navController.back();
           }
         }
@@ -122,11 +141,20 @@ export default class MapPage implements OnInit {
   // Obtiene la ubicación actual del usuario
   async loadCurrentLocation() {
     try {
-      const position = await Geolocation.getCurrentPosition();
-      const { latitude, longitude } = position.coords;
-      this.initMap(latitude, longitude); // Inicializa el mapa centrado en la ubicación actual
-      await this.getAddressFromCoordinates(latitude, longitude); // Obtiene el nombre de la ubicación actual
-      this.saveLocation(latitude, longitude, this.currentAddress()); // Guarda la ubicación inicial
+      if(!await this.storageService.get('ubicacion')) {
+        const position = await Geolocation.getCurrentPosition();
+        const { latitude, longitude } = position.coords;
+        this.initMap(latitude, longitude); // Inicializa el mapa centrado en la ubicación actual
+        await this.getAddressFromCoordinates(latitude, longitude); // Obtiene el nombre de la ubicación actual
+        this.saveLocation(latitude, longitude, this.currentAddress()); // Guarda la ubicación inicial
+      } else {
+        const lat = parseFloat(await this.storageService.get('latitud'));
+        const lng = parseFloat(await this.storageService.get('longitud'));
+        this.initMap(lat, lng);
+        await this.getAddressFromCoordinates(lat, lng);
+        this.saveLocation(lat, lng, this.currentAddress());
+      }
+
     } catch (error) {
       this.handleError(error, 'Error obteniendo la ubicación');
       this.initMap(33.6, -117.9); // Fallback en caso de error

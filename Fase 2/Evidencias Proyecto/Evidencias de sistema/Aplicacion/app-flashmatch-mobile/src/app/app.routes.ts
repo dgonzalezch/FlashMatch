@@ -48,7 +48,7 @@ export const routes: Routes = [
   },
   {
     path: 'private',
-    loadComponent: () => import('./private/private.layout-page'),
+    loadComponent: () => import('./private/private.main-page'),
     canActivate: [AuthGuard],
     children: [
       {
@@ -186,7 +186,7 @@ export const routes: Routes = [
       }
     ],
     resolve: {
-      // location: LocationResolver,
+      location: LocationResolver,
     },
   },
   {

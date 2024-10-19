@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, effect, inject, input, OnInit, sign
 import { Router, RouterLink } from '@angular/router';
 import { IonContent, IonList, IonItem, IonHeader, IonToolbar, IonTitle, IonGrid, IonRow, IonCol, IonImg, IonIcon, IonLabel, IonMenu, IonButton, IonMenuToggle, IonFooter, IonListHeader, IonCardHeader, IonCard, IonText, IonAvatar, IonCardContent } from "@ionic/angular/standalone";
 import { StorageService } from 'src/app/services/storage.service';
+import { LocationService } from '../../common/location.service';
 
 @Component({
   selector: 'app-menu',
@@ -13,6 +14,7 @@ import { StorageService } from 'src/app/services/storage.service';
 })
 export class MenuComponent {
   private storageService = inject(StorageService);
+  private locationService = inject(LocationService);
   private router = inject(Router);
 
   menuItemsPublic = signal([
@@ -34,8 +36,10 @@ export class MenuComponent {
   ]);
 
   async logOut() {
-    await this.storageService.remove('token');
-    await this.storageService.remove('user');
+    await this.storageService.clear();
+    this.locationService.address.set('');
+    this.locationService.lat.set(0);
+    this.locationService.lng.set(0);
     this.router.navigate(['/auth']);
   }
 }
