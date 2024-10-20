@@ -66,10 +66,9 @@ export default class Step1Page {
 
   onSubmit() {
     this.router.navigate(['/private/matches/create-match/step-2'], {
-      state: { step1FormData: this.step1FormCreatePartido.value }
+      state: { step1FormCreatePartido: this.step1FormCreatePartido.value }
     });
   }
-
 
   getListDeportes(): void {
     this.deportesService.getAllDeportes().subscribe({

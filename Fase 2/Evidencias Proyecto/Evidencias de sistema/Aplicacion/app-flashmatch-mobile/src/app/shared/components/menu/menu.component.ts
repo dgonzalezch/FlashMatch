@@ -17,23 +17,8 @@ export class MenuComponent {
   private locationService = inject(LocationService);
   private router = inject(Router);
 
-  menuItemsPublic = signal([
-    { icon: 'apps-outline', label: 'Inicio', route: '/auth/login' },
-    // { icon: 'id-card-outline', label: 'Registrarse', route: '/auth/register/step-1' },
-    { icon: 'help-circle-outline', label: 'Ayuda', route: '/private/teams' },
-  ]);
-
-  menuItemsPrivate = signal([
-    { icon: 'home-outline', label: 'Inicio', route: '/private/home' },
-    { icon: 'football-outline', label: 'Partidos', route: '/private/matches' },
-    // { icon: 'albums-outline', label: 'Canchas', route: '/private/courts' },
-    { icon: 'people-circle-outline', label: 'Equipos', route: '/private/teams' },
-    { icon: 'walk-outline', label: 'Jugadores', route: '/private/players' },
-    // { icon: 'person-outline', label: 'Perfil', route: '/private/profile' },
-    // { icon: 'settings-outline', label: 'Configuraciones', route: '/private/configurations' },
-    // { icon: 'log-out-outline', label: 'Cerrar sesión', route: '/auth' },
-    // { icon: 'help-circle-outline', label: 'Ayuda', route: '/help' }
-  ]);
+  menuItems = input.required<any[]>();
+  userData = input.required<any>({});
 
   async logOut() {
     await this.storageService.clear();

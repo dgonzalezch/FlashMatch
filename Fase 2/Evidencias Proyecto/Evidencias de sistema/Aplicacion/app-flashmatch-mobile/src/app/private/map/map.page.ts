@@ -43,7 +43,7 @@ export default class MapPage implements OnInit {
 
   constructor() {
     this.clickSubject.pipe(
-      debounceTime(500) // Retraso de 500ms para evitar múltiples solicitudes
+      debounceTime(100) // Retraso de 500ms para evitar múltiples solicitudes
     ).subscribe(({ lat, lng }) => {
       this.getAddressFromCoordinates(lat, lng);
       this.updateMarker(lat, lng);

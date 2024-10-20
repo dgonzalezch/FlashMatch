@@ -30,12 +30,10 @@ export class LocationService {
         const { latitude, longitude } = position.coords;
         await this.getAddressFromCoordinates(latitude, longitude);
         this.setLocation(latitude, longitude, await this.getAddressFromCoordinates(latitude, longitude))
-        debugger
       } else {
         const lat = parseFloat(await this.storageService.get('latitud'));
         const lng = parseFloat(await this.storageService.get('longitud'));
         this.setLocation(lat, lng, await this.getAddressFromCoordinates(lat, lng))
-        debugger
       }
 
     } catch (error) {

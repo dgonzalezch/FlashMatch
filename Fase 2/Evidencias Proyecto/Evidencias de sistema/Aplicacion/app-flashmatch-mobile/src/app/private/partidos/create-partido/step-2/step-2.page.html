@@ -41,19 +41,12 @@
               </ion-label>
             </ion-item>
             <div class="ion-padding" slot="content">
-              <ion-item lines="none">
-                <ion-label>Usar ubicación actual</ion-label>
-                <ion-toggle (ionChange)="onLocationToggle($event)" slot="end"/>
-              </ion-item>
-
-              @if (!useCurrentLocationValue()) {
-                <div>
-                  <ion-button  expand="block" color="secondary" [routerLink]="'/private/map'">
-                    Seleccionar Ubicación
-                    <ion-icon name="navigate-circle-outline" slot="end"/>
-                  </ion-button>
-                </div>
-              }
+              <div>
+                <ion-button  expand="block" color="secondary" [routerLink]="'/private/map'">
+                  Cambiar Ubicación
+                  <ion-icon name="navigate-circle-outline" slot="end"/>
+                </ion-button>
+              </div>
             </div>
           </ion-accordion>
         </ion-accordion-group>

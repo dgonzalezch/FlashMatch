@@ -91,7 +91,7 @@
         <ion-col>
           <ion-input type="password" class="ion-input-form" formControlName="repeatClave" preventSpaces label="Repetir contraseña*" labelPlacement="floating">
             @if (step2Form.get('repeatClave')?.value) {
-              <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+              <ion-input-password-toggle slot="end"/>
             }
           </ion-input>
           @if (step2Form.get('repeatClave')?.touched && step2Form.get('repeatClave')?.invalid) {

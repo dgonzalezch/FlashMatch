@@ -62,9 +62,6 @@ export default class ListPartidosPage {
     }
   ];
 
-
-  constructor() { }
-
   ionViewWillEnter() {
     this.ubication.set(this.locationService.getLocation().ubicacion)
   }

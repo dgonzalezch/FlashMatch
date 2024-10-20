@@ -2,4 +2,111 @@ ion-header ion-toolbar {
   --background: #28323c;
 }
 
+.user-card {
+  margin: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
 
+.avatar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.user-avatar {
+  --size: 50px;
+  width: var(--size);
+  height: var(--size);
+  border: 2px solid var(--ion-color-primary);
+  border-radius: 50%;
+}
+
+.modern-menu {
+  --background: #f0f1f5;
+}
+
+.modern-toolbar {
+  --background: #3b5998;
+  color: white;
+  padding: 0 10px;
+}
+
+.logo-img {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.header-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+
+.user-item {
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 0 10px 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.modern-avatar {
+  border: 2px solid var(--ion-color-primary);
+}
+
+.user-info h2 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.user-info p {
+  font-size: 12px;
+  color: var(--ion-color-medium);
+  margin: 2px 0 0;
+}
+
+.menu-item-modern {
+  margin: 8px 16px;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.menu-item-modern:active {
+  transform: scale(0.98);
+}
+
+.menu-icon-modern {
+  color: #3b5998;
+  font-size: 24px;
+}
+
+.menu-item-label-modern {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.footer-version-modern {
+  font-size: 14px;
+  color: var(--ion-color-medium);
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.profile-button-modern {
+  --border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.profile-button-modern:active {
+  transform: scale(0.98);
+}

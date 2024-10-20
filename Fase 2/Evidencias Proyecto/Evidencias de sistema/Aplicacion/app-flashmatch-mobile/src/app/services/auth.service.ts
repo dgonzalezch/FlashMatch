@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { catchError, map, Observable, throwError, timeout } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CONTEXT, ENDPOINT } from '../shared/configs/api-config';
@@ -36,5 +36,19 @@ export class AuthService {
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)
     );
+  }
+
+  async getUserData () {
+    return {
+      user: await this.storageService.get('user'),
+      token: await this.storageService.get('token'),
+      nombre: await this.storageService.get('nombre'),
+      apellido: await this.storageService.get('apellido'),
+      correo: await this.storageService.get('correo'),
+      roles: await this.storageService.get('roles'),
+      ubicacion: await this.storageService.get('ubicacion'),
+      latitud: await this.storageService.get('latitud'),
+      longitud: await this.storageService.get('longitud')
+    }
   }
 }

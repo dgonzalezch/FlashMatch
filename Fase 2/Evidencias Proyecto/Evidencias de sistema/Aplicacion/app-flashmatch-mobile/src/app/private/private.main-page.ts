@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonRouterOutlet, IonList, IonItem, IonButtons, IonImg, IonMenu, IonMenuButton, IonGrid, IonRow, IonCol, IonCard, IonText, AlertController } from '@ionic/angular/standalone';
@@ -10,6 +10,7 @@ import { LocationService } from '../shared/common/location.service';
 import { UsuariosService } from '../services/usuarios.service';
 import { AlertService } from '../shared/common/alert.service';
 import { responseError } from '../interfaces/response-error.interface';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-private',
@@ -25,9 +26,36 @@ export default class PrivatePage {
   locationService = inject(LocationService);
   usuariosService = inject(UsuariosService);
   alertService = inject(AlertService);
+  authService = inject(AuthService);
   router = inject(Router);
 
+  menuItems = signal<any[]>([]);
+  userData = signal<any>({});
+
   async ionViewWillEnter() {
+    this.userData.set(await this.authService.getUserData());
+    let role = await this.storageService.get('roles');
+    switch (role[0]) {
+      case 'usuario':
+        this.menuItems.set([
+          { icon: 'home-outline', label: 'Inicio', route: '/private/home' },
+          { icon: 'football-outline', label: 'Partidos', route: '/private/matches' },
+          { icon: 'people-circle-outline', label: 'Equipos', route: '/private/teams' },
+          { icon: 'walk-outline', label: 'Jugadores', route: '/private/players' },
+          // { icon: 'settings-outline', label: 'Configuraciones', route: '/private/configurations' },
+        ]);
+        break;
+      case 'cancha':
+        this.menuItems.set([
+          { icon: 'home-outline', label: 'Inicio', route: '/private/home' },
+          { icon: 'albums-outline', label: 'Canchas', route: '/private/courts' },
+          { icon: 'reader-outline', label: 'Agenda', route: '/private/teams' },
+        ]);
+        break;
+      case 'admin':
+        break;
+    }
+
     if(!await this.storageService.get('ubicacion')) {
       const alert = await this.alertController.create({
         header: 'Ubicación',
@@ -62,9 +90,6 @@ export default class PrivatePage {
       });
 
       await alert.present();
-
-
     }
-
   }
 }

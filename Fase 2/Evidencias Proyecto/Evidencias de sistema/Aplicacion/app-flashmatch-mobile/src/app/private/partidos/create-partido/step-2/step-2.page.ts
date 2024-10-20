@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, Validators } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonCard, IonGrid, IonRow, IonCol, IonText, IonCardContent, IonIcon, IonButton, IonFooter, IonLabel, IonItem, IonList, IonToggle, IonThumbnail, IonDatetimeButton, IonModal, IonDatetime, IonAccordion, IonAccordionGroup, IonCardHeader, IonCardTitle, IonCardSubtitle, IonSegment, IonSegmentButton, IonAlert, IonSpinner, LoadingController, IonNote, IonInfiniteScroll, IonInfiniteScrollContent, AlertController } from '@ionic/angular/standalone';
 import { Router, RouterLink } from '@angular/router';
 import { LocationService } from 'src/app/shared/common/location.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 // Definición de la interfaz Cancha
 interface Cancha {
@@ -31,19 +32,35 @@ export default class Step2Page {
   router = inject(Router);
   alertController = inject(AlertController);
   locationService = inject(LocationService);
+  storageService = inject(StorageService);
+  fb = inject(FormBuilder);
 
   selectedSegment = signal<string>('list');
   selectedCanchaId = signal<string>('');
-  useCurrentLocationValue = signal<boolean>(false);
   selectedLocation = signal<string>('');
 
-  // ionViewWillEnter() {
-  //   if(this.locationService.getLocation().lat && this.locationService.getLocation().lng) {
+  step1FormCreatePartidoData: any;
 
-  //   } else {
+  step2FormCreatePartido = this.fb.group({
+    id_cancha: ['', [
+      Validators.required,
+    ]],
+    id_usuario_creador: ['', [
+      Validators.required,
+    ]]
+  });
 
-  //   }
-  // }
+  ionViewWillEnter() {
+    this.selectedLocation.set(this.locationService.getLocation().ubicacion);
+  }
+
+  ngOnInit() {
+    // Obtener los datos del formulario de step-1
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state) {
+      this.step1FormCreatePartidoData = navigation.extras.state['step1FormData'];
+    }
+  }
 
   async presentAlertConfirm(cancha: any) {
     const alert = await this.alertController.create({
@@ -107,16 +124,6 @@ export default class Step2Page {
       longitud: -70.6482
     }
   ];
-
-  onLocationToggle(event: any) {
-    if (event.detail.checked) {
-      this.useCurrentLocationValue.set(true);
-      this.selectedLocation.set('Ubicación actual');
-    } else {
-      this.useCurrentLocationValue.set(false);
-      this.selectedLocation.set('');
-    }
-  }
 
   segmentChanged(event: any) {
     this.selectedSegment.set(event.detail.value);
