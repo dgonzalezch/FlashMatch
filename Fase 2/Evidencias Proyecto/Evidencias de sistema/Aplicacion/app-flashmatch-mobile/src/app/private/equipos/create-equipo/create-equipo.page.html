@@ -59,15 +59,15 @@
 
         <ion-col size="12">
           <!-- DEPORTE -->
-          <ion-select formControlName="id_deporte" class="ion-input-form" label="Deporte dedicado*" label-placement="floating" cancelText="cancelar" okText="seleccionar">
+          <ion-select formControlName="deporte_id" class="ion-input-form" label="Deporte dedicado*" label-placement="floating" cancelText="cancelar" okText="seleccionar">
             @for (deporte of listDeportes(); track $index) {
               <ion-select-option [value]="deporte.id_deporte">{{deporte.nombre_deporte}}</ion-select-option>
             }
           </ion-select>
-          @if (equipoForm.get('id_deporte')?.touched && equipoForm.get('id_deporte')?.invalid) {
+          @if (equipoForm.get('deporte_id')?.touched && equipoForm.get('deporte_id')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
-                @case (equipoForm.get('id_deporte')?.hasError('required')) {
+                @case (equipoForm.get('deporte_id')?.hasError('required')) {
                   *Debes seleccionar un deporte.
                 }
               }
@@ -77,15 +77,15 @@
 
         <ion-col size="12">
           <!-- RANGO EDAD -->
-          <ion-select formControlName="id_rango" class="ion-input-form" label="Rango edad del equipo*" label-placement="floating" cancelText="cancelar" okText="seleccionar">
+          <ion-select formControlName="rango_edad_id" class="ion-input-form" label="Rango edad del equipo*" label-placement="floating" cancelText="cancelar" okText="seleccionar">
             @for (rangoEdad of listRangosEdad(); track $index) {
               <ion-select-option [value]="rangoEdad.id_rango_edad">{{rangoEdad.descripcion}}</ion-select-option>
             }
           </ion-select>
-          @if (equipoForm.get('id_rango')?.touched && equipoForm.get('id_rango')?.invalid) {
+          @if (equipoForm.get('rango_edad_id')?.touched && equipoForm.get('rango_edad_id')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
-                @case (equipoForm.get('id_rango')?.hasError('required')) {
+                @case (equipoForm.get('rango_edad_id')?.hasError('required')) {
                   *Debes seleccionar un rango de edad.
                 }
               }

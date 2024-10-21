@@ -10,7 +10,7 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonRow, IonGrid, IonCol, I
   standalone: true,
   imports: [IonButton, IonList, IonLabel, IonItem, IonCardContent, IonBadge, IonCardTitle, IonCardHeader, IonCard, IonCol, IonGrid, IonRow, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
-export class DetailPartidoPage implements OnInit {
+export default class DetailPartidoPage implements OnInit {
 
   partido = {
     estado: 'Pendiente', // El estado del partido (Pendiente, Iniciado, Finalizado, etc.)

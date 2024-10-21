@@ -1,9 +1,9 @@
-import { Equipo } from "src/equipos/entities/equipo.entity";
-import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { DeportePosicionUsuario } from '../../deportes-posiciones-usuarios/entities/deporte-posicion-usuario.entity';
-import { EstadisticaDetalladaUsuario } from "src/estadisticas-detalladas-usuarios/entities/estadistica-detallada-usuario.entity";
+import { Equipo } from "src/equipo/entities/equipo.entity";
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { DeportePosicionUsuario } from '../../deporte-posicion-usuario/entities/deporte-posicion-usuario.entity';
+import { EstadisticaDetalladaUsuario } from "src/estadistica-detallada-usuario/entities/estadistica-detallada-usuario.entity";
 
-@Entity('usuarios')
+@Entity('usuario')
 export class Usuario {
     @PrimaryGeneratedColumn('uuid')
     id_usuario: string;
@@ -47,9 +47,6 @@ export class Usuario {
     @Column({ type: 'boolean', default: true })
     activo: boolean;
 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    creado_en: Date;
-
     @OneToMany(() => Equipo, (equipo) => equipo.creador, { cascade: true })
     equipos: Equipo[];
 
@@ -59,8 +56,8 @@ export class Usuario {
     @OneToMany(() => EstadisticaDetalladaUsuario, (estadisticaDetalladaUsuario) => estadisticaDetalladaUsuario.usuario, { cascade: true })
     estadisticasDetalladasUsuarios: EstadisticaDetalladaUsuario[];
 
-    // @OneToMany(() => Reserva, reserva => reserva.usuario)
-    // reservas: Reserva[];
+    @CreateDateColumn({ name: 'creado_en' })
+    creado_en: Date;
 
     @BeforeInsert()
     checkFieldsBeforeInsert() {

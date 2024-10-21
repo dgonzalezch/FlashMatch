@@ -78,15 +78,15 @@
         </ion-col>
 
         <ion-col size="12">
-          <ion-select formControlName="id_deporte" label="Deporte*" label-placement="floating" fill="outline" cancelText="cerrar">
+          <ion-select formControlName="deporte_id" label="Deporte*" label-placement="floating" fill="outline" cancelText="cerrar">
             @for (deporte of listDeportes(); track $index) {
               <ion-select-option [value]="deporte.id_deporte">{{deporte.nombre_deporte}}</ion-select-option>
             }
           </ion-select>
-          @if (step1FormCreatePartido.get('id_deporte')?.touched && step1FormCreatePartido.get('id_deporte')?.invalid) {
+          @if (step1FormCreatePartido.get('deporte_id')?.touched && step1FormCreatePartido.get('deporte_id')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
-                @case (step1FormCreatePartido.get('id_deporte')?.hasError('required')) {
+                @case (step1FormCreatePartido.get('deporte_id')?.hasError('required')) {
                   *Debes seleccionar un deporte.
                 }
               }
@@ -95,15 +95,15 @@
         </ion-col>
 
         <ion-col size="12">
-          <ion-select formControlName="id_tipo_partido" label="Tipo partido*" label-placement="floating" fill="outline" cancelText="cerrar">
+          <ion-select formControlName="tipo_partido_id" label="Tipo partido*" label-placement="floating" fill="outline" cancelText="cerrar">
             @for (tipoPartido of listTiposPartidos(); track $index) {
               <ion-select-option [value]="tipoPartido.id_tipo_partido">{{tipoPartido.nombre_tipo_partido}}</ion-select-option>
             }
           </ion-select>
-          @if (step1FormCreatePartido.get('id_tipo_partido')?.touched && step1FormCreatePartido.get('id_tipo_partido')?.invalid) {
+          @if (step1FormCreatePartido.get('tipo_partido_id')?.touched && step1FormCreatePartido.get('tipo_partido_id')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
-                @case (step1FormCreatePartido.get('id_tipo_partido')?.hasError('required')) {
+                @case (step1FormCreatePartido.get('tipo_partido_id')?.hasError('required')) {
                   *Debes seleccionar un tipo de partido.
                 }
               }
@@ -112,15 +112,15 @@
         </ion-col>
 
         <ion-col size="12">
-          <ion-select formControlName="id_nivel_habilidad" label="Nivel habilidad*" label-placement="floating" fill="outline" cancelText="cerrar">
+          <ion-select formControlName="nivel_habilidad_id" label="Nivel habilidad*" label-placement="floating" fill="outline" cancelText="cerrar">
             @for (nivelHabilidad of listNivelesHabilidad(); track $index) {
               <ion-select-option [value]="nivelHabilidad.id_nivel_habilidad">{{nivelHabilidad.nombre_nivel_habilidad}}</ion-select-option>
             }
           </ion-select>
-          @if (step1FormCreatePartido.get('id_nivel_habilidad')?.touched && step1FormCreatePartido.get('id_nivel_habilidad')?.invalid) {
+          @if (step1FormCreatePartido.get('nivel_habilidad_id')?.touched && step1FormCreatePartido.get('nivel_habilidad_id')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
-                @case (step1FormCreatePartido.get('id_nivel_habilidad')?.hasError('required')) {
+                @case (step1FormCreatePartido.get('nivel_habilidad_id')?.hasError('required')) {
                   *Debes seleccionar un nivel de habilidad.
                 }
               }
@@ -129,15 +129,15 @@
         </ion-col>
 
         <ion-col size="12">
-          <ion-select formControlName="id_rango_edad" label="Rango edad*" label-placement="floating" fill="outline" cancelText="cerrar">
+          <ion-select formControlName="rango_edad_id" label="Rango edad*" label-placement="floating" fill="outline" cancelText="cerrar">
             @for (rangoEdad of listRangosEdad(); track $index) {
               <ion-select-option [value]="rangoEdad.id_rango_edad">{{rangoEdad.descripcion}}</ion-select-option>
             }
           </ion-select>
-          @if (step1FormCreatePartido.get('id_rango_edad')?.touched && step1FormCreatePartido.get('id_rango_edad')?.invalid) {
+          @if (step1FormCreatePartido.get('rango_edad_id')?.touched && step1FormCreatePartido.get('rango_edad_id')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
-                @case (step1FormCreatePartido.get('id_rango_edad')?.hasError('required')) {
+                @case (step1FormCreatePartido.get('rango_edad_id')?.hasError('required')) {
                   *Debes seleccionar un rango de edad.
                 }
               }
@@ -146,15 +146,15 @@
         </ion-col>
 
         <ion-col size="12">
-          <ion-select formControlName="id_tipo_emparejamiento" label="Emparejamiento*" label-placement="floating" fill="outline" cancelText="cerrar">
+          <ion-select formControlName="tipo_emparejamiento_id" label="Emparejamiento*" label-placement="floating" fill="outline" cancelText="cerrar">
             @for (tipoEmparejamiento of listTiposEmparejamientos(); track $index) {
               <ion-select-option [value]="tipoEmparejamiento.id_tipo_emparejamiento">{{tipoEmparejamiento.nombre_tipo_emparejamiento}}</ion-select-option>
             }
           </ion-select>
-          @if (step1FormCreatePartido.get('id_tipo_emparejamiento')?.touched && step1FormCreatePartido.get('id_tipo_emparejamiento')?.invalid) {
+          @if (step1FormCreatePartido.get('tipo_emparejamiento_id')?.touched && step1FormCreatePartido.get('tipo_emparejamiento_id')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
-                @case (step1FormCreatePartido.get('id_tipo_emparejamiento')?.hasError('required')) {
+                @case (step1FormCreatePartido.get('tipo_emparejamiento_id')?.hasError('required')) {
                   *Debes seleccionar un tipo de emparejamiento.
                 }
               }

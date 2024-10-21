@@ -34,7 +34,7 @@ export default class EstadisticasPage {
   tacticaValue = signal<any>(0);
 
   estadisticasDetalladasUsuariosForm = this.fb.group({
-    id_deporte: ['', [Validators.required]],
+    deporte_id: ['', [Validators.required]],
   });
 
   radarChartLabels = signal<any>(['Velocidad', 'Resistencia', 'Técnica', 'Táctica']);
@@ -85,20 +85,20 @@ export default class EstadisticasPage {
 
   updateChartData() {
     if (this.selectedDeporte() && this.infoUsuario()) {
-      const selectedPosition = this.infoUsuario().deportesPosicionesUsuarios.find((dp: any) => dp.posicion.deporte.id_deporte === this.selectedDeporte().deporte.id_deporte);
+      const selectedPosition = this.infoUsuario().deportesPosicionesUsuarios.find((dp: any) => dp.deportePosicion.deporte.id_deporte === this.selectedDeporte().deporte.id_deporte);
       if (selectedPosition) {
         const estadisticas = this.infoUsuario().estadisticasDetalladasUsuarios;
 
         this.radarChartData()[0].data = this.radarChartLabels().map((label: any) => {
-          const est = estadisticas.find((est: any) => est.parametroRendimiento.nombre_parametro === label);
+          const est = estadisticas.find((est: any) => est.parametroRendimiento.nombre_parametro_rendimiento === label);
           return est ? parseFloat(est.parametro_valor) : 0;
         });
 
         // Asignar los valores a los rangos
-        this.velocidadValue.set(parseFloat(estadisticas.find((est:any) => est.parametroRendimiento.nombre_parametro === 'Velocidad')?.parametro_valor) || 0);
-        this.resistenciaValue.set(parseFloat(estadisticas.find((est:any) => est.parametroRendimiento.nombre_parametro === 'Resistencia')?.parametro_valor) || 0);
-        this.tacticaValue.set(parseFloat(estadisticas.find((est:any) => est.parametroRendimiento.nombre_parametro === 'Táctica')?.parametro_valor) || 0);
-        this.tecnicaValue.set(parseFloat(estadisticas.find((est:any) => est.parametroRendimiento.nombre_parametro === 'Técnica')?.parametro_valor) || 0);
+        this.velocidadValue.set(parseFloat(estadisticas.find((est:any) => est.parametroRendimiento.nombre_parametro_rendimiento === 'Velocidad')?.parametro_valor) || 0);
+        this.resistenciaValue.set(parseFloat(estadisticas.find((est:any) => est.parametroRendimiento.nombre_parametro_rendimiento === 'Resistencia')?.parametro_valor) || 0);
+        this.tacticaValue.set(parseFloat(estadisticas.find((est:any) => est.parametroRendimiento.nombre_parametro_rendimiento === 'Táctica')?.parametro_valor) || 0);
+        this.tecnicaValue.set(parseFloat(estadisticas.find((est:any) => est.parametroRendimiento.nombre_parametro_rendimiento === 'Técnica')?.parametro_valor) || 0);
       }
     }
   }

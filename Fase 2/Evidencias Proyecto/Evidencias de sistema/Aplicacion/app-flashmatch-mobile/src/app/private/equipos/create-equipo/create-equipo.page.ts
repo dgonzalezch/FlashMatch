@@ -42,8 +42,8 @@ export default class CreateEquipoPage {
   equipoForm = this.fb.group({
     nombre_equipo: ['', [Validators.required]],
     logo_equipo: [''],
-    id_deporte: ['', [Validators.required]],
-    id_rango: ['', [Validators.required]],
+    deporte_id: ['', [Validators.required]],
+    rango_edad_id: ['', [Validators.required]],
     descripcion: ['', [Validators.required]]
   });
 

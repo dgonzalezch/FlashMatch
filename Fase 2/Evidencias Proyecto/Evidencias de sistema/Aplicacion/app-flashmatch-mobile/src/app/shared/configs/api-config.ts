@@ -1,15 +1,15 @@
 export enum CONTEXT {
   API_AUTH = '/api/auth/',
-  API_EQUIPOS = '/api/equipos/',
-  API_DEPORTES = '/api/deportes/',
-  API_DEPORTES_POSICIONES_USUARIOS = '/api/deportes-posiciones-usuarios/',
-  API_ESTADISTICAS_DETALLADAS_USUARIOS = '/api/estadisticas-detalladas-usuarios/',
-  API_RANGOS_EDAD = '/api/rangos-edad/',
-  API_USUARIOS = '/api/usuarios/',
-  API_TIPOS_PARTIDOS = '/api/tipos-partidos/',
-  API_NIVELES_HABILIDAD = '/api/niveles-habilidad/',
-  API_TIPOS_EMPAREJAMIENTOS = '/api/tipos-emparejamientos/',
-  API_CANCHAS = '/api/canchas/'
+  API_EQUIPOS = '/api/equipo/',
+  API_DEPORTES = '/api/deporte/',
+  API_DEPORTES_POSICIONES_USUARIOS = '/api/deporte-posicion-usuario/',
+  API_ESTADISTICAS_DETALLADAS_USUARIOS = '/api/estadistica-detallada-usuario/',
+  API_RANGOS_EDAD = '/api/rango-edad/',
+  API_USUARIOS = '/api/usuario/',
+  API_TIPOS_PARTIDOS = '/api/tipo-partido/',
+  API_NIVELES_HABILIDAD = '/api/nivel-habilidad/',
+  API_TIPOS_EMPAREJAMIENTOS = '/api/tipo-emparejamiento/',
+  API_CANCHAS = '/api/cancha/'
 }
 
 export enum ENDPOINT {

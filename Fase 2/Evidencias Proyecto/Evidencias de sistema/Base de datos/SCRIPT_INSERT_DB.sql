@@ -1,60 +1,52 @@
 -- Tabla deportes
-INSERT INTO deportes (nombre_deporte, cantidad_min_jugadores, cantidad_max_jugadores, icono) VALUES
+INSERT INTO deporte (nombre_deporte, cantidad_min_jugadores, cantidad_max_jugadores, icono) VALUES
 ('Fútbol 11', 11, 22, 'football-outline'),
 ('Fútbol 7', 7, 14, 'football-outline'),
 ('Fútbol 5', 5, 10, 'football-outline');
 
--- Tabla rangos_edad
-INSERT INTO rangos_edad (edad_minima, edad_maxima, descripcion) VALUES
+INSERT INTO rango_edad (edad_minima, edad_maxima, descripcion) VALUES
 (18, 25, '18 - 25 años'),
 (26, 35, '26 - 35 años'),
 (36, 45, '36 - 45 años'),
 (46, 55, '46 - 55 años'),
 (56, 120, '56 años o más');
 
--- Tabla niveles_habilidad
-INSERT INTO niveles_habilidad (nombre_nivel_habilidad, descripcion) VALUES
+INSERT INTO nivel_habilidad (nombre_nivel_habilidad, descripcion) VALUES
 ('Principiante', 'Jugadores con poca experiencia en el deporte'),
 ('Intermedio', 'Jugadores con experiencia moderada y habilidades decentes'),
 ('Avanzado', 'Jugadores con habilidades avanzadas y experiencia considerable'),
 ('Profesional', 'Jugadores con experiencia profesional en el deporte');
 
--- Tabla deportes_posiciones
-INSERT INTO deportes_posiciones (id_deporte, nombre) VALUES
-((SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), 'Portero'),
-((SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), 'Defensa'),
-((SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), 'Centrocampista'),
-((SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), 'Delantero');
+INSERT INTO deporte_posicion (deporte_id, nombre_deporte_posicion) VALUES
+((SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11'), 'Portero'),
+((SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11'), 'Defensa'),
+((SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11'), 'Centrocampista'),
+((SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11'), 'Delantero');
 
--- Tabla tipos_emparejamientos
-INSERT INTO tipos_emparejamientos (nombre_tipo_emparejamiento, descripcion) VALUES
+INSERT INTO tipo_emparejamiento (nombre_tipo_emparejamiento, descripcion) VALUES
 ('Usuarios', 'Emparejamientos con solo usuarios'),
 ('Equipos', 'Emparejamientos con solo equipos');
 
-INSERT INTO tipos_partidos (nombre_tipo_partido, descripcion) VALUES
+INSERT INTO tipo_partido (nombre_tipo_partido, descripcion) VALUES
 ('Entretención', 'Partido informal o amistoso con el fin de divertirse y pasar el rato'),
 ('Entrenamiento', 'Partido utilizado para mejorar habilidades y practicar'),
 ('Competitivo', 'Partido oficial o de torneo con el objetivo de ganar y competir');
 
--- Tabla deportes_posiciones_usuarios
-INSERT INTO deportes_posiciones_usuarios (id_usuario, id_deporte, id_posicion) VALUES
-((SELECT id_usuario FROM usuarios WHERE rut = '20160253K'), (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), (SELECT id_deporte_posicion FROM deportes_posiciones WHERE nombre = 'Portero'));
+INSERT INTO parametro_rendimiento (nombre_parametro_rendimiento, deporte_id) VALUES
+('Velocidad', (SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11')),
+('Resistencia', (SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11')),
+('Táctica', (SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11')),
+('Técnica', (SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11'));
 
--- Parámetros para Fútbol 11 (id_deporte = 'uuid_futbol')
-INSERT INTO parametros_rendimiento (nombre_parametro, id_deporte) VALUES
-('Velocidad', (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11')),
-('Resistencia', (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11')),
-('Táctica', (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11')),
-('Técnica', (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'));
+INSERT INTO deporte_posicion_usuario (usuario_id, deporte_id, deporte_posicion_id) VALUES
+((SELECT id_usuario FROM usuario WHERE rut = '20160253K'), (SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11'), (SELECT id_deporte_posicion FROM deporte_posicion WHERE nombre_deporte_posicion = 'Portero'));
 
--- Estadísticas para el Usuario 1 en Fútbol (id_usuario = 'uuid_usuario_1', id_deporte = 'uuid_futbol')
-INSERT INTO estadisticas_detalladas_usuarios (id_usuario, id_deporte, id_parametro_rendimiento, parametro_valor) VALUES
-((SELECT id_usuario FROM usuarios WHERE rut = '20160253K'), (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), (SELECT id_parametro_rendimiento FROM parametros_rendimiento WHERE nombre_parametro = 'Velocidad'), 90),  -- Velocidad
-((SELECT id_usuario FROM usuarios WHERE rut = '20160253K'), (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), (SELECT id_parametro_rendimiento FROM parametros_rendimiento WHERE nombre_parametro = 'Resistencia'), 90),  -- Resistencia
-((SELECT id_usuario FROM usuarios WHERE rut = '20160253K'), (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), (SELECT id_parametro_rendimiento FROM parametros_rendimiento WHERE nombre_parametro = 'Táctica'), 90),  -- Resistencia
-((SELECT id_usuario FROM usuarios WHERE rut = '20160253K'), (SELECT id_deporte FROM deportes WHERE nombre_deporte = 'Fútbol 11'), (SELECT id_parametro_rendimiento FROM parametros_rendimiento WHERE nombre_parametro = 'Técnica'), 90);  -- Resistencia
+INSERT INTO estadistica_detallada_usuario (usuario_id, deporte_id, parametro_rendimiento_id, parametro_valor) VALUES
+((SELECT id_usuario FROM usuario WHERE rut = '20160253K'), (SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11'), (SELECT id_parametro_rendimiento FROM parametro_rendimiento WHERE nombre_parametro_rendimiento = 'Velocidad'), 90),  -- Velocidad
+((SELECT id_usuario FROM usuario WHERE rut = '20160253K'), (SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11'), (SELECT id_parametro_rendimiento FROM parametro_rendimiento WHERE nombre_parametro_rendimiento = 'Resistencia'), 90),  -- Resistencia
+((SELECT id_usuario FROM usuario WHERE rut = '20160253K'), (SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11'), (SELECT id_parametro_rendimiento FROM parametro_rendimiento WHERE nombre_parametro_rendimiento = 'Táctica'), 90),  -- Resistencia
+((SELECT id_usuario FROM usuario WHERE rut = '20160253K'), (SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11'), (SELECT id_parametro_rendimiento FROM parametro_rendimiento WHERE nombre_parametro_rendimiento = 'Técnica'), 90);  -- Resistencia
 
--- Tabla titulos_perfil
-INSERT INTO titulos_perfil (nombre_titulo, descripcion) VALUES
+INSERT INTO titulo_perfil (nombre_titulo, descripcion) VALUES
 ('Novato', 'Jugó su primer partido'),
 ('Experto', 'Jugó más de 100 partidos');

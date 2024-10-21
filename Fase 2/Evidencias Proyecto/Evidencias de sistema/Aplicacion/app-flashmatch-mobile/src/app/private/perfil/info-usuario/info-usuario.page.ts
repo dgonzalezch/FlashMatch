@@ -36,12 +36,11 @@ export default class InfoUsuarioPage {
   ubication = signal<string>('');
 
   deportesPosicionesUsuariosForm = this.fb.group({
-    id_deporte: ['', [Validators.required]],
-    id_posicion: ['', [Validators.required]]
+    deporte_id: ['', [Validators.required]],
+    deporte_posicion_id: ['', [Validators.required]]
   });
 
   isModalOpen = signal<boolean>(false);
-
    async ionViewWillEnter() {
     this.idUsuario.set(await this.storageService.get('user'));
     this.getInfoUsuario();
@@ -57,6 +56,7 @@ export default class InfoUsuarioPage {
   getInfoUsuario() {
     this.usuariosService.getUsuario(this.idUsuario()).subscribe({
       next: (resp: responseSuccess) => {
+        debugger
         this.infoUsuario.set(resp.data);
       },
       error: (err: responseError) => {

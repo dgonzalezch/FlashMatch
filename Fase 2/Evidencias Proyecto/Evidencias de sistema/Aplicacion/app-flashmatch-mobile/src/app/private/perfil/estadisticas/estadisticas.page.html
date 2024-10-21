@@ -9,8 +9,8 @@
     <ion-row>
       <ion-col size="12">
         <ion-select label="Deporte" label-placement="floating" fill="outline" cancelText="cancelar" (ionChange)="selectedDeporte.set($event.detail.value); updateChartData()">
-          @for (deportePosicion of infoUsuario()?.deportesPosicionesUsuarios; track $index) {
-            <ion-select-option [value]="deportePosicion.posicion">{{deportePosicion.posicion.deporte.nombre_deporte}}</ion-select-option>
+          @for (deportePosicionUsuario of infoUsuario()?.deportesPosicionesUsuarios; track $index) {
+            <ion-select-option [value]="deportePosicionUsuario.deportePosicion">{{deportePosicionUsuario.deportePosicion.deporte.nombre_deporte}}</ion-select-option>
           }
         </ion-select>
       </ion-col>

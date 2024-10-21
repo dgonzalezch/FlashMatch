@@ -31,7 +31,6 @@ export default class LoginPage {
 
   showPassword = false;
 
-
   loginForm = this.fb.group({
     correo: ['', [
       Validators.required,

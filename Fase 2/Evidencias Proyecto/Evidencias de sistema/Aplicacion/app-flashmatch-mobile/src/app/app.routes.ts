@@ -85,7 +85,7 @@ export const routes: Routes = [
           },
           {
             path: 'detail-match/:id',
-            loadComponent: () => import('./private/partidos/detail-partido/detail-partido.page').then( m => m.DetailPartidoPage)
+            loadComponent: () => import('./private/partidos/detail-partido/detail-partido.page')
           },
           {
             path: '**',
@@ -100,6 +100,10 @@ export const routes: Routes = [
           {
             path: 'list-courts',
             loadComponent: () => import('./private/canchas/list-canchas/list-canchas.page')
+          },
+          {
+            path: 'create-court',
+            loadComponent: () => import('./private/canchas/create-cancha/create-cancha.page')
           },
           {
             path: '**',

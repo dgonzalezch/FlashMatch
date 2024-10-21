@@ -50,6 +50,7 @@ export default class PrivatePage {
           { icon: 'home-outline', label: 'Inicio', route: '/private/home' },
           { icon: 'albums-outline', label: 'Canchas', route: '/private/courts' },
           { icon: 'reader-outline', label: 'Agenda', route: '/private/teams' },
+          { icon: 'archive-outline', label: 'Solicitudes', route: '/private/teams' },
         ]);
         break;
       case 'admin':

@@ -2,110 +2,113 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- DROP DE TABLAS
-DROP TABLE IF EXISTS usuarios_titulos CASCADE;
-DROP TABLE IF EXISTS titulos_perfil CASCADE;
-DROP TABLE IF EXISTS opiniones_valoraciones CASCADE;
-DROP TABLE IF EXISTS mensajes CASCADE;
-DROP TABLE IF EXISTS notificaciones CASCADE;
-DROP TABLE IF EXISTS invitaciones CASCADE;
-DROP TABLE IF EXISTS participacion_usuarios_partidos CASCADE;
-DROP TABLE IF EXISTS partidos CASCADE;
-DROP TABLE IF EXISTS miembros_equipo CASCADE;
-DROP TABLE IF EXISTS disponibilidad_usuarios CASCADE;
-DROP TABLE IF EXISTS reservas_horarios CASCADE;
-DROP TABLE IF EXISTS imagenes_canchas CASCADE;
-DROP TABLE IF EXISTS dias_no_laborables CASCADE;
-DROP TABLE IF EXISTS disponibilidad_horarios_canchas CASCADE;
-DROP TABLE IF EXISTS canchas CASCADE;
-DROP TABLE IF EXISTS estadisticas_detalladas_usuarios CASCADE;
-DROP TABLE IF EXISTS deportes_posiciones_usuarios CASCADE;
-DROP TABLE IF EXISTS parametros_rendimiento CASCADE;
-DROP TABLE IF EXISTS documentos_identidad CASCADE;
-DROP TABLE IF EXISTS rangos_edad CASCADE;
-DROP TABLE IF EXISTS niveles_habilidad CASCADE;
-DROP TABLE IF EXISTS deportes CASCADE;
-DROP TABLE IF EXISTS equipos CASCADE;
-DROP TABLE IF EXISTS tipos_partidos CASCADE;
-DROP TABLE IF EXISTS tipos_emparejamientos CASCADE;
-DROP TABLE IF EXISTS partido_usuarios CASCADE;
-DROP TABLE IF EXISTS partido_equipos CASCADE;
-DROP TABLE IF EXISTS usuarios CASCADE;
+DROP TABLE IF EXISTS usuario_titulo CASCADE;
+DROP TABLE IF EXISTS titulo_perfil CASCADE;
+DROP TABLE IF EXISTS opinion_valoracion CASCADE;
+DROP TABLE IF EXISTS mensaje CASCADE;
+DROP TABLE IF EXISTS notificacion CASCADE;
+DROP TABLE IF EXISTS invitacion CASCADE;
+DROP TABLE IF EXISTS participacion_usuario_partido CASCADE;
+DROP TABLE IF EXISTS partido CASCADE;
+DROP TABLE IF EXISTS miembro_equipo CASCADE;
+DROP TABLE IF EXISTS disponibilidad_usuario CASCADE;
+DROP TABLE IF EXISTS reserva_horario CASCADE;
+DROP TABLE IF EXISTS imagen_cancha CASCADE;
+DROP TABLE IF EXISTS dia_no_laborable CASCADE;
+DROP TABLE IF EXISTS disponibilidad_horario_cancha CASCADE;
+DROP TABLE IF EXISTS cancha CASCADE;
+DROP TABLE IF EXISTS estadistica_detallada_usuario CASCADE;
+DROP TABLE IF EXISTS deporte_posicion_usuario CASCADE;
+DROP TABLE IF EXISTS parametro_rendimiento CASCADE;
+DROP TABLE IF EXISTS documento_identidad CASCADE;
+DROP TABLE IF EXISTS rango_edad CASCADE;
+DROP TABLE IF EXISTS nivel_habilidad CASCADE;
+DROP TABLE IF EXISTS deporte CASCADE;
+DROP TABLE IF EXISTS equipo CASCADE;
+DROP TABLE IF EXISTS tipo_partido CASCADE;
+DROP TABLE IF EXISTS tipo_emparejamiento CASCADE;
+DROP TABLE IF EXISTS partido_usuario CASCADE;
+DROP TABLE IF EXISTS partido_equipo CASCADE;
+DROP TABLE IF EXISTS usuario CASCADE;
 
--- Tabla de disponibilidad de horarios de canchas
-CREATE TABLE disponibilidad_horarios_canchas (
+-- Tabla de disponibilidad de horarios de cancha
+CREATE TABLE disponibilidad_horario_cancha (
     id_disponibilidad UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_cancha UUID REFERENCES canchas(id_cancha),
+    cancha_id UUID REFERENCES cancha(id_cancha) ON DELETE CASCADE,
     dia_semana INT CHECK (dia_semana BETWEEN 1 AND 7),
     hora_inicio TIME NOT NULL,
-    hora_fin TIME NOT NULL
+    hora_fin TIME NOT NULL,
+    CONSTRAINT disponibilidad_hora_check CHECK (hora_inicio < hora_fin)
 );
 
--- Tabla de disponibilidad de usuarios
-CREATE TABLE disponibilidad_usuarios (
+-- Tabla de disponibilidad de usuario
+CREATE TABLE disponibilidad_usuario (
     id_disponibilidad_usuario UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_usuario UUID REFERENCES usuarios(id_usuario),
+    usuario_id UUID REFERENCES usuario(id_usuario) ON DELETE CASCADE,
     dia_semana INT CHECK (dia_semana BETWEEN 1 AND 7),  -- 1 = Lunes, 2 = Martes, ..., 7 = Domingo
     hora_inicio TIME NOT NULL,
-    hora_fin TIME NOT NULL
+    hora_fin TIME NOT NULL,
+    CONSTRAINT disponibilidad_usuario_hora_check CHECK (hora_inicio < hora_fin)
 );
 
--- Tabla de imágenes de canchas
-CREATE TABLE imagenes_canchas (
+-- Tabla de imágenes de cancha
+CREATE TABLE imagen_cancha (
     id_imagen UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_cancha UUID REFERENCES canchas(id_cancha),
+    cancha_id UUID REFERENCES cancha(id_cancha) ON DELETE CASCADE,
     url_imagen TEXT NOT NULL,
     descripcion TEXT,
     subida_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabla de equipos
-CREATE TABLE equipos (
+-- Tabla de equipo
+CREATE TABLE equipo (
     id_equipo UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre_equipo VARCHAR(100) UNIQUE NOT NULL,
     logo_equipo TEXT,
     ubicacion VARCHAR(255),
-    latitud DECIMAL(10, 8) CHECK (latitud BETWEEN -90 AND 90),
-    longitud DECIMAL(11, 8) CHECK (longitud BETWEEN -180 AND 180),
+    latitud DECIMAL(20, 16) CHECK (latitud BETWEEN -90 AND 90),
+    longitud DECIMAL(20, 16) CHECK (longitud BETWEEN -180 AND 180),
     descripcion TEXT,
     activo BOOLEAN DEFAULT TRUE,
-    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    id_creador UUID REFERENCES usuarios(id_usuario) NOT NULL,
-    id_deporte UUID REFERENCES deportes(id_deporte) NOT NULL,
-    id_rango UUID REFERENCES rangos_edad(id_rango) NOT NULL
+    creador_id UUID REFERENCES usuario(id_usuario) NOT NULL,
+    deporte_id UUID REFERENCES deporte(id_deporte) NOT NULL,
+    rango_edad_id UUID REFERENCES rango_edad(id_rango_edad) NOT NULL,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabla de reservas de horarios de canchas
-CREATE TABLE reservas_horarios (
+-- Tabla de reservas de horarios de cancha
+CREATE TABLE reserva_horario (
     id_reserva UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_cancha UUID REFERENCES canchas(id_cancha),
-    id_equipo UUID REFERENCES equipos(id_equipo),
+    cancha_id UUID REFERENCES cancha(id_cancha) ON DELETE CASCADE,
+    equipo_id UUID REFERENCES equipo(id_equipo) ON DELETE CASCADE,
     fecha_reserva DATE NOT NULL,
     hora_inicio TIME NOT NULL,
     hora_fin TIME NOT NULL,
     reservado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    estado_reserva VARCHAR(20) DEFAULT 'pendiente', -- Estado de la reserva (pendiente, aceptada, rechazada)
+    estado_reserva VARCHAR(20) DEFAULT 'pendiente',
     mensaje VARCHAR(255),
-    UNIQUE (id_cancha, fecha_reserva, hora_inicio)
+    UNIQUE (cancha_id, fecha_reserva, hora_inicio),
+    CONSTRAINT reserva_hora_check CHECK (hora_inicio < hora_fin)
 );
 
--- Tabla de miembros de equipo
-CREATE TABLE miembros_equipo (
+-- Tabla de miembro de equipo
+CREATE TABLE miembro_equipo (
     id_miembro_equipo UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_equipo UUID REFERENCES equipos(id_equipo),
-    id_usuario UUID REFERENCES usuarios(id_usuario),
+    equipo_id UUID REFERENCES equipo(id_equipo) ON DELETE CASCADE,
+    usuario_id UUID REFERENCES usuario(id_usuario) ON DELETE CASCADE,
     rol VARCHAR(50)
 );
 
--- Tabla de días no laborables de canchas
-CREATE TABLE dias_no_laborables (
+-- Tabla de días no laborables de cancha
+CREATE TABLE dia_no_laborable (
     id_dia_no_laborable UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_cancha UUID REFERENCES canchas(id_cancha),
+    cancha_id UUID REFERENCES cancha(id_cancha) ON DELETE CASCADE,
     fecha DATE NOT NULL,
     motivo TEXT
 );
 
 -- Tabla de deportes
-CREATE TABLE deportes (
+CREATE TABLE deporte (
     id_deporte UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre_deporte VARCHAR(100) UNIQUE NOT NULL,
     cantidad_min_jugadores INT NOT NULL,
@@ -115,36 +118,36 @@ CREATE TABLE deportes (
 );
 
 -- Tabla de tipos de partidos
-CREATE TABLE tipos_partidos (
+CREATE TABLE tipo_partido (
     id_tipo_partido UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre_tipo_partido VARCHAR(100) NOT NULL,
-    descripcion TEXT,
+    descripcion TEXT
 );
 
 -- Tabla de niveles de habilidad
-CREATE TABLE niveles_habilidad (
+CREATE TABLE nivel_habilidad (
     id_nivel_habilidad UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre_nivel_habilidad VARCHAR(100) NOT NULL,
-    descripcion TEXT,
+    descripcion TEXT
 );
 
 -- Tabla de rangos de edad
-CREATE TABLE rangos_edad (
+CREATE TABLE rango_edad (
     id_rango_edad UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     edad_minima INT NOT NULL,
-    edad_maxima INT NOT NULL
-    descripcion TEXT,
+    edad_maxima INT NOT NULL,
+    descripcion TEXT
 );
 
--- Tabla de tipos_emparejamientos
-CREATE TABLE tipos_emparejamientos (
+-- Tabla de tipos de emparejamientos
+CREATE TABLE tipo_emparejamiento (
     id_tipo_emparejamiento UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre_tipo_emparejamiento VARCHAR(100) NOT NULL UNIQUE,
     descripcion TEXT
 );
 
--- Tabla de usuarios
-CREATE TABLE usuarios (
+-- Tabla de usuario
+CREATE TABLE usuario (
     id_usuario UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
@@ -154,167 +157,187 @@ CREATE TABLE usuarios (
     telefono VARCHAR(15) UNIQUE NOT NULL,
     clave TEXT NOT NULL,
     ubicacion VARCHAR(255),
-    latitud DECIMAL(10, 8) CHECK (latitud BETWEEN -90 AND 90),
-    longitud DECIMAL(11, 8) CHECK (longitud BETWEEN -180 AND 180),
+    latitud DECIMAL(20, 16) CHECK (latitud BETWEEN -90 AND 90),
+    longitud DECIMAL(20, 16) CHECK (longitud BETWEEN -180 AND 180),
     imagen_perfil TEXT,
     roles TEXT[] DEFAULT ARRAY['usuario'],
-    activo BOOLEAN DEFAULT TRUE,
+    activo BOOLEAN DEFAULT TRUE
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabla de canchas
-CREATE TABLE canchas (
+-- Tabla de material de las canchas
+CREATE TABLE material_cancha (
+    id_material_cancha UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    nombre_material_cancha VARCHAR(100) NOT NULL UNIQUE,
+    descripcion TEXT
+);
+
+-- Tabla de cancha
+CREATE TABLE cancha (
     id_cancha UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre_cancha VARCHAR(100) NOT NULL,
     precio_por_hora NUMERIC(10, 2) NOT NULL,
     ubicacion VARCHAR(255),
-    latitud DECIMAL(10, 8) CHECK (latitud BETWEEN -90 AND 90),
-    longitud DECIMAL(11, 8) CHECK (longitud BETWEEN -180 AND 180),
+    latitud DECIMAL(20, 16) CHECK (latitud BETWEEN -90 AND 90),
+    longitud DECIMAL(20, 16) CHECK (longitud BETWEEN -180 AND 180),
     descripcion TEXT,
     disponible BOOLEAN DEFAULT TRUE,
-    id_deporte UUID REFERENCES deportes(id_deporte),
-    id_administrador_cancha UUID REFERENCES usuarios(id_usuario)
+    deporte_id UUID REFERENCES deporte(id_deporte),
+    material_cancha_id UUID REFERENCES material_cancha(id_material_cancha),
+    administrador_cancha_id UUID REFERENCES usuario(id_usuario),
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabla de disponibilidad de cancha
+CREATE TABLE disponibilidad_cancha (
+    id_disponibilidad UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    cancha_id UUID REFERENCES cancha(id_cancha) ON DELETE CASCADE,
+    dia_semana INT NOT NULL CHECK (dia_semana BETWEEN 1 AND 7),
+    hora_inicio TIME NOT NULL,
+    hora_fin TIME NOT NULL,
+    disponible BOOLEAN DEFAULT TRUE,
+    CONSTRAINT disponibilidad_hora_check CHECK (hora_inicio < hora_fin)
 );
 
 -- Tabla de partidos
-CREATE TABLE partidos (
+CREATE TABLE partido (
     id_partido UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     fecha_partido TIMESTAMP NOT NULL,
-    id_deporte UUID REFERENCES deportes(id_deporte) NOT NULL,
-    id_tipo_partido REFERENCES tipos_partidos(id_tipo_partido) NOT NULL,
-    id_nivel_habilidad UUID REFERENCES niveles_habilidad(id_nivel_habilidad) NOT NULL,
-    id_rango_edad REFERENCES rangos_edad(id_rango_edad) NOT NULL,
-    id_tipo_emparejamiento REFERENCES tipos_emparejamientos(id_tipo_emparejamiento) NOT NULL,
+    deporte_id UUID REFERENCES deporte(id_deporte) NOT NULL,
+    tipo_partido_id UUID REFERENCES tipo_partido(id_tipo_partido) NOT NULL,
+    nivel_habilidad_id UUID REFERENCES nivel_habilidad(id_nivel_habilidad) NOT NULL,
+    rango_edad_id UUID REFERENCES rango_edad(id_rango_edad) NOT NULL,
+    tipo_emparejamiento_id UUID REFERENCES tipo_emparejamiento(id_tipo_emparejamiento) NOT NULL,
     descripcion TEXT,
-    id_cancha UUID REFERENCES canchas(id_cancha),
-    id_usuario_creador UUID REFERENCES usuarios(id_usuario) NOT NULL,
+    cancha_id UUID REFERENCES cancha(id_cancha),
+    usuario_creador_id UUID REFERENCES usuario(id_usuario) NOT NULL,
     estado VARCHAR(50) NOT NULL,
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE partido_usuarios (
-    id_partido UUID REFERENCES partidos(id_partido) ON DELETE CASCADE,
-    id_usuario UUID REFERENCES usuarios(id_usuario) ON DELETE CASCADE,
-    PRIMARY KEY (id_partido, id_usuario)
+-- Relación partido-usuario
+CREATE TABLE partido_usuario (
+    partido_id UUID REFERENCES partido(id_partido) ON DELETE CASCADE,
+    usuario_id UUID REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+    PRIMARY KEY (partido_id, usuario_id)
 );
 
-CREATE TABLE partido_equipos (
-    id_partido UUID REFERENCES partidos(id_partido) ON DELETE CASCADE,
-    id_equipo UUID REFERENCES equipos(id_equipo) ON DELETE CASCADE,
-    PRIMARY KEY (id_partido, id_equipo)
+-- Relación partido-equipo
+CREATE TABLE partido_equipo (
+    partido_id UUID REFERENCES partido(id_partido) ON DELETE CASCADE,
+    equipo_id UUID REFERENCES equipo(id_equipo) ON DELETE CASCADE,
+    PRIMARY KEY (partido_id, equipo_id)
 );
 
--- Tabla de participación de usuarios en partidos
-CREATE TABLE participacion_usuarios_partidos (
+-- Tabla de participación de usuario en partido
+CREATE TABLE participacion_usuario_partido (
     id_participacion UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_partido UUID REFERENCES partidos(id_partido),
-    id_usuario UUID REFERENCES usuarios(id_usuario),
-    id_equipo UUID REFERENCES equipos(id_equipo),
+    partido_id UUID REFERENCES partido(id_partido),
+    usuario_id UUID REFERENCES usuario(id_usuario),
+    equipo_id UUID REFERENCES equipo(id_equipo),
     fecha_participacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     confirmado BOOLEAN DEFAULT FALSE
 );
 
 -- Tabla de posiciones asociadas a los deportes
-CREATE TABLE deportes_posiciones (
-    id_posicion UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_deporte UUID REFERENCES deportes(id_deporte) ON DELETE CASCADE,
-    nombre_posicion VARCHAR(50) NOT NULL,
-    UNIQUE (id_deporte, nombre)
+CREATE TABLE deporte_posicion (
+    id_deporte_posicion UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    deporte_id UUID REFERENCES deporte(id_deporte) ON DELETE CASCADE,
+    nombre_deporte_posicion VARCHAR(50) NOT NULL,
+    UNIQUE (deporte_id, nombre_deporte_posicion)
 );
 
 -- Tabla que registra las posiciones jugadas por los usuarios en deportes específicos
-CREATE TABLE deportes_posiciones_usuarios (
-    id_deporte_posicion UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_usuario UUID REFERENCES usuarios(id_usuario) ON DELETE CASCADE,
-    id_deporte UUID REFERENCES deportes(id_deporte) ON DELETE CASCADE,
-    id_posicion UUID REFERENCES deportes_posiciones(id_posicion) ON DELETE CASCADE,
-    UNIQUE (id_usuario, id_deporte, id_posicion)
+CREATE TABLE deporte_posicion_usuario (
+    id_deporte_posicion_usuario UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    usuario_id UUID REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+    deporte_id UUID REFERENCES deporte(id_deporte) ON DELETE CASCADE,
+    deporte_posicion_id UUID REFERENCES deporte_posicion(id_deporte_posicion) ON DELETE CASCADE,
+    UNIQUE (usuario_id, deporte_id, deporte_posicion_id)
 );
 
 -- Tabla de notificaciones
-CREATE TABLE notificaciones (
+CREATE TABLE notificacion (
     id_notificacion UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_usuario UUID REFERENCES usuarios(id_usuario),
+    usuario_id UUID REFERENCES usuario(id_usuario),
     mensaje TEXT NOT NULL,
-    leida BOOLEAN DEFAULT FALSE,
-    creada_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    leida BOOLEAN DEFAULT FALSE
 );
 
 -- Tabla de mensajes
-CREATE TABLE mensajes (
+CREATE TABLE mensaje (
     id_mensaje UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_remitente UUID REFERENCES usuarios(id_usuario),
-    id_destinatario UUID REFERENCES usuarios(id_usuario),
+    remitente_id UUID REFERENCES usuario(id_usuario),
+    destinatario_id UUID REFERENCES usuario(id_usuario),
     contenido TEXT NOT NULL,
     enviado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     leido BOOLEAN DEFAULT FALSE
 );
 
 -- Tabla de invitaciones a partidos y equipos
-CREATE TABLE invitaciones (
+CREATE TABLE invitacion (
     id_invitacion UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_remitente UUID REFERENCES usuarios(id_usuario),
-    id_destinatario UUID REFERENCES usuarios(id_usuario),
+    remitente_id UUID REFERENCES usuario(id_usuario),
+    destinatario_id UUID REFERENCES usuario(id_usuario),
     tipo_invitacion VARCHAR(20) CHECK (tipo_invitacion IN ('equipo', 'partido')) NOT NULL,
-    id_equipo UUID REFERENCES equipos(id_equipo),
-    id_partido UUID REFERENCES partidos(id_partido),
+    equipo_id UUID REFERENCES equipo(id_equipo),
+    partido_id UUID REFERENCES partido(id_partido),
     mensaje TEXT,
-    estado VARCHAR(20) DEFAULT 'pendiente' -- Estado (pendiente, aceptada, rechazada)
+    estado VARCHAR(20) DEFAULT 'pendiente'
 );
 
 -- Tabla de opiniones y valoraciones
-CREATE TABLE opiniones_valoraciones (
+CREATE TABLE opinion_valoracion (
     id_opinion UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_usuario UUID REFERENCES usuarios(id_usuario),
-    id_cancha UUID REFERENCES canchas(id_cancha),
-    id_equipo UUID REFERENCES equipos(id_equipo),
-    id_usuario_valorado UUID REFERENCES usuarios(id_usuario),
+    usuario_id UUID REFERENCES usuario(id_usuario),
+    cancha_id UUID REFERENCES cancha(id_cancha),
+    equipo_id UUID REFERENCES equipo(id_equipo),
+    usuario_valorado_id UUID REFERENCES usuario(id_usuario),
     calificacion INT CHECK (calificacion BETWEEN 1 AND 5),
     comentario TEXT,
     tipo_valoracion VARCHAR(20) CHECK (tipo_valoracion IN ('cancha', 'equipo', 'usuario')) NOT NULL
 );
 
 -- Tabla de parámetros de rendimiento
-CREATE TABLE parametros_rendimiento (
+CREATE TABLE parametro_rendimiento (
     id_parametro_rendimiento UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_deporte UUID REFERENCES deportes(id_deporte),
-    nombre_parametro VARCHAR(100) NOT NULL,
+    deporte_id UUID REFERENCES deporte(id_deporte),
+    nombre_parametro_rendimiento VARCHAR(100) NOT NULL,
     descripcion TEXT,
-    UNIQUE (nombre_parametro, id_deporte)
+    UNIQUE (nombre_parametro_rendimiento, deporte_id)
 );
 
 -- Tabla de estadísticas detalladas de usuarios
-CREATE TABLE estadisticas_detalladas_usuarios (
+CREATE TABLE estadistica_detallada_usuario (
     id_estadistica_detallada UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_usuario UUID REFERENCES usuarios(id_usuario),
-    id_deporte UUID REFERENCES deportes(id_deporte),
-    id_parametro UUID REFERENCES parametros_rendimiento(id_parametro),
+    usuario_id UUID REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+    deporte_id UUID REFERENCES deporte(id_deporte) ON DELETE CASCADE,
+    parametro_rendimiento_id UUID REFERENCES parametro_rendimiento(id_parametro_rendimiento) ON DELETE CASCADE,
     parametro_valor NUMERIC(5, 2) NOT NULL CHECK (parametro_valor >= 0 AND parametro_valor <= 100),
-    UNIQUE (id_usuario, id_deporte, id_parametro)
+    UNIQUE (usuario_id, deporte_id, parametro_rendimiento_id)
 );
 
 -- Tabla de títulos de perfil
-CREATE TABLE titulos_perfil (
+CREATE TABLE titulo_perfil (
     id_titulo UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre_titulo VARCHAR(100) UNIQUE NOT NULL,
     criterio_partidos_jugados INT DEFAULT 0,
-    descripcion TEXT,
-    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    descripcion TEXT
 );
 
 -- Tabla de usuarios-títulos
-CREATE TABLE usuarios_titulos (
+CREATE TABLE usuario_titulo (
     id_usuario_titulo UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_usuario UUID REFERENCES usuarios(id_usuario),
-    id_titulo UUID REFERENCES titulos_perfil(id_titulo),
+    usuario_id UUID REFERENCES usuario(id_usuario),
+    titulo_id UUID REFERENCES titulo_perfil(id_titulo),
     fecha_obtenido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE (id_usuario, id_titulo)
+    UNIQUE (usuario_id, titulo_id)
 );
 
 -- Tabla de documentos de identidad
-CREATE TABLE documentos_identidad (
+CREATE TABLE documento_identidad (
     id_documento UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    id_usuario UUID REFERENCES usuarios(id_usuario),
+    usuario_id UUID REFERENCES usuario(id_usuario),
     tipo_documento VARCHAR(50) NOT NULL,
     numero_documento VARCHAR(50) NOT NULL,
     fecha_emision DATE NOT NULL,

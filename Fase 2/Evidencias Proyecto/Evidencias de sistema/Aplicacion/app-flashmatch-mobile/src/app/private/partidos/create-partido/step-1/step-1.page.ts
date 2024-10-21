@@ -43,11 +43,11 @@ export default class Step1Page {
 
   step1FormCreatePartido = this.fb.group({
     fecha_partido: ['', [Validators.required]],
-    id_deporte: ['', [Validators.required]],
-    id_tipo_partido: ['', [Validators.required]],
-    id_nivel_habilidad: ['', [Validators.required]],
-    id_rango_edad: ['', [Validators.required]],
-    id_tipo_emparejamiento: ['', [Validators.required]],
+    deporte_id: ['', [Validators.required]],
+    tipo_partido_id: ['', [Validators.required]],
+    nivel_habilidad_id: ['', [Validators.required]],
+    rango_edad_id: ['', [Validators.required]],
+    tipo_emparejamiento_id: ['', [Validators.required]],
     descripcion: ['']
   });
 
