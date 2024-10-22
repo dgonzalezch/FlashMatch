@@ -7,13 +7,13 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class CanchasService {
+export class EstadisticaDetalladaUsuarioService {
   private http = inject(HttpClient);
-  private urlBaseCanchas = CONTEXT.API_CANCHAS;
+  private urlBaseEstadisticaDetalladaUsuario = CONTEXT.API_ESTADISTICA_DETALLADA_USUARIO;
 
-  getCanchas(): Observable<any> {
-    return this.http.get<any>(this.urlBaseCanchas).pipe(
-      map((response) => response),
+  createDeportePosicionUsuario(estadisticasDetalladasUsuarios: any): Observable<any> {
+    return this.http.post<any>(this.urlBaseEstadisticaDetalladaUsuario, estadisticasDetalladasUsuarios).pipe(
+      map(response => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)
     );

@@ -4,11 +4,11 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonGrid, IonRow, IonCol, IonAvatar, IonButton, IonIcon, IonChip, IonCardHeader, IonCard, IonCardTitle, IonCardContent, IonList, IonItem, IonLabel, IonText, IonNote, IonButtons, IonAccordion, IonAccordionGroup, IonTextarea, IonModal, IonFooter, IonSelectOption, IonSelect, IonToggle } from '@ionic/angular/standalone';
 import { AlertService } from 'src/app/shared/common/alert.service';
 import { StorageService } from 'src/app/services/storage.service';
-import { DeportesService } from 'src/app/services/deportes.service';
+import { DeporteService } from 'src/app/services/deporte.service';
 import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { responseError } from 'src/app/interfaces/response-error.interface';
-import { UsuariosService } from 'src/app/services/usuarios.service';
-import { DeportesPosicionesUsuariosService } from 'src/app/services/deportes-posiciones-usuarios.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
+import { DeportePosicionUsuarioService } from 'src/app/services/deporte-posicion-usuario.service';
 import { HeaderMapComponent } from 'src/app/shared/components/header-map/header-map.component';
 import { LocationService } from '../../../shared/common/location.service';
 
@@ -24,9 +24,9 @@ export default class InfoUsuarioPage {
   private fb = inject(FormBuilder);
   private alertService = inject(AlertService);
   private storageService = inject(StorageService);
-  private usuariosService = inject(UsuariosService);
-  private deportesService = inject(DeportesService);
-  private deportesPosicionesUsuariosService = inject(DeportesPosicionesUsuariosService);
+  private usuarioService = inject(UsuarioService);
+  private deporteService = inject(DeporteService);
+  private deportePosicionUsuarioService = inject(DeportePosicionUsuarioService);
   private locationService = inject(LocationService);
 
   listDeportes = signal<any[]>([]);
@@ -54,7 +54,7 @@ export default class InfoUsuarioPage {
   };
 
   getInfoUsuario() {
-    this.usuariosService.getUsuario(this.idUsuario()).subscribe({
+    this.usuarioService.getUsuario(this.idUsuario()).subscribe({
       next: (resp: responseSuccess) => {
         debugger
         this.infoUsuario.set(resp.data);
@@ -66,7 +66,7 @@ export default class InfoUsuarioPage {
   }
 
   getListDeportes(): void {
-    this.deportesService.getAllDeportes().subscribe({
+    this.deporteService.getAllDeportes().subscribe({
       next: (resp: responseSuccess) => {
         this.listDeportes.set(resp.data);
       },
@@ -117,7 +117,7 @@ export default class InfoUsuarioPage {
       id_usuario: await this.storageService.get('user')
     };
 
-    this.deportesPosicionesUsuariosService.createDeportePosicionUsuario(fullFormDeportesPosicionesUsuarios).subscribe({
+    this.deportePosicionUsuarioService.createDeportePosicionUsuario(fullFormDeportesPosicionesUsuarios).subscribe({
       next: (resp: responseSuccess) => {
         this.alertService.message(resp.message);
         this.isModalOpen.set(false);

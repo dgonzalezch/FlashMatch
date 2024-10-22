@@ -7,12 +7,12 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class RangosEdadService {
+export class RangoEdadService {
   private http = inject(HttpClient);
-  private urlBaseRangosEdad = CONTEXT.API_RANGOS_EDAD
+  private urlBaseRangoEdad = CONTEXT.API_RANGO_EDAD
 
   getAllRangosEdad(): Observable<any> {
-    return this.http.get<any>(this.urlBaseRangosEdad).pipe(
+    return this.http.get<any>(this.urlBaseRangoEdad).pipe(
       map((response) => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)

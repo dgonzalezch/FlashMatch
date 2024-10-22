@@ -7,7 +7,7 @@ import { Router, RouterLink } from '@angular/router';
 import { MenuComponent } from '../shared/components/menu/menu.component';
 import { StorageService } from '../services/storage.service';
 import { LocationService } from '../shared/common/location.service';
-import { UsuariosService } from '../services/usuarios.service';
+import { UsuarioService } from '../services/usuario.service';
 import { AlertService } from '../shared/common/alert.service';
 import { responseError } from '../interfaces/response-error.interface';
 import { AuthService } from '../services/auth.service';
@@ -24,7 +24,7 @@ export default class PrivatePage {
   alertController = inject(AlertController);
   storageService = inject(StorageService);
   locationService = inject(LocationService);
-  usuariosService = inject(UsuariosService);
+  usuarioService = inject(UsuarioService);
   alertService = inject(AlertService);
   authService = inject(AuthService);
   router = inject(Router);
@@ -74,7 +74,7 @@ export default class PrivatePage {
             text: 'Confirmar',
             handler: async () => {
               await this.locationService.loadCurrentLocation();
-              this.usuariosService.patchUsuario(await this.storageService.get('user'), this.locationService.getLocation()).subscribe({
+              this.usuarioService.patchUsuario(await this.storageService.get('user'), this.locationService.getLocation()).subscribe({
                 next: async (resp) => {
                   await this.storageService.set('ubicacion', resp.data.ubicacion)
                   await this.storageService.set('latitud', resp.data.latitud)

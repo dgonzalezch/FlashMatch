@@ -8,22 +8,13 @@ import { Deporte } from '../interfaces/deporte.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class DeportesService {
+export class DeporteService {
   private http = inject(HttpClient);
-  private urlBaseDeportes = CONTEXT.API_DEPORTES;
-  private urlBaseDeportesPosicionesUsuarios = CONTEXT.API_DEPORTES_POSICIONES_USUARIOS;
+  private urlBaseDeporte = CONTEXT.API_DEPORTE
 
   getAllDeportes(): Observable<any> {
-    return this.http.get<Deporte[]>(this.urlBaseDeportes).pipe(
+    return this.http.get<Deporte[]>(this.urlBaseDeporte).pipe(
       map((response) => response),
-      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
-      timeout(environment.apiTime)
-    );
-  }
-
-  createDeportePosicionUsuario(deportesPosicionesUsuariosForm: any): Observable<any> {
-    return this.http.post<any>(this.urlBaseDeportesPosicionesUsuarios, deportesPosicionesUsuariosForm).pipe(
-      map(response => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)
     );

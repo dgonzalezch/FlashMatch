@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonRow, IonGrid, IonSearchbar, IonCol, IonCard, IonCardHeader, IonItem, IonAvatar, IonLabel, IonCardTitle, IonCardSubtitle, IonCardContent, IonFooter, IonButton, IonFab, IonFabButton, IonIcon, IonText } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
-import { UsuariosService } from 'src/app/services/usuarios.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { responseError } from 'src/app/interfaces/response-error.interface';
 import { AlertService } from 'src/app/shared/common/alert.service';
@@ -21,7 +21,7 @@ import { StorageService } from 'src/app/services/storage.service';
 export default class ListUsuariosPage {
   private storageService = inject(StorageService);
   private alertService = inject(AlertService);
-  private usuariosService = inject(UsuariosService);
+  private usuarioService = inject(UsuarioService);
 
   listUsuarios = signal<any[]>([]);
 
@@ -70,7 +70,7 @@ export default class ListUsuariosPage {
 
   // Cargar lista de usuarios
   loadUsuarios() {
-    this.usuariosService.getUsuarios().subscribe({
+    this.usuarioService.getUsuarios().subscribe({
       next: (resp: responseSuccess) => {
         this.listUsuarios.set(resp.data);
       },

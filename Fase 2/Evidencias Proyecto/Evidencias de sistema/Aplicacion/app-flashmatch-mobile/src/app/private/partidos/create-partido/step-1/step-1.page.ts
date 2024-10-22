@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonRow, IonGrid, IonText, IonCol, IonIcon, IonCardContent, IonCard, IonModal, IonDatetimeButton, IonDatetime, IonLabel, IonInput, IonFooter, IonButton, IonCardSubtitle, IonCardTitle, IonCardHeader, IonAccordionGroup, IonAccordion, IonItem, IonBadge, IonBreadcrumb, IonBreadcrumbs, IonTextarea, IonSelect, IonSelectOption, IonSegment, IonSegmentButton } from '@ionic/angular/standalone';
 import { Router, RouterLink } from '@angular/router';
-import { DeportesService } from 'src/app/services/deportes.service';
-import { RangosEdadService } from 'src/app/services/rangos-edad.service';
-import { NivelesHabilidadService } from 'src/app/services/niveles-habilidad.service';
-import { TiposPartidosService } from 'src/app/services/tipos-partidos.service';
-import { TiposEmparejamientosService } from 'src/app/services/tipos-emparejamientos.service';
+import { DeporteService } from 'src/app/services/deporte.service';
+import { RangoEdadService } from 'src/app/services/rango-edad.service';
+import { NivelHabilidadService } from 'src/app/services/nivel-habilidad.service';
+import { TipoPartidoService } from 'src/app/services/tipo-partido.service';
+import { TipoEmparejamientoService } from 'src/app/services/tipo-emparejamiento.service';
 import { Deporte } from 'src/app/interfaces/deporte.interface';
 import { RangoEdad } from 'src/app/interfaces/rango-edad.interface';
 import { AlertService } from 'src/app/shared/common/alert.service';
@@ -29,11 +29,11 @@ export default class Step1Page {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private alertService = inject(AlertService);
-  private deportesService = inject(DeportesService);
-  private tiposPartidosService = inject(TiposPartidosService);
-  private nivelesHabilidadService = inject(NivelesHabilidadService);
-  private rangosEdadService = inject(RangosEdadService);
-  private tiposEmparejamientosService = inject(TiposEmparejamientosService);
+  private deporteService = inject(DeporteService);
+  private tipoPartidoService = inject(TipoPartidoService);
+  private nivelHabilidadService = inject(NivelHabilidadService);
+  private rangoEdadService = inject(RangoEdadService);
+  private tipoEmparejamientoService = inject(TipoEmparejamientoService);
 
   listDeportes = signal<Deporte[]>([]);
   listTiposPartidos = signal<TipoPartido[]>([]);
@@ -71,7 +71,7 @@ export default class Step1Page {
   }
 
   getListDeportes(): void {
-    this.deportesService.getAllDeportes().subscribe({
+    this.deporteService.getAllDeportes().subscribe({
       next: (resp: responseSuccess) => {
         this.listDeportes.set(resp.data);
       },
@@ -82,7 +82,7 @@ export default class Step1Page {
   }
 
   getListTiposPartidos(): void {
-    this.tiposPartidosService.getAllTiposPartidos().subscribe({
+    this.tipoPartidoService.getAllTiposPartidos().subscribe({
       next: (resp: responseSuccess) => {
         this.listTiposPartidos.set(resp.data);
       },
@@ -93,7 +93,7 @@ export default class Step1Page {
   }
 
   getListNivelesHabilidad(): void {
-    this.nivelesHabilidadService.getAllNivelesHabilidad().subscribe({
+    this.nivelHabilidadService.getAllNivelesHabilidad().subscribe({
       next: (resp: responseSuccess) => {
         this.listNivelesHabilidad.set(resp.data);
       },
@@ -104,7 +104,7 @@ export default class Step1Page {
   }
 
   getListRangosEdad(): void {
-    this.rangosEdadService.getAllRangosEdad().subscribe({
+    this.rangoEdadService.getAllRangosEdad().subscribe({
       next: (resp: responseSuccess) => {
         this.listRangosEdad.set(resp.data);
       },
@@ -115,7 +115,7 @@ export default class Step1Page {
   }
 
   getListTiposEmparejamientos(): void {
-    this.tiposEmparejamientosService.getAllTiposEmparejamientos().subscribe({
+    this.tipoEmparejamientoService.getAllTiposEmparejamientos().subscribe({
       next: (resp: responseSuccess) => {
         this.listTiposEmparejamientos.set(resp.data);
       },

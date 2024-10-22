@@ -9,7 +9,7 @@ import { LocationService } from 'src/app/shared/common/location.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { StorageService } from 'src/app/services/storage.service';
-import { UsuariosService } from '../../services/usuarios.service';
+import { UsuarioService } from '../../services/usuario.service';
 import { responseError } from 'src/app/interfaces/response-error.interface';
 import { AlertService } from 'src/app/shared/common/alert.service';
 
@@ -29,7 +29,7 @@ export default class MapPage implements OnInit {
   navController = inject(NavController);
   locationService = inject(LocationService);
   storageService = inject(StorageService);
-  usuariosService = inject(UsuariosService);
+  usuarioService = inject(UsuarioService);
   alertService = inject(AlertService);
 
   map!: GoogleMap;
@@ -118,7 +118,7 @@ export default class MapPage implements OnInit {
           text: 'Confirmar',
           handler: async () => {
             this.locationService.setLocation(this.currentLat(), this.currentLng(), this.currentAddress());
-            this.usuariosService.patchUsuario(await this.storageService.get('user'), this.locationService.getLocation()).subscribe({
+            this.usuarioService.patchUsuario(await this.storageService.get('user'), this.locationService.getLocation()).subscribe({
               next: async (resp) => {
                 await this.storageService.set('ubicacion', resp.data.ubicacion)
                 await this.storageService.set('latitud', resp.data.latitud)

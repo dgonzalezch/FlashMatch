@@ -1,18 +1,18 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError, timeout } from 'rxjs';
-import { CONTEXT, ENDPOINT } from 'src/app/shared/configs/api-config';
+import { CONTEXT } from 'src/app/shared/configs/api-config';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DeportesPosicionesUsuariosService {
+export class DeportePosicionUsuarioService {
   private http = inject(HttpClient);
-  private urlBaseDeportesPosicionesUsuarios = CONTEXT.API_DEPORTES_POSICIONES_USUARIOS;
+  private urlBaseDeportePosicionUsuario = CONTEXT.API_DEPORTE_POSICION_USUARIO;
 
   createDeportePosicionUsuario(deportesPosicionesUsuariosForm: any): Observable<any> {
-    return this.http.post<any>(this.urlBaseDeportesPosicionesUsuarios, deportesPosicionesUsuariosForm).pipe(
+    return this.http.post<any>(this.urlBaseDeportePosicionUsuario, deportesPosicionesUsuariosForm).pipe(
       map(response => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)

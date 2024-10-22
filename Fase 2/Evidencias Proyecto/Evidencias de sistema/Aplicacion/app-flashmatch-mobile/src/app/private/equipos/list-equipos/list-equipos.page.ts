@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonFab, IonFabButton, IonAvatar, IonCol, IonRow, IonFooter, IonCardContent, IonCardTitle, IonCardSubtitle, IonCardHeader, IonCard, IonGrid, IonProgressBar, IonSpinner, IonSearchbar, IonText } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { StorageService } from 'src/app/services/storage.service';
-import { EquiposService } from '../../../services/equipos.service';
+import { EquipoService } from '../../../services/equipo.service';
 import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { responseError } from 'src/app/interfaces/response-error.interface';
 import { AlertService } from '../../../shared/common/alert.service';
@@ -22,7 +22,7 @@ import { HeaderComponent } from 'src/app/shared/components/header/header.compone
 export default class ListEquiposPage {
   private storageService = inject(StorageService);
   private alertService = inject(AlertService);
-  private equiposService = inject(EquiposService);
+  private equipoService = inject(EquipoService);
 
   listEquipos = signal<Equipo[]>([]);
 
@@ -52,7 +52,7 @@ export default class ListEquiposPage {
   }
 
   loadEquipos() {
-    this.equiposService.getEquipos().subscribe({
+    this.equipoService.getEquipos().subscribe({
       next: (resp: responseSuccess) => {
         this.listEquipos.set(resp.data);
       },

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonIcon, IonText, IonFooter, IonButton, IonInput, IonTextarea, IonSelect, IonSelectOption, IonBackButton, IonButtons } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
-import { EquiposService } from '../../../services/equipos.service';
+import { EquipoService } from '../../../services/equipo.service';
 import { responseError } from 'src/app/interfaces/response-error.interface';
 import { AlertService } from 'src/app/shared/common/alert.service';
 import { PreventSpacesDirective } from 'src/app/shared/common/prevent-spaces.directive';
@@ -11,8 +11,8 @@ import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { Deporte } from '../../../interfaces/deporte.interface';
 import { RangoEdad } from 'src/app/interfaces/rango-edad.interface';
 import { StorageService } from 'src/app/services/storage.service';
-import { DeportesService } from 'src/app/services/deportes.service';
-import { RangosEdadService } from 'src/app/services/rangos-edad.service';
+import { DeporteService } from 'src/app/services/deporte.service';
+import { RangoEdadService } from 'src/app/services/rango-edad.service';
 
 @Component({
   selector: 'app-create-equipo',
@@ -27,9 +27,9 @@ export default class CreateEquipoPage {
   private router = inject(Router);
   private alertService = inject(AlertService);
   private storageService = inject(StorageService);
-  private equiposService = inject(EquiposService);
-  private deportesService = inject(DeportesService);
-  private rangosEdadService = inject(RangosEdadService);
+  private equipoService = inject(EquipoService);
+  private deporteService = inject(DeporteService);
+  private rangoEdadService = inject(RangoEdadService);
 
   listDeportes = signal<Deporte[]>([]);
   listRangosEdad = signal<RangoEdad[]>([]);
@@ -48,7 +48,7 @@ export default class CreateEquipoPage {
   });
 
   getListDeportes(): void {
-    this.deportesService.getAllDeportes().subscribe({
+    this.deporteService.getAllDeportes().subscribe({
       next: (resp: responseSuccess) => {
         this.listDeportes.set(resp.data);
       },
@@ -59,7 +59,7 @@ export default class CreateEquipoPage {
   }
 
   getListRangosEdad(): void {
-    this.rangosEdadService.getAllRangosEdad().subscribe({
+    this.rangoEdadService.getAllRangosEdad().subscribe({
       next: (resp: responseSuccess) => {
         this.listRangosEdad.set(resp.data);
       },
@@ -75,7 +75,7 @@ export default class CreateEquipoPage {
       id_creador: await this.storageService.get('user')
     };
 
-    this.equiposService.createEquipo(fullFormTeam).subscribe({
+    this.equipoService.createEquipo(fullFormTeam).subscribe({
       next: (resp: responseSuccess) => {
         this.alertService.message(resp.message);
         this.router.navigate(['/private/teams']);

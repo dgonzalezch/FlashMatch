@@ -7,12 +7,12 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class NivelesHabilidadService {
+export class NivelHabilidadService {
   private http = inject(HttpClient);
-  private urlBaseNivelesHabilidad = CONTEXT.API_NIVELES_HABILIDAD;
+  private urlBaseNivelHabilidad = CONTEXT.API_NIVEL_HABILIDAD;
 
   getAllNivelesHabilidad(): Observable<any> {
-    return this.http.get<any>(this.urlBaseNivelesHabilidad).pipe(
+    return this.http.get<any>(this.urlBaseNivelHabilidad).pipe(
       map((response) => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)
@@ -20,7 +20,7 @@ export class NivelesHabilidadService {
   }
 
   getNivelHabilidad(term: any): Observable<any> {
-    return this.http.get<any>(this.urlBaseNivelesHabilidad + term).pipe(
+    return this.http.get<any>(this.urlBaseNivelHabilidad + term).pipe(
       map((response) => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)

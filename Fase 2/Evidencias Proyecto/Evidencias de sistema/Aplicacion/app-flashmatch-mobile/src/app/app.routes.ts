@@ -103,7 +103,16 @@ export const routes: Routes = [
           },
           {
             path: 'create-court',
-            loadComponent: () => import('./private/canchas/create-cancha/create-cancha.page')
+            children: [
+              {
+                path: 'step-1',
+                loadComponent: () => import('./private/canchas/create-cancha/step-1/step-1.page')
+              },
+              {
+                path: 'step-2',
+                loadComponent: () => import('./private/canchas/create-cancha/step-2/step-2.page')
+              },
+            ]
           },
           {
             path: '**',

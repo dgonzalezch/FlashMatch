@@ -1,19 +1,19 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError, timeout } from 'rxjs';
-import { CONTEXT, ENDPOINT } from 'src/app/shared/configs/api-config';
+import { CONTEXT } from 'src/app/shared/configs/api-config';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EstadisticasDetalladasUsuariosService {
+export class CanchaService {
   private http = inject(HttpClient);
-  private urlBaseEstadisticasDetalladasUsuarios = CONTEXT.API_ESTADISTICAS_DETALLADAS_USUARIOS;
+  private urlBaseCancha = CONTEXT.API_CANCHA;
 
-  createDeportePosicionUsuario(estadisticasDetalladasUsuarios: any): Observable<any> {
-    return this.http.post<any>(this.urlBaseEstadisticasDetalladasUsuarios, estadisticasDetalladasUsuarios).pipe(
-      map(response => response),
+  getCanchas(): Observable<any> {
+    return this.http.get<any>(this.urlBaseCancha).pipe(
+      map((response) => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)
     );

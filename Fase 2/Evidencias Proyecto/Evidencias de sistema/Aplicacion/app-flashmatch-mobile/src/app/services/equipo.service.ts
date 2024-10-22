@@ -7,28 +7,20 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class UsuariosService {
+export class EquipoService {
   private http = inject(HttpClient);
-  private urlBaseUsuarios = CONTEXT.API_USUARIOS;
+  private urlBaseEquipo = CONTEXT.API_EQUIPO;
 
-  getUsuarios(): Observable<any> {
-    return this.http.get<any>(this.urlBaseUsuarios).pipe(
-      map((response) => response),
+  createEquipo(teamFormData: any): Observable<any> {
+    return this.http.post<any>(this.urlBaseEquipo, teamFormData).pipe(
+      map(response => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)
     );
   }
 
-  getUsuario(term: any): Observable<any> {
-    return this.http.get<any>(this.urlBaseUsuarios + term).pipe(
-      map((response) => response),
-      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
-      timeout(environment.apiTime)
-    );
-  }
-
-  patchUsuario(id_usuario: any, body: any): Observable<any> {
-    return this.http.patch<any>(this.urlBaseUsuarios + id_usuario, body).pipe(
+  getEquipos(): Observable<any> {
+    return this.http.get<any>(this.urlBaseEquipo).pipe(
       map((response) => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)

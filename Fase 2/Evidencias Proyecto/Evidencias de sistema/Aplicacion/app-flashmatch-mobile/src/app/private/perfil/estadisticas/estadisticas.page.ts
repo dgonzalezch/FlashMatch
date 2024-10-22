@@ -5,8 +5,7 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonRange, IonItem, IonLabe
 import { BaseChartDirective } from 'ng2-charts';
 import { AlertService } from 'src/app/shared/common/alert.service';
 import { StorageService } from 'src/app/services/storage.service';
-import { UsuariosService } from 'src/app/services/usuarios.service';
-import { DeportesService } from 'src/app/services/deportes.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { responseError } from 'src/app/interfaces/response-error.interface';
 
@@ -22,7 +21,7 @@ export default class EstadisticasPage {
   private fb = inject(FormBuilder);
   private alertService = inject(AlertService);
   private storageService = inject(StorageService);
-  private usuariosService = inject(UsuariosService);
+  private usuarioService = inject(UsuarioService);
 
   infoUsuario = signal<any>(null);
   idUsuario = signal<string>('');
@@ -73,7 +72,7 @@ export default class EstadisticasPage {
   }
 
   getInfoUsuario() {
-    this.usuariosService.getUsuario(this.idUsuario()).subscribe({
+    this.usuarioService.getUsuario(this.idUsuario()).subscribe({
       next: (resp: responseSuccess) => {
         this.infoUsuario.set(resp.data);
       },
