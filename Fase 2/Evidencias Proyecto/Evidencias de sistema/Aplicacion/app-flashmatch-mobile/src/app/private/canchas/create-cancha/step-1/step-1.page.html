@@ -94,6 +94,27 @@
             </ion-text>
           }
         </ion-col>
+
+        <ion-col size="12">
+          <ion-select formControlName="material_cancha_id" label="Material cancha*" label-placement="floating" fill="outline" cancelText="cerrar">
+            @for (materialCancha of listMaterialesCancha(); track $index) {
+              <ion-select-option [value]="materialCancha.id_material_cancha">{{materialCancha.nombre_material_cancha}}</ion-select-option>
+            }
+          </ion-select>
+          @if (step1FormCreateCancha.get('material_cancha_id')?.touched && step1FormCreateCancha.get('material_cancha_id')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1FormCreateCancha.get('material_cancha_id')?.hasError('required')) {
+                  *Debes seleccionar el material de tu cancha.
+                }
+              }
+            </ion-text>
+          }
+        </ion-col>
+
+        <ion-col size="12">
+          <ion-textarea formControlName="descripcion" label="Descripción" labelPlacement="floating" fill="outline" placeholder="Descripción..."/>
+        </ion-col>
       </ion-row>
     </form>
   </ion-grid>

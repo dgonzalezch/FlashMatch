@@ -32,6 +32,11 @@ INSERT INTO tipo_partido (nombre_tipo_partido, descripcion) VALUES
 ('Entrenamiento', 'Partido utilizado para mejorar habilidades y practicar'),
 ('Competitivo', 'Partido oficial o de torneo con el objetivo de ganar y competir');
 
+INSERT INTO material_cancha (nombre_material_cancha, descripcion) VALUES
+('Pasto Natural', 'Superficie de pasto natural, ideal para juegos profesionales y competiciones.'),
+('Paso Sintético', 'Superficie sintética que imita el pasto natural, utilizada en campos más modernos y bajo mantenimiento.'),
+('Pavimento', 'Superficie de cemento o asfalto, típica en canchas urbanas y multifuncionales.');
+
 INSERT INTO parametro_rendimiento (nombre_parametro_rendimiento, deporte_id) VALUES
 ('Velocidad', (SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11')),
 ('Resistencia', (SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11')),

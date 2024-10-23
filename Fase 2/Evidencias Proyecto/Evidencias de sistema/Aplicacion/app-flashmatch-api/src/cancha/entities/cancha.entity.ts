@@ -8,19 +8,19 @@ export class Cancha {
     @PrimaryGeneratedColumn('uuid')
     id_cancha: string;
 
-    @Column({ type: 'varchar', length: 100 })
+    @Column({ type: 'varchar', length: 100, unique: true})
     nombre_cancha: string;
 
     @Column({ type: 'numeric', precision: 10, scale: 2 })
     precio_por_hora: number;
 
-    @Column({ type: 'varchar', length: 255, nullable: true })
+    @Column({ type: 'varchar', length: 255 })
     ubicacion: string;
 
-    @Column({ type: 'decimal', precision: 20, scale: 16, nullable: true })
+    @Column({ type: 'decimal', precision: 20, scale: 16 })
     latitud: number;
     
-    @Column({ type: 'decimal', precision: 20, scale: 16, nullable: true })
+    @Column({ type: 'decimal', precision: 20, scale: 16 })
     longitud: number;
     
     @Column({ type: 'text', nullable: true })

@@ -9,7 +9,8 @@ export enum CONTEXT {
   API_TIPO_PARTIDO = '/api/tipo-partido/',
   API_NIVEL_HABILIDAD = '/api/nivel-habilidad/',
   API_TIPO_EMPAREJAMIENTO = '/api/tipo-emparejamiento/',
-  API_CANCHA = '/api/cancha/'
+  API_CANCHA = '/api/cancha/',
+  API_MATERIAL_CANCHA = '/api/material-cancha/',
 }
 
 export enum ENDPOINT {
