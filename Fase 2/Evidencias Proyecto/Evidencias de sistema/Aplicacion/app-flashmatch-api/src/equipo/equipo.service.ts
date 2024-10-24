@@ -8,9 +8,9 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { ResponseMessage } from 'src/common/interfaces/response.interface';
 import { ErrorHandlingService } from 'src/common/services/error-handling.service';
 import { isUUID } from 'class-validator';
-import { Usuario } from 'src/auth/entities/usuario.entity';
 import { Deporte } from 'src/deporte/entities/deporte.entity';
 import { RangoEdad } from 'src/rango-edad/entities/rango-edad.entity';
+import { Usuario } from 'src/usuario/entities/usuario.entity';
 
 @Injectable()
 export class EquipoService {

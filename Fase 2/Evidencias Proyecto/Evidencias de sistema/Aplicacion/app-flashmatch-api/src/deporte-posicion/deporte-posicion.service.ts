@@ -23,7 +23,7 @@ export class DeportePosicionService {
   ) { }
 
   async create(createDeportePosicionDto: CreateDeportePosicionDto): Promise<ResponseMessage<DeportePosicion>> {
-    const { deporte_id} = createDeportePosicionDto;
+    const { deporte_id } = createDeportePosicionDto;
 
     const deporte = await this.deporteRepository.findOneBy({ id_deporte: deporte_id });
     if (!deporte) throw new NotFoundException(`Deporte con ID ${deporte_id} no encontrado.`);
@@ -62,7 +62,7 @@ export class DeportePosicionService {
 
   async findOne(term: string): Promise<ResponseMessage<DeportePosicion>> {
     let deportePosicion: DeportePosicion;
-  
+
     if (isUUID(term)) {
       deportePosicion = await this.deportePosicionRepository.findOne({
         where: { id_deporte_posicion: term },
@@ -72,17 +72,17 @@ export class DeportePosicionService {
       deportePosicion = await this.deportePosicionRepository
         .createQueryBuilder('deportePosicion')
         .leftJoinAndSelect('deportePosicion.deporte', 'deporte') // Relación con 'deporte'
-        .where('UPPER(deportePosicion.nombre) = :term OR UPPER(deporte.nombre) = :term', { 
-          term: term.toUpperCase() 
+        .where('UPPER(deportePosicion.nombre) = :term OR UPPER(deporte.nombre) = :term', {
+          term: term.toUpperCase()
         })
         .getOne();
     }
-  
+
     if (!deportePosicion) throw new NotFoundException(`Posición no encontrada.`);
-  
+
     return { message: 'Registro encontrado.', data: deportePosicion };
   }
-  
+
   async update(id_deporte_posicion: string, updateDeportePosicionDto: UpdateDeportePosicionDto): Promise<ResponseMessage<DeportePosicion>> {
     const { deporte_id } = updateDeportePosicionDto;
 

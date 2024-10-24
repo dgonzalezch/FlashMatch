@@ -1,11 +1,11 @@
 <app-header-map [ubication]="ubication()"/>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" color="light">
   <ion-grid>
 
     <ion-row>
       <ion-col size="12">
-        <ion-searchbar placeholder="Buscar partidos..."/>
+        <ion-searchbar class="searchbar-modern animated" placeholder="Buscar partidos..."/>
       </ion-col>
     </ion-row>
 
@@ -98,15 +98,12 @@
         }
       </ion-col>
     </ion-row>
-
-    <!-- Botón para crear partido -->
-    <ion-row class="ion-justify-content-center ion-margin-top">
-      <ion-col size="12">
-        <ion-button color="secondary" expand="block" [routerLink]="['/private/matches/create-match/step-1']">
-          Crear partido
-        </ion-button>
-      </ion-col>
-    </ion-row>
-
   </ion-grid>
+
+  <!-- Botón flotante para Crear Cancha -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="secondary" [routerLink]="['/private/matches/create-match/step-1']" >
+      <ion-icon name="add-circle-outline"/>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

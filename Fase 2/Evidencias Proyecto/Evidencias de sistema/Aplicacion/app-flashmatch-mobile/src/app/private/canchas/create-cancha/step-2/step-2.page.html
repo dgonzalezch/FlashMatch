@@ -1,25 +1,25 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/private/courts/create-court/step-1"></ion-back-button>
+      <ion-back-button defaultHref="/private/courts/create-court/step-1"/>
     </ion-buttons>
     <ion-title>Crear cancha (2)</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" color="light">
   <ion-grid>
-    <ion-row class="ion-justify-content-center modern-row">
-      <ion-col size="12" size-md="8" size-lg="6"> <!-- Tamaño responsivo para adaptar el diseño -->
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="8" size-lg="6">
         <ion-card class="modern-card">
-          <ion-card-content class="modern-card-content">
+          <ion-card-content>
             <ion-row class="ion-align-items-center ion-justify-content-center">
               <ion-col size="auto">
-                <ion-icon name="albums-outline" class="icon-large"></ion-icon>
+                <ion-icon name="albums-outline" class="icon-large"/>
               </ion-col>
               <ion-col>
                 <ion-text class="modern-text">
-                  <b>Segundo,</b> selecciona los días y horarios disponibles.
+                  <b>Segundo,</b> selecciona los días y horarios que tendrá disponibles la cancha.
                 </ion-text>
               </ion-col>
             </ion-row>
@@ -29,19 +29,29 @@
     </ion-row>
 
     <!-- Lista de días de la semana en chips -->
-    <ion-row class="ion-justify-content-center">
-      @for (dia of diasSemana(); track $index) {
-        <div class="day-chip mordern-chip" [ngStyle]="{ 'animation-delay': ($index * 100) + 'ms' }">
-          <ion-chip
-            [outline]="!dia.seleccionado"
-            (click)="onToggleDia($index)"
-            [color]="dia.seleccionado ? 'tertiary' : 'dark'"
-            [attr.selected]="dia.seleccionado ? 'true' : null"
-          >
-            <ion-label>{{ dia.prefijo }}</ion-label>
-          </ion-chip>
-        </div>
-      }
+
+    <ion-row>
+      <ion-col size="12">
+        <ion-card class="modern-card">
+          <ion-card-content>
+              <div style="display: flex; justify-content: center; flex-wrap: wrap;">
+                @for (dia of diasSemana(); track $index) {
+                  <div class="day-chip mordern-chip" [ngStyle]="{ 'animation-delay': ($index * 100) + 'ms' }">
+                    <ion-chip
+                      [outline]="!dia.seleccionado"
+                      (click)="onToggleDia($index)"
+                      [color]="dia.seleccionado ? 'tertiary' : 'medium'"
+                      [attr.selected]="dia.seleccionado ? 'true' : null"
+                    >
+                      <ion-label>{{ dia.prefijo }}</ion-label>
+                    </ion-chip>
+                  </div>
+                }
+              </div>
+
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
     </ion-row>
 
     <!-- Generar cards para los días seleccionados con las horas -->
@@ -54,14 +64,14 @@
                 <ion-card-title>
                   {{ dia.nombre }}
                 </ion-card-title>
-                <ion-button fill="clear" size="small" color="primary" >
+                <ion-button fill="clear" size="small" color="primary" (click)="toggleSelectAllHoras(indexDia)">
                   <!-- <ion-icon slot="start" name="checkmark-done-outline"></ion-icon> -->
                   Seleccionar Todo
                 </ion-button>
               </ion-card-header>
               <ion-card-content>
                 <!-- Lista de horas para cada día -->
-                <ion-row class="ion-justify-content-center">
+                <ion-row class="ion-justify-content-between">
                   @for (hora of dia.horarios; track $index; let indexHora = $index) {
                     <ion-col size="auto" class="hour-chip modern-hour-chip">
                       <ion-chip

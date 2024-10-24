@@ -9,9 +9,7 @@ import { RangoEdadModule } from './rango-edad/rango-edad.module';
 import { DeporteModule } from './deporte/deporte.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { DeportePosicionModule } from './deporte-posicion/deporte-posicion.module';
-import { DeportePosicionUsuarioModule } from './deporte-posicion-usuario/deporte-posicion-usuario.module';
 import { ParametroRendimientoModule } from './parametro-rendimiento/parametro-rendimiento.module';
-import { EstadisticaDetalladaUsuarioModule } from './estadistica-detallada-usuario/estadistica-detallada-usuario.module';
 import { TipoPartidoModule } from './tipo-partido/tipo-partido.module';
 import { NivelHabilidadModule } from './nivel-habilidad/nivel-habilidad.module';
 import { TipoEmparejamientoModule } from './tipo-emparejamiento/tipo-emparejamiento.module';
@@ -38,9 +36,7 @@ import { MaterialCanchaModule } from './material-cancha/material-cancha.module';
     DeporteModule,
     UsuarioModule,
     DeportePosicionModule,
-    DeportePosicionUsuarioModule,
     ParametroRendimientoModule,
-    EstadisticaDetalladaUsuarioModule,
     TipoPartidoModule,
     NivelHabilidadModule,
     TipoEmparejamientoModule,

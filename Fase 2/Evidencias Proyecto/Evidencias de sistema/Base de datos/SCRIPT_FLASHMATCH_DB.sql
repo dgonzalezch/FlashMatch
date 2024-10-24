@@ -193,10 +193,8 @@ CREATE TABLE disponibilidad_cancha (
     id_disponibilidad UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     cancha_id UUID REFERENCES cancha(id_cancha) ON DELETE CASCADE,
     dia_semana INT NOT NULL CHECK (dia_semana BETWEEN 1 AND 7),
-    hora_inicio TIME NOT NULL,
-    hora_fin TIME NOT NULL,
-    disponible BOOLEAN DEFAULT TRUE,
-    CONSTRAINT disponibilidad_hora_check CHECK (hora_inicio < hora_fin)
+    hora TIME NOT NULL,
+    disponible BOOLEAN DEFAULT TRUE
 );
 
 -- Tabla de partidos

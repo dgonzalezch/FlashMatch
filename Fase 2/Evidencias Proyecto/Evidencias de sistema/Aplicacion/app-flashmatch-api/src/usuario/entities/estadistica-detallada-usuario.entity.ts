@@ -1,7 +1,7 @@
-import { Usuario } from "src/auth/entities/usuario.entity";
 import { Deporte } from "src/deporte/entities/deporte.entity";
 import { ParametroRendimiento } from "src/parametro-rendimiento/entities/parametro-rendimiento.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Usuario } from "./usuario.entity";
 
 @Entity('estadistica_detallada_usuario')
 @Unique(['usuario', 'deporte', 'parametroRendimiento'])

@@ -1,12 +1,14 @@
-import { IsArray, IsBoolean, IsEmail, IsMobilePhone, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, Matches, MaxLength, MinLength, IsDateString, IsDecimal, IsNumber, Min, Max } from "class-validator";
+import { IsArray, IsBoolean, IsEmail, IsMobilePhone, IsNotEmpty, IsPhoneNumber, IsString, Matches, MaxLength, MinLength, IsDateString, IsDecimal, IsNumber, Min, Max, IsOptional } from "class-validator";
 
 export class CreateUsuarioDto {
     @IsString()
     @IsNotEmpty()
+    @MaxLength(50)
     nombre: string;
 
     @IsString()
     @IsNotEmpty()
+    @MaxLength(50)
     apellido: string;
     
     @IsString()
@@ -21,25 +23,27 @@ export class CreateUsuarioDto {
     @IsString()
     @IsEmail()
     @IsNotEmpty()
+    @MaxLength(100)
     correo: string;
 
     @IsString()
     @IsNotEmpty()
     @IsMobilePhone()
+    // @IsPhoneNumber('CL', { message: 'El número debe ser un teléfono móvil válido en Chile.' })
     telefono: string;
 
     @IsString()
     @IsNotEmpty()
     @MinLength(6)
     @MaxLength(50)
-    @Matches(
-        /(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-        message: 'La contraseña debe tener una letra mayúscula, minúscula y un número.'
+    @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+        message: 'La contraseña debe tener al menos una letra mayúscula, minúscula y un número o símbolo.'
     })
     clave: string;
 
     @IsString()
     @IsOptional()
+    @MaxLength(200)
     ubicacion?: string;
     
     @IsNumber({ maxDecimalPlaces: 16 })

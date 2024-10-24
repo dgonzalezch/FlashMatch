@@ -2,7 +2,7 @@ import { Equipo } from "src/equipo/entities/equipo.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { DeportePosicion } from "../../deporte-posicion/entities/deporte-posicion.entity";
 import { ParametroRendimiento } from "src/parametro-rendimiento/entities/parametro-rendimiento.entity";
-import { EstadisticaDetalladaUsuario } from "src/estadistica-detallada-usuario/entities/estadistica-detallada-usuario.entity";
+import { EstadisticaDetalladaUsuario } from "src/usuario/entities/estadistica-detallada-usuario.entity";
 
 @Entity('deporte')
 export class Deporte {

@@ -1,0 +1,22 @@
+.image-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.uploaded-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+.delete-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  --size: 24px;
+  --ion-button-padding: 0;
+  --ion-icon-size: 16px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+}

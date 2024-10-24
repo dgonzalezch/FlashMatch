@@ -1,7 +1,7 @@
 import { Equipo } from "src/equipo/entities/equipo.entity";
 import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { DeportePosicionUsuario } from '../../deporte-posicion-usuario/entities/deporte-posicion-usuario.entity';
-import { EstadisticaDetalladaUsuario } from "src/estadistica-detallada-usuario/entities/estadistica-detallada-usuario.entity";
+import { DeportePosicionUsuario } from "./deporte-posicion-usuario.entity";
+import { EstadisticaDetalladaUsuario } from "./estadistica-detallada-usuario.entity";
 
 @Entity('usuario')
 export class Usuario {
@@ -31,13 +31,13 @@ export class Usuario {
 
     @Column({ type: 'varchar', length: 200, nullable: true })
     ubicacion: string;
-    
+
     @Column({ type: 'decimal', precision: 20, scale: 16, nullable: true })
     latitud: number;
-    
+
     @Column({ type: 'decimal', precision: 20, scale: 16, nullable: true })
     longitud: number;
-    
+
     @Column({ type: 'text', nullable: true })
     imagen_perfil: string;
 
@@ -61,7 +61,10 @@ export class Usuario {
 
     @BeforeInsert()
     checkFieldsBeforeInsert() {
-        this.correo.toLowerCase().trim();
+        this.correo = this.correo.toLowerCase().trim();
+        this.nombre = this.nombre.trim();
+        this.apellido = this.apellido.trim();
+        this.rut = this.rut.trim();
     }
 
     @BeforeUpdate()
@@ -69,3 +72,4 @@ export class Usuario {
         this.checkFieldsBeforeInsert();
     }
 }
+

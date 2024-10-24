@@ -3,18 +3,14 @@
 <ion-content [fullscreen]="true" class="ion-padding content-center">
   <ion-grid class="ion-margin-top">
 
-    <!-- LOGO -->
-    <ion-row class="ion-justify-content-center ion-margin-vertical">
-      <ion-col size="12" class="ion-text-center">
+    <ion-row class="ion-justify-content-center ion-margin-vertical ">
+      <ion-col size="12" class="ion-text-center animated">
         <ion-img class="custom-img" style="height: 5rem;" src="assets/logo/logo-flashmatch.png" alt="logo-flashmatch"></ion-img>
       </ion-col>
     </ion-row>
 
-    <!-- FORMULARIO -->
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-modern">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-modern animated">
       <ion-row class="ion-align-items-center">
-
-        <!-- CORREO -->
         <ion-col size="12">
           <ion-input formControlName="correo" type="email" class="ion-input-form modern-input" preventSpaces label="Email" maxlength="25" labelPlacement="floating"></ion-input>
           @if (loginForm.get('correo')?.touched && loginForm.get('correo')?.invalid) {

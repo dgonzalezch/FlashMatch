@@ -7,18 +7,18 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" color="light">
   <ion-grid>
     <ion-row class="ion-justify-content-center">
-      <ion-col size="auto">
-        <ion-card>
+      <ion-col size="12" size-md="8" size-lg="6">
+        <ion-card class="modern-card">
           <ion-card-content>
             <ion-row class="ion-align-items-center ion-justify-content-center">
               <ion-col size="auto">
-                <ion-icon name="albums-outline" style="font-size: 25px; margin-right: 10px;"/>
+                <ion-icon name="albums-outline" class="icon-large"/>
               </ion-col>
               <ion-col>
-                <ion-text>
+                <ion-text class="modern-text">
                   <b>Segundo,</b> reserva una cancha de tu preferencia cerca de la ubicación seleccionada.
                 </ion-text>
               </ion-col>
@@ -29,7 +29,7 @@
     </ion-row>
 
     <!-- Seleccionar ubicación -->
-    <ion-row>
+    <ion-row class="animated">
       <ion-col size="12">
         <ion-accordion-group class="ion-no-margin" expand="inset">
           <ion-accordion value="location" class="ion-no-margin">
@@ -54,7 +54,7 @@
     </ion-row>
 
     <!-- Listado de canchas -->
-    <ion-row>
+    <ion-row class="animated">
       @if (!selectedLocation()) {
         <ion-col size="12">
           <ion-list>

@@ -29,11 +29,11 @@ interface Cancha {
 })
 export default class Step2Page {
   loadingController = inject(LoadingController);
-  router = inject(Router);
   alertController = inject(AlertController);
   locationService = inject(LocationService);
   storageService = inject(StorageService);
   fb = inject(FormBuilder);
+  router = inject(Router);
 
   selectedSegment = signal<string>('list');
   selectedCanchaId = signal<string>('');

@@ -1,9 +1,9 @@
-<ion-content [fullscreen]="true" >
+<ion-content [fullscreen]="true" color="light">
   <ion-grid>
     <!-- Barra de búsqueda estilizada -->
     <ion-row>
       <ion-col size="12">
-        <ion-searchbar class="searchbar-modern" placeholder="Buscar cancha..."/>
+        <ion-searchbar class="searchbar-modern animated" placeholder="Buscar cancha..."/>
       </ion-col>
     </ion-row>
 
@@ -32,9 +32,9 @@
       }
       @empty {
         <ion-col>
-          <ion-item lines="none" class="empty-item-modern">
+          <div class="empty-item-modern ion-margin-vertical animated">
             <ion-label>Aún no has creado ninguna cancha.</ion-label>
-          </ion-item>
+          </div>
         </ion-col>
       }
     </ion-row>

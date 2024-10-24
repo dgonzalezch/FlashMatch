@@ -1,7 +1,7 @@
-import { Usuario } from "src/auth/entities/usuario.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Deporte } from "src/deporte/entities/deporte.entity";
 import { RangoEdad } from "src/rango-edad/entities/rango-edad.entity";
+import { Usuario } from "src/usuario/entities/usuario.entity";
 
 @Entity('equipo')
 export class Equipo {

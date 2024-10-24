@@ -7,18 +7,18 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" color="light">
   <ion-grid>
     <ion-row class="ion-justify-content-center">
-      <ion-col size="auto">
-        <ion-card>
+      <ion-col size="12" size-md="8" size-lg="6">
+        <ion-card class="modern-card">
           <ion-card-content>
             <ion-row class="ion-align-items-center ion-justify-content-center">
               <ion-col size="auto">
-                <ion-icon name="albums-outline" style="font-size: 25px; margin-right: 10px;"/>
+                <ion-icon name="albums-outline" class="icon-large"/>
               </ion-col>
               <ion-col>
-                <ion-text>
+                <ion-text class="modern-text">
                   <b>Primero,</b> ingresa la información de tu cancha.
                 </ion-text>
               </ion-col>
@@ -27,7 +27,8 @@
         </ion-card>
       </ion-col>
     </ion-row>
-    <form [formGroup]="step1FormCreateCancha" id="step1FormCreateCancha" (ngSubmit)="onSubmit()">
+
+    <form [formGroup]="step1FormCreateCancha" class="animated" id="step1FormCreateCancha" (ngSubmit)="onSubmit()">
       <ion-row>
         <ion-col size="12" class="ion-margin-bottom">
           <ion-accordion-group class="ion-no-margin" expand="inset">

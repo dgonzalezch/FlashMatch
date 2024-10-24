@@ -112,6 +112,10 @@ export const routes: Routes = [
                 path: 'step-2',
                 loadComponent: () => import('./private/canchas/create-cancha/step-2/step-2.page')
               },
+              {
+                path: 'step-3',
+                loadComponent: () => import('./private/canchas/create-cancha/step-3/step-3.page')
+              },
             ]
           },
           {

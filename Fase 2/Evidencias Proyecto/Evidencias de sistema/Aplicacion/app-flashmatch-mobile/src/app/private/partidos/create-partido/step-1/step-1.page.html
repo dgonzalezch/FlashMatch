@@ -7,18 +7,18 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" color="light">
   <ion-grid>
     <ion-row class="ion-justify-content-center">
-      <ion-col size="auto">
-        <ion-card>
+      <ion-col size="12" size-md="8" size-lg="6">
+        <ion-card class="modern-card">
           <ion-card-content>
             <ion-row class="ion-align-items-center ion-justify-content-center">
               <ion-col size="auto">
-                <ion-icon name="football-outline" style="font-size: 25px; margin-right: 10px;"/>
+                <ion-icon name="football-outline" class="icon-large"/>
               </ion-col>
               <ion-col>
-                <ion-text>
+                <ion-text class="modern-text">
                   <b>Primero,</b> ingresa la fecha del partido y los parámetros de este.
                 </ion-text>
               </ion-col>
@@ -28,7 +28,7 @@
       </ion-col>
     </ion-row>
 
-    <form [formGroup]="step1FormCreatePartido" id="step1FormCreatePartido" (ngSubmit)="onSubmit()">
+    <form [formGroup]="step1FormCreatePartido" class="animated" id="step1FormCreatePartido" (ngSubmit)="onSubmit()">
       <ion-row>
         <ion-col size="12">
           <ion-accordion-group class="ion-no-margin ion-margin-bottom" expand="inset">

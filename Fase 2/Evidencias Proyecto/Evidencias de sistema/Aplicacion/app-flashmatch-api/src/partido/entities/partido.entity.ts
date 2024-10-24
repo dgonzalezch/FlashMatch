@@ -1,10 +1,10 @@
-import { Usuario } from 'src/auth/entities/usuario.entity';
 import { Cancha } from 'src/cancha/entities/cancha.entity';
 import { Deporte } from 'src/deporte/entities/deporte.entity';
 import { NivelHabilidad } from 'src/nivel-habilidad/entities/nivel-habilidad.entity';
 import { RangoEdad } from 'src/rango-edad/entities/rango-edad.entity';
 import { TipoEmparejamiento } from 'src/tipo-emparejamiento/entities/tipo-emparejamiento.entity';
 import { TipoPartido } from 'src/tipo-partido/entities/tipo-partido.entity';
+import { Usuario } from 'src/usuario/entities/usuario.entity';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
 
 @Entity('partido')

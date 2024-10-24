@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonRow, IonGrid, IonCol, IonCard, IonCardContent, IonIcon, IonText, IonItem, IonLabel, IonButton, IonFooter, IonCheckbox, IonDatetime, IonChip, IonCardTitle, IonCardHeader, IonBadge } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonRow, IonGrid, IonCol, IonCard, IonCardContent, IonIcon, IonText, IonItem, IonLabel, IonButton, IonFooter, IonCheckbox, IonDatetime, IonChip, IonCardTitle, IonCardHeader, IonBadge, IonSearchbar } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -9,7 +9,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './step-2.page.html',
   styleUrls: ['./step-2.page.scss'],
   standalone: true,
-  imports: [IonBadge, IonCardHeader, IonCardTitle, IonChip, IonDatetime, IonCheckbox, IonFooter, IonButton, IonLabel, IonItem, IonIcon, IonText, IonCardContent, IonCard, IonCol, IonRow, IonGrid, IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
+  imports: [IonSearchbar, IonBadge, IonCardHeader, IonCardTitle, IonChip, IonDatetime, IonCheckbox, IonFooter, IonButton, IonLabel, IonItem, IonIcon, IonText, IonCardContent, IonCard, IonCol, IonRow, IonGrid, IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class Step2Page {
@@ -208,5 +208,21 @@ export default class Step2Page {
 
     // Cambia el estado de seleccionado de esa hora
     hora.seleccionada = !hora.seleccionada;
+  }
+
+  toggleSelectAllHoras(diaIndex: number) {
+    // Accede al día específico por el índice
+    const dia = this.diasSemana()[diaIndex];
+
+    // Verifica si todas las horas ya están seleccionadas
+    const allSelected = dia.horarios.every((hora: any) => hora.seleccionada);
+
+    // Alterna entre seleccionar todas o des-seleccionar todas
+    dia.horarios.forEach((hora: any) => {
+      hora.seleccionada = !allSelected;
+    });
+
+    // Actualiza la señal para que Angular detecte los cambios
+    this.diasSemana.update((dias) => dias);
   }
 }

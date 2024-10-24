@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true" class="ion-padding">
+<ion-content [fullscreen]="true">
   <ion-grid>
     <!-- Avatar del usuario -->
     <ion-row class="ion-justify-content-center">
@@ -14,7 +14,7 @@
 
     <!-- Nombre del usuario -->
     <ion-row class="ion-justify-content-center ion-text-center">
-      <ion-col size="auto" class="ion-no-padding">
+      <ion-col size="auto">
         <h2 class="ion-no-margin">{{ infoUsuario()?.nombre }} {{ infoUsuario()?.apellido }}</h2>
       </ion-col>
     </ion-row>

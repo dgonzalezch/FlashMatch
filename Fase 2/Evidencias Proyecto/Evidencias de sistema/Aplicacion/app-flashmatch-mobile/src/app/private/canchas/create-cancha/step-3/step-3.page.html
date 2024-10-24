@@ -1,0 +1,107 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/private/courts/create-court/step-2"/>
+    </ion-buttons>
+    <ion-title>Crear cancha (3)</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" color="light">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="8" size-lg="6">
+        <ion-card class="modern-card">
+          <ion-card-content>
+            <ion-row class="ion-align-items-center ion-justify-content-center">
+              <ion-col size="auto">
+                <ion-icon name="images-outline" class="icon-large"/>
+              </ion-col>
+              <ion-col>
+                <ion-text class="modern-text">
+                  <b>Por último,</b> añade las imágenes que quieras para que los usuarios puedan ver tu cancha.
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <ion-card class="modern-card">
+          <ion-card-content>
+            <ion-text>
+              <b>Añade imágenes de la cancha</b>
+            </ion-text>
+
+            <!-- Botón para simular la subida de imágenes -->
+            <ion-row class="ion-justify-content-center ion-margin-top">
+              <ion-col size="auto">
+                <ion-button fill="outline" expand="block" color="primary">
+                  <ion-icon slot="start" name="cloud-upload-outline"></ion-icon>
+                  Subir Imágenes
+                </ion-button>
+              </ion-col>
+            </ion-row>
+
+            <!-- Ejemplo de cómo se verían las imágenes -->
+            <ion-row>
+              <ion-col size="12">
+                <ion-grid>
+                  <ion-row>
+                    <!-- Primera imagen -->
+                    <ion-col size="6" size-md="4" class="image-container">
+                      <ion-card>
+                        <div class="image-wrapper">
+                          <img src="https://via.placeholder.com/150" alt="Imagen 1" class="uploaded-image" />
+                          <ion-button size="small" color="danger" class="delete-icon" shape="round">
+                            <ion-icon slot="icon-only" name="trash-outline"/>
+                          </ion-button>
+                        </div>
+                      </ion-card>
+                    </ion-col>
+
+                    <!-- Segunda imagen -->
+                    <ion-col size="6" size-md="4" class="image-container">
+                      <ion-card>
+                        <div class="image-wrapper">
+                          <img src="https://via.placeholder.com/150" alt="Imagen 2" class="uploaded-image" />
+                          <ion-button size="small" color="danger" class="delete-icon" shape="round">
+                            <ion-icon slot="icon-only" name="trash-outline"/>
+                          </ion-button>
+                        </div>
+                      </ion-card>
+                    </ion-col>
+
+                    <!-- Tercera imagen -->
+                    <ion-col size="6" size-md="4" class="image-container">
+                      <ion-card>
+                        <div class="image-wrapper">
+                          <img src="https://via.placeholder.com/150" alt="Imagen 3" class="uploaded-image" />
+                          <ion-button size="small" color="danger" class="delete-icon" shape="round">
+                            <ion-icon slot="icon-only" name="trash-outline"/>
+                          </ion-button>
+                        </div>
+                      </ion-card>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-button class="ion-padding-horizontal" color="tertiary" expand="block"
+      type="button" (click)="presentAlertConfirm()">
+      Finalizar
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

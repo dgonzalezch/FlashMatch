@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, Unique, JoinColumn } from 'typeorm';
-import { Usuario } from 'src/auth/entities/usuario.entity';
 import { Deporte } from 'src/deporte/entities/deporte.entity';
 import { DeportePosicion } from 'src/deporte-posicion/entities/deporte-posicion.entity';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, Unique, JoinColumn } from 'typeorm';
+import { Usuario } from './usuario.entity';
 
 @Entity('deporte_posicion_usuario')
 @Unique(['usuario', 'deporte', 'deportePosicion'])
