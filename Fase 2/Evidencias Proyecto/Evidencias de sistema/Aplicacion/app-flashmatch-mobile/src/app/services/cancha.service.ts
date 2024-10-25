@@ -18,4 +18,12 @@ export class CanchaService {
       timeout(environment.apiTime)
     );
   }
+
+  createCancha(createCanchaFormData: any): Observable<any> {
+    return this.http.post<any>(this.urlBaseCancha, createCanchaFormData).pipe(
+      map(response => response),
+      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
+      timeout(environment.apiTime)
+    );
+  }
 }

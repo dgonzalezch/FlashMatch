@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Query, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { CanchaService } from './cancha.service';
 import { CreateCanchaDto } from './dto/create-cancha.dto';
 import { UpdateCanchaDto } from './dto/update-cancha.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { CreateDisponibilidadCanchaDto } from './dto/create-disponibilidad-cancha.dto';
 import { UpdateDisponibilidadCanchaDto } from './dto/update-disponibilidad-cancha.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('cancha')
 export class CanchaController {
@@ -46,37 +47,37 @@ export class CanchaController {
     return this.canchaService.remove(id);
   }
 
-  // Añadir disponibilidad
-  @Post(':id/disponibilidad')
-  addDisponibilidad(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() createDisponibilidadCanchaDto: CreateDisponibilidadCanchaDto
-  ) {
-    return this.canchaService.addDisponibilidad({ ...createDisponibilidadCanchaDto, cancha_id: id });
-  }
+  // // Añadir disponibilidad
+  // @Post(':id/disponibilidad')
+  // addDisponibilidad(
+  //   @Param('id', ParseUUIDPipe) id: string,
+  //   @Body() createDisponibilidadCanchaDto: CreateDisponibilidadCanchaDto
+  // ) {
+  //   return this.canchaService.addDisponibilidad({ ...createDisponibilidadCanchaDto, cancha_id: id });
+  // }
 
-  // Obtener disponibilidad de una cancha
-  @Get(':id/disponibilidad')
-  getDisponibilidad(
-    @Param('id', ParseUUIDPipe) id: string
-  ) {
-    return this.canchaService.getDisponibilidad(id);
-  }
+  // // Obtener disponibilidad de una cancha
+  // @Get(':id/disponibilidad')
+  // getDisponibilidad(
+  //   @Param('id', ParseUUIDPipe) id: string
+  // ) {
+  //   return this.canchaService.getDisponibilidad(id);
+  // }
 
-  // Actualizar disponibilidad
-  @Patch('disponibilidad/:id_disponibilidad')
-  updateDisponibilidad(
-    @Param('id_disponibilidad', ParseUUIDPipe) id_disponibilidad: string,
-    @Body() updateDisponibilidadCanchaDto: UpdateDisponibilidadCanchaDto
-  ) {
-    return this.canchaService.updateDisponibilidad(id_disponibilidad, updateDisponibilidadCanchaDto);
-  }
+  // // Actualizar disponibilidad
+  // @Patch('disponibilidad/:id_disponibilidad')
+  // updateDisponibilidad(
+  //   @Param('id_disponibilidad', ParseUUIDPipe) id_disponibilidad: string,
+  //   @Body() updateDisponibilidadCanchaDto: UpdateDisponibilidadCanchaDto
+  // ) {
+  //   return this.canchaService.updateDisponibilidad(id_disponibilidad, updateDisponibilidadCanchaDto);
+  // }
 
-  // Eliminar disponibilidad
-  @Delete('disponibilidad/:id_disponibilidad')
-  removeDisponibilidad(
-    @Param('id_disponibilidad', ParseUUIDPipe) id_disponibilidad: string
-  ) {
-    return this.canchaService.removeDisponibilidad(id_disponibilidad);
-  }
+  // // Eliminar disponibilidad
+  // @Delete('disponibilidad/:id_disponibilidad')
+  // removeDisponibilidad(
+  //   @Param('id_disponibilidad', ParseUUIDPipe) id_disponibilidad: string
+  // ) {
+  //   return this.canchaService.removeDisponibilidad(id_disponibilidad);
+  // }
 }

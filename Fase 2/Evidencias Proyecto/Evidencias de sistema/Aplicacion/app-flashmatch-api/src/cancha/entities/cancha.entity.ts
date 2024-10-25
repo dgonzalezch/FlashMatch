@@ -3,6 +3,7 @@ import { MaterialCancha } from "src/material-cancha/entities/material-cancha.ent
 import { Usuario } from "src/usuario/entities/usuario.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { DisponibilidadCancha } from "./disponibilidad-cancha.entity";
+import { ImagenCancha } from "./imagen-cancha.entity";
 
 @Entity('cancha') // Singular
 export class Cancha {
@@ -48,6 +49,10 @@ export class Cancha {
     // Relación con Disponibilidad de Cancha
     @OneToMany(() => DisponibilidadCancha, (disponibilidad) => disponibilidad.cancha, { cascade: true })
     disponibilidad: DisponibilidadCancha[];
+
+    // Relación con ImagenCancha (Una cancha puede tener muchas imágenes)
+    @OneToMany(() => ImagenCancha, (imagenCancha) => imagenCancha.cancha, { cascade: true })
+    imagenes: ImagenCancha[];
 
     @CreateDateColumn({ name: 'creado_en' })
     creado_en: Date;

@@ -33,7 +33,7 @@ export class CanchaService {
   ) {}
 
   async create(createCanchaDto: CreateCanchaDto): Promise<ResponseMessage<Cancha>> {
-    const { deporte_id, administrador_cancha_id, material_cancha_id } = createCanchaDto;
+    const { deporte_id, administrador_cancha_id, material_cancha_id, disponibilidadCancha } = createCanchaDto;
 
     const deporte = await this.deporteRepository.findOneBy({ id_deporte: deporte_id });
     const materialCancha = await this.materialCanchaRepository.findOneBy({ id_material_cancha: material_cancha_id });
@@ -44,6 +44,7 @@ export class CanchaService {
     if (!usuario) throw new NotFoundException(`Usuario con ID ${administrador_cancha_id} no encontrado.`);
 
     try {
+      // Crear la cancha primero
       const cancha = this.canchaRepository.create({
         ...createCanchaDto,
         deporte: deporte,
@@ -52,7 +53,28 @@ export class CanchaService {
       });
 
       await this.canchaRepository.save(cancha);
-      return { message: 'Cancha creada exitosamente.', data: cancha };
+
+      // Si hay disponibilidades, guardarlas
+      if (disponibilidadCancha && disponibilidadCancha.length > 0) {
+        for (const disponibilidad of disponibilidadCancha) {
+          for (const horario of disponibilidad.horarios) {
+            // Solo guardar los horarios seleccionados
+            if (horario.seleccionada) {
+              const nuevaDisponibilidad = this.disponibilidadRepository.create({
+                dia_semana: disponibilidad.dia,
+                prefijo: disponibilidad.prefijo,
+                nombre: disponibilidad.nombre,
+                hora: horario.hora,
+                disponible: true,  // Asumimos que los horarios seleccionados están disponibles
+                cancha: cancha, // Relacionar con la cancha recién creada
+              });
+              await this.disponibilidadRepository.save(nuevaDisponibilidad);
+            }
+          }
+        }
+      }
+
+      return { message: 'Cancha y disponibilidad creadas exitosamente.', data: cancha };
     } catch (error) {
       this.errorHandlingService.handleDBErrors(error);
     }
@@ -68,6 +90,9 @@ export class CanchaService {
         relations: {
           deporte: true,
           administrador_cancha: true,
+          material: true,
+          imagenes: true,
+          disponibilidad: true
         },
       });
 
@@ -84,13 +109,15 @@ export class CanchaService {
     if (isUUID(term)) {
       cancha = await this.canchaRepository.findOne({
         where: { id_cancha: term },
-        relations: ['creador', 'deporte', 'rango'],
+        relations: ['administrador_cancha', 'deporte', 'material', 'imagenes'],
       });
     } else {
       const queryBuilder = this.canchaRepository.createQueryBuilder('cancha');
       cancha = await queryBuilder
         .leftJoinAndSelect('cancha.administrador_cancha', 'administrador')
         .leftJoinAndSelect('cancha.deporte', 'deporte')
+        .leftJoinAndSelect('cancha.material', 'material_cancha')
+        .leftJoinAndSelect('cancha.imagenes', 'imagenes_cancha')
         .where('(UPPER(cancha.nombre_cancha) = :nombre OR LOWER(cancha.nombre_cancha) = :logo OR UPPER(deporte.nombre) = :deporteNombre)', {
           nombre: term.toUpperCase(),
           logo: term.toLowerCase(),
@@ -160,58 +187,57 @@ export class CanchaService {
   }
 
   // Métodos relacionados con Disponibilidad
+  // async addDisponibilidad(createDisponibilidadDto: CreateDisponibilidadCanchaDto): Promise<ResponseMessage<DisponibilidadCancha>> {
+  //   const { cancha_id, dia_semana, hora, disponible } = createDisponibilidadDto;
 
-  async addDisponibilidad(createDisponibilidadDto: CreateDisponibilidadCanchaDto): Promise<ResponseMessage<DisponibilidadCancha>> {
-    const { cancha_id, dia_semana, hora, disponible } = createDisponibilidadDto;
+  //   const cancha = await this.canchaRepository.findOne({ where: { id_cancha: cancha_id } });
+  //   if (!cancha) throw new NotFoundException(`Cancha con ID ${cancha_id} no encontrada.`);
 
-    const cancha = await this.canchaRepository.findOne({ where: { id_cancha: cancha_id } });
-    if (!cancha) throw new NotFoundException(`Cancha con ID ${cancha_id} no encontrada.`);
+  //   try {
+  //     const disponibilidad = this.disponibilidadRepository.create({
+  //       cancha,
+  //       dia_semana,
+  //       hora,
+  //       disponible,
+  //     });
 
-    try {
-      const disponibilidad = this.disponibilidadRepository.create({
-        cancha,
-        dia_semana,
-        hora,
-        disponible,
-      });
+  //     await this.disponibilidadRepository.save(disponibilidad);
+  //     return { message: 'Disponibilidad añadida exitosamente.', data: disponibilidad };
+  //   } catch (error) {
+  //     this.errorHandlingService.handleDBErrors(error);
+  //   }
+  // }
 
-      await this.disponibilidadRepository.save(disponibilidad);
-      return { message: 'Disponibilidad añadida exitosamente.', data: disponibilidad };
-    } catch (error) {
-      this.errorHandlingService.handleDBErrors(error);
-    }
-  }
+  // async getDisponibilidad(cancha_id: string): Promise<ResponseMessage<DisponibilidadCancha[]>> {
+  //   const cancha = await this.canchaRepository.findOne({ where: { id_cancha: cancha_id }, relations: ['disponibilidad'] });
+  //   if (!cancha) throw new NotFoundException(`Cancha con ID ${cancha_id} no encontrada.`);
 
-  async getDisponibilidad(cancha_id: string): Promise<ResponseMessage<DisponibilidadCancha[]>> {
-    const cancha = await this.canchaRepository.findOne({ where: { id_cancha: cancha_id }, relations: ['disponibilidad'] });
-    if (!cancha) throw new NotFoundException(`Cancha con ID ${cancha_id} no encontrada.`);
+  //   return { message: 'Disponibilidad obtenida exitosamente.', data: cancha.disponibilidad };
+  // }
 
-    return { message: 'Disponibilidad obtenida exitosamente.', data: cancha.disponibilidad };
-  }
+  // async updateDisponibilidad(id_disponibilidad: string, updateDisponibilidadDto: Partial<CreateDisponibilidadCanchaDto>): Promise<ResponseMessage<DisponibilidadCancha>> {
+  //   const disponibilidad = await this.disponibilidadRepository.preload({ id_disponibilidad, ...updateDisponibilidadDto });
 
-  async updateDisponibilidad(id_disponibilidad: string, updateDisponibilidadDto: Partial<CreateDisponibilidadCanchaDto>): Promise<ResponseMessage<DisponibilidadCancha>> {
-    const disponibilidad = await this.disponibilidadRepository.preload({ id_disponibilidad, ...updateDisponibilidadDto });
+  //   if (!disponibilidad) throw new NotFoundException(`Disponibilidad con ID ${id_disponibilidad} no encontrada.`);
 
-    if (!disponibilidad) throw new NotFoundException(`Disponibilidad con ID ${id_disponibilidad} no encontrada.`);
+  //   try {
+  //     await this.disponibilidadRepository.save(disponibilidad);
+  //     return { message: 'Disponibilidad actualizada exitosamente.', data: disponibilidad };
+  //   } catch (error) {
+  //     this.errorHandlingService.handleDBErrors(error);
+  //   }
+  // }
 
-    try {
-      await this.disponibilidadRepository.save(disponibilidad);
-      return { message: 'Disponibilidad actualizada exitosamente.', data: disponibilidad };
-    } catch (error) {
-      this.errorHandlingService.handleDBErrors(error);
-    }
-  }
+  // async removeDisponibilidad(id_disponibilidad: string): Promise<ResponseMessage<DisponibilidadCancha>> {
+  //   const disponibilidad = await this.disponibilidadRepository.findOne({ where: { id_disponibilidad } });
 
-  async removeDisponibilidad(id_disponibilidad: string): Promise<ResponseMessage<DisponibilidadCancha>> {
-    const disponibilidad = await this.disponibilidadRepository.findOne({ where: { id_disponibilidad } });
+  //   if (!disponibilidad) throw new NotFoundException(`Disponibilidad con ID ${id_disponibilidad} no encontrada.`);
 
-    if (!disponibilidad) throw new NotFoundException(`Disponibilidad con ID ${id_disponibilidad} no encontrada.`);
-
-    try {
-      await this.disponibilidadRepository.remove(disponibilidad);
-      return { message: 'Disponibilidad eliminada exitosamente.', data: disponibilidad };
-    } catch (error) {
-      this.errorHandlingService.handleDBErrors(error);
-    }
-  }
+  //   try {
+  //     await this.disponibilidadRepository.remove(disponibilidad);
+  //     return { message: 'Disponibilidad eliminada exitosamente.', data: disponibilidad };
+  //   } catch (error) {
+  //     this.errorHandlingService.handleDBErrors(error);
+  //   }
+  // }
 }

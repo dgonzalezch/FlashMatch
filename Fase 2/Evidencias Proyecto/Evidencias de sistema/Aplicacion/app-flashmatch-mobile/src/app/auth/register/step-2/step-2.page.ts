@@ -5,7 +5,6 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButton, IonI
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { catchError, switchMap, throwError } from 'rxjs';
 import { FormValidatorService } from 'src/app/shared/common/form-validator-service.service';
 import { PreventSpacesDirective } from 'src/app/shared/common/prevent-spaces.directive';
 import { responseError } from 'src/app/interfaces/response-error.interface';

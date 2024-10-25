@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonGrid, IonRow, IonCol, IonCard, IonCardContent, IonText, IonIcon, IonAccordion, IonAccordionGroup, IonItem, IonLabel, IonButton, IonSelect, IonSelectOption, IonInput, IonFooter, IonTextarea, IonChip } from '@ionic/angular/standalone';
@@ -61,6 +61,7 @@ export default class Step1Page {
       longitud: this.locationService.getLocation().longitud
     }
 
+    debugger
     this.router.navigate(['/private/courts/create-court/step-2'], {
       state: { step1FormCreateCancha: step1FormCreateCanchaValues }
     });

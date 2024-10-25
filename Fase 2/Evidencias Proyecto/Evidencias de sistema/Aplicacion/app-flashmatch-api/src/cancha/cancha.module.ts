@@ -8,12 +8,13 @@ import { MaterialCancha } from 'src/material-cancha/entities/material-cancha.ent
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Usuario } from 'src/usuario/entities/usuario.entity';
+import { ImagenCancha } from './entities/imagen-cancha.entity';
 
 @Module({
   controllers: [CanchaController],
   providers: [CanchaService, ErrorHandlingService],
   imports: [
-    TypeOrmModule.forFeature([Cancha, DisponibilidadCancha, Deporte, Usuario, MaterialCancha])
+    TypeOrmModule.forFeature([Cancha, DisponibilidadCancha, Deporte, Usuario, MaterialCancha, ImagenCancha]),
   ]
 })
 export class CanchaModule { }
