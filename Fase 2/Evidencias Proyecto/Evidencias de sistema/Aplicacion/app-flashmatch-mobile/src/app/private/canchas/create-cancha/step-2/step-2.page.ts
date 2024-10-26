@@ -184,6 +184,13 @@ export default class Step2Page implements OnInit {
     }
   ]);
 
+  ngOnInit() {
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state) {
+      this.step1FormCreateCanchaData = navigation.extras.state['step1FormCreateCancha'];
+    }
+  }
+
   onToggleDia(index: number) {
     this.diasSemana()[index].seleccionado = !this.diasSemana()[index].seleccionado;
   }
@@ -280,13 +287,6 @@ export default class Step2Page implements OnInit {
     } catch (error) {
       await loading.dismiss();
       this.alertService.error('Error inesperado al crear la cancha.');
-    }
-  }
-
-  ngOnInit() {
-    const navigation = this.router.getCurrentNavigation();
-    if (navigation?.extras.state) {
-      this.step1FormCreateCanchaData = navigation.extras.state['step1FormCreateCancha'];
     }
   }
 }

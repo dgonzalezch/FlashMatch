@@ -30,7 +30,7 @@ export class CanchaService {
     @InjectRepository(MaterialCancha)
     private readonly materialCanchaRepository: Repository<MaterialCancha>,
     private readonly errorHandlingService: ErrorHandlingService
-  ) {}
+  ) { }
 
   async create(createCanchaDto: CreateCanchaDto): Promise<ResponseMessage<Cancha>> {
     const { deporte_id, administrador_cancha_id, material_cancha_id, disponibilidadCancha } = createCanchaDto;

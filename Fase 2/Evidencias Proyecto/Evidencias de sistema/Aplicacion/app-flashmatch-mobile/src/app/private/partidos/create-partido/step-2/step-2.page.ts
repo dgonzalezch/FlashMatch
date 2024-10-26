@@ -5,6 +5,11 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton,
 import { Router, RouterLink } from '@angular/router';
 import { LocationService } from 'src/app/shared/common/location.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { CanchaService } from 'src/app/services/cancha.service';
+import { AlertService } from 'src/app/shared/common/alert.service';
+import { responseSuccess } from 'src/app/interfaces/response-success.interface';
+import { responseError } from 'src/app/interfaces/response-error.interface';
+import { ReservaCanchaService } from 'src/app/services/reserva-cancha.service';
 
 // Definición de la interfaz Cancha
 interface Cancha {
@@ -28,16 +33,20 @@ interface Cancha {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class Step2Page {
-  loadingController = inject(LoadingController);
-  alertController = inject(AlertController);
-  locationService = inject(LocationService);
-  storageService = inject(StorageService);
-  fb = inject(FormBuilder);
-  router = inject(Router);
+  private loadingController = inject(LoadingController);
+  private alertController = inject(AlertController);
+  private alertService = inject(AlertService);
+  private locationService = inject(LocationService);
+  private storageService = inject(StorageService);
+  private canchaService = inject(CanchaService);
+  private reservaCanchaService = inject(ReservaCanchaService);
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
 
   selectedSegment = signal<string>('list');
   selectedCanchaId = signal<string>('');
   selectedLocation = signal<string>('');
+  listCanchas = signal<any[]>([]);
 
   step1FormCreatePartidoData: any;
 
@@ -52,13 +61,26 @@ export default class Step2Page {
 
   ionViewWillEnter() {
     this.selectedLocation.set(this.locationService.getLocation().ubicacion);
+    this.loadCanchas();
+  }
+
+  loadCanchas() {
+    this.canchaService.getCanchas().subscribe({
+      next: (resp: responseSuccess) => {
+        this.listCanchas.set(resp.data);
+      },
+      error: (err: responseError) => {
+        this.alertService.error(err.message);
+      }
+    })
   }
 
   ngOnInit() {
     // Obtener los datos del formulario de step-1
+    debugger
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {
-      this.step1FormCreatePartidoData = navigation.extras.state['step1FormData'];
+      this.step1FormCreatePartidoData = navigation.extras.state['step1FormCreatePartido'];
     }
   }
 
@@ -74,7 +96,7 @@ export default class Step2Page {
         {
           text: 'Confirmar',
           handler: () => {
-            this.reservarCancha(cancha);
+            this.enviarSolicitudReserva(cancha);
           }
         }
       ]
@@ -83,47 +105,41 @@ export default class Step2Page {
     await alert.present();
   }
 
-  async reservarCancha(idCancha: string) {
+
+
+  async enviarSolicitudReserva(cancha: any) {
+    // Validar si hay al menos un horario seleccionado
     const loading = await this.loadingController.create({
       message: 'Enviando solicitud de reserva...',
       duration: 3000
     });
 
-    // Mostrar el loading modal
-    await loading.present();
+    const fullFormDataSendReservaCancha = {
+      ...this.step1FormCreatePartidoData,
+      // disponibilidadCancha: this.diasSemana(),
+      administrador_cancha_id: await this.storageService.get('user')
+    };
 
-    // Esperar a que el modal de carga desaparezca
-    await loading.onDidDismiss();
+    try {
+      await loading.present();
 
-    // Redirigir a la ruta deseada
-    this.router.navigate(['/private/matches/create-match/step-3']);
+      // this.reservaCanchaService.createReservaCancha().subscribe({
+      //   next: async (resp) => {
+      //     await loading.dismiss();
+      //     this.alertService.info('¡Solicitud enviada!', 'La solicitud de reserva ha sido enviada. Recibirás una respuesta pronto.');
+      //     this.router.navigate(['/private/matches/create-match/step-3']);
+      //   },
+      //   error: async (err: responseError) => {
+      //     await loading.dismiss();
+      //     this.alertService.error('Hubo un problema al enviar la solicitud de reserva.');
+      //   }
+      // });
+    } catch (error) {
+      await loading.dismiss();
+      this.alertService.error('Ocurrió un error inesperado al enviar la solicitud.');
+    }
   }
 
-  // Lista de canchas
-  canchas: Cancha[] = [
-    {
-      id_cancha: '123e4567-e89b-12d3-a456-426614174000',
-      nombre: 'Cancha Central',
-      precio_por_hora: 20000,
-      ubicacion: 'Calle Fútbol, Santiago',
-      descripcion: 'Cancha amplia y bien mantenida, ideal para partidos de liga.',
-      tipoCancha: 'Fútbol 11',
-      imagen: 'https://example.com/cancha-central.jpg',
-      latitud: -33.4489,
-      longitud: -70.6693
-    },
-    {
-      id_cancha: '456e7890-e12b-34d5-a678-426614174001',
-      nombre: 'Cancha Rápida',
-      precio_por_hora: 15000,
-      ubicacion: 'Avenida Rápida, Santiago',
-      descripcion: 'Cancha pequeña para fútbol 5, perfecta para jugar en grupos reducidos.',
-      tipoCancha: 'Fútbol 5',
-      imagen: 'https://example.com/cancha-rapida.jpg',
-      latitud: -33.4568,
-      longitud: -70.6482
-    }
-  ];
 
   segmentChanged(event: any) {
     this.selectedSegment.set(event.detail.value);

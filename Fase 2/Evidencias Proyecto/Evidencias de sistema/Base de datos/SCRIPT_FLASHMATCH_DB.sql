@@ -31,26 +31,6 @@ DROP TABLE IF EXISTS partido_usuario CASCADE;
 DROP TABLE IF EXISTS partido_equipo CASCADE;
 DROP TABLE IF EXISTS usuario CASCADE;
 
--- Tabla de disponibilidad de horarios de cancha
-CREATE TABLE disponibilidad_horario_cancha (
-    id_disponibilidad UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    cancha_id UUID REFERENCES cancha(id_cancha) ON DELETE CASCADE,
-    dia_semana INT CHECK (dia_semana BETWEEN 1 AND 7),
-    hora_inicio TIME NOT NULL,
-    hora_fin TIME NOT NULL,
-    CONSTRAINT disponibilidad_hora_check CHECK (hora_inicio < hora_fin)
-);
-
--- Tabla de disponibilidad de usuario
-CREATE TABLE disponibilidad_usuario (
-    id_disponibilidad_usuario UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    usuario_id UUID REFERENCES usuario(id_usuario) ON DELETE CASCADE,
-    dia_semana INT CHECK (dia_semana BETWEEN 1 AND 7),  -- 1 = Lunes, 2 = Martes, ..., 7 = Domingo
-    hora_inicio TIME NOT NULL,
-    hora_fin TIME NOT NULL,
-    CONSTRAINT disponibilidad_usuario_hora_check CHECK (hora_inicio < hora_fin)
-);
-
 -- Tabla de imágenes de cancha
 CREATE TABLE imagen_cancha (
     id_imagen UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -74,21 +54,6 @@ CREATE TABLE equipo (
     deporte_id UUID REFERENCES deporte(id_deporte) NOT NULL,
     rango_edad_id UUID REFERENCES rango_edad(id_rango_edad) NOT NULL,
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Tabla de reservas de horarios de cancha
-CREATE TABLE reserva_horario (
-    id_reserva UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    cancha_id UUID REFERENCES cancha(id_cancha) ON DELETE CASCADE,
-    equipo_id UUID REFERENCES equipo(id_equipo) ON DELETE CASCADE,
-    fecha_reserva DATE NOT NULL,
-    hora_inicio TIME NOT NULL,
-    hora_fin TIME NOT NULL,
-    reservado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    estado_reserva VARCHAR(20) DEFAULT 'pendiente',
-    mensaje VARCHAR(255),
-    UNIQUE (cancha_id, fecha_reserva, hora_inicio),
-    CONSTRAINT reserva_hora_check CHECK (hora_inicio < hora_fin)
 );
 
 -- Tabla de miembro de equipo
@@ -188,13 +153,14 @@ CREATE TABLE cancha (
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabla de disponibilidad de cancha
 CREATE TABLE disponibilidad_cancha (
     id_disponibilidad UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    cancha_id UUID REFERENCES cancha(id_cancha) ON DELETE CASCADE,
     dia_semana INT NOT NULL CHECK (dia_semana BETWEEN 1 AND 7),
+    prefijo VARCHAR(20) NOT NULL,
+    nombre VARCHAR(50) NOT NULL,
     hora TIME NOT NULL,
-    disponible BOOLEAN DEFAULT TRUE
+    disponible BOOLEAN NOT NULL,
+    cancha_id UUID REFERENCES cancha(id_cancha) ON DELETE CASCADE,
 );
 
 -- Tabla de partidos
@@ -212,6 +178,18 @@ CREATE TABLE partido (
     estado VARCHAR(50) NOT NULL,
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE reserva_cancha (
+    id_reserva_cancha UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    cancha_id UUID REFERENCES cancha(id_cancha) ON DELETE CASCADE,
+    usuario_id UUID REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+    fecha_reserva DATE NOT NULL,
+    hora_reserva TIME NOT NULL,
+    estado VARCHAR(20) DEFAULT 'pendiente' CHECK (estado IN ('pendiente', 'aceptada', 'rechazada', 'cancelada')),
+    mensaje TEXT,
+    fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 
 -- Relación partido-usuario
 CREATE TABLE partido_usuario (

@@ -61,7 +61,6 @@ export default class Step1Page {
       longitud: this.locationService.getLocation().longitud
     }
 
-    debugger
     this.router.navigate(['/private/courts/create-court/step-2'], {
       state: { step1FormCreateCancha: step1FormCreateCanchaValues }
     });

@@ -13,7 +13,7 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { LOCALE_ID } from '@angular/core'; // Importa LOCALE_ID
 import localeES from '@angular/common/locales/es-CL'; // Importa la configuración regional
 
-import { registerLocaleData } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 registerLocaleData(localeES);
 
 bootstrapApplication(AppComponent, {
@@ -27,7 +27,8 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(),
     provideCharts(withDefaultRegisterables()),
-    { provide: LOCALE_ID, useValue: 'es-CL' } // Establece la configuración regional aquí
+    { provide: LOCALE_ID, useValue: 'es-CL' }, // Establece la configuración regional aquí
+    DatePipe
   ],
 });
 defineCustomElements(window);

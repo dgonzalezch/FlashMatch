@@ -11,10 +11,12 @@ export enum CONTEXT {
   API_TIPO_EMPAREJAMIENTO = '/api/tipo-emparejamiento/',
   API_CANCHA = '/api/cancha/',
   API_MATERIAL_CANCHA = '/api/material-cancha/',
+  API_RESERVA = '/api/reserva/',
 }
 
 export enum ENDPOINT {
   AUTH_REGISTER = 'register',
   AUTH_LOGIN = 'login',
   AUTH_CHECK_STATUS = 'check-status',
+  RESERVA_CANCHA = 'cancha'
 }

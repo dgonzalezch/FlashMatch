@@ -64,7 +64,7 @@
           </ion-list>
         </ion-col>
       } @else {
-        @if (canchas.length) {
+        @if (listCanchas().length) {
           <ion-col size="12">
             <ion-segment (ionChange)="segmentChanged($event)" value="list">
               <ion-segment-button value="list">
@@ -77,9 +77,9 @@
           </ion-col>
           @switch (selectedSegment()) {
             @case ('list') {
-              <ion-col size="12">
+              <ion-col size="12" class="animated">
                 <ion-list>
-                  @for (cancha of canchas; track $index) {
+                  @for (cancha of listCanchas(); track $index) {
                     <ion-item>
                       <ion-thumbnail slot="start">
                         <img [src]="'https://ionicframework.com/docs/img/demos/thumbnail.svg'" alt="cancha">
@@ -87,7 +87,7 @@
                       <ion-label>
                         <h2>{{ cancha.nombre }}</h2>
                         <p>{{ cancha.descripcion }}</p>
-                        <p>Tipo de cancha: {{ cancha.tipoCancha }}</p>
+                        <p>{{ cancha.deporte.nombre_deporte }}</p>
                         <p><b>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }}</b> por hora</p>
                         <ion-button color="secondary" size="small" (click)="presentAlertConfirm(cancha)">
                           <ion-icon slot="start" name="ticket-outline"/>
@@ -97,15 +97,12 @@
                     </ion-item>
                   }
                 </ion-list>
-                <!-- <ion-infinite-scroll>
-                  <ion-infinite-scroll-content loadingText="Please wait..." loadingSpinner="bubbles"/>
-                </ion-infinite-scroll> -->
               </ion-col>
             }
             @case ('grid') {
-              @for (cancha of canchas; track $index) {
+              @for (cancha of listCanchas(); track $index) {
                 <ion-col size="12">
-                  <ion-card class="ion-no-margin">
+                  <ion-card class="modern-card">
                     <div class="image-container">
                       <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
                       <div class="price-badge">
@@ -115,7 +112,7 @@
 
                     <ion-card-header>
                       <ion-card-title>{{ cancha.nombre }}</ion-card-title>
-                      <ion-card-subtitle>{{ cancha.tipoCancha }}</ion-card-subtitle>
+                      <ion-card-subtitle>{{ cancha.deporte.nombre_deporte }}</ion-card-subtitle>
                     </ion-card-header>
 
                     <ion-card-content>

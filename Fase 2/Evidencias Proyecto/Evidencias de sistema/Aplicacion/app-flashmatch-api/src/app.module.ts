@@ -14,6 +14,7 @@ import { TipoPartidoModule } from './tipo-partido/tipo-partido.module';
 import { NivelHabilidadModule } from './nivel-habilidad/nivel-habilidad.module';
 import { TipoEmparejamientoModule } from './tipo-emparejamiento/tipo-emparejamiento.module';
 import { MaterialCanchaModule } from './material-cancha/material-cancha.module';
+import { ReservaModule } from './reserva/reserva.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { MaterialCanchaModule } from './material-cancha/material-cancha.module';
     NivelHabilidadModule,
     TipoEmparejamientoModule,
     MaterialCanchaModule,
+    ReservaModule,
   ],
   providers: [],
 })

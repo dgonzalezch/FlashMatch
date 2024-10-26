@@ -4,8 +4,9 @@ import { Usuario } from "src/usuario/entities/usuario.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { DisponibilidadCancha } from "./disponibilidad-cancha.entity";
 import { ImagenCancha } from "./imagen-cancha.entity";
+import { ReservaCancha } from "src/reserva/entities/reserva-cancha.entity";
 
-@Entity('cancha') // Singular
+@Entity('cancha')
 export class Cancha {
     @PrimaryGeneratedColumn('uuid')
     id_cancha: string;
@@ -53,6 +54,10 @@ export class Cancha {
     // Relación con ImagenCancha (Una cancha puede tener muchas imágenes)
     @OneToMany(() => ImagenCancha, (imagenCancha) => imagenCancha.cancha, { cascade: true })
     imagenes: ImagenCancha[];
+
+    // Relación con Reserva (Una cancha puede tener muchas reservas)
+    @OneToMany(() => ReservaCancha, (reserva) => reserva.cancha, { cascade: true })
+    reservas: ReservaCancha[];
 
     @CreateDateColumn({ name: 'creado_en' })
     creado_en: Date;

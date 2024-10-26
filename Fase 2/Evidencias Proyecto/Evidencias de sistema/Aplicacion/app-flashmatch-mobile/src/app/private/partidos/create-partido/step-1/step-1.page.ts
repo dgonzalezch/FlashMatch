@@ -16,13 +16,14 @@ import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { TipoPartido } from 'src/app/interfaces/tipo-partido.interface';
 import { NivelHabilidad } from 'src/app/interfaces/nivel-habilidad.interface';
 import { TipoEmparejamiento } from 'src/app/interfaces/tipo-emparejamiento.interface';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-step-1',
   templateUrl: './step-1.page.html',
   styleUrls: ['./step-1.page.scss'],
   standalone: true,
-  imports: [IonSegmentButton, IonSegment, IonTextarea, IonBreadcrumb, IonBadge, IonItem, IonAccordion, IonAccordionGroup, IonCardHeader, IonCardTitle, IonCardSubtitle, IonButton, IonFooter, IonInput, IonLabel, IonDatetime, IonDatetimeButton, IonModal, IonCard, IonCardContent, IonIcon, IonCol, IonText, IonGrid, IonRow, IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, IonBreadcrumbs, IonSelect, IonSelectOption, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [IonSegmentButton, IonSegment, IonTextarea, IonBreadcrumb, IonBadge, IonItem, IonAccordion, IonAccordionGroup, IonCardHeader, IonCardTitle, IonCardSubtitle, IonButton, IonFooter, IonInput, IonLabel, IonDatetime, IonDatetimeButton, IonModal, IonCard, IonCardContent, IonIcon, IonCol, IonText, IonGrid, IonRow, IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, IonBreadcrumbs, IonSelect, IonSelectOption, CommonModule, FormsModule, ReactiveFormsModule, DatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class Step1Page {
@@ -34,6 +35,7 @@ export default class Step1Page {
   private nivelHabilidadService = inject(NivelHabilidadService);
   private rangoEdadService = inject(RangoEdadService);
   private tipoEmparejamientoService = inject(TipoEmparejamientoService);
+  private datePipe = inject(DatePipe);
 
   listDeportes = signal<Deporte[]>([]);
   listTiposPartidos = signal<TipoPartido[]>([]);
@@ -61,8 +63,11 @@ export default class Step1Page {
 
   onDateChange(event: any) {
     const dateWithTime = new Date(event.detail.value);
-    this.step1FormCreatePartido.get('fecha_partido')?.setValue(dateWithTime.toISOString());
+    const formattedDate = this.datePipe.transform(dateWithTime, 'yyyy-MM-ddTHH:mm:ss');
+
+    this.step1FormCreatePartido.get('fecha_partido')?.setValue(formattedDate);
   }
+
 
   onSubmit() {
     this.router.navigate(['/private/matches/create-match/step-2'], {
