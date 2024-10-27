@@ -74,7 +74,7 @@ export const routes: Routes = [
                 loadComponent: () => import('./private/partidos/create-partido/step-1/step-1.page')
               },
               {
-                path: 'step-2',
+                path: ':id_partido/step-2',
                 loadComponent: () => import('./private/partidos/create-partido/step-2/step-2.page')
               },
               {
@@ -121,6 +121,21 @@ export const routes: Routes = [
           {
             path: '**',
             redirectTo: 'list-courts',
+            pathMatch: 'full'
+          }
+        ]
+      },
+      {
+        path: 'requests',
+        // loadComponent: () => import('./private/solicitudes/solicitudes.page'),
+        children: [
+          {
+            path: 'reserve',
+            loadComponent: () => import('./private/solicitudes/reserva/reserva.page')
+          },
+          {
+            path: '**',
+            redirectTo: 'reserve',
             pathMatch: 'full'
           }
         ]

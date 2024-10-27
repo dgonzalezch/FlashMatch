@@ -1,43 +1,39 @@
-import { IsDateString, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsOptional, IsString, IsUUID, IsBoolean } from 'class-validator';
 
 export class CreatePartidoDto {
-    @IsDateString()
     @IsNotEmpty()
+    @IsDateString()
     fecha_partido: string;
 
-    @IsNotEmpty()
     @IsUUID()
+    @IsNotEmpty()
     deporte_id: string;
 
-    @IsNotEmpty()
     @IsUUID()
+    @IsNotEmpty()
     tipo_partido_id: string;
 
-    @IsNotEmpty()
     @IsUUID()
+    @IsNotEmpty()
     nivel_habilidad_id: string;
 
-    @IsNotEmpty()
     @IsUUID()
+    @IsNotEmpty()
     rango_edad_id: string;
 
-    @IsNotEmpty()
     @IsUUID()
+    @IsNotEmpty()
     tipo_emparejamiento_id: string;
 
-    @IsOptional()
+    @IsBoolean()
+    @IsNotEmpty()
+    partido_privado: boolean;
+
     @IsString()
+    @IsOptional()
     descripcion?: string;
 
-    @IsOptional()
     @IsUUID()
-    cancha_id?: string;
-
     @IsNotEmpty()
-    @IsUUID()
-    usuario_creador_id: string;
-
-    @IsNotEmpty()
-    @IsString()
-    estado: string;
+    creador_id: string;
 }

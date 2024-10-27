@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/private/matches/list-matches"/>
     </ion-buttons>
-    <ion-title>Crear partido (1)</ion-title>
+    <ion-title>Crear partido</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -19,7 +19,7 @@
               </ion-col>
               <ion-col>
                 <ion-text class="modern-text">
-                  <b>Primero,</b> ingresa la fecha del partido y los parámetros de este.
+                  Establece la fecha y configura los parámetros del partido antes de seleccionar la cancha.
                 </ion-text>
               </ion-col>
             </ion-row>
@@ -31,8 +31,34 @@
     <form [formGroup]="step1FormCreatePartido" class="animated" id="step1FormCreatePartido" (ngSubmit)="onSubmit()">
       <ion-row>
         <ion-col size="12">
-          <ion-accordion-group class="ion-no-margin ion-margin-bottom" expand="inset">
+          <ion-accordion-group class="ion-no-margin" expand="inset">
             <ion-accordion value="first" class="ion-no-margin">
+              <ion-item lines="full" slot="header" [color]="step1FormCreatePartido.get('partido_privado')?.value ? 'dark' : 'primary'">
+                <ion-icon [name]="step1FormCreatePartido.get('partido_privado')?.value ? 'lock-closed-outline' : 'lock-open-outline'" class="ion-margin-end"/>
+                <ion-label>
+                  <h3>Configuración de Invitaciones</h3>
+                  @if (step1FormCreatePartido.get('partido_privado')?.value == true) {
+                    <p>Solo invitados</p>
+                  } @else {
+                    <p>Cualquiera puede unirse</p>
+                  }
+                </ion-label>
+              </ion-item>
+              <div class="ion-padding" slot="content">
+                <ion-item lines="full" class="ion-margin-bottom">
+                  <ion-toggle justify="space-between" formControlName="partido_privado">Hacer el partido privado</ion-toggle>
+                </ion-item>
+                <ion-text color="medium">
+                  Al activar esta opción, el partido será accesible solo para invitados.
+                </ion-text>
+              </div>
+            </ion-accordion>
+          </ion-accordion-group>
+        </ion-col>
+
+        <ion-col size="12">
+          <ion-accordion-group class="ion-no-margin" expand="inset">
+            <ion-accordion value="second" class="ion-no-margin ion-margin-bottom">
               <ion-item slot="header" [color]="step1FormCreatePartido.get('fecha_partido')?.invalid ? 'danger' : 'tertiary'">
                 <ion-icon name="calendar-outline" class="ion-margin-end"/>
                 <ion-label>
@@ -161,7 +187,6 @@
             </ion-text>
           }
         </ion-col>
-
         <ion-col size="12">
           <ion-textarea formControlName="descripcion" label="Descripción" labelPlacement="floating" fill="outline" placeholder="Descripción..."/>
         </ion-col>
@@ -174,7 +199,7 @@
   <ion-toolbar>
     <ion-button class="ion-padding-horizontal" color="tertiary" expand="block" [disabled]="!step1FormCreatePartido.valid"
       type="submit" form="step1FormCreatePartido">
-      Siguiente
+      Establecer parámetros
     </ion-button>
   </ion-toolbar>
 </ion-footer>

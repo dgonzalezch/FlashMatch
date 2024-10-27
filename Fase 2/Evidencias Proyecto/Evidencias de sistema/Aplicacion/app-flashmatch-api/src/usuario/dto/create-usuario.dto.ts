@@ -58,7 +58,6 @@ export class CreateUsuarioDto {
     @IsOptional()
     longitud?: number;
     
-
     @IsString()
     @IsOptional()
     imagen_perfil?: string;

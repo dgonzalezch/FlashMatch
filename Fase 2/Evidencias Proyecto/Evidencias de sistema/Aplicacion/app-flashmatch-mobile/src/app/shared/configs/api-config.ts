@@ -12,6 +12,7 @@ export enum CONTEXT {
   API_CANCHA = '/api/cancha/',
   API_MATERIAL_CANCHA = '/api/material-cancha/',
   API_RESERVA = '/api/reserva/',
+  API_PARTIDO = '/api/partido/',
 }
 
 export enum ENDPOINT {

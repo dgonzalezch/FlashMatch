@@ -147,7 +147,7 @@ export class EquipoService {
 
   async remove(id_equipo: string): Promise<ResponseMessage<Equipo>> {
     try {
-      const equipo = await this.equipoRepository.findOneBy({ id_equipo });
+      const equipo = await this.equipoRepository.findOneBy({ id_equipo: id_equipo });
 
       if (!equipo) throw new NotFoundException(`Equipo con ID ${id_equipo} no se pudo eliminar porque no existe en la base de datos.`);
 

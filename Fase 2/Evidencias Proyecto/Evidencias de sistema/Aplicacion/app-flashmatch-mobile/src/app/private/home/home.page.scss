@@ -1,0 +1,68 @@
+/* Encabezado con Foto */
+.header-banner {
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  color: white;
+  padding: 5px;
+  border-radius: 0 0 40px 40px;
+}
+
+.welcome-title {
+  font-weight: bold;
+}
+
+.welcome-subtitle {
+  color: #e0f7fa;
+}
+
+/* Sección de Accesos Rápidos */
+.shortcut-section {
+  margin-top: 10px;
+}
+
+.shortcut-item {
+  text-align: center;
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+.shortcut-icon-wrapper {
+  background-color: var(--ion-color-primary);
+  border-radius: 50%;
+  padding: 12px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.shortcut-icon {
+  color: white;
+  font-size: 1.8rem;
+}
+
+.shortcut-item p {
+  font-size: 0.85rem;
+  color: #333;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Listas de Partidos y Invitaciones */
+.section-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.item-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.item-subtitle {
+  font-size: 0.9rem;
+  color: #666;
+}

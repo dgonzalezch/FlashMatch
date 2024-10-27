@@ -7,12 +7,13 @@ import { ErrorHandlingService } from 'src/common/services/error-handling.service
 import { Cancha } from 'src/cancha/entities/cancha.entity';
 import { Usuario } from 'src/usuario/entities/usuario.entity';
 import { DisponibilidadCancha } from 'src/cancha/entities/disponibilidad-cancha.entity';
+import { Partido } from 'src/partido/entities/partido.entity';
 
 @Module({
   controllers: [ReservaController],
   providers: [ReservaService, ErrorHandlingService],
   imports: [
-    TypeOrmModule.forFeature([ReservaCancha, Cancha, Usuario, DisponibilidadCancha])
+    TypeOrmModule.forFeature([ReservaCancha, Cancha, Usuario, DisponibilidadCancha, Partido])
   ]
 })
 export class ReservaModule {}

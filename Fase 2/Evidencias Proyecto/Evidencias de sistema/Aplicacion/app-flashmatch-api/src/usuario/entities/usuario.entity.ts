@@ -57,8 +57,8 @@ export class Usuario {
     @OneToMany(() => EstadisticaDetalladaUsuario, (estadisticaDetalladaUsuario) => estadisticaDetalladaUsuario.usuario, { cascade: true })
     estadisticasDetalladasUsuarios: EstadisticaDetalladaUsuario[];
 
-    @OneToMany(() => ReservaCancha, (reserva) => reserva.usuario, { cascade: true })
-    reservas: ReservaCancha[];
+    // @OneToMany(() => ReservaCancha, (reserva) => reserva.usuario, { cascade: true })
+    // reservas: ReservaCancha[];
 
     @CreateDateColumn({ name: 'creado_en' })
     creado_en: Date;

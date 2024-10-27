@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonRow, IonGrid, IonText, IonCol, IonIcon, IonCardContent, IonCard, IonModal, IonDatetimeButton, IonDatetime, IonLabel, IonInput, IonFooter, IonButton, IonCardSubtitle, IonCardTitle, IonCardHeader, IonAccordionGroup, IonAccordion, IonItem, IonBadge, IonBreadcrumb, IonBreadcrumbs, IonTextarea, IonSelect, IonSelectOption, IonSegment, IonSegmentButton } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonRow, IonGrid, IonText, IonCol, IonIcon, IonCardContent, IonCard, IonModal, IonDatetimeButton, IonDatetime, IonLabel, IonInput, IonFooter, IonButton, IonCardSubtitle, IonCardTitle, IonCardHeader, IonAccordionGroup, IonAccordion, IonItem, IonBadge, IonBreadcrumb, IonBreadcrumbs, IonTextarea, IonSelect, IonSelectOption, IonSegment, IonSegmentButton, IonToggle, IonList, LoadingController, AlertController } from '@ionic/angular/standalone';
 import { Router, RouterLink } from '@angular/router';
 import { DeporteService } from 'src/app/services/deporte.service';
 import { RangoEdadService } from 'src/app/services/rango-edad.service';
@@ -17,13 +17,15 @@ import { TipoPartido } from 'src/app/interfaces/tipo-partido.interface';
 import { NivelHabilidad } from 'src/app/interfaces/nivel-habilidad.interface';
 import { TipoEmparejamiento } from 'src/app/interfaces/tipo-emparejamiento.interface';
 import { DatePipe } from '@angular/common';
+import { StorageService } from 'src/app/services/storage.service';
+import { PartidoService } from 'src/app/services/partido.service';
 
 @Component({
   selector: 'app-step-1',
   templateUrl: './step-1.page.html',
   styleUrls: ['./step-1.page.scss'],
   standalone: true,
-  imports: [IonSegmentButton, IonSegment, IonTextarea, IonBreadcrumb, IonBadge, IonItem, IonAccordion, IonAccordionGroup, IonCardHeader, IonCardTitle, IonCardSubtitle, IonButton, IonFooter, IonInput, IonLabel, IonDatetime, IonDatetimeButton, IonModal, IonCard, IonCardContent, IonIcon, IonCol, IonText, IonGrid, IonRow, IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, IonBreadcrumbs, IonSelect, IonSelectOption, CommonModule, FormsModule, ReactiveFormsModule, DatePipe],
+  imports: [IonList, IonToggle, IonSegmentButton, IonSegment, IonTextarea, IonBreadcrumb, IonBadge, IonItem, IonAccordion, IonAccordionGroup, IonCardHeader, IonCardTitle, IonCardSubtitle, IonButton, IonFooter, IonInput, IonLabel, IonDatetime, IonDatetimeButton, IonModal, IonCard, IonCardContent, IonIcon, IonCol, IonText, IonGrid, IonRow, IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, IonBreadcrumbs, IonSelect, IonSelectOption, CommonModule, FormsModule, ReactiveFormsModule, DatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class Step1Page {
@@ -36,6 +38,11 @@ export default class Step1Page {
   private rangoEdadService = inject(RangoEdadService);
   private tipoEmparejamientoService = inject(TipoEmparejamientoService);
   private datePipe = inject(DatePipe);
+  private loadingController = inject(LoadingController);
+  private alertController = inject(AlertController);
+  private storageService = inject(StorageService);
+  private partidoService = inject(PartidoService);
+
 
   listDeportes = signal<Deporte[]>([]);
   listTiposPartidos = signal<TipoPartido[]>([]);
@@ -50,6 +57,7 @@ export default class Step1Page {
     nivel_habilidad_id: ['', [Validators.required]],
     rango_edad_id: ['', [Validators.required]],
     tipo_emparejamiento_id: ['', [Validators.required]],
+    partido_privado: [false, [Validators.required]],
     descripcion: ['']
   });
 
@@ -69,10 +77,58 @@ export default class Step1Page {
   }
 
 
-  onSubmit() {
-    this.router.navigate(['/private/matches/create-match/step-2'], {
-      state: { step1FormCreatePartido: this.step1FormCreatePartido.value }
+  async onSubmit() {
+    const alert = await this.alertController.create({
+      header: 'Confirmar creación',
+      message: `¿Estás seguro de que deseas crear el partido con los datos ingresados?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Confirmar',
+          handler: () => {
+            this.crearPartido();
+          }
+        }
+      ]
     });
+
+    await alert.present();
+  }
+
+
+  async crearPartido() {
+    const loading = await this.loadingController.create({
+      message: 'Creando partido...',
+      duration: 3000
+    });
+
+    const fullFormCreatePartido = {
+      ...this.step1FormCreatePartido.value,
+      creador_id: await this.storageService.get('user')
+    };
+
+    try {
+      await loading.present();
+
+      this.partidoService.createPartido(fullFormCreatePartido).subscribe({
+        next: async (resp) => {
+          await loading.dismiss();
+          debugger
+          this.alertService.info('¡Partido creado!', 'El partido ha sido creado con éxito, ahora elige una cancha para tu partido.');
+          this.router.navigate([`/private/matches/create-match/${resp.data.id_partido}/step-2`]);
+        },
+        error: async (err: responseError) => {
+          await loading.dismiss();
+          this.alertService.error(err.message);
+        }
+      });
+    } catch (error) {
+      await loading.dismiss();
+      this.alertService.error('Ocurrió un error inesperado al enviar la solicitud.');
+    }
   }
 
   getListDeportes(): void {

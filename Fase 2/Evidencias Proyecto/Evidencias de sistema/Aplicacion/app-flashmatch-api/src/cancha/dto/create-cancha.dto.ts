@@ -38,12 +38,15 @@ export class CreateCanchaDto {
   disponible?: boolean = true;
 
   @IsUUID()
+  @IsNotEmpty()
   deporte_id: string;
 
   @IsUUID()
+  @IsNotEmpty()
   material_cancha_id: string;
 
   @IsUUID()
+  @IsNotEmpty()
   administrador_cancha_id: string;
 
   @IsArray()

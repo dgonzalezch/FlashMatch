@@ -1,5 +1,5 @@
 import { Cancha } from 'src/cancha/entities/cancha.entity';
-import { Usuario } from 'src/usuario/entities/usuario.entity';
+import { Partido } from 'src/partido/entities/partido.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
 
 @Entity('reserva_cancha')
@@ -11,9 +11,9 @@ export class ReservaCancha {
   @JoinColumn({ name: 'cancha_id' })
   cancha: Cancha;
 
-  @ManyToOne(() => Usuario, (usuario) => usuario.reservas, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'usuario_id' })
-  usuario: Usuario;
+  @ManyToOne(() => Partido, (partido) => partido.reservas, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'partido_id' })
+  partido: Partido;
 
   @Column({ type: 'date' })
   fecha_reserva: string;
@@ -25,7 +25,7 @@ export class ReservaCancha {
   estado: string;
 
   @Column({ type: 'text', nullable: true })
-  mensaje: string;
+  comentario: string;
 
   @CreateDateColumn({ name: 'fecha_solicitud' })
   fecha_solicitud: Date;

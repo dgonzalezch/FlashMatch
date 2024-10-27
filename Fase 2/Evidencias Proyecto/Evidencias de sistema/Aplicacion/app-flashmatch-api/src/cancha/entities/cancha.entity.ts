@@ -45,7 +45,7 @@ export class Cancha {
     // Relación con Usuario (Administrador de la cancha)
     @ManyToOne(() => Usuario, (usuario) => usuario.id_usuario, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'administrador_cancha_id' })
-    administrador_cancha: Usuario;
+    administrador: Usuario;
 
     // Relación con Disponibilidad de Cancha
     @OneToMany(() => DisponibilidadCancha, (disponibilidad) => disponibilidad.cancha, { cascade: true })

@@ -7,17 +7,17 @@ export class CreateReservaCanchaDto {
 
     @IsUUID()
     @IsNotEmpty()
-    usuario_id: string;
+    partido_id: string;
 
     @IsDateString()
     @IsNotEmpty()
     fecha_reserva: string;
 
     @IsString()
-    @Matches(/^([01]\d|2[0-3]):([0-5]\d)$/)  // Formato HH:MM de 24 horas
+    @Matches(/^([01]\d|2[0-3]):([0-5]\d)$/)
     hora_reserva: string;
 
     @IsString()
     @IsOptional()
-    mensaje?: string;
+    comentario?: string;
 }

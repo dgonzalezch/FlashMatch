@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonTabs, IonTabBar, IonIcon, IonTabButton, IonTab, IonCard, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCardContent, IonCol, IonGrid, IonRow, IonImg, IonFooter, IonButton, IonItem, IonList, IonLabel } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonTabs, IonTabBar, IonIcon, IonTabButton, IonTab, IonCard, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCardContent, IonCol, IonGrid, IonRow, IonImg, IonFooter, IonButton, IonItem, IonList, IonLabel, IonAvatar, IonText } from '@ionic/angular/standalone';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { Router, RouterLink } from '@angular/router';
 
@@ -10,7 +10,7 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [RouterLink, IonLabel, IonList, IonItem, IonButton, IonFooter, IonImg, IonRow, IonGrid, IonCol, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCard, IonTab, IonTabButton, IonIcon, IonTabBar, IonTabs, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent],
+  imports: [IonText, IonAvatar, RouterLink, IonLabel, IonList, IonItem, IonButton, IonFooter, IonImg, IonRow, IonGrid, IonCol, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCard, IonTab, IonTabButton, IonIcon, IonTabBar, IonTabs, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class HomePage implements OnInit {

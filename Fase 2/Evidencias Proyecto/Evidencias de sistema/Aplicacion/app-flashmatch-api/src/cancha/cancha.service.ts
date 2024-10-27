@@ -21,7 +21,7 @@ export class CanchaService {
   constructor(
     @InjectRepository(Cancha)
     private readonly canchaRepository: Repository<Cancha>,
-    @InjectRepository(DisponibilidadCancha) // Repositorio para disponibilidad
+    @InjectRepository(DisponibilidadCancha)
     private readonly disponibilidadRepository: Repository<DisponibilidadCancha>,
     @InjectRepository(Usuario)
     private readonly usuarioRepository: Repository<Usuario>,
@@ -40,7 +40,7 @@ export class CanchaService {
     const usuario = await this.usuarioRepository.findOneBy({ id_usuario: administrador_cancha_id });
 
     if (!deporte) throw new NotFoundException(`Deporte con ID ${deporte_id} no encontrado.`);
-    if (!materialCancha) throw new NotFoundException(`Materia cancha con ID ${material_cancha_id} no encontrado.`);
+    if (!materialCancha) throw new NotFoundException(`Material cancha con ID ${material_cancha_id} no encontrado.`);
     if (!usuario) throw new NotFoundException(`Usuario con ID ${administrador_cancha_id} no encontrado.`);
 
     try {
@@ -49,7 +49,7 @@ export class CanchaService {
         ...createCanchaDto,
         deporte: deporte,
         material: materialCancha,
-        administrador_cancha: usuario,
+        administrador: usuario,
       });
 
       await this.canchaRepository.save(cancha);
@@ -89,10 +89,11 @@ export class CanchaService {
         skip: offset,
         relations: {
           deporte: true,
-          administrador_cancha: true,
+          administrador: true,
           material: true,
           imagenes: true,
-          disponibilidad: true
+          disponibilidad: true,
+          reservas: true
         },
       });
 
@@ -160,7 +161,7 @@ export class CanchaService {
       ...updateCanchaDto,
       deporte: deporte,
       material: materialCancha,
-      administrador_cancha: usuario,
+      administrador: usuario,
     });
 
     if (!cancha) throw new NotFoundException(`Cancha con ID ${id_cancha} no encontrado.`);

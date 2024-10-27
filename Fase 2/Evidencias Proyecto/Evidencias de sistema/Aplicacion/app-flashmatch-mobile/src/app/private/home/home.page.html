@@ -1,76 +1,91 @@
-<ion-content [fullscreen]="true" class="ion-padding" color="light">
-  <ion-title class="ion-text-center">¡Bienvenido/a Daniel!</ion-title>
+<ion-content [fullscreen]="true" color="light">
+  <!-- Header de Bienvenida -->
+  <div class="header-banner">
+    <ion-grid>
+      <ion-row class="ion-align-items-center">
+        <ion-col size="3" class="ion-text-center">
+          <ion-avatar>
+            <img src="https://ionicframework.com/docs/img/demos/avatar.svg" class="user-avatar" />
+          </ion-avatar>
+        </ion-col>
+        <ion-col size="9">
+          <h2 class="welcome-title ion-no-margin">¡Hola, Daniel!</h2>
+          <p class="welcome-subtitle">Explora y gestiona tus partidos</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 
-  <h6 class="ion-margin-start font-bold"><b>Próximos Partidos</b></h6>
-  <ion-card class="ion-no-margin ion-margin-vertical">
-    <ion-card-content class="ion-no-padding">
-      <ion-list class="ion-no-padding">
+  <!-- Accesos Rápidos Mejorados -->
+  <section class="ion-padding-horizontal shortcut-section">
+    <ion-grid>
+      <ion-row class="ion-justify-content-around ion-align-items-center">
+        <ion-col size="3" class="shortcut-item" >
+          <div class="shortcut-icon-wrapper">
+            <ion-icon name="albums-outline" class="shortcut-icon"></ion-icon>
+          </div>
+          <p>Canchas</p>
+        </ion-col>
+        <ion-col size="3" class="shortcut-item">
+          <div class="shortcut-icon-wrapper">
+            <ion-icon name="archive-outline" class="shortcut-icon"></ion-icon>
+          </div>
+          <p>Solicitudes</p>
+        </ion-col>
+        <ion-col size="3" class="shortcut-item" >
+          <div class="shortcut-icon-wrapper">
+            <ion-icon name="stats-chart-outline" class="shortcut-icon"></ion-icon>
+          </div>
+          <p>Historial</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </section>
+
+
+  <!-- Próximos Partidos -->
+  <section class="ion-padding">
+    <h3 class="section-title ion-no-margin">Próximos Partidos</h3>
+    <ion-card class="modern-card">
+      <ion-list>
         @for (match of upcomingMatches; track $index) {
-          <ion-item [lines]="$index === upcomingMatches.length - 1 ? 'none' : 'full'" [routerLink]="['/private/search']"  button>
+          <ion-item [lines]="$index === upcomingMatches.length - 1 ? 'none' : 'inset'" [routerLink]="['/private/match-details']" button>
+            <ion-icon name="calendar-outline" slot="start" color="primary"></ion-icon>
             <ion-label>
-              <h3>{{ match.title }}</h3>
-              <p>{{ match.date | date:'shortDate' }} - {{ match.location }}</p>
+              <h3 class="item-title">{{ match.title }}</h3>
+              <p class="item-subtitle">{{ match.date | date: 'shortDate' }} - {{ match.location }}</p>
             </ion-label>
           </ion-item>
         }
         @empty {
-          <ion-item>
-            <ion-label>No tienes partidos próximos.</ion-label>
+          <ion-item lines="none">
+            <ion-label color="medium" class="ion-text-center">No tienes partidos próximos.</ion-label>
           </ion-item>
         }
       </ion-list>
-    </ion-card-content>
-  </ion-card>
+    </ion-card>
+  </section>
 
-  <h6 class="ion-margin-start"><b>Partidos Pasados</b></h6>
-  <ion-card class="ion-no-margin ion-margin-vertical" button>
-    <ion-card-content class="ion-no-padding">
-      <ion-list class="ion-no-padding">
-        @for (match of pastMatches; track $index) {
-          <ion-item [lines]="$index === pastMatches.length - 1 ? 'none' : 'full'" [routerLink]="['/private/search']" button>
-            <ion-label>
-              <h3>{{ match.title }}</h3>
-              <p>{{ match.date | date:'shortDate' }} - {{ match.result }}</p>
-            </ion-label>
-          </ion-item>
-        }
-        @if (!pastMatches.length) {
-          <ion-item>
-            <ion-label>No tienes partidos anteriores.</ion-label>
-          </ion-item>
-        }
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-
-  <h6 class="ion-margin-start"><b>Rendimiento</b></h6>
-  <ion-card class="ion-no-margin ion-margin-vertical" [routerLink]="['/private/search']" button>
-    <ion-card-content>
-      <p>Puntaje promedio: {{ userPerformance.averageScore }} / 10</p>
-      <p>Partidos Jugados: {{ userPerformance.matchesPlayed }}</p>
-      <p>Partidos Ganados: {{ userPerformance.matchesWon }}</p>
-    </ion-card-content>
-  </ion-card>
-
-  <h6 class="ion-margin-start"><b>Invitaciones</b></h6>
-  <ion-card class="ion-no-margin ion-margin-vertical" button>
-    <ion-card-content class="ion-no-padding">
-      <ion-list class="ion-no-padding">
+  <!-- Invitaciones -->
+  <section class="ion-padding">
+    <h3 class="section-title ion-no-margin">Tus Invitaciones</h3>
+    <ion-card class="modern-card">
+      <ion-list >
         @for (invitation of invitations; track $index) {
-          <ion-item [lines]="$index === invitations.length - 1 ? 'none' : 'full'" [routerLink]="['/private/search']" button>
+          <ion-item [lines]="$index === invitations.length - 1 ? 'none' : 'inset'" [routerLink]="['/private/invitation-details']" button>
+            <ion-icon name="mail-outline" slot="start" color="tertiary"></ion-icon>
             <ion-label>
-              <h3>{{ invitation.match.title }}</h3>
-              <p>Invitado por: {{ invitation.inviterName }}</p>
+              <h3 class="item-title">{{ invitation.match.title }}</h3>
+              <p class="item-subtitle">Invitado por: {{ invitation.inviterName }}</p>
             </ion-label>
           </ion-item>
         }
-
-        @if (!invitations.length) {
-          <ion-item>
-            <ion-label>No tienes nuevas invitaciones.</ion-label>
+        @empty {
+          <ion-item lines="none">
+            <ion-label color="medium" class="ion-text-center">No tienes nuevas invitaciones.</ion-label>
           </ion-item>
         }
       </ion-list>
-    </ion-card-content>
-  </ion-card>
+    </ion-card>
+  </section>
 </ion-content>

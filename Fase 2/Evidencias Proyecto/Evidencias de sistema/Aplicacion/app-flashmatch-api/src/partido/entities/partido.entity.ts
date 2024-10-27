@@ -1,18 +1,18 @@
-import { Cancha } from 'src/cancha/entities/cancha.entity';
 import { Deporte } from 'src/deporte/entities/deporte.entity';
 import { NivelHabilidad } from 'src/nivel-habilidad/entities/nivel-habilidad.entity';
 import { RangoEdad } from 'src/rango-edad/entities/rango-edad.entity';
+import { ReservaCancha } from 'src/reserva/entities/reserva-cancha.entity';
 import { TipoEmparejamiento } from 'src/tipo-emparejamiento/entities/tipo-emparejamiento.entity';
 import { TipoPartido } from 'src/tipo-partido/entities/tipo-partido.entity';
 import { Usuario } from 'src/usuario/entities/usuario.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, OneToMany } from 'typeorm';
 
 @Entity('partido')
 export class Partido {
     @PrimaryGeneratedColumn('uuid')
     id_partido: string;
 
-    @Column()
+    @Column({ type: 'timestamp' })
     fecha_partido: Date;
 
     @ManyToOne(() => Deporte, { nullable: false })
@@ -38,16 +38,27 @@ export class Partido {
     @Column({ type: 'text', nullable: true })
     descripcion: string;
 
-    @ManyToOne(() => Cancha, { nullable: true })
-    @JoinColumn({ name: 'cancha_id' })
-    cancha: Cancha;
-
     @ManyToOne(() => Usuario, { nullable: false })
-    @JoinColumn({ name: 'usuario_creador_id' }) 
-    usuarioCreador: Usuario;
+    @JoinColumn({ name: 'creador_id' }) 
+    creador: Usuario;
+
+    @OneToMany(() => ReservaCancha, (reserva) => reserva.partido, { cascade: true })
+    reservas: ReservaCancha[];
 
     @Column({ type: 'varchar', length: 50 })
     estado: string;
+
+    @Column({ type: 'boolean', default: false })
+    partido_privado: boolean;
+
+    @Column({ type: 'timestamp', nullable: true })
+    fecha_expiracion_reserva: Date;
+
+    @Column({ type: 'int', default: 0 })
+    jugadores_actuales: number;
+
+    @Column({ type: 'int' })
+    jugadores_requeridos: number;
 
     @CreateDateColumn({ name: 'creado_en' })
     creado_en: Date;
