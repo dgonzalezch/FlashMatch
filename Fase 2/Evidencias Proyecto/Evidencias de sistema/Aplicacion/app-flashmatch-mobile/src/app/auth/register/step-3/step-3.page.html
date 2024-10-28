@@ -21,7 +21,7 @@
       </ion-col>
 
       <ion-col size-xs="12">
-        <form class="ion-margin-vertical" id="formRegistry" (ngSubmit)="onSubmit()">
+        <form class="ion-margin-vertical" id="formRegistry" class="modern-card-form ion-padding ion-margin" (ngSubmit)="onSubmit()">
 
         </form>
       </ion-col>
@@ -29,9 +29,9 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer class="ion-no-border ion-padding">
+<ion-footer>
   <ion-toolbar>
-    <ion-button [routerLink]="['/auth/registry/step-3']" class="ion-no-margin" color="tertiary" expand="block"
+    <ion-button class="ion-padding-horizontal" [routerLink]="['/auth/registry/step-3']" color="tertiary" expand="block"
       type="submit" form="formRegistry">Siguiente</ion-button>
   </ion-toolbar>
 </ion-footer>

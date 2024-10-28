@@ -1,21 +1,38 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Detalle del Partido</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" color="light">
   <ion-grid>
 
-    <!-- Estado del partido -->
+    <!-- Indicador de búsqueda de jugadores -->
+    <ion-row *ngIf="partido.estado === 'confirmado' && !partido.partido_privado">
+      <ion-col size="12" class="ion-text-center">
+        <ion-card class="modern-card">
+          <ion-card-content >
+            <ion-spinner name="crescent" color="primary"></ion-spinner>
+            <p>Buscando jugadores...</p>
+            <ion-progress-bar [color]="partido.jugadores_actuales == partido.jugadores_requeridos ? 'success' : 'secondary'" [value]="partido.jugadores_actuales / partido.jugadores_requeridos"/>
+            <small>{{ partido.jugadores_actuales }} / {{ partido.jugadores_requeridos }} jugadores</small>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- Información general del partido -->
     <ion-row>
       <ion-col size="12">
-        <ion-card>
+        <ion-card class="modern-card">
           <ion-card-header>
-            <ion-card-title>Estado del Partido</ion-card-title>
+            <ion-card-title>Detalles del Partido</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <ion-badge color="tertiary">{{ partido.estado }}</ion-badge>
+            <p><strong>Deporte:</strong> {{ partido.deporte.nombre_deporte }}</p>
+            <p><strong>Fecha:</strong> {{ partido.fecha_partido | date: 'dd/MM/yyyy, HH:mm' }}</p>
+            <p><strong>Rango de Edad:</strong> {{ partido.rangoEdad.descripcion }}</p>
+            <p><strong>Nivel:</strong> {{ partido.nivelHabilidad.nombre_nivel_habilidad }}</p>
+            <p><strong>Tipo:</strong> {{ partido.tipoPartido.nombre_tipo_partido }}</p>
+
+            <div *ngIf="partido.reserva">
+              <p><strong>Ubicación:</strong> {{ partido.reserva.cancha.ubicacion }}</p>
+              <p><strong>Material:</strong> {{ partido.reserva.cancha.material.nombre_material_cancha }}</p>
+            </div>
           </ion-card-content>
         </ion-card>
       </ion-col>
@@ -24,44 +41,88 @@
     <!-- Equipos y jugadores -->
     <ion-row>
       <ion-col size="12">
-        <ion-card>
+        <ion-card class="modern-card">
           <ion-card-header>
             <ion-card-title>Equipos</ion-card-title>
           </ion-card-header>
           <ion-card-content>
             <!-- Equipo A -->
-            <ion-item lines="full">
-              <ion-label>
-                <h2>Equipo A</h2>
-                <p>Integrantes: {{ partido.equipoA.integrantes.length }} / {{ partido.maxJugadores }}</p>
-              </ion-label>
-              <ion-badge color="success">
-                {{ partido.maxJugadores - partido.equipoA.integrantes.length }} jugadores faltantes
-              </ion-badge>
-            </ion-item>
+            <div class="team-section">
+              <ion-item lines="none">
+                <ion-label>
+                  <h2>Equipo A</h2>
+                  <p>Integrantes: {{ partido.equipoA.integrantes.length }} / {{ partido.jugadores_requeridos / 2 }}</p>
+                </ion-label>
+                <ion-badge color="success">
+                  {{ (partido.jugadores_requeridos / 2) - partido.equipoA.integrantes.length }} jugadores faltantes
+                </ion-badge>
+              </ion-item>
 
-            <!-- Listado de integrantes del Equipo A -->
+              <!-- Listado de integrantes del Equipo A -->
+              <ion-list class="team-list">
+                <ion-item *ngFor="let jugador of partido.equipoA.integrantes" lines="none">
+                  <ion-label>{{ jugador.nombre }}</ion-label>
+                </ion-item>
+              </ion-list>
+            </div>
+
+            <!-- Equipo B -->
+            <div class="team-section">
+              <ion-item lines="none">
+                <ion-label>
+                  <h2>Equipo B</h2>
+                  <p>Integrantes: {{ partido.equipoB.integrantes.length }} / {{ partido.jugadores_requeridos / 2 }}</p>
+                </ion-label>
+                <ion-badge color="warning">
+                  {{ (partido.jugadores_requeridos / 2) - partido.equipoB.integrantes.length }} jugadores faltantes
+                </ion-badge>
+              </ion-item>
+
+              <!-- Listado de integrantes del Equipo B -->
+              <ion-list class="team-list">
+                <ion-item *ngFor="let jugador of partido.equipoB.integrantes" lines="none">
+                  <ion-label>{{ jugador.nombre }}</ion-label>
+                </ion-item>
+              </ion-list>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- Jugadores Confirmados y Invitados Pendientes -->
+    <ion-row>
+      <ion-col size="12">
+        <ion-card class="modern-card">
+          <ion-card-header>
+            <ion-card-title>Jugadores</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <!-- Jugadores Confirmados -->
+            <h3>Jugadores Confirmados</h3>
             <ion-list>
-              <ion-item *ngFor="let jugador of partido.equipoA.integrantes">
-                <ion-label>{{ jugador.nombre }}</ion-label>
+              <ion-item *ngFor="let jugador of partido.jugadoresConfirmados" lines="none">
+                <ion-avatar slot="start">
+                  <img [src]="jugador.imagen_perfil || 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+                </ion-avatar>
+                <ion-label>
+                  {{ jugador.nombre }}
+                  <p>Posición: {{ jugador.posicion || 'Por Definir' }}</p>
+                </ion-label>
               </ion-item>
             </ion-list>
 
-            <!-- Equipo B -->
-            <ion-item lines="full">
-              <ion-label>
-                <h2>Equipo B</h2>
-                <p>Integrantes: {{ partido.equipoB.integrantes.length }} / {{ partido.maxJugadores }}</p>
-              </ion-label>
-              <ion-badge color="warning">
-                {{ partido.maxJugadores - partido.equipoB.integrantes.length }} jugadores faltantes
-              </ion-badge>
-            </ion-item>
-
-            <!-- Listado de integrantes del Equipo B -->
+            <!-- Invitados Pendientes -->
+            <h3 class="ion-margin-top">Invitados Pendientes</h3>
             <ion-list>
-              <ion-item *ngFor="let jugador of partido.equipoB.integrantes">
-                <ion-label>{{ jugador.nombre }}</ion-label>
+              <ion-item *ngFor="let invitado of partido.invitadosPendientes" lines="none">
+                <ion-avatar slot="start">
+                  <img [src]="invitado.imagen_perfil || 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+                </ion-avatar>
+                <ion-label>
+                  {{ invitado.nombre }}
+                  <p>Invitación Pendiente</p>
+                </ion-label>
               </ion-item>
             </ion-list>
           </ion-card-content>

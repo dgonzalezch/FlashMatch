@@ -21,7 +21,7 @@
       </ion-col>
     </ion-row>
 
-    <form [formGroup]="step2Form" id="step2Form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="step2Form" id="step2Form" class="modern-card-form ion-padding ion-margin" (ngSubmit)="onSubmit()">
       <ion-row>
         <!-- CORREO -->
         <ion-col size="12">
@@ -88,7 +88,7 @@
         </ion-col>
 
         <!-- REPEAT CLAVE -->
-        <ion-col>
+        <ion-col size="12" class="ion-margin-bottom">
           <ion-input type="password" class="ion-input-form" formControlName="repeatClave" preventSpaces label="Repetir contraseña*" labelPlacement="floating">
             @if (step2Form.get('repeatClave')?.value) {
               <ion-input-password-toggle slot="end"/>
@@ -121,9 +121,9 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer class="ion-no-border ion-padding">
+<ion-footer>
   <ion-toolbar>
-    <ion-button class="ion-no-margin" color="tertiary" expand="block"
+    <ion-button class="ion-padding-horizontal" color="tertiary" expand="block"
       type="submit" form="step2Form" [disabled]="!step2Form.valid">Crear Usuario
     </ion-button>
   </ion-toolbar>

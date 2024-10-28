@@ -1,0 +1,27 @@
+.status-card {
+  text-align: center;
+}
+
+.team-section {
+  margin-bottom: 1em;
+}
+
+.team-list ion-item {
+  --padding-start: 0;
+}
+
+.jugadores-section h3 {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.invitation-status {
+  font-size: 0.85rem;
+  color: #888;
+}

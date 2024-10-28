@@ -20,7 +20,6 @@ DROP TABLE IF EXISTS cancha CASCADE;
 DROP TABLE IF EXISTS estadistica_detallada_usuario CASCADE;
 DROP TABLE IF EXISTS deporte_posicion_usuario CASCADE;
 DROP TABLE IF EXISTS parametro_rendimiento CASCADE;
-DROP TABLE IF EXISTS documento_identidad CASCADE;
 DROP TABLE IF EXISTS rango_edad CASCADE;
 DROP TABLE IF EXISTS nivel_habilidad CASCADE;
 DROP TABLE IF EXISTS deporte CASCADE;
@@ -308,15 +307,4 @@ CREATE TABLE usuario_titulo (
     titulo_id UUID REFERENCES titulo_perfil(id_titulo),
     fecha_obtenido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (usuario_id, titulo_id)
-);
-
--- Tabla de documentos de identidad
-CREATE TABLE documento_identidad (
-    id_documento UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    usuario_id UUID REFERENCES usuario(id_usuario),
-    tipo_documento VARCHAR(50) NOT NULL,
-    numero_documento VARCHAR(50) NOT NULL,
-    fecha_emision DATE NOT NULL,
-    fecha_expiracion DATE,
-    archivo_documento TEXT NOT NULL
 );

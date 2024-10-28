@@ -1,6 +1,39 @@
-.icon-text-custom {
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  gap: 0.2rem;
+.section-padding {
+  padding: 16px;
+}
+
+.section-title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.modern-card {
+  margin-bottom: 12px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.modern-card ion-card-header {
+  padding: 8px 16px;
+}
+
+.modern-card h3 {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+ion-badge {
+  font-size: 0.85rem;
+  padding: 4px 10px;
+}
+
+ion-progress-bar {
+  height: 6px;
+  border-radius: 3px;
+}
+.buscando-jugadores {
+  font-weight: bold;
+  font-size: 0.9em;
 }

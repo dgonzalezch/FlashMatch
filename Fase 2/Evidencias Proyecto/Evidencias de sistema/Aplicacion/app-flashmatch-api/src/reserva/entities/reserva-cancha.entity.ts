@@ -1,6 +1,6 @@
 import { Cancha } from 'src/cancha/entities/cancha.entity';
 import { Partido } from 'src/partido/entities/partido.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn, OneToOne } from 'typeorm';
 
 @Entity('reserva_cancha')
 export class ReservaCancha {
@@ -11,7 +11,7 @@ export class ReservaCancha {
   @JoinColumn({ name: 'cancha_id' })
   cancha: Cancha;
 
-  @ManyToOne(() => Partido, (partido) => partido.reservas, { onDelete: 'CASCADE' })
+  @OneToOne(() => Partido, (partido) => partido.reserva, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'partido_id' })
   partido: Partido;
 

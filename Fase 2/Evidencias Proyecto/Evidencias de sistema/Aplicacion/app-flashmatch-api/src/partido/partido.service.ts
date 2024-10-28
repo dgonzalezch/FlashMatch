@@ -96,7 +96,12 @@ export class PartidoService {
           tipoEmparejamiento: true,
           rangoEdad: true, 
           tipoPartido: true,
-          creador: true,
+          reserva: {
+            cancha: {
+              material: true
+            }
+          },
+          creador: true
         },
       });
 
@@ -113,7 +118,7 @@ export class PartidoService {
     if (isUUID(term)) {
       partido = await this.partidoRepository.findOne({
         where: { id_partido: term },
-        relations: ['creador', 'deporte', 'nivelHabilidad', 'tipoEmparejamiento', 'rangoEdad', 'tipoPartido', 'reservas']
+        relations: ['creador', 'deporte', 'nivelHabilidad', 'tipoEmparejamiento', 'rangoEdad', 'tipoPartido', 'reserva']
       });
     } else {
       const queryBuilder = this.partidoRepository.createQueryBuilder('partido');
@@ -124,7 +129,7 @@ export class PartidoService {
         .leftJoinAndSelect('partido.tipoEmparejamiento', 'tipoEmparejamiento')
         .leftJoinAndSelect('partido.rangoEdad', 'rangoEdad')
         .leftJoinAndSelect('partido.tipoPartido', 'tipoPartido')
-        .leftJoinAndSelect('partido.reservas', 'reservas')
+        .leftJoinAndSelect('partido.reserva', 'reserva')
         .where('UPPER(deporte.nombre) = :deporteNombre', {
           deporteNombre: term.toUpperCase(),
         })

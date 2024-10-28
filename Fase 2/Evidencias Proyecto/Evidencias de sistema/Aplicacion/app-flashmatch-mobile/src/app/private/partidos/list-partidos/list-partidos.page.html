@@ -1,108 +1,89 @@
-<app-header-map [ubication]="ubication()"/>
+<app-header-map [ubication]="ubication()"></app-header-map>
 
 <ion-content [fullscreen]="true" color="light">
   <ion-grid>
-
+    <!-- Barra de búsqueda -->
     <ion-row>
       <ion-col size="12">
-        <ion-searchbar class="searchbar-modern animated" placeholder="Buscar partidos..."/>
+        <ion-searchbar class="searchbar-modern animated" placeholder="Buscar partidos..." debounce="500"></ion-searchbar>
       </ion-col>
     </ion-row>
 
-
-    <ion-row>
-      <ion-col size="12">
-        <h5 class="ion-no-margin">Partidos en espera de confirmación</h5>
-      </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col size="12">
-        @for (partidos of partidosPendientesAceptacion; track $index) {
-          <ion-card button [routerLink]="'/private/matches/detail-match/12'">
-            <ion-badge class="icon-text-custom" color="secondary">
-              <ion-icon name="calendar-outline" size="small"/>
-              {{ partidos.fecha }}
-            </ion-badge>
-            <ion-card-content class="ion-no-padding">
-              <ion-row class="ion-align-items-center">
-                <ion-col size="2" class="ion-text-center">
-                  <ion-icon color="primary" size="large" name="hourglass-outline"/>
-                  <!-- <ion-spinner color="primary"/> -->
+    <!-- Sección de Partidos Disponibles -->
+    <ion-row >
+      @for (partido of listPartidos(); track $index) {
+        <ion-col size="12" size-md="6">
+          <ion-card button [routerLink]="'/private/matches/detail-match/' + partido.id_partido" class="modern-card">
+            <ion-card-header class="ion-align-items-center ion-justify-content-between">
+              <ion-row class="ion-align-items-center ion-justify-content-between ion-no-padding">
+                <ion-col size="auto">
+                  <ion-badge color="primary">
+                    <ion-icon name="calendar-outline" slot="start"></ion-icon> {{ partido.fecha_partido| date: 'dd/MM/yyyy, HH:mm' }}
+                  </ion-badge>
                 </ion-col>
-                <ion-col size="6">
-                  <p>
-                    <ion-icon name="football-outline" style="vertical-align: middle; margin-right: 8px;"/>
-                    Fútbol 11
-                  </p>
-                  <p>
-                    <ion-icon name="sparkles-outline" style="vertical-align: middle; margin-right: 8px;"/>
-                    Entretención
-                  </p>
-                  <p>
-                    <ion-icon name="walk-outline" style="vertical-align: middle; margin-right: 8px;"/>
-                    26 a 34 años
-                  </p>
-                </ion-col>
-
-                <ion-col size="4" class="ion-text-center">
-                  <ion-badge color="primary">Pendiente</ion-badge>
+                <ion-col size="auto">
+                  <ion-badge [color]="partido.estado === 'confirmado' ? 'success' : 'warning'">
+                    {{ partido.estado === 'confirmado' ? 'Confirmado' : 'Pendiente Reserva' }}
+                  </ion-badge>
                 </ion-col>
               </ion-row>
-            </ion-card-content>
-            <ion-progress-bar type="indeterminate"/>
-          </ion-card>
-        }
-      </ion-col>
-    </ion-row>
+            </ion-card-header>
 
-    <ion-row>
-      <ion-col size="12">
-        <h5 class="ion-no-margin">Partidos disponibles</h5>
-      </ion-col>
-    </ion-row>
+            <!-- Información del Partido -->
+            <ion-card-content>
+              <ion-row class="ion-align-items-start">
+                <ion-col size="12">
+                  <h3>{{ partido.deporte.nombre_deporte }}</h3>
+                </ion-col>
+                <ion-col size="12">
+                  <p><ion-icon name="football-outline"/> {{ partido.tipoPartido.nombre_tipo_partido }}</p>
+                  <p><ion-icon name="walk-outline"/> Rango de Edad: {{ partido.rangoEdad.descripcion }}</p>
 
-    <ion-row>
-      <ion-col size="12">
-        @for (partidos of partidosDisponibles; track $index) {
-          <ion-card button [routerLink]="'/private/matches/detail-match/12'">
-            <ion-badge class="icon-text-custom" color="tertiary">
-              <ion-icon name="calendar-outline" size="small"/>
-              {{ partidos.fecha }}
-            </ion-badge>
-            <ion-card-content class="ion-no-padding">
-              <ion-row class="ion-align-items-center">
-                <ion-col size="2" class="ion-text-center">
-                  <ion-icon color="tertiary" name="checkmark-done-circle-outline" size="large"/>
+                  @if (partido.reserva) {
+                    <p><ion-icon name="location-outline"/> Ubicación: {{ partido.reserva.cancha.ubicacion }}</p>
+                    <!-- <p><ion-icon name="albums-outline"/> Material: {{ partido.reserva.cancha.material.nombre_material_cancha }}</p> -->
+                  } @else {
+                    <p><ion-icon name="location-outline"/> Sin cancha confirmada</p>
+                  }
                 </ion-col>
-                <ion-col size="6">
-                  <p>
-                    <ion-icon name="football-outline" style="vertical-align: middle; margin-right: 8px;"/>
-                    Fútbol 11
-                  </p>
-                  <p>
-                    <ion-icon name="sparkles-outline" style="vertical-align: middle; margin-right: 8px;"/>
-                    Entretención
-                  </p>
-                  <p>
-                    <ion-icon name="walk-outline" style="vertical-align: middle; margin-right: 8px;"/>
-                    26 a 34 años
-                  </p>
-                </ion-col>
-                <ion-col size="4" class="ion-text-center">
-                  <ion-badge color="tertiary">Agendado</ion-badge>
-                </ion-col>
+              </ion-row>
+
+              <ion-row class="ion-justify-content-between ion-margin-top">
+                @if (partido.estado == 'confirmado') {
+                  <ion-col size="12">
+                    <ion-progress-bar [color]="partido.jugadores_actuales == partido.jugadores_requeridos ? 'success' : 'secondary'" [value]="partido.jugadores_actuales / partido.jugadores_requeridos"/>
+                    <small>{{ partido.jugadores_actuales }} / {{ partido.jugadores_requeridos }} jugadores</small>
+                  </ion-col>
+                  @if (!partido.partido_privado) {
+                    <ion-col size="auto">
+                      <ion-text color="secondary" class="buscando-jugadores">Buscando jugadores...</ion-text>
+                    </ion-col>
+                    <ion-col size="auto">
+                      <ion-spinner name="dots" color="secondary"/>
+                    </ion-col>
+                    <ion-col size="12">
+                      <ion-button fill="solid" color="primary" [disabled]="partido.estado !== 'confirmado'">Unirse</ion-button>
+                    </ion-col>
+                  }
+                }
               </ion-row>
             </ion-card-content>
           </ion-card>
-        }
-      </ion-col>
+        </ion-col>
+      }
+      @empty {
+        <ion-col size="12">
+          <ion-item lines="none">
+            <ion-label color="medium" class="ion-text-center">No hay partidos disponibles</ion-label>
+          </ion-item>
+        </ion-col>
+      }
     </ion-row>
   </ion-grid>
 
-  <!-- Botón flotante para Crear Cancha -->
+  <!-- Botón flotante para Crear Partido -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="secondary" [routerLink]="['/private/matches/create-match/step-1']" >
+    <ion-fab-button color="secondary" [routerLink]="['/private/matches/create-match/step-1']">
       <ion-icon name="add-circle-outline"/>
     </ion-fab-button>
   </ion-fab>

@@ -1,8 +1,8 @@
 -- Tabla deportes
 INSERT INTO deporte (nombre_deporte, cantidad_min_jugadores, cantidad_max_jugadores, icono) VALUES
-('Fútbol 11', 11, 22, 'football-outline'),
-('Fútbol 7', 7, 14, 'football-outline'),
-('Fútbol 5', 5, 10, 'football-outline');
+('Fútbol 11', 22, 44, 'football-outline'),
+('Fútbol 7', 14, 28, 'football-outline'),
+('Fútbol 5', 10, 20, 'football-outline');
 
 INSERT INTO rango_edad (edad_minima, edad_maxima, descripcion) VALUES
 (18, 25, '18 - 25 años'),

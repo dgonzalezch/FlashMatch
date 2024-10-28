@@ -3,6 +3,7 @@ import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToMany
 import { DeportePosicionUsuario } from "./deporte-posicion-usuario.entity";
 import { EstadisticaDetalladaUsuario } from "./estadistica-detallada-usuario.entity";
 import { ReservaCancha } from "src/reserva/entities/reserva-cancha.entity";
+import { UsuarioPartido } from "src/usuario-partido/entities/usuario-partido.entity";
 
 @Entity('usuario')
 export class Usuario {
@@ -57,8 +58,8 @@ export class Usuario {
     @OneToMany(() => EstadisticaDetalladaUsuario, (estadisticaDetalladaUsuario) => estadisticaDetalladaUsuario.usuario, { cascade: true })
     estadisticasDetalladasUsuarios: EstadisticaDetalladaUsuario[];
 
-    // @OneToMany(() => ReservaCancha, (reserva) => reserva.usuario, { cascade: true })
-    // reservas: ReservaCancha[];
+    @OneToMany(() => UsuarioPartido, (usuarioPartido) => usuarioPartido.usuario, { cascade: true })
+    partidos: UsuarioPartido[];
 
     @CreateDateColumn({ name: 'creado_en' })
     creado_en: Date;

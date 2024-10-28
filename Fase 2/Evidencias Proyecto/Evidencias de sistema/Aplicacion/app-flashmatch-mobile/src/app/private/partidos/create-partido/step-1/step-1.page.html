@@ -28,7 +28,7 @@
       </ion-col>
     </ion-row>
 
-    <form [formGroup]="step1FormCreatePartido" class="animated" id="step1FormCreatePartido" (ngSubmit)="onSubmit()">
+    <form [formGroup]="step1FormCreatePartido" id="step1FormCreatePartido" class="modern-card-form ion-padding ion-margin" (ngSubmit)="onSubmit()">
       <ion-row>
         <ion-col size="12">
           <ion-accordion-group class="ion-no-margin" expand="inset">
@@ -195,7 +195,7 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer class="ion-no-border">
+<ion-footer>
   <ion-toolbar>
     <ion-button class="ion-padding-horizontal" color="tertiary" expand="block" [disabled]="!step1FormCreatePartido.valid"
       type="submit" form="step1FormCreatePartido">

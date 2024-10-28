@@ -4,8 +4,9 @@ import { RangoEdad } from 'src/rango-edad/entities/rango-edad.entity';
 import { ReservaCancha } from 'src/reserva/entities/reserva-cancha.entity';
 import { TipoEmparejamiento } from 'src/tipo-emparejamiento/entities/tipo-emparejamiento.entity';
 import { TipoPartido } from 'src/tipo-partido/entities/tipo-partido.entity';
+import { UsuarioPartido } from 'src/usuario-partido/entities/usuario-partido.entity';
 import { Usuario } from 'src/usuario/entities/usuario.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn, OneToMany, OneToOne } from 'typeorm';
 
 @Entity('partido')
 export class Partido {
@@ -42,8 +43,11 @@ export class Partido {
     @JoinColumn({ name: 'creador_id' }) 
     creador: Usuario;
 
-    @OneToMany(() => ReservaCancha, (reserva) => reserva.partido, { cascade: true })
-    reservas: ReservaCancha[];
+    @OneToOne(() => ReservaCancha, (reserva) => reserva.partido, { cascade: true })
+    reserva: ReservaCancha;
+
+    @OneToMany(() => UsuarioPartido, (usuarioPartido) => usuarioPartido.partido, { cascade: true })
+    jugadores: UsuarioPartido[];
 
     @Column({ type: 'varchar', length: 50 })
     estado: string;

@@ -132,7 +132,7 @@ export default class Step2Page {
       partido_id: this.partido().id_partido,
       fecha_reserva: this.datePipe.transform(this.partido().fecha_partido, 'yyyy-MM-ddTHH:mm:ss'),
       hora_reserva: this.datePipe.transform(this.partido().fecha_partido, 'HH:mm'),
-      mensaje: ''
+      comentario: ''
     };
     console.log(this.partido())
     debugger

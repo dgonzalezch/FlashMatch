@@ -20,8 +20,16 @@ export class ReservaCanchaService {
     );
   }
 
-  getReservasCancha(): Observable<any> {
-    return this.http.get<any>(this.urlBaseReserva).pipe(
+  getAllReservasCancha(): Observable<any> {
+    return this.http.get<any>(this.urlBaseReserva + this.urlEndpointReservaCancha).pipe(
+      map((response) => response),
+      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
+      timeout(environment.apiTime)
+    );
+  }
+
+  approveOrRejectCancha(id_reserva_cancha: string, status: string): Observable<any> {
+    return this.http.patch<any>(this.urlBaseReserva + this.urlEndpointReservaCancha + id_reserva_cancha + '/' + 'estado', {estado: status}).pipe(
       map((response) => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)

@@ -92,22 +92,22 @@ export class ReservaService {
       if (!disponibilidad) throw new ConflictException(`Disponibilidad no encontrada para el horario reservado.`);
       disponibilidad.disponible = false;
       await this.disponibilidadRepository.save(disponibilidad);
-
-      // Solo actualizar el estado del partido si la reserva es aceptada
-      await this.actualizarEstadoPartido(reservaCancha.partido.id_partido);
     }
-
     await this.reservaCanchaRepository.save(reservaCancha);
+    
+    // Solo actualizar el estado del partido si la reserva es aceptada
+    await this.actualizarEstadoPartido(reservaCancha.partido.id_partido);
+
     return { message: `Reserva ${estado} exitosamente.`, data: reservaCancha };
   }
 
-  async actualizarEstadoPartido(partidoId: string): Promise<void> {
-    const partido = await this.partidoRepository.findOne({ where: { id_partido: partidoId } });
+  async actualizarEstadoPartido(partido_id: string): Promise<void> {
+    const partido = await this.partidoRepository.findOne({ where: { id_partido: partido_id } });
 
-    if (!partido) throw new NotFoundException(`Partido con ID ${partidoId} no encontrado.`);
+    if (!partido) throw new NotFoundException(`Partido con ID ${partido_id} no encontrado.`);
 
     const reservasAceptadas = await this.reservaCanchaRepository.count({
-      where: { partido: { id_partido: partidoId }, estado: 'aceptada' },
+      where: { partido: { id_partido: partido_id }, estado: 'aceptada' },
     });
 
     partido.estado = reservasAceptadas > 0 ? 'confirmado' : 'pendiente';
@@ -123,7 +123,9 @@ export class ReservaService {
         skip: offset,
         relations: {
           cancha: true,
-          partido: true,
+          partido: {
+            creador: true
+          },
         },
       });
 
@@ -158,8 +160,6 @@ export class ReservaService {
     }
     return { message: 'Reserva cancha encontrada exitosamente.', data: reservaCancha };
   }
-
-
 
   async updateReservaCancha(id: string, updateReservaCanchaDto: UpdateReservaCanchaDto): Promise<ResponseMessage<ReservaCancha>> {
     const reservaCancha = await this.reservaCanchaRepository.preload({
