@@ -7,7 +7,7 @@
         <ion-card class="modern-card">
           <ion-card-content >
             <ion-spinner name="crescent" color="primary"></ion-spinner>
-            <p>Buscando jugadores...</p>
+            <p>Esperando jugadores...</p>
             <ion-progress-bar [color]="partido.jugadores_actuales == partido.jugadores_requeridos ? 'success' : 'secondary'" [value]="partido.jugadores_actuales / partido.jugadores_requeridos"/>
             <small>{{ partido.jugadores_actuales }} / {{ partido.jugadores_requeridos }} jugadores</small>
           </ion-card-content>
@@ -39,14 +39,13 @@
     </ion-row>
 
     <!-- Equipos y jugadores -->
-    <ion-row>
+    <!-- <ion-row>
       <ion-col size="12">
         <ion-card class="modern-card">
           <ion-card-header>
             <ion-card-title>Equipos</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <!-- Equipo A -->
             <div class="team-section">
               <ion-item lines="none">
                 <ion-label>
@@ -58,15 +57,19 @@
                 </ion-badge>
               </ion-item>
 
-              <!-- Listado de integrantes del Equipo A -->
               <ion-list class="team-list">
-                <ion-item *ngFor="let jugador of partido.equipoA.integrantes" lines="none">
-                  <ion-label>{{ jugador.nombre }}</ion-label>
+                <ion-item *ngFor="let jugador of partido.equipoA.integrantes" lines="none" button>
+                  <ion-avatar slot="start">
+                    <img [src]="jugador.imagen_perfil || 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+                  </ion-avatar>
+                  <ion-label>
+                    {{ jugador.nombre }}
+                    <p>Posición: {{ jugador.posicion || 'Por Definir' }}</p>
+                  </ion-label>
                 </ion-item>
               </ion-list>
             </div>
 
-            <!-- Equipo B -->
             <div class="team-section">
               <ion-item lines="none">
                 <ion-label>
@@ -78,57 +81,68 @@
                 </ion-badge>
               </ion-item>
 
-              <!-- Listado de integrantes del Equipo B -->
               <ion-list class="team-list">
-                <ion-item *ngFor="let jugador of partido.equipoB.integrantes" lines="none">
-                  <ion-label>{{ jugador.nombre }}</ion-label>
+                <ion-item *ngFor="let jugador of partido.equipoB.integrantes" lines="none" button>
+                  <ion-avatar slot="start">
+                    <img [src]="jugador.imagen_perfil || 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+                  </ion-avatar>
+                  <ion-label>
+                    {{ jugador.nombre }}
+                    <p>Posición: {{ jugador.posicion || 'Por Definir' }}</p>
+                  </ion-label>
                 </ion-item>
               </ion-list>
             </div>
           </ion-card-content>
         </ion-card>
       </ion-col>
-    </ion-row>
+    </ion-row> -->
 
     <!-- Jugadores Confirmados y Invitados Pendientes -->
     <ion-row>
       <ion-col size="12">
         <ion-card class="modern-card">
-          <ion-card-header>
+          <ion-card-header class="ion-align-items-center">
             <ion-card-title>Jugadores</ion-card-title>
+            <!-- <ion-badge color="primary ion-margin-top">
+              Confirmados: {{ partido.jugadoresConfirmados.length }} / Pendientes: {{ partido.invitadosPendientes.length }}
+            </ion-badge> -->
           </ion-card-header>
           <ion-card-content>
             <!-- Jugadores Confirmados -->
             <h3>Jugadores Confirmados</h3>
             <ion-list>
-              <ion-item *ngFor="let jugador of partido.jugadoresConfirmados" lines="none">
+              <ion-item *ngFor="let jugador of partido.jugadoresConfirmados" lines="none" button>
                 <ion-avatar slot="start">
                   <img [src]="jugador.imagen_perfil || 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
                 </ion-avatar>
                 <ion-label>
-                  {{ jugador.nombre }}
+                  <h2>{{ jugador.nombre }}</h2>
                   <p>Posición: {{ jugador.posicion || 'Por Definir' }}</p>
                 </ion-label>
+                <ion-icon name="checkmark-circle-outline" color="success" slot="end"/>
               </ion-item>
             </ion-list>
 
             <!-- Invitados Pendientes -->
             <h3 class="ion-margin-top">Invitados Pendientes</h3>
             <ion-list>
-              <ion-item *ngFor="let invitado of partido.invitadosPendientes" lines="none">
+              <ion-item *ngFor="let invitado of partido.invitadosPendientes" lines="none" button>
                 <ion-avatar slot="start">
                   <img [src]="invitado.imagen_perfil || 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
                 </ion-avatar>
                 <ion-label>
-                  {{ invitado.nombre }}
+                  <h2>{{ invitado.nombre }}</h2>
                   <p>Invitación Pendiente</p>
                 </ion-label>
+                <ion-icon name="hourglass-outline" color="warning" slot="end"/>
               </ion-item>
             </ion-list>
           </ion-card-content>
         </ion-card>
       </ion-col>
     </ion-row>
+
 
     <!-- Botón para invitar jugadores -->
     <ion-row class="ion-justify-content-center ion-margin-top">

@@ -101,7 +101,10 @@ export class PartidoService {
               material: true
             }
           },
-          creador: true
+          creador: true,
+          jugadores: {
+            usuario: true
+          }
         },
       });
 

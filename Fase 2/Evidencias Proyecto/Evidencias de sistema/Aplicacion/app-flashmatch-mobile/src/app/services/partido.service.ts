@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 export class PartidoService {
   private http = inject(HttpClient);
   private urlBasePartido = CONTEXT.API_PARTIDO;
+  private urlBaseUsuarioPartido = CONTEXT.API_USUARIO_PARTIDO;
 
   createPartido(partidoFormData: any): Observable<any> {
     return this.http.post<any>(this.urlBasePartido, partidoFormData).pipe(
@@ -30,6 +31,14 @@ export class PartidoService {
   getPartido(id_partido: string): Observable<any> {
     return this.http.get<any>(this.urlBasePartido + id_partido).pipe(
       map((response) => response),
+      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
+      timeout(environment.apiTime)
+    );
+  }
+
+  joinPartido(usuarioPartidoData: { userId: string, partidoId: string  }) {
+    return this.http.post<any>(this.urlBaseUsuarioPartido + 'join', usuarioPartidoData).pipe(
+      map(response => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)
     );

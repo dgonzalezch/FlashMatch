@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonRow, IonGrid, IonCol, IonCard, IonCardHeader, IonCardTitle, IonBadge, IonCardContent, IonItem, IonLabel, IonList, IonButton, IonAvatar, IonBackButton, IonButtons, IonSpinner, IonProgressBar } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonRow, IonGrid, IonCol, IonCard, IonCardHeader, IonCardTitle, IonBadge, IonCardContent, IonItem, IonLabel, IonList, IonButton, IonAvatar, IonBackButton, IonButtons, IonSpinner, IonProgressBar, IonIcon } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-detail-partido',
   templateUrl: './detail-partido.page.html',
   styleUrls: ['./detail-partido.page.scss'],
   standalone: true,
-  imports: [IonProgressBar, IonSpinner, IonButtons, IonBackButton, IonAvatar, IonButton, IonList, IonLabel, IonItem, IonCardContent, IonBadge, IonCardTitle, IonCardHeader, IonCard, IonCol, IonGrid, IonRow, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonIcon, IonProgressBar, IonSpinner, IonButtons, IonBackButton, IonAvatar, IonButton, IonList, IonLabel, IonItem, IonCardContent, IonBadge, IonCardTitle, IonCardHeader, IonCard, IonCol, IonGrid, IonRow, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
 export default class DetailPartidoPage implements OnInit {
 
@@ -19,7 +19,7 @@ export default class DetailPartidoPage implements OnInit {
     "estado": "confirmado",
     "partido_privado": false,
     "jugadores_actuales": 5,
-    "jugadores_requeridos": 10,
+    "jugadores_requeridos": 22,
     "creador": {
       "id_usuario": "b9c922c8-30d9-4c87-a304-000c7d052da6",
       "nombre": "Daniel González"
@@ -49,15 +49,22 @@ export default class DetailPartidoPage implements OnInit {
     },
     "equipoA": {
       "integrantes": [
-        { "nombre": "Jugador A1" },
-        { "nombre": "Jugador A2" },
-        { "nombre": "Jugador A3" }
+        {
+          "id_usuario": "123",
+          "nombre": "Juan Pérez",
+          "posicion": "Delantero",
+          "imagen_perfil": "https://ionicframework.com/docs/img/demos/avatar.svg"
+        },
       ]
     },
     "equipoB": {
       "integrantes": [
-        { "nombre": "Jugador B1" },
-        { "nombre": "Jugador B2" }
+        {
+          "id_usuario": "123",
+          "nombre": "Juan Pérez",
+          "posicion": "Delantero",
+          "imagen_perfil": "https://ionicframework.com/docs/img/demos/avatar.svg"
+        },
       ]
     },
     "jugadoresConfirmados": [
@@ -69,7 +76,7 @@ export default class DetailPartidoPage implements OnInit {
       },
       {
         "id_usuario": "456",
-        "nombre": "María López",
+        "nombre": "Jesús López",
         "posicion": "Defensa",
         "imagen_perfil": "https://ionicframework.com/docs/img/demos/avatar.svg"
       }
@@ -77,12 +84,12 @@ export default class DetailPartidoPage implements OnInit {
     "invitadosPendientes": [
       {
         "id_usuario": "789",
-        "nombre": "Carlos Martínez",
+        "nombre": "Fernando Martínez",
         "imagen_perfil": "https://ionicframework.com/docs/img/demos/avatar.svg"
       },
       {
         "id_usuario": "101",
-        "nombre": "Ana Torres",
+        "nombre": "Pedro Torres",
         "imagen_perfil": "https://ionicframework.com/docs/img/demos/avatar.svg"
       }
     ]

@@ -103,7 +103,7 @@ export class DeportePosicionService {
 
     try {
       await this.deportePosicionRepository.save(deportePosicion);
-      return { message: 'Posicion actualiza exitosamente.', data: deportePosicion };
+      return { message: 'Posicion actualizada exitosamente.', data: deportePosicion };
     } catch (error) {
       this.errorHandlingService.handleDBErrors(error);
     }
@@ -111,12 +111,12 @@ export class DeportePosicionService {
 
   async remove(id_deporte_posicion: string): Promise<ResponseMessage<DeportePosicion>> {
     try {
-      const deportePosicion = await this.deportePosicionRepository.findOneBy({ id_deporte_posicion });
+      const deportePosicion = await this.deportePosicionRepository.findOneBy({ id_deporte_posicion: id_deporte_posicion });
 
-      if (!deportePosicion) throw new NotFoundException(`Posicion con ID ${id_deporte_posicion} no se pudo eliminar porque no existe en la base de datos.`);
+      if (!deportePosicion) throw new NotFoundException(`Deporte posicion con ID ${id_deporte_posicion} no se pudo eliminar porque no existe en la base de datos.`);
 
       await this.deportePosicionRepository.remove(deportePosicion);
-      return { message: 'Posicion eliminada exitosamente.', data: deportePosicion };
+      return { message: 'Deporte posicion eliminado exitosamente.', data: deportePosicion };
     } catch (error) {
       this.errorHandlingService.handleDBErrors(error);
     }

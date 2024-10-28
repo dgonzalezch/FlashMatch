@@ -13,11 +13,13 @@ export enum CONTEXT {
   API_MATERIAL_CANCHA = '/api/material-cancha/',
   API_RESERVA = '/api/reserva/',
   API_PARTIDO = '/api/partido/',
+  API_USUARIO_PARTIDO = '/api/usuario-partido/'
 }
 
 export enum ENDPOINT {
   AUTH_REGISTER = 'register',
   AUTH_LOGIN = 'login',
   AUTH_CHECK_STATUS = 'check-status',
-  RESERVA_CANCHA = 'cancha/'
+  RESERVA_CANCHA = 'cancha/',
+  JOIN_PARTIDO = 'join'
 }

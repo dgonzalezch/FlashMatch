@@ -5,7 +5,7 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 't
 @Entity('usuario_partido')
 export class UsuarioPartido {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id_usuario_partido: string;
 
   @ManyToOne(() => Usuario, (usuario) => usuario.partidos)
   @JoinColumn({ name: 'usuario_id' })
@@ -15,7 +15,7 @@ export class UsuarioPartido {
   @JoinColumn({ name: 'partido_id' })
   partido: Partido;
 
-  @Column({ type: 'varchar', length: 1 })
+  @Column({ type: 'varchar', length: 1, nullable: true })
   equipo: 'A' | 'B';
 
   @Column({ type: 'varchar', length: 20, default: 'pendiente' })

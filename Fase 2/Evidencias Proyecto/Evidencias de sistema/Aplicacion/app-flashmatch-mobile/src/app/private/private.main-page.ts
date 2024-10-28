@@ -41,7 +41,7 @@ export default class PrivatePage {
           { icon: 'home-outline', label: 'Inicio', route: '/private/home' },
           { icon: 'football-outline', label: 'Partidos', route: '/private/matches' },
           { icon: 'people-circle-outline', label: 'Equipos', route: '/private/teams' },
-          // { icon: 'walk-outline', label: 'Jugadores', route: '/private/players' },
+          { icon: 'archive-outline', label: 'Invitaciones', route: '/private/players' },
           // { icon: 'settings-outline', label: 'Configuraciones', route: '/private/configurations' },
         ]);
         break;

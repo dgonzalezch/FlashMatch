@@ -13,7 +13,7 @@
     <ion-row >
       @for (partido of listPartidos(); track $index) {
         <ion-col size="12" size-md="6">
-          <ion-card button [routerLink]="'/private/matches/detail-match/' + partido.id_partido" class="modern-card">
+          <ion-card class="modern-card">
             <ion-card-header class="ion-align-items-center ion-justify-content-between">
               <ion-row class="ion-align-items-center ion-justify-content-between ion-no-padding">
                 <ion-col size="auto">
@@ -62,7 +62,8 @@
                       <ion-spinner name="dots" color="secondary"/>
                     </ion-col>
                     <ion-col size="12">
-                      <ion-button fill="solid" color="primary" [disabled]="partido.estado !== 'confirmado'">Unirse</ion-button>
+                      <ion-button fill="solid" color="primary" [disabled]="partido.estado !== 'confirmado'" (click)="presentAlertConfirmJoinPartido(partido.id_partido)">Unirse</ion-button>
+                      <ion-button fill="solid" color="secondary"  [routerLink]="'/private/matches/detail-match/' + partido.id_partido">Detalles</ion-button>
                     </ion-col>
                   }
                 }
