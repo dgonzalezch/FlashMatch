@@ -25,10 +25,6 @@ export const routes: Routes = [
             loadComponent: () => import('./auth/register/step-2/step-2.page')
           },
           {
-            path: 'step-3',
-            loadComponent: () => import('./auth/register/step-3/step-3.page')
-          },
-          {
             path: '**',
             redirectTo: 'step-1',
             pathMatch: 'full'

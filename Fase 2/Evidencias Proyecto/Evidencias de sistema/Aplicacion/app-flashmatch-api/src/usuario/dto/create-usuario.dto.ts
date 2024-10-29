@@ -64,7 +64,7 @@ export class CreateUsuarioDto {
 
     @IsArray()
     @IsOptional()
-    roles?: string[] = ['usuario'];
+    roles?: string[];
 
     @IsBoolean()
     @IsOptional()

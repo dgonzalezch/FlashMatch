@@ -36,7 +36,7 @@ export default class PrivatePage {
     this.userData.set(await this.authService.getUserData());
     let role = await this.storageService.get('roles');
     switch (role[0]) {
-      case 'usuario':
+      case 'jugador':
         this.menuItems.set([
           { icon: 'home-outline', label: 'Inicio', route: '/private/home' },
           { icon: 'football-outline', label: 'Partidos', route: '/private/matches' },

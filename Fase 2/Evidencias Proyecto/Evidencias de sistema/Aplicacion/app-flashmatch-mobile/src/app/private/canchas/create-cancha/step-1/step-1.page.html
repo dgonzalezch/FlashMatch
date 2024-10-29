@@ -1,9 +1,14 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-buttons class="route-buttons" slot="start">
       <ion-back-button defaultHref="/private/courts/list-courts"/>
     </ion-buttons>
-    <ion-title>Crear cancha (1)</ion-title>
+    <ion-title>
+      <div class="ion-text-center">
+        <h5 class="ion-no-margin">Crear cancha</h5>
+        <p class="ion-no-margin" style="font-size: small; font-weight: 300;">Datos de cancha</p>
+      </div>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -28,30 +33,28 @@
       </ion-col>
     </ion-row>
 
-    <form [formGroup]="step1FormCreateCancha" id="step1FormCreateCancha" class="modern-card-form ion-padding ion-margin" (ngSubmit)="onSubmit()">
-      <ion-row>
-        <ion-col size="12" class="ion-margin-bottom">
-          <ion-accordion-group class="ion-no-margin" expand="inset">
-            <ion-accordion value="location" class="ion-no-margin">
-              <ion-item slot="header" color="primary">
-                <ion-icon name="location-outline" class="ion-margin-end"/>
-                <ion-label>
-                  <h3>Ubicación*</h3>
-                  <p>{{ selectedLocation() ? selectedLocation() : 'No seleccionada' }}</p>
-                </ion-label>
-              </ion-item>
-              <div class="ion-padding" slot="content">
-                <div>
-                  <ion-button  expand="block" color="secondary" [routerLink]="'/private/map'">
-                    Cambiar Ubicación
-                    <ion-icon name="navigate-circle-outline" slot="end"/>
-                  </ion-button>
-                </div>
-              </div>
-            </ion-accordion>
-          </ion-accordion-group>
-        </ion-col>
+    <form [formGroup]="step1FormCreateCancha" id="step1FormCreateCancha" (ngSubmit)="onSubmit()">
+      <ion-accordion-group expand="inset" class="ion-no-margin ion-margin-horizontal ion-margin-bottom animated">
+        <ion-accordion value="location">
+          <ion-item slot="header" color="primary">
+            <ion-icon name="location-outline" class="ion-margin-end"/>
+            <ion-label>
+              <h3>Ubicación*</h3>
+              <p>{{ selectedLocation() ? selectedLocation() : 'No seleccionada' }}</p>
+            </ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content">
+            <div>
+              <ion-button  expand="block" color="secondary" [routerLink]="'/private/map'">
+                Cambiar Ubicación
+                <ion-icon name="navigate-circle-outline" slot="end"/>
+              </ion-button>
+            </div>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
 
+      <ion-row class="modern-card-form ion-padding ion-margin">
         <ion-col size="12">
           <ion-input type="text" formControlName="nombre_cancha" preventSpaces label="Nombre cancha*" labelPlacement="floating" fill="outline" [clearInput]="true"/>
           @if (step1FormCreateCancha.get('nombre_cancha')?.touched && step1FormCreateCancha.get('nombre_cancha')?.invalid) {
@@ -117,14 +120,15 @@
           <ion-textarea formControlName="descripcion" label="Descripción" labelPlacement="floating" fill="outline" placeholder="Descripción..."/>
         </ion-col>
       </ion-row>
+
     </form>
   </ion-grid>
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
-    <ion-button class="ion-padding-horizontal" color="tertiary" expand="block" [disabled]="!step1FormCreateCancha.valid"
-      type="submit" form="step1FormCreateCancha">
+  <ion-toolbar color="light">
+    <ion-button class="ion-padding-horizontal modern-button" color="tertiary" expand="block"
+      type="submit" form="step1FormCreateCancha" [disabled]="!step1FormCreateCancha.valid">
       Siguiente
     </ion-button>
   </ion-toolbar>

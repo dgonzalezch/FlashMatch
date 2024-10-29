@@ -47,6 +47,16 @@ export class CanchaController {
     return this.canchaService.remove(id);
   }
 
+  @Get('disponibles')
+  async findAvailableCanchas(
+    @Query('latitud') latitud: number,
+    @Query('longitud') longitud: number,
+    @Query('fecha') fecha: string,
+    @Query('hora') hora: string,
+  ) {
+    return this.canchaService.findAvailableCanchas({ latitud, longitud, fecha, hora });
+  }
+
   // // Añadir disponibilidad
   // @Post(':id/disponibilidad')
   // addDisponibilidad(

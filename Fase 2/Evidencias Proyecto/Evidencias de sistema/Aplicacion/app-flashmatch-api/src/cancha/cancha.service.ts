@@ -13,6 +13,7 @@ import { isUUID } from 'class-validator';
 import { Deporte } from 'src/deporte/entities/deporte.entity';
 import { MaterialCancha } from 'src/material-cancha/entities/material-cancha.entity';
 import { Usuario } from 'src/usuario/entities/usuario.entity';
+import * as geolib from 'geolib';
 
 @Injectable()
 export class CanchaService {
@@ -187,58 +188,30 @@ export class CanchaService {
     }
   }
 
-  // Métodos relacionados con Disponibilidad
-  // async addDisponibilidad(createDisponibilidadDto: CreateDisponibilidadCanchaDto): Promise<ResponseMessage<DisponibilidadCancha>> {
-  //   const { cancha_id, dia_semana, hora, disponible } = createDisponibilidadDto;
+  async findAvailableCanchas({ latitud, longitud, fecha, hora }): Promise<ResponseMessage<Cancha[]>> {
+    const diaSemana = new Date(fecha).getDay();
+    const horaConsulta = `${hora}:00`;
 
-  //   const cancha = await this.canchaRepository.findOne({ where: { id_cancha: cancha_id } });
-  //   if (!cancha) throw new NotFoundException(`Cancha con ID ${cancha_id} no encontrada.`);
+    const canchas = await this.canchaRepository.find({
+      relations: ['disponibilidad'],
+    });
 
-  //   try {
-  //     const disponibilidad = this.disponibilidadRepository.create({
-  //       cancha,
-  //       dia_semana,
-  //       hora,
-  //       disponible,
-  //     });
+    const canchasDisponibles = canchas.filter(cancha => {
+      const disponibilidad = cancha.disponibilidad.find(d =>
+        d.dia_semana === diaSemana && d.hora === horaConsulta && d.disponible
+      );
 
-  //     await this.disponibilidadRepository.save(disponibilidad);
-  //     return { message: 'Disponibilidad añadida exitosamente.', data: disponibilidad };
-  //   } catch (error) {
-  //     this.errorHandlingService.handleDBErrors(error);
-  //   }
-  // }
+      if (!disponibilidad) return false;
 
-  // async getDisponibilidad(cancha_id: string): Promise<ResponseMessage<DisponibilidadCancha[]>> {
-  //   const cancha = await this.canchaRepository.findOne({ where: { id_cancha: cancha_id }, relations: ['disponibilidad'] });
-  //   if (!cancha) throw new NotFoundException(`Cancha con ID ${cancha_id} no encontrada.`);
+      // Calcular distancia con geolib
+      const distancia = geolib.getDistance(
+        { latitude: latitud, longitude: longitud },
+        { latitude: cancha.latitud, longitude: cancha.longitud },
+      );
 
-  //   return { message: 'Disponibilidad obtenida exitosamente.', data: cancha.disponibilidad };
-  // }
+      return distancia <= 10000; // 10 km en metros
+    });
 
-  // async updateDisponibilidad(id_disponibilidad: string, updateDisponibilidadDto: Partial<CreateDisponibilidadCanchaDto>): Promise<ResponseMessage<DisponibilidadCancha>> {
-  //   const disponibilidad = await this.disponibilidadRepository.preload({ id_disponibilidad, ...updateDisponibilidadDto });
-
-  //   if (!disponibilidad) throw new NotFoundException(`Disponibilidad con ID ${id_disponibilidad} no encontrada.`);
-
-  //   try {
-  //     await this.disponibilidadRepository.save(disponibilidad);
-  //     return { message: 'Disponibilidad actualizada exitosamente.', data: disponibilidad };
-  //   } catch (error) {
-  //     this.errorHandlingService.handleDBErrors(error);
-  //   }
-  // }
-
-  // async removeDisponibilidad(id_disponibilidad: string): Promise<ResponseMessage<DisponibilidadCancha>> {
-  //   const disponibilidad = await this.disponibilidadRepository.findOne({ where: { id_disponibilidad } });
-
-  //   if (!disponibilidad) throw new NotFoundException(`Disponibilidad con ID ${id_disponibilidad} no encontrada.`);
-
-  //   try {
-  //     await this.disponibilidadRepository.remove(disponibilidad);
-  //     return { message: 'Disponibilidad eliminada exitosamente.', data: disponibilidad };
-  //   } catch (error) {
-  //     this.errorHandlingService.handleDBErrors(error);
-  //   }
-  // }
+    return { message: 'Canchas disponibles encontradas.', data: canchasDisponibles };
+  }
 }

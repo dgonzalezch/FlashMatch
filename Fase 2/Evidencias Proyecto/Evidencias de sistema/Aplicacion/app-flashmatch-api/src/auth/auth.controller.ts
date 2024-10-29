@@ -13,9 +13,12 @@ import { CreateUsuarioDto } from 'src/usuario/dto/create-usuario.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
-  @Post('register')
-  createUsuario(@Body() createUsuarioDto: CreateUsuarioDto) {
-    return this.authService.create(createUsuarioDto);
+  @Post('register/:userType')
+  createUsuario(
+    @Param('userType') userType: string,
+    @Body() createUsuarioDto: CreateUsuarioDto,
+  ) {
+    return this.authService.create(createUsuarioDto, userType);
   }
 
   @Post('login')

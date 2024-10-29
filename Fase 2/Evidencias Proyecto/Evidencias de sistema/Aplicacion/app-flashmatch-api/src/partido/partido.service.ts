@@ -15,6 +15,7 @@ import { Usuario } from 'src/usuario/entities/usuario.entity';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { isUUID } from 'class-validator';
 import { ReservaCancha } from 'src/reserva/entities/reserva-cancha.entity';
+import { UsuarioPartido } from 'src/usuario-partido/entities/usuario-partido.entity';
 
 @Injectable()
 export class PartidoService {
@@ -37,31 +38,33 @@ export class PartidoService {
     private readonly usuarioRepository: Repository<Usuario>,
     @InjectRepository(ReservaCancha)
     private readonly reservaCanchaRepository: Repository<ReservaCancha>,
+    @InjectRepository(UsuarioPartido)
+    private readonly usuarioPartidoRepository: Repository<UsuarioPartido>,
     private readonly errorHandlingService: ErrorHandlingService
   ) { }
 
 
   async create(createPartidoDto: CreatePartidoDto): Promise<ResponseMessage<Partido>> {
     const { deporte_id, nivel_habilidad_id, tipo_emparejamiento_id, rango_edad_id, tipo_partido_id, creador_id } = createPartidoDto;
-
+  
     const deporte = await this.deporteRepository.findOneBy({ id_deporte: deporte_id });
     const nivelHabilidad = await this.nivelHabilidadRepository.findOneBy({ id_nivel_habilidad: nivel_habilidad_id });
     const tipoEmparejamiento = await this.tipoEmparejamientoRepository.findOneBy({ id_tipo_emparejamiento: tipo_emparejamiento_id });
     const rangoEdad = await this.rangoEdadRepository.findOneBy({ id_rango_edad: rango_edad_id });
     const tipoPartido = await this.tipoPartidoRepository.findOneBy({ id_tipo_partido: tipo_partido_id });
     const creador = await this.usuarioRepository.findOneBy({ id_usuario: creador_id });
-
+  
     if (!deporte) throw new NotFoundException(`Deporte con ID ${deporte_id} no encontrado.`);
     if (!nivelHabilidad) throw new NotFoundException(`Nivel habilidad con ID ${nivel_habilidad_id} no encontrado.`);
     if (!tipoEmparejamiento) throw new NotFoundException(`Tipo emparejamiento con ID ${tipo_emparejamiento_id} no encontrado.`);
     if (!rangoEdad) throw new NotFoundException(`Rango edad con ID ${rango_edad_id} no encontrado.`);
     if (!tipoPartido) throw new NotFoundException(`Tipo partido con ID ${tipo_partido_id} no encontrado.`);
     if (!creador) throw new NotFoundException(`Usuario con ID ${creador_id} no encontrado.`);
-
+  
     try {
       const fechaExpiracion = new Date(createPartidoDto.fecha_partido);
-      fechaExpiracion.setHours(fechaExpiracion.getHours() - 1); // Configura la expiración para 1 hora antes del partido
-
+      fechaExpiracion.setHours(fechaExpiracion.getHours() - 1);
+      
       const partido = this.partidoRepository.create({
         ...createPartidoDto,
         deporte: deporte,
@@ -72,16 +75,26 @@ export class PartidoService {
         creador: creador,
         estado: 'pendiente_reserva',
         jugadores_requeridos: deporte.cantidad_min_jugadores,
-        jugadores_actuales: 1,
-        fecha_expiracion_reserva: fechaExpiracion
+        jugadores_actuales: 1, // Empieza en 1 ya que el creador se añade como jugador
+        fecha_expiracion_reserva: fechaExpiracion,
       });
 
       await this.partidoRepository.save(partido);
-      return { message: 'Partido creado exitosamente.', data: partido };
+      
+      // Ahora añadir el creador al partido en UsuarioPartido
+      const usuarioPartido = this.usuarioPartidoRepository.create({
+        usuario: creador,
+        partido: partido,
+        estado: 'pendiente',
+      });
+      await this.usuarioPartidoRepository.save(usuarioPartido);
+  
+      return { message: 'Partido creado exitosamente y creador añadido como jugador.', data: partido };
     } catch (error) {
       this.errorHandlingService.handleDBErrors(error);
     }
   }
+  
 
   async findAll(paginationDto: PaginationDto): Promise<ResponseMessage<Partido[]>> {
     try {

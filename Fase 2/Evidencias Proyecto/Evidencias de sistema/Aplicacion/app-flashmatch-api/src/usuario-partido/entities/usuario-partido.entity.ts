@@ -16,8 +16,8 @@ export class UsuarioPartido {
   partido: Partido;
 
   @Column({ type: 'varchar', length: 1, nullable: true })
-  equipo: 'A' | 'B';
+  equipo?: 'A' | 'B';
 
   @Column({ type: 'varchar', length: 20, default: 'pendiente' })
-  estado: string; // 'pendiente' para invitación pendiente, 'confirmado' para jugadores confirmados, etc.
+  estado: string;
 }

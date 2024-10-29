@@ -72,10 +72,9 @@ export default class Step1Page {
   onDateChange(event: any) {
     const dateWithTime = new Date(event.detail.value);
     const formattedDate = this.datePipe.transform(dateWithTime, 'yyyy-MM-ddTHH:mm:ss');
-
+    console.log()
     this.step1FormCreatePartido.get('fecha_partido')?.setValue(formattedDate);
   }
-
 
   async onSubmit() {
     const alert = await this.alertController.create({

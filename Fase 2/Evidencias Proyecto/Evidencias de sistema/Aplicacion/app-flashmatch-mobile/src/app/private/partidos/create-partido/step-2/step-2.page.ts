@@ -63,7 +63,6 @@ export default class Step2Page {
     ]]
   });
 
-
   ngOnInit() {
     this.selectedLocation.set(this.locationService.getLocation().ubicacion);
 

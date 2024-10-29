@@ -12,7 +12,13 @@
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-modern animated">
       <ion-row class="ion-align-items-center">
         <ion-col size="12">
-          <ion-input formControlName="correo" type="email" class="ion-input-form modern-input" preventSpaces label="Email" maxlength="25" labelPlacement="floating"></ion-input>
+          <ion-input
+            formControlName="correo" type="email"
+            class="ion-input-form modern-input"
+            preventSpaces
+            label="Email" maxlength="25"
+            labelPlacement="floating"
+          />
           @if (loginForm.get('correo')?.touched && loginForm.get('correo')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {

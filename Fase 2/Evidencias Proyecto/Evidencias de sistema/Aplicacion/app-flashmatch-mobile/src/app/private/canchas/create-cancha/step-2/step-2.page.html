@@ -1,9 +1,15 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-buttons class="route-buttons" slot="start">
       <ion-back-button defaultHref="/private/courts/create-court/step-1"/>
     </ion-buttons>
-    <ion-title>Crear cancha (2)</ion-title>
+
+    <ion-title>
+      <div class="ion-text-center">
+        <h5 class="ion-no-margin">Crear cancha</h5>
+        <p class="ion-no-margin" style="font-size: small; font-weight: 300;">Horarios</p>
+      </div>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -90,14 +96,12 @@
         }
       }
     </ion-row>
-
-
   </ion-grid>
 </ion-content>
 
-<ion-footer class="ion-no-border">
-  <ion-toolbar>
-    <ion-button class="ion-padding-horizontal" color="tertiary" expand="block"
+<ion-footer>
+  <ion-toolbar color="light">
+    <ion-button class="ion-padding-horizontal modern-button" color="tertiary" expand="block"
       type="button" (click)="presentAlertConfirm()">
       Crear cancha
     </ion-button>

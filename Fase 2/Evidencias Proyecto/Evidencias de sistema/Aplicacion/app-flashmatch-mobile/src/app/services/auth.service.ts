@@ -13,8 +13,8 @@ export class AuthService {
   private storageService = inject(StorageService);
   private urlBaseAuth = CONTEXT.API_AUTH;
 
-  registerUser(registerFormData: any): Observable<any> {
-    return this.http.post<any>(this.urlBaseAuth + ENDPOINT.AUTH_REGISTER, registerFormData).pipe(
+  registerUser(registerFormData: any, userType: string): Observable<any> {
+    return this.http.post<any>(this.urlBaseAuth + ENDPOINT.AUTH_REGISTER + userType, registerFormData).pipe(
       map(response => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)

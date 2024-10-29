@@ -17,7 +17,7 @@ export enum CONTEXT {
 }
 
 export enum ENDPOINT {
-  AUTH_REGISTER = 'register',
+  AUTH_REGISTER = 'register/',
   AUTH_LOGIN = 'login',
   AUTH_CHECK_STATUS = 'check-status',
   RESERVA_CANCHA = 'cancha/',

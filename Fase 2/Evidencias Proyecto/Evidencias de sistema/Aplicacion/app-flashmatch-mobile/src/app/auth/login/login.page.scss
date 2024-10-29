@@ -21,17 +21,6 @@ ion-checkbox::part(container) {
   --box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-.modern-button {
-  --border-radius: 12px;
-  --background: linear-gradient(135deg, #4c8cfa, #1c7cfb);
-  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
-}
-
-.modern-button:active {
-  transform: translateY(2px);
-}
-
 .modern-checkbox {
   --background: #f4f4f9;
   --border-radius: 12px;

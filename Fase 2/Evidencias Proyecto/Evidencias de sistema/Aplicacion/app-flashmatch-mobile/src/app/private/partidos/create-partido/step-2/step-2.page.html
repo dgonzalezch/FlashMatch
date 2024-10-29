@@ -1,9 +1,11 @@
-<ion-header>
-  <ion-toolbar>
-    <!-- <ion-buttons slot="start">
-      <ion-back-button defaultHref="/private/matches/create-match/step-1"/>
-    </ion-buttons> -->
-    <ion-title>Seleccionar cancha</ion-title>
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-title>
+      <div class="ion-text-center">
+        <h5 class="ion-no-margin">Seleccionar Cancha</h5>
+        <p class="ion-no-margin" style="font-size: small; font-weight: 300;">Canchas disponibles</p>
+      </div>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -19,7 +21,7 @@
               </ion-col>
               <ion-col>
                 <ion-text class="modern-text">
-                  Una vez creado el partido, selecciona y reserva una cancha cercana para jugar.
+                  Una vez creado el partido, reserva una cancha cercana para jugar.
                 </ion-text>
               </ion-col>
             </ion-row>
@@ -29,29 +31,25 @@
     </ion-row>
 
     <!-- Seleccionar ubicación -->
-    <ion-row class="animated">
-      <ion-col size="12">
-        <ion-accordion-group class="ion-no-margin" expand="inset">
-          <ion-accordion value="location" class="ion-no-margin">
-            <ion-item slot="header" color="primary">
-              <ion-icon name="location-outline" class="ion-margin-end"/>
-              <ion-label>
-                <h3>Ubicación*</h3>
-                <p>{{ selectedLocation() ? selectedLocation() : 'No seleccionada' }}</p>
-              </ion-label>
-            </ion-item>
-            <div class="ion-padding" slot="content">
-              <div>
-                <ion-button  expand="block" color="secondary" [routerLink]="'/private/map'">
-                  Cambiar Ubicación
-                  <ion-icon name="navigate-circle-outline" slot="end"/>
-                </ion-button>
-              </div>
-            </div>
-          </ion-accordion>
-        </ion-accordion-group>
-      </ion-col>
-    </ion-row>
+    <ion-accordion-group expand="inset" class="ion-no-margin ion-margin-horizontal ion-margin-bottom animated">
+      <ion-accordion value="location" class="ion-no-margin">
+        <ion-item slot="header" color="primary">
+          <ion-icon name="location-outline" class="ion-margin-end"/>
+          <ion-label>
+            <h3>Ubicación*</h3>
+            <p>{{ selectedLocation() ? selectedLocation() : 'No seleccionada' }}</p>
+          </ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <div>
+            <ion-button  expand="block" color="secondary" [routerLink]="'/private/map'">
+              Cambiar Ubicación
+              <ion-icon name="navigate-circle-outline" slot="end"/>
+            </ion-button>
+          </div>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
 
     <!-- Listado de canchas -->
     <ion-row class="animated">

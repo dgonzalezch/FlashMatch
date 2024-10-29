@@ -163,14 +163,32 @@
   background-color: white;
 }
 
-.animated {
-  transition: transform 0.3s ease;
-  animation: fadeInUp 0.6s ease forwards;
+.modern-button {
+  --border-radius: 12px;
+  --background: linear-gradient(135deg, #4c8cfa, #1c7cfb);
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.modern-button:active {
+  transform: translateY(2px);
 }
 
 .searchbar-modern {
   --box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
+
+.route-buttons {
+  position: fixed;
+}
+
+.animated {
+  transition: transform 0.3s ease;
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+
+
 
 /* Animación de aparición (fade-in) con desplazamiento */
 @keyframes fadeInUp {

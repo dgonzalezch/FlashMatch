@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsUUID, IsString, IsIn } from 'class-validator';
+import { IsNotEmpty, IsUUID, IsString, IsIn, IsOptional } from 'class-validator';
 
 export class CreateUsuarioPartidoDto {
   @IsUUID()
@@ -11,8 +11,8 @@ export class CreateUsuarioPartidoDto {
 
   @IsString()
   @IsIn(['A', 'B'])
-  @IsNotEmpty()
-  equipo: 'A' | 'B';
+  @IsOptional()
+  equipo?: 'A' | 'B';
 
   @IsString()
   @IsIn(['pendiente', 'confirmado'])
