@@ -134,7 +134,7 @@ export class PartidoService {
     if (isUUID(term)) {
       partido = await this.partidoRepository.findOne({
         where: { id_partido: term },
-        relations: ['creador', 'deporte', 'nivelHabilidad', 'tipoEmparejamiento', 'rangoEdad', 'tipoPartido', 'reserva']
+        relations: ['creador', 'deporte', 'nivelHabilidad', 'tipoEmparejamiento', 'rangoEdad', 'tipoPartido', 'reserva.cancha.material', 'jugadores.usuario']
       });
     } else {
       const queryBuilder = this.partidoRepository.createQueryBuilder('partido');

@@ -14,6 +14,8 @@ import { Deporte } from 'src/deporte/entities/deporte.entity';
 import { MaterialCancha } from 'src/material-cancha/entities/material-cancha.entity';
 import { Usuario } from 'src/usuario/entities/usuario.entity';
 import * as geolib from 'geolib';
+import { CanchasDisponiblesBodyDto } from './dto/canchas-disponibles-body.dto';
+import { Partido } from 'src/partido/entities/partido.entity';
 
 @Injectable()
 export class CanchaService {
@@ -30,6 +32,8 @@ export class CanchaService {
     private readonly deporteRepository: Repository<Deporte>,
     @InjectRepository(MaterialCancha)
     private readonly materialCanchaRepository: Repository<MaterialCancha>,
+    @InjectRepository(Partido)
+    private readonly partidoRepository: Repository<Partido>,
     private readonly errorHandlingService: ErrorHandlingService
   ) { }
 
@@ -187,31 +191,61 @@ export class CanchaService {
       this.errorHandlingService.handleDBErrors(error);
     }
   }
-
-  async findAvailableCanchas({ latitud, longitud, fecha, hora }): Promise<ResponseMessage<Cancha[]>> {
-    const diaSemana = new Date(fecha).getDay();
-    const horaConsulta = `${hora}:00`;
-
-    const canchas = await this.canchaRepository.find({
-      relations: ['disponibilidad'],
+  
+  async findAvailableCanchas(canchaDisponiblesBodyDto: CanchasDisponiblesBodyDto): Promise<ResponseMessage<Cancha[]>> {
+    const { partido_id, latitud, longitud } = canchaDisponiblesBodyDto;
+  
+    // Obtén la información completa del partido
+    const partido = await this.partidoRepository.findOne({
+      where: { id_partido: partido_id },
+      relations: ['deporte'],
     });
-
+  
+    if (!partido) throw new NotFoundException(`Partido con ID ${partido_id} no encontrado.`);
+  
+    // Extrae fecha y hora del partido
+    const fechaHoraConsulta = partido.fecha_partido;
+    const diaSemana = fechaHoraConsulta.getUTCDay();
+    const horaConsulta = fechaHoraConsulta.toISOString().substring(11, 19);
+  
+    // Consulta las canchas con sus relaciones necesarias
+    const canchas = await this.canchaRepository.find({
+      relations: ['deporte', 'administrador', 'material', 'imagenes', 'disponibilidad', 'reservas'],
+    });
+  
+    // Filtra las canchas según disponibilidad y reserva
     const canchasDisponibles = canchas.filter(cancha => {
+      // Verifica que el deporte de la cancha sea el mismo que el del partido
+      if (cancha.deporte.id_deporte !== partido.deporte.id_deporte) return false;
+  
+      // Verifica la disponibilidad para el día y hora específicos
       const disponibilidad = cancha.disponibilidad.find(d =>
         d.dia_semana === diaSemana && d.hora === horaConsulta && d.disponible
       );
+      console.log(disponibilidad);
+      console.log(horaConsulta);
 
       if (!disponibilidad) return false;
-
-      // Calcular distancia con geolib
+  
+      // Verifica que no haya reservas activas para la fecha y hora solicitados
+      const reservaActiva = cancha.reservas.some(reserva =>
+        new Date(reserva.fecha_hora_reserva).getTime() === fechaHoraConsulta.getTime() &&
+        reserva.estado === 'aceptada' || reserva.estado === 'pendiente'
+      );
+  
+      if (reservaActiva) return false;
+  
+      // Calcula la distancia para verificar que esté dentro del rango deseado (10 km en metros)
       const distancia = geolib.getDistance(
         { latitude: latitud, longitude: longitud },
         { latitude: cancha.latitud, longitude: cancha.longitud },
       );
-
-      return distancia <= 10000; // 10 km en metros
+  
+      return distancia <= 10000;
     });
-
+  
     return { message: 'Canchas disponibles encontradas.', data: canchasDisponibles };
   }
+  
+
 }

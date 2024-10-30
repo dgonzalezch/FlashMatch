@@ -21,5 +21,6 @@ export enum ENDPOINT {
   AUTH_LOGIN = 'login',
   AUTH_CHECK_STATUS = 'check-status',
   RESERVA_CANCHA = 'cancha/',
-  JOIN_PARTIDO = 'join'
+  JOIN_PARTIDO = 'join',
+  CANCHAS_DISPONIBLES = 'disponibles'
 }

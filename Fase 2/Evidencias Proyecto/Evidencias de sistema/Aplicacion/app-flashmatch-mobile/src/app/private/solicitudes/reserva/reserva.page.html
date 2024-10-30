@@ -10,23 +10,6 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" color="light">
-  <!-- Sección de Filtros -->
-  <!-- <ion-card class="ion-padding-horizontal ion-margin-bottom">
-    <ion-item lines="none">
-      <ion-label>Filtrar por estado</ion-label>
-      <ion-select placeholder="Seleccionar filtro">
-        <ion-select-option value="pendiente">Pendiente</ion-select-option>
-        <ion-select-option value="aceptada">Aceptada</ion-select-option>
-        <ion-select-option value="rechazada">Rechazada</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <ion-item lines="none">
-      <ion-label>Fecha</ion-label>
-      <ion-datetime display-format="DD/MM/YYYY" placeholder="Seleccionar fecha"></ion-datetime>
-    </ion-item>
-    <ion-button expand="block" color="primary" class="ion-margin-top">Aplicar filtros</ion-button>
-  </ion-card> -->
-
   <ion-grid>
     @for (reserva of listReservasCancha(); track $index) {
       <ion-row>
@@ -36,7 +19,7 @@
               <ion-row>
                 <ion-col size="8">
                   <ion-card-title>{{ reserva.cancha.nombre_cancha }}</ion-card-title>
-                  <ion-card-subtitle>Fecha: {{ reserva.fecha_reserva | date: 'dd/MM/yyyy' }}, {{reserva.hora_reserva.slice(0, 5)}}</ion-card-subtitle>
+                  <ion-card-subtitle>Fecha: {{ reserva.fecha_hora_reserva | date: 'dd/MM/yyyy, HH:mm' }}</ion-card-subtitle>
                 </ion-col>
                 <ion-col size="4" class="ion-text-end">
                   <ion-badge [color]="reserva.estado === 'aceptada' ? 'success' : reserva.estado === 'rechazada' ? 'danger' : 'warning'">
@@ -66,10 +49,10 @@
             <ion-row class="ion-justify-content-end ion-padding">
             @if (reserva.estado == 'pendiente') {
               <ion-col size="auto">
-                <ion-button size="small" color="success" fill="outline" (click)="sendRespuestaReserva(reserva.id_reserva_cancha, 'aceptada')">Aceptar</ion-button>
+                <ion-button size="small" color="tertiary"  (click)="sendRespuestaReserva(reserva.id_reserva_cancha, 'aceptada')">Aceptar</ion-button>
               </ion-col>
               <ion-col size="auto">
-                <ion-button size="small" color="danger" fill="outline" (click)="sendRespuestaReserva(reserva.id_reserva_cancha, 'rechazada')">Rechazar</ion-button>
+                <ion-button size="small" color="danger"  (click)="sendRespuestaReserva(reserva.id_reserva_cancha, 'rechazada')">Rechazar</ion-button>
               </ion-col>
             }
             @else {
@@ -78,7 +61,6 @@
               </ion-col>
             }
            </ion-row>
-
           </ion-card>
         </ion-col>
       </ion-row>

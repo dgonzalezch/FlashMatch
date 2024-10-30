@@ -3,16 +3,15 @@
     <ion-title>
       <div class="ion-text-center">
         <h5 class="ion-no-margin">Perfil</h5>
-        <p class="ion-no-margin" style="font-size: small; font-weight: 300;">Mi información</p>
+        <p class="ion-no-margin" style="font-size: small; font-weight: 300;">Información</p>
       </div>
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" color="light">
   <ion-grid>
-    <!-- Avatar del usuario -->
-    <ion-row class="ion-justify-content-center">
+    <ion-row class="ion-justify-content-center ion-text-center modern-card ion-margin ion-padding">
       <ion-col size="auto" class="ion-text-center">
         <ion-avatar class="user-avatar-container">
           <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="Imagen del usuario" class="user-avatar" />
@@ -21,18 +20,10 @@
           <ion-icon slot="icon-only" name="camera-outline"/>
         </ion-button>
       </ion-col>
-    </ion-row>
-
-    <!-- Nombre del usuario -->
-    <ion-row class="ion-justify-content-center ion-text-center">
-      <ion-col size="auto">
-        <h2 class="ion-no-margin">{{ infoUsuario()?.nombre }} {{ infoUsuario()?.apellido }}</h2>
+      <ion-col size="12">
+        <h4 class="ion-no-margin">{{ infoUsuario()?.nombre }} {{ infoUsuario()?.apellido }}</h4>
       </ion-col>
-    </ion-row>
-
-    <!-- Calificación del usuario -->
-    <ion-row class="ion-justify-content-center">
-      <ion-col size="12" class="ion-text-center">
+      <ion-col size="12">
         <div class="user-rating">
           <div class="rating-stars">
             @for (star of [1, 2, 3, 4, 5]; track $index) {
@@ -42,13 +33,20 @@
                 size="small"/>
             }
           </div>
-          <h5 class="ion-no-margin ion-margin-top">{{ user.rating }} / 5</h5>
+          <h6 class="ion-no-margin ion-margin-top">{{ user.rating }} / 5</h6>
         </div>
       </ion-col>
     </ion-row>
 
+    <!-- Nombre del usuario -->
+    <!-- <ion-row class="ion-justify-content-center ion-text-center">
+      <ion-col size="auto">
+        <h2 class="ion-no-margin">{{ infoUsuario()?.nombre }} {{ infoUsuario()?.apellido }}</h2>
+      </ion-col>
+    </ion-row> -->
+
     <!-- Títulos del usuario -->
-    <ion-row class="ion-justify-content-center ion-text-center">
+    <ion-row class="ion-justify-content-center ion-text-center modern-card ion-margin ion-padding">
       <ion-col size="12">
         @for (title of user.titles; track $index) {
           <ion-chip color="secondary">{{ title }}</ion-chip>

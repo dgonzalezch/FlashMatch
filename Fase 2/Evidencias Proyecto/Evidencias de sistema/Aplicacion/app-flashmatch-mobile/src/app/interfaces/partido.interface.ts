@@ -8,13 +8,31 @@ export interface Partido {
   jugadores_actuales: number
   jugadores_requeridos: number
   creado_en: string
+  creador: Creador
   deporte: Deporte
   nivelHabilidad: NivelHabilidad
   tipoEmparejamiento: TipoEmparejamiento
   rangoEdad: RangoEdad
   tipoPartido: TipoPartido
   reserva: Reserva
-  creador: Creador
+  jugadores: Jugadores[]
+}
+
+export interface Creador {
+  id_usuario: string
+  nombre: string
+  apellido: string
+  rut: string
+  fecha_nacimiento: string
+  correo: string
+  telefono: string
+  ubicacion: string
+  latitud: string
+  longitud: string
+  imagen_perfil: any
+  roles: string[]
+  activo: boolean
+  creado_en: string
 }
 
 export interface Deporte {
@@ -53,8 +71,7 @@ export interface TipoPartido {
 
 export interface Reserva {
   id_reserva_cancha: string
-  fecha_reserva: string
-  hora_reserva: string
+  fecha_hora_reserva: string
   estado: string
   comentario: string
   fecha_solicitud: string
@@ -80,7 +97,14 @@ export interface Material {
   descripcion: string
 }
 
-export interface Creador {
+export interface Jugadores {
+  id_usuario_partido: string
+  equipo: any
+  estado: string
+  usuario: Usuario
+}
+
+export interface Usuario {
   id_usuario: string
   nombre: string
   apellido: string

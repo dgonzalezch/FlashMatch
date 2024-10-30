@@ -6,6 +6,7 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { CreateDisponibilidadCanchaDto } from './dto/create-disponibilidad-cancha.dto';
 import { UpdateDisponibilidadCanchaDto } from './dto/update-disponibilidad-cancha.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CanchasDisponiblesBodyDto } from './dto/canchas-disponibles-body.dto';
 
 @Controller('cancha')
 export class CanchaController {
@@ -47,47 +48,10 @@ export class CanchaController {
     return this.canchaService.remove(id);
   }
 
-  @Get('disponibles')
+  @Post('disponibles')
   async findAvailableCanchas(
-    @Query('latitud') latitud: number,
-    @Query('longitud') longitud: number,
-    @Query('fecha') fecha: string,
-    @Query('hora') hora: string,
+    @Body() body: CanchasDisponiblesBodyDto,
   ) {
-    return this.canchaService.findAvailableCanchas({ latitud, longitud, fecha, hora });
+    return this.canchaService.findAvailableCanchas(body);
   }
-
-  // // Añadir disponibilidad
-  // @Post(':id/disponibilidad')
-  // addDisponibilidad(
-  //   @Param('id', ParseUUIDPipe) id: string,
-  //   @Body() createDisponibilidadCanchaDto: CreateDisponibilidadCanchaDto
-  // ) {
-  //   return this.canchaService.addDisponibilidad({ ...createDisponibilidadCanchaDto, cancha_id: id });
-  // }
-
-  // // Obtener disponibilidad de una cancha
-  // @Get(':id/disponibilidad')
-  // getDisponibilidad(
-  //   @Param('id', ParseUUIDPipe) id: string
-  // ) {
-  //   return this.canchaService.getDisponibilidad(id);
-  // }
-
-  // // Actualizar disponibilidad
-  // @Patch('disponibilidad/:id_disponibilidad')
-  // updateDisponibilidad(
-  //   @Param('id_disponibilidad', ParseUUIDPipe) id_disponibilidad: string,
-  //   @Body() updateDisponibilidadCanchaDto: UpdateDisponibilidadCanchaDto
-  // ) {
-  //   return this.canchaService.updateDisponibilidad(id_disponibilidad, updateDisponibilidadCanchaDto);
-  // }
-
-  // // Eliminar disponibilidad
-  // @Delete('disponibilidad/:id_disponibilidad')
-  // removeDisponibilidad(
-  //   @Param('id_disponibilidad', ParseUUIDPipe) id_disponibilidad: string
-  // ) {
-  //   return this.canchaService.removeDisponibilidad(id_disponibilidad);
-  // }
 }

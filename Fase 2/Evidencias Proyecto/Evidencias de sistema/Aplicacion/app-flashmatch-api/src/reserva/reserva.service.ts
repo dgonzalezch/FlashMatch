@@ -29,78 +29,81 @@ export class ReservaService {
   ) { }
 
   async createReservaCancha(createReservaCanchaDto: CreateReservaCanchaDto): Promise<ResponseMessage<ReservaCancha>> {
-    const { cancha_id, partido_id, fecha_reserva, hora_reserva } = createReservaCanchaDto;
-
+    const { cancha_id, partido_id, fecha_hora_reserva } = createReservaCanchaDto;
+  
     const cancha = await this.canchaRepository.findOneBy({ id_cancha: cancha_id });
     const partido = await this.partidoRepository.findOneBy({ id_partido: partido_id });
-
+  
     if (!cancha) throw new NotFoundException(`Cancha con ID ${cancha_id} no encontrada.`);
     if (!partido) throw new NotFoundException(`Partido con ID ${partido_id} no encontrado.`);
-
-    // Verificar si ya existe una reserva para la misma cancha, fecha y hora
+  
+    // Convertir `fecha_hora_reserva` a un objeto `Date`
+    const fechaHoraReservaDate = new Date(fecha_hora_reserva);
+  
+    // Verificar si ya existe una reserva para la misma cancha y fechaHora
     const reservaExistente = await this.reservaCanchaRepository.findOne({
       where: {
         cancha: { id_cancha: cancha_id },
-        fecha_reserva: fecha_reserva,
-        hora_reserva: hora_reserva,
-        estado: In(['pendiente', 'aceptada']),  // Aquí aplica el filtro para "pendiente" o "aceptada"
-      }
+        fecha_hora_reserva: fechaHoraReservaDate,
+        estado: In(['pendiente', 'aceptada']),
+      },
     });
-
+  
     if (reservaExistente) {
       throw new ConflictException(`La cancha ya está reservada para la fecha y hora solicitadas. Intenta nuevamente con otra cancha.`);
     }
-
+  
     try {
       const reservaCancha = this.reservaCanchaRepository.create({
         ...createReservaCanchaDto,
         cancha,
         partido,
-        estado: 'pendiente', // Estado inicial de la reserva
+        estado: 'pendiente',
       });
-
+  
       await this.reservaCanchaRepository.save(reservaCancha);
-
+  
       return { message: 'Reserva de cancha solicitada exitosamente. Esperando aprobación.', data: reservaCancha };
     } catch (error) {
       this.errorHandlingService.handleDBErrors(error);
     }
   }
-
-
+  
   async approveOrRejectReservaCancha(id_reserva_cancha: string, estado: 'aceptada' | 'rechazada'): Promise<ResponseMessage<ReservaCancha>> {
     const reservaCancha = await this.reservaCanchaRepository.findOne({
-      where: { id_reserva_cancha: id_reserva_cancha },
+      where: { id_reserva_cancha },
       relations: ['cancha', 'partido'],
     });
-
+  
     if (!reservaCancha) throw new NotFoundException(`Reserva con ID ${id_reserva_cancha} no encontrada.`);
     if (reservaCancha.estado !== 'pendiente') throw new ConflictException(`La reserva ya fue ${reservaCancha.estado}.`);
-
+  
     reservaCancha.estado = estado;
-
+  
     if (estado === 'aceptada') {
-      // Marcar disponibilidad de cancha como ocupada y actualizar estado del partido
+      // Convertir `fecha_hora_reserva` a `Date`
+      const fechaHoraReservaDate = new Date(reservaCancha.fecha_hora_reserva);
+  
       const disponibilidad = await this.disponibilidadRepository.findOne({
         where: {
           cancha: { id_cancha: reservaCancha.cancha.id_cancha },
-          hora: reservaCancha.hora_reserva,
-          dia_semana: new Date(reservaCancha.fecha_reserva).getDay() + 1,
+          hora: fechaHoraReservaDate.toISOString().substring(11, 16), // Extrae hora en formato HH:mm
+          dia_semana: fechaHoraReservaDate.getUTCDay() + 1, // Obtiene el día de la semana
         },
       });
-
+  
       if (!disponibilidad) throw new ConflictException(`Disponibilidad no encontrada para el horario reservado.`);
       disponibilidad.disponible = false;
       await this.disponibilidadRepository.save(disponibilidad);
     }
+  
     await this.reservaCanchaRepository.save(reservaCancha);
-    
-    // Solo actualizar el estado del partido si la reserva es aceptada
     await this.actualizarEstadoPartido(reservaCancha.partido.id_partido);
-
+  
     return { message: `Reserva ${estado} exitosamente.`, data: reservaCancha };
   }
-
+  
+  
   async actualizarEstadoPartido(partido_id: string): Promise<void> {
     const partido = await this.partidoRepository.findOne({ where: { id_partido: partido_id } });
 

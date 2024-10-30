@@ -28,11 +28,13 @@ export default class ListPartidosPage implements OnInit {
   private loadingController = inject(LoadingController);
   private alertController = inject(AlertController);
 
+  userId = signal<string>('');
   ubication = signal<string>('');
   listPartidos = signal<Partido[]>([]);
 
   ngOnInit() {
-    this.ubication.set(this.locationService.getLocation().ubicacion)
+    this.ubication.set(this.locationService.getLocation().ubicacion);
+    this.loadUserId();
     this.loadPartidos();
   }
 
@@ -47,6 +49,12 @@ export default class ListPartidosPage implements OnInit {
     })
   }
 
+  async loadUserId() {
+    const user = await this.storageService.get('user');
+    if (user) {
+      this.userId.set(user);
+    }
+  }
 
   async presentAlertConfirmJoinPartido(partidoId: string) {
     const alert = await this.alertController.create({
@@ -71,7 +79,6 @@ export default class ListPartidosPage implements OnInit {
 
 
   async joinPartido(partidoId: string) {
-
     // Validar si hay al menos un horario seleccionado
     const loading = await this.loadingController.create({
       message: 'Uniéndose al partido...',

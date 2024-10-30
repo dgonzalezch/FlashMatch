@@ -1,7 +1,6 @@
 export interface ReservaCancha {
   id_reserva_cancha: string
-  fecha_reserva: string
-  hora_reserva: string
+  fecha_hora_reserva: string
   estado: string
   comentario: string
   fecha_solicitud: string

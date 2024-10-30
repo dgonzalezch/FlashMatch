@@ -1,4 +1,4 @@
 export interface responseSuccess {
-  data: any[];
+  data: any;
   message: string;
 }

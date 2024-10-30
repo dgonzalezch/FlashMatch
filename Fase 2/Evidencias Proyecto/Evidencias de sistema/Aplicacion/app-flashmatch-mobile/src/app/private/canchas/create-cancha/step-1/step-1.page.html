@@ -56,7 +56,7 @@
 
       <ion-row class="modern-card-form ion-padding ion-margin">
         <ion-col size="12">
-          <ion-input type="text" formControlName="nombre_cancha" preventSpaces label="Nombre cancha*" labelPlacement="floating" fill="outline" [clearInput]="true"/>
+          <ion-input type="text" formControlName="nombre_cancha" label="Nombre cancha*" labelPlacement="floating" fill="outline" [clearInput]="true"/>
           @if (step1FormCreateCancha.get('nombre_cancha')?.touched && step1FormCreateCancha.get('nombre_cancha')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {

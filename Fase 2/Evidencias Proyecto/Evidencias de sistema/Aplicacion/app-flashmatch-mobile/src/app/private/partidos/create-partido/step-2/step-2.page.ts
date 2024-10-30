@@ -63,7 +63,7 @@ export default class Step2Page {
     ]]
   });
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.selectedLocation.set(this.locationService.getLocation().ubicacion);
 
     this.route.paramMap.subscribe(params => {
@@ -73,22 +73,16 @@ export default class Step2Page {
     this.partidoService.getPartido(this.partidoId()).subscribe({
       next: (resp: responseSuccess) => {
         this.partido.set(resp.data);
+        this.loadCanchas();
       },
       error: (err: responseError) => {
         this.alertService.error(err.message);
       }
     })
-
-    this.loadCanchas();
   }
 
-  // ionViewWillEnter() {
-  //   this.selectedLocation.set(this.locationService.getLocation().ubicacion);
-  //   this.loadCanchas();
-  // }
-
   loadCanchas() {
-    this.canchaService.getCanchas().subscribe({
+    this.canchaService.getCanchasCercanasHorario({ latitud: this.locationService.getLocation().latitud, longitud: this.locationService.getLocation().longitud, partido_id: this.partido().id_partido }).subscribe({
       next: (resp: responseSuccess) => {
         this.listCanchas.set(resp.data);
       },
@@ -129,12 +123,10 @@ export default class Step2Page {
     const dataSendCreateReserva = {
       cancha_id: cancha.id_cancha,
       partido_id: this.partido().id_partido,
-      fecha_reserva: this.datePipe.transform(this.partido().fecha_partido, 'yyyy-MM-ddTHH:mm:ss'),
-      hora_reserva: this.datePipe.transform(this.partido().fecha_partido, 'HH:mm'),
+      fecha_hora_reserva: this.datePipe.transform(this.partido().fecha_partido, 'yyyy-MM-ddTHH:mm:ss'),
       comentario: ''
     };
-    console.log(this.partido())
-    debugger
+
     try {
       await loading.present();
 

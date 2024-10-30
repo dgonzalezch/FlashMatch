@@ -72,10 +72,14 @@
                       <ion-spinner name="dots" color="secondary"/>
                     </ion-col>
                     <ion-col size="12">
+                      @if (partido.creador.id_usuario === userId()) { }
+
                       <ion-button fill="solid" color="primary" [disabled]="partido.estado !== 'confirmado'" (click)="presentAlertConfirmJoinPartido(partido.id_partido)">Unirse</ion-button>
-                      <ion-button fill="solid" color="secondary"  [routerLink]="'/private/matches/detail-match/' + partido.id_partido">Detalles</ion-button>
+                      <ion-button fill="solid" color="secondary" [routerLink]="'/private/matches/detail-match/' + partido.id_partido">Detalles</ion-button>
                     </ion-col>
                   }
+                } @else {
+                  <ion-button fill="solid" color="secondary" [routerLink]="'/private/matches/detail-match/' + partido.id_partido">Detalles</ion-button>
                 }
               </ion-row>
             </ion-card-content>

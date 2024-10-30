@@ -9,12 +9,13 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Usuario } from 'src/usuario/entities/usuario.entity';
 import { ImagenCancha } from './entities/imagen-cancha.entity';
+import { Partido } from 'src/partido/entities/partido.entity';
 
 @Module({
   controllers: [CanchaController],
   providers: [CanchaService, ErrorHandlingService],
   imports: [
-    TypeOrmModule.forFeature([Cancha, DisponibilidadCancha, Deporte, Usuario, MaterialCancha, ImagenCancha]),
+    TypeOrmModule.forFeature([Cancha, DisponibilidadCancha, Deporte, Usuario, MaterialCancha, ImagenCancha, Partido]),
   ]
 })
 export class CanchaModule { }

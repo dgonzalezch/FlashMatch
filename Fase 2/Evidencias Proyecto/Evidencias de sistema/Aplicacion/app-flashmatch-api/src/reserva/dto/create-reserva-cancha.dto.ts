@@ -11,11 +11,7 @@ export class CreateReservaCanchaDto {
 
     @IsDateString()
     @IsNotEmpty()
-    fecha_reserva: string;
-
-    @IsString()
-    @Matches(/^([01]\d|2[0-3]):([0-5]\d)$/)
-    hora_reserva: string;
+    fecha_hora_reserva: string;
 
     @IsString()
     @IsOptional()

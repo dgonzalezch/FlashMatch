@@ -80,7 +80,7 @@ export const routes: Routes = [
             ]
           },
           {
-            path: 'detail-match/:id',
+            path: 'detail-match/:id_partido',
             loadComponent: () => import('./private/partidos/detail-partido/detail-partido.page')
           },
           {

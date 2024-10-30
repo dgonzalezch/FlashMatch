@@ -15,11 +15,8 @@ export class ReservaCancha {
   @JoinColumn({ name: 'partido_id' })
   partido: Partido;
 
-  @Column({ type: 'date' })
-  fecha_reserva: string;
-
-  @Column({ type: 'time' })
-  hora_reserva: string;
+  @Column({ type: 'timestamp' })
+  fecha_hora_reserva: Date;
 
   @Column({ type: 'varchar', length: 20, default: 'pendiente' })
   estado: string;
