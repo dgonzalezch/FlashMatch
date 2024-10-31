@@ -35,7 +35,7 @@
       <!-- Items del menú -->
       @for (item of menuItems(); track $index) {
         <ion-menu-toggle auto-hide="false">
-          <ion-item button [routerLink]="item.route" class="menu-item-modern" lines="none" detail color="dark">
+          <ion-item button routerLinkActive="active-link" [routerLink]="item.route" class="menu-item-modern" lines="none" detail color="dark">
             <ion-icon [name]="item.icon" slot="start" class="menu-icon-modern"/>
             <ion-label class="menu-item-label-modern">{{ item.label }}</ion-label>
           </ion-item>

@@ -109,3 +109,16 @@ ion-list {
 .profile-button-modern:active {
   transform: scale(0.98);
 }
+
+
+.active-link {
+  color: white;
+  border-left: 8px solid var(--ion-color-primary);
+  border-radius: 8px;
+  // transition: border-left-color 0.2s ease;
+
+  // ion-icon, ion-label {
+  //   font-weight: bolder;
+  // }
+}
+

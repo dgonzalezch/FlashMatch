@@ -32,12 +32,10 @@ export default class Step2Page implements OnInit {
     correo: ['', [
       Validators.required,
       Validators.email,
-      Validators.maxLength(25),
     ]],
     repeatCorreo: ['', [
       Validators.required,
       Validators.email,
-      Validators.maxLength(25),
     ]],
     clave: ['', [
       Validators.required,
