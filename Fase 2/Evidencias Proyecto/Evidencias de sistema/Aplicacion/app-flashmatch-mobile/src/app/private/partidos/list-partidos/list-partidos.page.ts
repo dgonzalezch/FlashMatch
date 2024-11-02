@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonFooter, IonSegmentButton, IonIcon, IonButtons, IonSegment, IonModal, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonList, IonItem, IonLabel, IonGrid, IonRow, IonCol, IonCardSubtitle, IonText, IonProgressBar, IonChip, IonSpinner, IonBadge, IonSearchbar, IonFab, IonImg, IonAvatar, LoadingController, AlertController } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonFooter, IonSegmentButton, IonIcon, IonButtons, IonSegment, IonModal, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonList, IonItem, IonLabel, IonGrid, IonRow, IonCol, IonCardSubtitle, IonText, IonProgressBar, IonChip, IonSpinner, IonBadge, IonSearchbar, IonFab, IonImg, IonAvatar, LoadingController, AlertController, IonAccordionGroup, IonAccordion } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { HeaderMapComponent } from 'src/app/shared/components/header-map/header-map.component';
 import { LocationService } from '../../../shared/common/location.service';
@@ -17,10 +17,10 @@ import { StorageService } from 'src/app/services/storage.service';
   templateUrl: './list-partidos.page.html',
   styleUrls: ['./list-partidos.page.scss'],
   standalone: true,
-  imports: [IonAvatar, IonImg, IonFab, IonSearchbar, IonBadge, IonSpinner, IonChip, IonProgressBar, IonText, IonCardSubtitle, IonCol, IonRow, IonGrid, IonLabel, IonItem, IonList, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonModal, IonSegment, IonButtons, IonIcon, IonSegmentButton, IonFooter, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderMapComponent, RouterLink],
+  imports: [IonAccordion, IonAccordionGroup, IonAvatar, IonImg, IonFab, IonSearchbar, IonBadge, IonSpinner, IonChip, IonProgressBar, IonText, IonCardSubtitle, IonCol, IonRow, IonGrid, IonLabel, IonItem, IonList, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonModal, IonSegment, IonButtons, IonIcon, IonSegmentButton, IonFooter, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderMapComponent, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export default class ListPartidosPage implements OnInit {
+export default class ListPartidosPage {
   private locationService = inject(LocationService);
   private partidoService = inject(PartidoService);
   private alertService = inject(AlertService);
@@ -32,7 +32,7 @@ export default class ListPartidosPage implements OnInit {
   ubication = signal<string>('');
   listPartidos = signal<Partido[]>([]);
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.ubication.set(this.locationService.getLocation().ubicacion);
     this.loadUserId();
     this.loadPartidos();
@@ -77,7 +77,6 @@ export default class ListPartidosPage implements OnInit {
     await alert.present();
   }
 
-
   async joinPartido(partidoId: string) {
     // Validar si hay al menos un horario seleccionado
     const loading = await this.loadingController.create({
@@ -105,6 +104,5 @@ export default class ListPartidosPage implements OnInit {
       await loading.dismiss();
       this.alertService.error('Ocurrió un error inesperado al enviar la solicitud.');
     }
-
   }
 }

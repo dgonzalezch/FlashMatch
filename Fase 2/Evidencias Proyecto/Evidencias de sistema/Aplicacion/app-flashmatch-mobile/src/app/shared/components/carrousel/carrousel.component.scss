@@ -1,0 +1,10 @@
+ion-slides,
+ion-slide {
+  height: 100%;
+}
+
+ion-slide img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}

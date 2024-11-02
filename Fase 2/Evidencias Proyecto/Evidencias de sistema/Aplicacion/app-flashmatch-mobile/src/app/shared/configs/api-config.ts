@@ -20,7 +20,9 @@ export enum ENDPOINT {
   AUTH_REGISTER = 'register/',
   AUTH_LOGIN = 'login',
   AUTH_CHECK_STATUS = 'check-status',
+  AUTH_CHANGE_PASSWORD = 'change-password',
   RESERVA_CANCHA = 'cancha/',
   JOIN_PARTIDO = 'join',
-  CANCHAS_DISPONIBLES = 'disponibles'
+  CANCHAS_DISPONIBLES = 'disponibles',
+  UPLOAD_PROFILE_PICTURE = 'upload-profile-picture/'
 }

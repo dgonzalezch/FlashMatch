@@ -8,6 +8,7 @@ import { ValidRoles } from './interfaces';
 import { Auth } from './decorators';
 import { Usuario } from 'src/usuario/entities/usuario.entity';
 import { CreateUsuarioDto } from 'src/usuario/dto/create-usuario.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -30,6 +31,11 @@ export class AuthController {
   @Auth()
   refreshToken(@GetUser() usuario: Usuario) {
     return this.authService.refreshToken(usuario);
+  }
+
+  @Patch('change-password')
+  changePassword(@Body() changePasswordDto: ChangePasswordDto) {
+    return this.authService.changePassword(changePasswordDto);
   }
 
   @Get('private3')

@@ -25,45 +25,6 @@ export default class ListUsuariosPage {
 
   listUsuarios = signal<any[]>([]);
 
-  // listUsuarios = [
-  //   {
-  //     id_usuario: 1,
-  //     nombre: 'Juan Pérez',
-  //     avatar: '', // Si no tiene avatar, se mostrará el avatar por defecto
-  //     ciudad: 'Santiago',
-  //     partidos_jugados: 15,
-  //     ranking: 1200,
-  //     posicion: 'Delantero'
-  //   },
-  //   {
-  //     id_usuario: 2,
-  //     nombre: 'Ana Martínez',
-  //     avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
-  //     ciudad: 'Concepción',
-  //     partidos_jugados: 20,
-  //     ranking: 1500,
-  //     posicion: 'Portera'
-  //   },
-  //   {
-  //     id_usuario: 3,
-  //     nombre: 'Carlos Gómez',
-  //     avatar: 'https://randomuser.me/api/portraits/men/45.jpg',
-  //     ciudad: 'Valparaíso',
-  //     partidos_jugados: 10,
-  //     ranking: 1100,
-  //     posicion: 'Defensa'
-  //   },
-  //   {
-  //     id_usuario: 4,
-  //     nombre: 'María Fernández',
-  //     avatar: 'https://randomuser.me/api/portraits/women/46.jpg',
-  //     ciudad: 'La Serena',
-  //     partidos_jugados: 25,
-  //     ranking: 1600,
-  //     posicion: 'Centrocampista'
-  //   }
-  // ];
-
   ionViewWillEnter() {
     this.loadUsuarios();
   }

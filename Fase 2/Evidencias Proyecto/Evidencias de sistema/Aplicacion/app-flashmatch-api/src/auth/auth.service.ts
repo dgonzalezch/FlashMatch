@@ -8,6 +8,7 @@ import { ErrorHandlingService } from 'src/common/services/error-handling.service
 import { Usuario } from 'src/usuario/entities/usuario.entity';
 import { CreateUsuarioDto } from 'src/usuario/dto/create-usuario.dto';
 import { LoginUsuarioDto } from './dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 
 @Injectable()
@@ -48,7 +49,7 @@ export class AuthService {
     const { clave, correo } = loginUsuarioDto;
     const usuario = await this.usuarioRepository.findOne({
       where: { correo },
-      select: { id_usuario: true, correo: true, clave: true, nombre: true, apellido: true, roles: true, ubicacion: true, latitud: true, longitud: true }
+      select: { id_usuario: true, correo: true, clave: true, nombre: true, apellido: true, roles: true, ubicacion: true, latitud: true, longitud: true, imagen_perfil: true }
     });
 
     if (!usuario)
@@ -73,5 +74,33 @@ export class AuthService {
   private getJwtToken(payload: JwtPayload) {
     const token = this.jwtService.sign(payload);
     return token;
+  }
+
+  async changePassword(changePasswordDto: ChangePasswordDto) {
+    const { userId, currentPassword, newPassword } = changePasswordDto;
+
+    // Obtener el usuario por ID
+    const usuario = await this.usuarioRepository.findOne({
+      where: { id_usuario: userId },
+      select: { id_usuario: true, correo: true, clave: true, nombre: true, apellido: true, roles: true, ubicacion: true, latitud: true, longitud: true }
+    });
+
+    if (!usuario) {
+      throw new UnauthorizedException('Usuario no encontrado.');
+    }
+
+    // Verificar la contraseña actual
+    const isPasswordValid = bcrypt.compareSync(currentPassword, usuario.clave);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('La contraseña actual es incorrecta.');
+    }
+    
+    // Encriptar la nueva contraseña y actualizarla en la base de datos
+    usuario.clave = bcrypt.hashSync(newPassword, 10);
+    await this.usuarioRepository.save(usuario);
+
+    return {
+      message: 'Contraseña actualizada con éxito.'
+    };
   }
 }

@@ -12,12 +12,14 @@ import { TipoPartido } from 'src/tipo-partido/entities/tipo-partido.entity';
 import { Usuario } from 'src/usuario/entities/usuario.entity';
 import { ReservaCancha } from 'src/reserva/entities/reserva-cancha.entity';
 import { UsuarioPartido } from 'src/usuario-partido/entities/usuario-partido.entity';
+import { NotificacionModule } from 'src/common/notificacion/notificacion.module';
 
 @Module({
   controllers: [PartidoController],
   providers: [PartidoService, ErrorHandlingService],
   imports: [
-    TypeOrmModule.forFeature([Partido, Deporte, NivelHabilidad, TipoEmparejamiento, RangoEdad, TipoPartido, Usuario, ReservaCancha, UsuarioPartido])
+    TypeOrmModule.forFeature([Partido, Deporte, NivelHabilidad, TipoEmparejamiento, RangoEdad, TipoPartido, Usuario, ReservaCancha, UsuarioPartido]),
+    NotificacionModule
   ]
 })
 export class PartidoModule {}

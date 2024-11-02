@@ -8,12 +8,16 @@ import { Cancha } from 'src/cancha/entities/cancha.entity';
 import { Usuario } from 'src/usuario/entities/usuario.entity';
 import { DisponibilidadCancha } from 'src/cancha/entities/disponibilidad-cancha.entity';
 import { Partido } from 'src/partido/entities/partido.entity';
+import { NotificacionModule } from 'src/common/notificacion/notificacion.module';
+import { PagoModule } from 'src/common/pago/pago.module';
 
 @Module({
   controllers: [ReservaController],
   providers: [ReservaService, ErrorHandlingService],
   imports: [
-    TypeOrmModule.forFeature([ReservaCancha, Cancha, Usuario, DisponibilidadCancha, Partido])
+    TypeOrmModule.forFeature([ReservaCancha, Cancha, Usuario, DisponibilidadCancha, Partido]),
+    NotificacionModule,
+    PagoModule
   ]
 })
 export class ReservaModule {}

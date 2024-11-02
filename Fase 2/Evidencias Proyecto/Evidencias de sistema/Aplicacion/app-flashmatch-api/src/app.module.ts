@@ -16,9 +16,12 @@ import { TipoEmparejamientoModule } from './tipo-emparejamiento/tipo-emparejamie
 import { MaterialCanchaModule } from './material-cancha/material-cancha.module';
 import { ReservaModule } from './reserva/reserva.module';
 import { UsuarioPartidoModule } from './usuario-partido/usuario-partido.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { NotificacionModule } from './common/notificacion/notificacion.module';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -45,6 +48,7 @@ import { UsuarioPartidoModule } from './usuario-partido/usuario-partido.module';
     MaterialCanchaModule,
     ReservaModule,
     UsuarioPartidoModule,
+    NotificacionModule,
   ],
   providers: [],
 })

@@ -13,7 +13,7 @@ import { LocationService } from '../../common/location.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenuComponent {
-  private storageService = inject(StorageService);
+  public storageService = inject(StorageService);
   private locationService = inject(LocationService);
   private router = inject(Router);
 
@@ -25,7 +25,9 @@ export class MenuComponent {
     this.locationService.address.set('');
     this.locationService.lat.set(0);
     this.locationService.lng.set(0);
-    this.router.navigate(['/auth']);
+    this.router.navigate(['/auth']).then(() => {
+      window.location.reload();
+    });
   }
 
 }

@@ -1,4 +1,4 @@
-import { IsDateString, IsNotEmpty, IsOptional, IsString, IsUUID, IsBoolean } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsString, IsUUID, IsBoolean, IsOptional } from 'class-validator';
 
 export class CreatePartidoDto {
     @IsNotEmpty()

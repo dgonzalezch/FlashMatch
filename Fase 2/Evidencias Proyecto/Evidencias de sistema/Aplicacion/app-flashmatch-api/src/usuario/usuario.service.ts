@@ -12,6 +12,11 @@ import { Usuario } from './entities/usuario.entity';
 import { DeportePosicionUsuario } from './entities/deporte-posicion-usuario.entity';
 import { EstadisticaDetalladaUsuario } from './entities/estadistica-detallada-usuario.entity';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { NivelHabilidad } from 'src/nivel-habilidad/entities/nivel-habilidad.entity';
+import { RangoEdad } from 'src/rango-edad/entities/rango-edad.entity';
+import { TipoPartido } from 'src/tipo-partido/entities/tipo-partido.entity';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class UsuarioService {
@@ -30,6 +35,12 @@ export class UsuarioService {
     private readonly estadisticaDetalladaUsuarioRepository: Repository<EstadisticaDetalladaUsuario>,
     @InjectRepository(ParametroRendimiento)
     private readonly parametroRendimientoRepository: Repository<ParametroRendimiento>,
+    @InjectRepository(RangoEdad)
+    private readonly rangoEdadRepository: Repository<RangoEdad>,
+    @InjectRepository(NivelHabilidad)
+    private readonly nivelHabilidadRepository: Repository<NivelHabilidad>,
+    @InjectRepository(TipoPartido)
+    private readonly tipoPartidoRepository: Repository<TipoPartido>,
     private readonly errorHandlingService: ErrorHandlingService,
   ) { }
 
@@ -56,7 +67,7 @@ export class UsuarioService {
     if (isUUID(term)) {
       usuario = await this.usuarioRepository.findOne({
         where: { id_usuario: term },
-        relations: ['equipos', 'deportesPosicionesUsuarios.deportePosicion', 'estadisticasDetalladasUsuarios.parametroRendimiento'],
+        relations: ['rangoEdad', 'nivelHabilidad', 'tipoPartido', 'equipos', 'deportesPosicionesUsuarios.deportePosicion', 'estadisticasDetalladasUsuarios.parametroRendimiento', 'evaluaciones'],
       });
     } else {
       usuario = await this.usuarioRepository.createQueryBuilder('usuario')
@@ -76,9 +87,33 @@ export class UsuarioService {
   }
 
   async update(id_usuario: string, updateUsuarioDto: UpdateUsuarioDto): Promise<ResponseMessage<Usuario>> {
+    const { rango_edad_id, nivel_habilidad_id, tipo_partido_id } = updateUsuarioDto;
+
+    let rangoEdad: RangoEdad;
+    let nivelHabilidad: NivelHabilidad;
+    let tipoPartido: TipoPartido;
+
+    if (rango_edad_id) {
+      rangoEdad = await this.rangoEdadRepository.findOneBy({ id_rango_edad: rango_edad_id });
+      if (!rangoEdad) throw new NotFoundException(`Rango edad con ID ${rango_edad_id} no encontrado.`);
+    }
+    
+    if (nivel_habilidad_id) {
+      nivelHabilidad = await this.nivelHabilidadRepository.findOneBy({ id_nivel_habilidad: nivel_habilidad_id });
+      if (!nivelHabilidad) throw new NotFoundException(`Nivel habilidad con ID ${nivel_habilidad_id} no encontrado.`);
+    }
+
+    if (tipo_partido_id) {
+      tipoPartido = await this.tipoPartidoRepository.findOneBy({ id_tipo_partido: tipo_partido_id });
+      if (!tipoPartido) throw new NotFoundException(`Tipo partido con ID ${tipo_partido_id} no encontrado.`);
+    }
+
     const usuario = await this.usuarioRepository.preload({
       id_usuario,
       ...updateUsuarioDto,
+      rangoEdad,
+      nivelHabilidad,
+      tipoPartido
     });
 
     if (!usuario) throw new NotFoundException(`Usuario con id ${id_usuario} no encontrado.`);
@@ -154,5 +189,25 @@ export class UsuarioService {
     } catch (error) {
       this.errorHandlingService.handleDBErrors(error);
     }
+  }
+
+  async updateProfilePicture(userId: string, imagePath: string) {
+    const usuario = await this.usuarioRepository.findOne({ where: { id_usuario: userId } });
+    if (!usuario) throw new NotFoundException('Usuario no encontrado.');
+  
+    // Eliminar la imagen anterior si existe
+    if (usuario.imagen_perfil) {
+      const previousImagePath = path.join(__dirname, '..', '..', 'uploads', 'profile-pictures', path.basename(usuario.imagen_perfil));
+      fs.unlink(previousImagePath, (err) => {
+        if (err) {
+          console.error('Error eliminando la imagen anterior:', err);
+        }
+      });
+    }
+  
+    // Guardar la nueva imagen en la base de datos
+    usuario.imagen_perfil = imagePath;
+    await this.usuarioRepository.save(usuario);
+    return usuario;
   }
 }

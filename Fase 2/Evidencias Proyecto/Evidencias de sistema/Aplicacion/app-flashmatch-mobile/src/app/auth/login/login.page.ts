@@ -27,7 +27,7 @@ export default class LoginPage {
   private router = inject(Router);
   private authService = inject(AuthService);
   private alertService = inject(AlertService);
-  private storageService = inject(StorageService);
+  public storageService = inject(StorageService);
 
   showPassword = false;
 
@@ -57,6 +57,9 @@ export default class LoginPage {
         await this.storageService.set('ubicacion', response.ubicacion);
         await this.storageService.set('latitud', response.latitud);
         await this.storageService.set('longitud', response.longitud);
+        await this.storageService.set('imagen_perfil', response.imagen_perfil);
+        this.storageService.imageUrl.set(response.imagen_perfil);
+        this.storageService.fullName.set(`${response.nombre} ${response.apellido}`);
         this.router.navigate(['/private/home']);
       },
       error: (err: responseError) => {

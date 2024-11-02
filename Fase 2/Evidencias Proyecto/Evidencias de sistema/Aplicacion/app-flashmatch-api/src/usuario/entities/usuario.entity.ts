@@ -1,9 +1,14 @@
 import { Equipo } from "src/equipo/entities/equipo.entity";
-import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { DeportePosicionUsuario } from "./deporte-posicion-usuario.entity";
 import { EstadisticaDetalladaUsuario } from "./estadistica-detallada-usuario.entity";
 import { ReservaCancha } from "src/reserva/entities/reserva-cancha.entity";
 import { UsuarioPartido } from "src/usuario-partido/entities/usuario-partido.entity";
+import { TipoPartido } from "src/tipo-partido/entities/tipo-partido.entity";
+import { NivelHabilidad } from "src/nivel-habilidad/entities/nivel-habilidad.entity";
+import { RangoEdad } from "src/rango-edad/entities/rango-edad.entity";
+import { Notificacion } from "src/common/notificacion/entities/notificacion.entity";
+import { EvaluacionJugador } from "src/common/evaluacion/entities/evaluacion-jugador.entity";
 
 @Entity('usuario')
 export class Usuario {
@@ -43,11 +48,27 @@ export class Usuario {
     @Column({ type: 'text', nullable: true })
     imagen_perfil: string;
 
-    @Column({ type: 'text', array: true, default: ['usuario'] })
+    @Column({ type: 'text', array: true, default: ['jugador'] })
     roles: string[];
 
     @Column({ type: 'boolean', default: true })
     activo: boolean;
+
+    // Preferencias usuario
+    @ManyToOne(() => RangoEdad, { nullable: true })
+    @JoinColumn({ name: 'rango_edad_id' })
+    rangoEdad: RangoEdad;
+  
+    @ManyToOne(() => NivelHabilidad, { nullable: true })
+    @JoinColumn({ name: 'nivel_habilidad_id' })
+    nivelHabilidad: NivelHabilidad;
+  
+    @ManyToOne(() => TipoPartido, { nullable: true })
+    @JoinColumn({ name: 'tipo_partido_id' })
+    tipoPartido: TipoPartido;
+    
+    @Column({ type: 'int', nullable: true })
+    distancia_cancha_max: number;
 
     @OneToMany(() => Equipo, (equipo) => equipo.creador, { cascade: true })
     equipos: Equipo[];
@@ -61,17 +82,26 @@ export class Usuario {
     @OneToMany(() => UsuarioPartido, (usuarioPartido) => usuarioPartido.usuario, { cascade: true })
     partidos: UsuarioPartido[];
 
+    @OneToMany(() => Notificacion, notificacion => notificacion.usuario)
+    notificaciones: Notification[];
+
     @CreateDateColumn({ name: 'creado_en' })
     creado_en: Date;
 
+    @OneToMany(() => EvaluacionJugador, (evaluacion) => evaluacion.evaluado, { cascade: true })
+    evaluaciones: EvaluacionJugador[];
+
+    @Column({ type: 'decimal', precision: 5, scale: 2, nullable: true, default: 0 })
+    promedio_evaluacion: number;
+
     @BeforeInsert()
     checkFieldsBeforeInsert() {
-        this.correo = this.correo.toLowerCase().trim();
-        this.nombre = this.nombre.trim();
-        this.apellido = this.apellido.trim();
-        this.rut = this.rut.trim();
+        if (this.correo) this.correo = this.correo.toLowerCase().trim();
+        if (this.nombre) this.nombre = this.nombre.trim();
+        if (this.apellido) this.apellido = this.apellido.trim();
+        if (this.rut) this.rut = this.rut.trim();
     }
-
+    
     @BeforeUpdate()
     checkFieldsBeforeUpdate() {
         this.checkFieldsBeforeInsert();

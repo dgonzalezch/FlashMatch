@@ -21,7 +21,6 @@ export class DisponibilidadCancha {
   @Column({ type: 'boolean' })
   disponible: boolean;
 
-  // Relación con la entidad Cancha, utilizando la clave foránea cancha_id
   @ManyToOne(() => Cancha, (cancha) => cancha.disponibilidad, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'cancha_id' })
   cancha: Cancha;

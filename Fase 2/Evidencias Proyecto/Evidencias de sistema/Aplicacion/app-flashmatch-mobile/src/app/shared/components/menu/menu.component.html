@@ -19,10 +19,10 @@
   <ion-content color="dark">
     <div class="user-info ion-text-center">
       <ion-avatar class="modern-avatar">
-        <ion-img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="Usuario"/>
+        <ion-img [src]="storageService.imageUrl() ? 'http://localhost:3000' + storageService.imageUrl() : 'https://ionicframework.com/docs/img/demos/avatar.svg'" alt="Usuario"/>
       </ion-avatar>
       <ion-label>
-        <h2>{{ userData().nombre }} {{ userData().apellido }}</h2>
+        <h2>{{ storageService.fullName() }}</h2>
         <p>{{ userData().correo }}</p>
         <ion-menu-toggle auto-hide="false">
           <ion-button size="small" expand="block" fill="solid" color="secondary" [routerLink]="'/private/profile'" class="profile-button-modern">

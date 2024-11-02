@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsEmail, IsMobilePhone, IsNotEmpty, IsPhoneNumber, IsString, Matches, MaxLength, MinLength, IsDateString, IsDecimal, IsNumber, Min, Max, IsOptional } from "class-validator";
+import { IsArray, IsBoolean, IsEmail, IsMobilePhone, IsNotEmpty, IsPhoneNumber, IsString, Matches, MaxLength, MinLength, IsDateString, IsDecimal, IsNumber, Min, Max, IsOptional, IsUUID, IsInt } from "class-validator";
 
 export class CreateUsuarioDto {
     @IsString()
@@ -69,4 +69,20 @@ export class CreateUsuarioDto {
     @IsBoolean()
     @IsOptional()
     activo?: boolean = true;
+    
+    @IsOptional()
+    @IsUUID()
+    rango_edad_id?: string;
+
+    @IsOptional()
+    @IsUUID()
+    nivel_habilidad_id?: string;
+
+    @IsOptional()
+    @IsUUID()
+    tipo_partido_id?: string;
+
+    @IsOptional()
+    @IsInt()
+    distancia_cancha_max?: number;
 }

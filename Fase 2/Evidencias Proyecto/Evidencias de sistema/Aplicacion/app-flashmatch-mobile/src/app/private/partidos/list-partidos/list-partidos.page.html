@@ -15,7 +15,7 @@
     <!-- Barra de búsqueda -->
     <ion-row>
       <ion-col size="12">
-        <ion-searchbar class="searchbar-modern animated" placeholder="Buscar partidos..." debounce="500"></ion-searchbar>
+        <ion-searchbar class="searchbar-modern animated" placeholder="Buscar partidos..." debounce="500"/>
       </ion-col>
     </ion-row>
 
@@ -23,66 +23,146 @@
     <ion-row >
       @for (partido of listPartidos(); track $index) {
         <ion-col size="12" size-md="6">
-          <ion-card class="modern-card">
-            <ion-card-header class="ion-align-items-center ion-justify-content-between">
-              <ion-row class="ion-align-items-center ion-justify-content-between ion-no-padding">
-                <ion-col size="auto">
-                  <ion-badge color="primary">
-                    <ion-icon name="calendar-outline" slot="start"></ion-icon> {{ partido.fecha_partido| date: 'dd/MM/yyyy, HH:mm' }}
-                  </ion-badge>
-                </ion-col>
-                <ion-col size="auto">
-                  <ion-badge [color]="partido.estado === 'confirmado' ? 'success' : 'warning'">
-                    {{ partido.estado === 'confirmado' ? 'Confirmado' : 'Pendiente Reserva' }}
-                  </ion-badge>
-                </ion-col>
+          <ion-card class="modern-card" color="dark">
+            <ion-card-header>
+              <ion-row class="ion-justify-content-between">
+                <ion-chip color="tertiary" class="ion-no-margin calendar-chip" [outline]="true">
+                  <ion-icon name="calendar-outline"/>
+                  <ion-label>{{partido.fecha_partido | date: 'dd-MM-YYYY, hh:mm'}}</ion-label>
+                </ion-chip>
+                @if (partido.reserva) {
+                  <ion-button size="small" color="secondary" fill="outline" style="margin-right: 0px;">
+                    {{ (+partido.reserva.cancha.precio_por_hora / partido.jugadores_requeridos) | currency: 'CLP':'symbol' }}
+                    <!-- <ion-icon slot="icon-only" name="settings-outline"/> -->
+                  </ion-button>
+                }
               </ion-row>
             </ion-card-header>
 
             <!-- Información del Partido -->
             <ion-card-content>
-              <ion-row class="ion-align-items-start">
-                <ion-col size="12">
-                  <h3>{{ partido.deporte.nombre_deporte }}</h3>
-                </ion-col>
-                <ion-col size="12">
-                  <p><ion-icon name="football-outline"/> {{ partido.tipoPartido.nombre_tipo_partido }}</p>
-                  <p><ion-icon name="walk-outline"/> Rango de Edad: {{ partido.rangoEdad.descripcion }}</p>
+              <ion-row class="ion-justify-content-between ion-align-items-center">
+                <div style="display: flex; align-items: center;">
+                  <ion-icon name="football-outline" style="margin-right: 5px; width: 17px; height: 17px;"/>
+                  <h2>{{partido.deporte.nombre_deporte}}</h2>
+                </div>
+                <ion-badge color="warning">
+                  {{partido.estado}}
+                </ion-badge>
+                <ion-col size="12" class="ion-no-padding ion-margin-vertical">
+                  <ion-accordion-group class="ion-no-margin">
+                    <ion-accordion>
+                      <ion-item slot="header" color="dark">
+                        <ion-label>Información</ion-label>
+                      </ion-item>
+                      <div slot="content">
 
-                  @if (partido.reserva) {
-                    <p><ion-icon name="location-outline"/> Ubicación: {{ partido.reserva.cancha.ubicacion }}</p>
-                    <!-- <p><ion-icon name="albums-outline"/> Material: {{ partido.reserva.cancha.material.nombre_material_cancha }}</p> -->
-                  } @else {
-                    <p><ion-icon name="location-outline"/> Sin cancha confirmada</p>
-                  }
-                </ion-col>
-              </ion-row>
+                        <ion-list class="ion-no-padding">
+                          <ion-item lines="full">
+                            <ion-icon name="dice-outline" slot="start"/>
+                            <ion-label>
+                              <h3>Tipo partido</h3>
+                              <!-- <h3>{{usuario.nombre}} {{usuario.apellido}}</h3> -->
+                              <p>{{partido.tipoPartido.nombre_tipo_partido}}</p>
+                            </ion-label>
+                          </ion-item>
+                          <ion-item lines="full">
+                            <ion-icon name="barbell-outline" slot="start"/>
+                            <ion-label>
+                              <h3>Nivel habilidad</h3>
+                              <p>{{partido.nivelHabilidad.nombre_nivel_habilidad}}</p>
+                            </ion-label>
+                          </ion-item>
+                          <ion-item lines="full">
+                            <ion-icon name="walk-outline" slot="start"/>
+                            <ion-label>
+                              <h3>Rango edad</h3>
+                              <p>{{partido.rangoEdad.descripcion}}</p>
+                            </ion-label>
+                          </ion-item>
 
-              <ion-row class="ion-justify-content-between ion-margin-top">
-                @if (partido.estado == 'confirmado') {
-                  <ion-col size="12">
-                    <ion-progress-bar [color]="partido.jugadores_actuales == partido.jugadores_requeridos ? 'success' : 'secondary'" [value]="partido.jugadores_actuales / partido.jugadores_requeridos"/>
-                    <small>{{ partido.jugadores_actuales }} / {{ partido.jugadores_requeridos }} jugadores</small>
-                  </ion-col>
-                  @if (!partido.partido_privado) {
-                    <ion-col size="auto">
-                      <ion-text color="secondary" class="buscando-jugadores">Buscando jugadores...</ion-text>
-                    </ion-col>
-                    <ion-col size="auto">
-                      <ion-spinner name="dots" color="secondary"/>
-                    </ion-col>
+                          <ion-item lines="none">
+                            <ion-icon name="location-outline" slot="start"/>
+                            <ion-label>
+                              <h3>Ubicación</h3>
+                              @if(partido.reserva) {
+                                <p>{{partido.reserva.cancha.ubicacion}}</p>
+                                <ion-button class="ion-no-margin">Ver en mapa</ion-button>
+                              } @else {
+                                <p>Sin cancha confirmada</p>
+                              }
+                            </ion-label>
+                          </ion-item>
+                        </ion-list>
+                      </div>
+                    </ion-accordion>
+                  </ion-accordion-group>
+
+
+                </ion-col>
+
+
+                <!-- <ion-col size="auto">
+                  <ion-text color="secondary" class="buscando-jugadores">Buscando jugadores...</ion-text>
+                </ion-col>
+                <ion-col size="auto">
+                  <ion-spinner name="dots" color="secondary"/>
+                </ion-col> -->
+                <ion-col size="12" class="ion-no-padding">
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <ion-text color="secondary" class="buscando-jugadores">Esperando jugadores...</ion-text>
+                    <ion-spinner name="dots" color="secondary"/>
+                  </div>
+                  <ion-progress-bar [color]="partido.jugadores_actuales == partido.jugadores_requeridos ? 'success' : 'secondary'" [value]="partido.jugadores_actuales / partido.jugadores_requeridos"/>
+                  <small>{{ partido.jugadores_actuales }} / {{ partido.jugadores_requeridos }} jugadores</small>
+                </ion-col>
+
+                <ion-col size="12" class="ion-no-padding">
+                  <div style="display: flex; justify-content: end;">
+                    <ion-button color="secondary" style="margin-right: 6px;" class="ion-no-margin" size="small" [routerLink]="'/private/matches/detail-match/' + partido.id_partido">Detalle</ion-button>
+                    <ion-button color="primary" class="ion-no-margin" size="small">Unirse</ion-button>
+                  </div>
+
+                </ion-col>
+
+
+                <!-- <ion-row class="ion-justify-content-between ion-margin-top">
+                  @if (partido.estado == 'confirmado') {
                     <ion-col size="12">
-                      @if (partido.creador.id_usuario === userId()) { }
-
-                      <ion-button fill="solid" color="primary" [disabled]="partido.estado !== 'confirmado'" (click)="presentAlertConfirmJoinPartido(partido.id_partido)">Unirse</ion-button>
-                      <ion-button fill="solid" color="secondary" [routerLink]="'/private/matches/detail-match/' + partido.id_partido">Detalles</ion-button>
+                      <ion-progress-bar [color]="partido.jugadores_actuales == partido.jugadores_requeridos ? 'success' : 'secondary'" [value]="partido.jugadores_actuales / partido.jugadores_requeridos"/>
+                      <small>{{ partido.jugadores_actuales }} / {{ partido.jugadores_requeridos }} jugadores</small>
                     </ion-col>
+                    @if (!partido.partido_privado) {
+                      <ion-col size="auto">
+                        <ion-text color="secondary" class="buscando-jugadores">Buscando jugadores...</ion-text>
+                      </ion-col>
+                      <ion-col size="auto">
+                        <ion-spinner name="dots" color="secondary"/>
+                      </ion-col>
+                      <ion-col size="12">
+                        @if (partido.creador.id_usuario === userId()) { }
+
+                        <ion-button fill="solid" color="primary" [disabled]="partido.estado !== 'confirmado'" (click)="presentAlertConfirmJoinPartido(partido.id_partido)">Unirse</ion-button>
+                        <ion-button fill="solid" color="secondary" [routerLink]="'/private/matches/detail-match/' + partido.id_partido">Detalles</ion-button>
+                      </ion-col>
+                    }
+                  } @else {
+                    <ion-button fill="solid" color="secondary" [routerLink]="'/private/matches/detail-match/' + partido.id_partido">Detalles</ion-button>
                   }
-                } @else {
-                  <ion-button fill="solid" color="secondary" [routerLink]="'/private/matches/detail-match/' + partido.id_partido">Detalles</ion-button>
-                }
+                </ion-row> -->
+
               </ion-row>
             </ion-card-content>
+
+            <ion-footer class="ion-no-border ion-padding-horizontal ion-padding-bottom">
+              <ion-chip color="primary" [outline]="true" class="creator-chip ion-no-margin">
+                <ion-avatar>
+                  <img [src]="'http://localhost:3000' + partido.creador.imagen_perfil || 'https://ionicframework.com/docs/img/demos/avatar.svg'">
+                </ion-avatar>
+                <ion-label>{{ partido.creador.nombre }} {{partido.creador.apellido}}</ion-label>
+              </ion-chip>
+            </ion-footer>
+
           </ion-card>
         </ion-col>
       }

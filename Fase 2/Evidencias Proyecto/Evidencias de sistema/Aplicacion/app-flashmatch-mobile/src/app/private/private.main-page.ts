@@ -34,6 +34,8 @@ export default class PrivatePage {
 
   async ionViewWillEnter() {
     this.userData.set(await this.authService.getUserData());
+    this.storageService.imageUrl.set((await this.authService.getUserData()).imagen_perfil)
+    this.storageService.fullName.set(`${(await this.authService.getUserData()).nombre}  ${(await this.authService.getUserData()).apellido}`)
     let role = await this.storageService.get('roles');
     switch (role[0]) {
       case 'jugador':
@@ -50,7 +52,7 @@ export default class PrivatePage {
           { icon: 'home-outline', label: 'Inicio', route: '/private/home' },
           { icon: 'albums-outline', label: 'Canchas', route: '/private/courts' },
           { icon: 'archive-outline', label: 'Solicitudes', route: '/private/requests' },
-          { icon: 'reader-outline', label: 'Historial', route: '/private/teams' },
+          // { icon: 'reader-outline', label: 'Historial', route: '/private/teams' },
         ]);
         break;
       case 'admin':

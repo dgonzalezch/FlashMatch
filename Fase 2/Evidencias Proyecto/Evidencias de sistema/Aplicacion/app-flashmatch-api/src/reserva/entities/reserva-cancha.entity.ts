@@ -26,4 +26,23 @@ export class ReservaCancha {
 
   @CreateDateColumn({ name: 'fecha_solicitud' })
   fecha_solicitud: Date;
+
+  // Campos adicionales
+  @Column({ type: 'varchar', length: 20, default: 'pendiente' })
+  estado_pago: string;
+
+  @Column({ type: 'varchar', nullable: true })
+  payment_id: string;
+
+  @Column({ type: 'timestamp', nullable: true })
+  fecha_confirmacion: Date;
+
+  @Column({ type: 'timestamp', nullable: true })
+  ultima_actualizacion: Date;
+
+  @Column({ type: 'boolean', default: false })
+  notificado: boolean;
+
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  monto_pagado: number;
 }

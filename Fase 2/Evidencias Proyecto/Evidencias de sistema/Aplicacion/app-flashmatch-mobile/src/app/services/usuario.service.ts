@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError, timeout } from 'rxjs';
-import { CONTEXT } from 'src/app/shared/configs/api-config';
+import { CONTEXT, ENDPOINT } from 'src/app/shared/configs/api-config';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 export class UsuarioService {
   private http = inject(HttpClient);
   private urlBaseUsuario = CONTEXT.API_USUARIO;
+  private apiUrl = 'http://localhost:3000/usuario';
 
   getUsuarios(): Observable<any> {
     return this.http.get<any>(this.urlBaseUsuario).pipe(
@@ -29,6 +30,17 @@ export class UsuarioService {
 
   patchUsuario(id_usuario: any, body: any): Observable<any> {
     return this.http.patch<any>(this.urlBaseUsuario + id_usuario, body).pipe(
+      map((response) => response),
+      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
+      timeout(environment.apiTime)
+    );
+  }
+
+  uploadProfilePicture(id_usuario: string, file: Blob): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file, 'profile.jpg');
+
+    return this.http.post<any>(this.urlBaseUsuario + ENDPOINT.UPLOAD_PROFILE_PICTURE + id_usuario, formData).pipe(
       map((response) => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)

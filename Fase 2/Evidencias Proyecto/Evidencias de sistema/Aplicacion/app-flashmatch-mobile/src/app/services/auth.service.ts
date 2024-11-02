@@ -29,6 +29,14 @@ export class AuthService {
     );
   }
 
+  changePassword(changePasswordFormData: any): Observable<any> {
+    return this.http.patch<any>(this.urlBaseAuth + ENDPOINT.AUTH_CHANGE_PASSWORD, changePasswordFormData).pipe(
+      map(response => response),
+      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
+      timeout(environment.apiTime)
+    );
+  }
+
   refreshToken(token: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<any>(this.urlBaseAuth + ENDPOINT.AUTH_CHECK_STATUS, { headers }).pipe(
@@ -48,7 +56,8 @@ export class AuthService {
       roles: await this.storageService.get('roles'),
       ubicacion: await this.storageService.get('ubicacion'),
       latitud: await this.storageService.get('latitud'),
-      longitud: await this.storageService.get('longitud')
+      longitud: await this.storageService.get('longitud'),
+      imagen_perfil: await this.storageService.get('imagen_perfil')
     }
   }
 }

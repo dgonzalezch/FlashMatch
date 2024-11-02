@@ -115,7 +115,7 @@ export class CanchaService {
     if (isUUID(term)) {
       cancha = await this.canchaRepository.findOne({
         where: { id_cancha: term },
-        relations: ['administrador_cancha', 'deporte', 'material', 'imagenes'],
+        relations: ['administrador_cancha', 'deporte', 'material', 'imagenes', ],
       });
     } else {
       const queryBuilder = this.canchaRepository.createQueryBuilder('cancha');
@@ -206,7 +206,7 @@ export class CanchaService {
     // Extrae fecha y hora del partido
     const fechaHoraConsulta = partido.fecha_partido;
     const diaSemana = fechaHoraConsulta.getUTCDay();
-    const horaConsulta = fechaHoraConsulta.toISOString().substring(11, 19);
+    const horaConsulta = fechaHoraConsulta.toTimeString().substring(0, 8);  // HH:mm:ss formato
   
     // Consulta las canchas con sus relaciones necesarias
     const canchas = await this.canchaRepository.find({
@@ -222,15 +222,12 @@ export class CanchaService {
       const disponibilidad = cancha.disponibilidad.find(d =>
         d.dia_semana === diaSemana && d.hora === horaConsulta && d.disponible
       );
-      console.log(disponibilidad);
-      console.log(horaConsulta);
-
       if (!disponibilidad) return false;
   
       // Verifica que no haya reservas activas para la fecha y hora solicitados
       const reservaActiva = cancha.reservas.some(reserva =>
         new Date(reserva.fecha_hora_reserva).getTime() === fechaHoraConsulta.getTime() &&
-        reserva.estado === 'aceptada' || reserva.estado === 'pendiente'
+        (reserva.estado === 'aceptada' || reserva.estado === 'pendiente')
       );
   
       if (reservaActiva) return false;
@@ -246,6 +243,7 @@ export class CanchaService {
   
     return { message: 'Canchas disponibles encontradas.', data: canchasDisponibles };
   }
+  
   
 
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 
 @Injectable({
@@ -6,6 +6,8 @@ import { Storage } from '@ionic/storage-angular';
 })
 export class StorageService {
   private _storage: Storage | null = null;
+  public imageUrl = signal<any>('');
+  public fullName = signal<any>('');
 
   constructor(private storage: Storage) { }
 
@@ -48,4 +50,6 @@ export class StorageService {
     }
     return await this._storage?.clear();;
   }
+
+
 }

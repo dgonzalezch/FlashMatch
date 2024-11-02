@@ -9,12 +9,17 @@ import { EstadisticaDetalladaUsuario } from './entities/estadistica-detallada-us
 import { Deporte } from 'src/deporte/entities/deporte.entity';
 import { DeportePosicion } from 'src/deporte-posicion/entities/deporte-posicion.entity';
 import { ParametroRendimiento } from 'src/parametro-rendimiento/entities/parametro-rendimiento.entity';
+import { RangoEdad } from 'src/rango-edad/entities/rango-edad.entity';
+import { NivelHabilidad } from 'src/nivel-habilidad/entities/nivel-habilidad.entity';
+import { TipoPartido } from 'src/tipo-partido/entities/tipo-partido.entity';
+import { EvaluacionModule } from 'src/common/evaluacion/evaluacion.module';
 
 @Module({
   controllers: [UsuarioController],
   providers: [UsuarioService, ErrorHandlingService],
   imports: [
-    TypeOrmModule.forFeature([Usuario, Deporte, DeportePosicion, DeportePosicionUsuario, EstadisticaDetalladaUsuario, ParametroRendimiento])
+    TypeOrmModule.forFeature([Usuario, Deporte, DeportePosicion, DeportePosicionUsuario, EstadisticaDetalladaUsuario, ParametroRendimiento, RangoEdad, NivelHabilidad, TipoPartido]),
+    EvaluacionModule
   ]
 })
 export class UsuarioModule {}
