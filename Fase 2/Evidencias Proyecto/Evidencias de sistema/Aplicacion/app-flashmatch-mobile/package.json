@@ -37,6 +37,7 @@
     "chart.js": "^4.4.4",
     "ionicons": "^7.2.1",
     "ng2-charts": "^6.0.1",
+    "ngx-socket-io": "^4.7.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
@@ -55,6 +56,7 @@
     "@ionic/angular-toolkit": "^11.0.1",
     "@types/google.maps": "^3.58.1",
     "@types/jasmine": "~5.1.0",
+    "@types/socket.io-client": "^1.4.36",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.57.0",

@@ -41,8 +41,8 @@ export default class PrivatePage {
       case 'jugador':
         this.menuItems.set([
           { icon: 'home-outline', label: 'Inicio', route: '/private/home' },
+          { icon: 'people-circle-outline', label: 'Matchmaking', route: '/private/matchmaking' },
           { icon: 'football-outline', label: 'Partidos', route: '/private/matches' },
-          { icon: 'people-circle-outline', label: 'Equipos', route: '/private/teams' },
           { icon: 'archive-outline', label: 'Invitaciones', route: '/private/players' },
           // { icon: 'settings-outline', label: 'Configuraciones', route: '/private/configurations' },
         ]);
@@ -51,6 +51,7 @@ export default class PrivatePage {
         this.menuItems.set([
           { icon: 'home-outline', label: 'Inicio', route: '/private/home' },
           { icon: 'albums-outline', label: 'Canchas', route: '/private/courts' },
+          { icon: 'people-circle-outline', label: 'Matchmaking', route: '/private/matchmaking' },
           { icon: 'archive-outline', label: 'Solicitudes', route: '/private/requests' },
           // { icon: 'reader-outline', label: 'Historial', route: '/private/teams' },
         ]);

@@ -9,10 +9,6 @@ export class CreateReservaCanchaDto {
   @IsNotEmpty()
   partido_id: string;
 
-  @IsDateString()
-  @IsNotEmpty()
-  fecha_hora_reserva: string;
-
   @IsString()
   @IsOptional()
   comentario?: string;

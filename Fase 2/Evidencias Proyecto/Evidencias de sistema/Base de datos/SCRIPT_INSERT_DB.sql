@@ -34,7 +34,7 @@ INSERT INTO tipo_partido (nombre_tipo_partido, descripcion) VALUES
 
 INSERT INTO material_cancha (nombre_material_cancha, descripcion) VALUES
 ('Pasto Natural', 'Superficie de pasto natural, ideal para juegos profesionales y competiciones.'),
-('Paso Sintético', 'Superficie sintética que imita el pasto natural, utilizada en campos más modernos y bajo mantenimiento.'),
+('Pasto Sintético', 'Superficie sintética que imita el pasto natural, utilizada en campos más modernos y bajo mantenimiento.'),
 ('Pavimento', 'Superficie de cemento o asfalto, típica en canchas urbanas y multifuncionales.');
 
 INSERT INTO parametro_rendimiento (nombre_parametro_rendimiento, deporte_id) VALUES

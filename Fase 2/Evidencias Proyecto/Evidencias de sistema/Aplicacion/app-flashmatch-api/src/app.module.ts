@@ -18,6 +18,7 @@ import { ReservaModule } from './reserva/reserva.module';
 import { UsuarioPartidoModule } from './usuario-partido/usuario-partido.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { NotificacionModule } from './common/notificacion/notificacion.module';
+import { MatchmakingModule } from './matchmaking/matchmaking.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { NotificacionModule } from './common/notificacion/notificacion.module';
     ReservaModule,
     UsuarioPartidoModule,
     NotificacionModule,
+    MatchmakingModule,
   ],
   providers: [],
 })

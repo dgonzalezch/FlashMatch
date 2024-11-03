@@ -11,13 +11,14 @@ import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { responseError } from 'src/app/interfaces/response-error.interface';
 import { Partido } from 'src/app/interfaces/partido.interface';
 import { StorageService } from 'src/app/services/storage.service';
+import { UserInfoComponent } from 'src/app/shared/components/user-info/user-info.component';
 
 @Component({
   selector: 'app-list-partidos',
   templateUrl: './list-partidos.page.html',
   styleUrls: ['./list-partidos.page.scss'],
   standalone: true,
-  imports: [IonAccordion, IonAccordionGroup, IonAvatar, IonImg, IonFab, IonSearchbar, IonBadge, IonSpinner, IonChip, IonProgressBar, IonText, IonCardSubtitle, IonCol, IonRow, IonGrid, IonLabel, IonItem, IonList, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonModal, IonSegment, IonButtons, IonIcon, IonSegmentButton, IonFooter, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderMapComponent, RouterLink],
+  imports: [IonAccordion, IonModal, IonAccordionGroup, IonAvatar, IonImg, IonFab, IonSearchbar, IonBadge, IonSpinner, IonChip, IonProgressBar, IonText, IonCardSubtitle, IonCol, IonRow, IonGrid, IonLabel, IonItem, IonList, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonModal, IonSegment, IonButtons, IonIcon, IonSegmentButton, IonFooter, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderMapComponent, RouterLink, UserInfoComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ListPartidosPage {
@@ -31,6 +32,8 @@ export default class ListPartidosPage {
   userId = signal<string>('');
   ubication = signal<string>('');
   listPartidos = signal<Partido[]>([]);
+  detalleJugador = signal<any>(null);
+  isModalOpen = signal<boolean>(false);
 
   ionViewWillEnter() {
     this.ubication.set(this.locationService.getLocation().ubicacion);
@@ -104,5 +107,46 @@ export default class ListPartidosPage {
       await loading.dismiss();
       this.alertService.error('Ocurrió un error inesperado al enviar la solicitud.');
     }
+  }
+
+  getColor(estado: string): string {
+    switch (estado) {
+      case 'finalizado':
+        return 'tertiary';
+      case 'confirmado':
+        return 'success';
+      case 'pendiente_reserva':
+        return 'warning';
+      case 'cancelado':
+        return 'danger';
+      default:
+        return 'primary'; // Color por defecto, si necesitas alguno para otros estados
+    }
+  }
+
+  getEstadoLabel(estado: string): string {
+    switch (estado) {
+      case 'finalizado':
+        return 'Finalizado';
+      case 'pendiente_reserva':
+        return 'Pendiente Cancha';
+      case 'cancelado':
+        return 'Cancelado';
+      case 'confirmado':
+        return 'Confirmado';
+      default:
+        return estado; // Retorna el estado tal cual si no encuentra una coincidencia
+    }
+  }
+
+
+  openModal(creador: any) {
+    this.detalleJugador.set(creador);
+    this.isModalOpen.set(true);
+  }
+
+  closeModal() {
+    this.isModalOpen.set(false);
+    this.detalleJugador.set(null); // Limpiar el detalle del jugador al cerrar
   }
 }

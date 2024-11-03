@@ -1,8 +1,8 @@
 import { IsDateString, IsNotEmpty, IsString, IsUUID, IsBoolean, IsOptional } from 'class-validator';
 
 export class CreatePartidoDto {
-    @IsNotEmpty()
     @IsDateString()
+    @IsNotEmpty()
     fecha_partido: string;
 
     @IsUUID()

@@ -102,6 +102,12 @@ export class PartidoService {
       take: limit,
       skip: offset,
       relations: {
+        creador: {
+          evaluaciones: true,
+          rangoEdad: true,
+          nivelHabilidad: true,
+          tipoPartido: true
+        },
         deporte: true,
         nivelHabilidad: true,
         tipoEmparejamiento: true,
@@ -112,11 +118,15 @@ export class PartidoService {
             material: true
           }
         },
-        creador: true,
         jugadores: {
-          usuario: true
+          usuario: {
+            evaluaciones: true,
+            rangoEdad: true,
+            nivelHabilidad: true,
+            tipoPartido: true
+          }
         }
-      },
+      }
     });
     return { message: 'Registros obtenidos exitosamente.', data: partidos };
   }
@@ -126,7 +136,27 @@ export class PartidoService {
     if (isUUID(term)) {
       partido = await this.partidoRepository.findOne({
         where: { id_partido: term },
-        relations: ['creador', 'deporte', 'nivelHabilidad', 'tipoEmparejamiento', 'rangoEdad', 'tipoPartido', 'reserva.cancha.material', 'jugadores.usuario']
+        relations: {
+          creador: true,
+          deporte: true,
+          nivelHabilidad: true,
+          tipoEmparejamiento: true,
+          rangoEdad: true,
+          tipoPartido: true,
+          reserva: {
+            cancha: {
+              material: true
+            }
+          },
+          jugadores: {
+            usuario: {
+              evaluaciones: true,
+              rangoEdad: true,
+              nivelHabilidad: true,
+              tipoPartido: true
+            }
+          }
+        }
       });
     } else {
       const queryBuilder = this.partidoRepository.createQueryBuilder('partido');
@@ -367,7 +397,7 @@ export class PartidoService {
   @Cron(CronExpression.EVERY_MINUTE)
   async actualizarEstadosPartidos() {
     const now = new Date();
-  
+
     // Actualizar partidos a "en curso" si la hora del partido coincide con la hora actual
     const partidosEnCurso = await this.partidoRepository.find({
       where: {
@@ -375,22 +405,22 @@ export class PartidoService {
         fecha_partido: LessThanOrEqual(new Date(now.getTime() + 1 * 60 * 1000)), // 1 minuto de margen
       },
     });
-  
+
     for (const partido of partidosEnCurso) {
       partido.estado = 'en_curso';
       partido.mensaje_estado = 'El partido ha comenzado y está en curso.';
       await this.partidoRepository.save(partido);
     }
-  
+
     // Finalizar partidos que comenzaron hace exactamente una hora
     const partidosPendientes = await this.partidoRepository.find({
       where: { estado: 'en_curso' },
     });
-  
+
     for (const partido of partidosPendientes) {
       const horaInicio = new Date(partido.fecha_partido);
       const unaHoraDespues = new Date(horaInicio.getTime() + 60 * 60 * 1000); // sumar una hora
-  
+
       if (now >= unaHoraDespues) {
         partido.estado = 'finalizado';
         partido.mensaje_estado = 'El partido ha sido finalizado después de una hora de juego.';
@@ -399,16 +429,16 @@ export class PartidoService {
       }
     }
   }
-  
+
   @Cron(CronExpression.EVERY_HOUR)
   async actualizarEstadosPorTiempo() {
     const now = new Date();
-  
+
     // Cancelar partidos "Pendiente de Reserva" si están a menos de 5 horas del inicio
     const partidosPendiente = await this.partidoRepository.find({
       where: { estado: 'pendiente_reserva' },
     });
-  
+
     for (const partido of partidosPendiente) {
       const tiempoRestante = new Date(partido.fecha_partido).getTime() - now.getTime();
       if (tiempoRestante <= 5 * 60 * 60 * 1000) { // 5 horas en milisegundos
@@ -418,12 +448,12 @@ export class PartidoService {
         await this.notificacionService.sendNotification(partido.creador.id_usuario, partido.mensaje_estado);
       }
     }
-  
+
     // Cancelar partidos "Reservado" si no están "Confirmado" 2 horas antes del inicio
     const partidosReservado = await this.partidoRepository.find({
       where: { estado: 'reservado' },
     });
-  
+
     for (const partido of partidosReservado) {
       const tiempoRestante = new Date(partido.fecha_partido).getTime() - now.getTime();
       if (tiempoRestante <= 2 * 60 * 60 * 1000) { // 2 horas en milisegundos
@@ -434,6 +464,6 @@ export class PartidoService {
       }
     }
   }
-  
-  
+
+
 }

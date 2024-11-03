@@ -1,0 +1,20 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>matchmaking</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-button (click)="buscarPartido()">buscar partido</ion-button>
+  <div *ngIf="buscandoPartido()">Buscando partido...</div>
+
+  @for (partido of partidosEncontrados(); track $index) {
+    <div *ngIf="partidosEncontrados()">
+      <h3>Partido Encontrado</h3>
+      <p>Deporte: {{ partido.deporte.nombre_deporte }}</p>
+      <p>Nivel de Habilidad: {{ partido.nivelHabilidad.nombre_nivel_habilidad }}</p>
+      <p>Edad: {{ partido.rangoEdad.descripcion }}</p>
+    </div>
+  }
+
+</ion-content>

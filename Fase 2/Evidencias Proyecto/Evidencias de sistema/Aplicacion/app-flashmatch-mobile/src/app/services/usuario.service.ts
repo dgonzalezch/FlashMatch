@@ -10,7 +10,6 @@ import { environment } from 'src/environments/environment';
 export class UsuarioService {
   private http = inject(HttpClient);
   private urlBaseUsuario = CONTEXT.API_USUARIO;
-  private apiUrl = 'http://localhost:3000/usuario';
 
   getUsuarios(): Observable<any> {
     return this.http.get<any>(this.urlBaseUsuario).pipe(

@@ -1,10 +1,17 @@
 @let partido = partidoActual();
 
+<!-- <ion-header>
+  <ion-toolbar color="dark">
+
+  </ion-toolbar>
+
+</ion-header> -->
+
 <ion-content [fullscreen]="true" color="light">
   <ion-grid>
     @if (partido) {
       <!-- Indicador de búsqueda de jugadores -->
-      @if (partido.estado === 'confirmado' && !partido.partido_privado) {
+      <!-- @if (partido.estado === 'confirmado' && !partido.partido_privado) { -->
         <ion-row>
           <ion-col size="12" class="ion-text-center">
             <ion-card class="modern-card" color="dark">
@@ -17,7 +24,7 @@
             </ion-card>
           </ion-col>
         </ion-row>
-      }
+      <!-- } -->
 
       <!-- Información general del partido -->
       <ion-row>
@@ -47,51 +54,94 @@
       <!-- Jugadores Confirmados y Invitados Pendientes -->
       <ion-row>
         <ion-col size="12">
-          <ion-card class="modern-card">
+          <ion-card class="modern-card" color="dark">
             <ion-card-header class="ion-align-items-center">
               <ion-card-title>Jugadores</ion-card-title>
             </ion-card-header>
             <ion-card-content>
               <h3>Jugadores Confirmados</h3>
               <ion-list>
-                <ion-item *ngFor="let jugador of partido.jugadores" lines="none" button>
-                  <ion-avatar slot="start">
-                    <img [src]="jugador.usuario.imagen_perfil || 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
-                  </ion-avatar>
-                  <ion-label>
-                    <h2>{{ jugador.usuario.nombre }} {{jugador.usuario.apellido}}</h2>
-                    <!-- <p>Posición: {{ jugador.usuario.posicion || 'Por Definir' }}</p> -->
-                  </ion-label>
-                  <ion-icon name="checkmark-circle-outline" color="success" slot="end"/>
-                </ion-item>
+                @for (jugador of partido.jugadores; track $index) {
+                  <ion-item lines="none" button (click)="openModal(jugador.usuario)">
+                    <ion-avatar slot="start">
+                      <img [src]="jugador.usuario.imagen_perfil ? 'http://localhost:3000' + jugador.usuario.imagen_perfil : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+                    </ion-avatar>
+                    <ion-label>
+                      <h2>{{ jugador.usuario.nombre }} {{jugador.usuario.apellido}}</h2>
+                      <!-- <p>Posición: {{ jugador.usuario.posicion || 'Por Definir' }}</p> -->
+                    </ion-label>
+                    <ion-icon name="checkmark-circle-outline" color="success" slot="end"/>
+                  </ion-item>
+                }
               </ion-list>
 
               <h3 class="ion-margin-top">Invitados Pendientes</h3>
               <ion-list>
-                <ion-item *ngFor="let jugador of partido.jugadores" lines="none" button>
-                  <ion-avatar slot="start">
-                    <img [src]="jugador.usuario.imagen_perfil || 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
-                  </ion-avatar>
-                  <ion-label>
-                    <h2>{{ jugador.usuario.nombre }} {{jugador.usuario.apellido}}</h2>
-                    <!-- <p>Posición: {{ jugador.usuario.posicion || 'Por Definir' }}</p> -->
-                  </ion-label>
-                  <ion-icon name="hourglass-outline" color="warning" slot="end"/>
-                </ion-item>
+                @for (jugador of partido.jugadores; track $index) {
+                  <ion-item lines="none" button (click)="openModal(jugador.usuario)">
+                    <ion-avatar slot="start">
+                      <img [src]="jugador.usuario.imagen_perfil ? 'http://localhost:3000' + jugador.usuario.imagen_perfil : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+                    </ion-avatar>
+                    <ion-label>
+                      <h2>{{ jugador.usuario.nombre }} {{jugador.usuario.apellido}}</h2>
+                      <!-- <p>Posición: {{ jugador.usuario.posicion || 'Por Definir' }}</p> -->
+                    </ion-label>
+                    <ion-icon name="hourglass-outline" color="warning" slot="end"/>
+                  </ion-item>
+                }
+
               </ion-list>
             </ion-card-content>
+
+            <ion-footer class="ion-no-border ion-padding-horizontal ion-padding-bottom">
+              <ion-button id="open-modal-invite" class="ion-no-margin" expand="block" color="secondary" (click)="getJugadoresDisponibles()">
+                Invitar Jugadores
+              </ion-button>
+            </ion-footer>
           </ion-card>
         </ion-col>
       </ion-row>
 
-      <!-- Botón para invitar jugadores -->
-      <ion-row class="ion-justify-content-center ion-margin-top">
-        <ion-col size="12">
-          <ion-button class="modern-button" expand="block" color="secondary" (click)="invitarJugadores()">
-            Invitar Jugadores
-          </ion-button>
-        </ion-col>
-      </ion-row>
+      <ion-modal class="detail-user" [isOpen]="isModalOpen()" (didDismiss)="closeModal()">
+        <ng-template>
+          <ion-content class="ion-padding" color="dark">
+            <app-user-info [usuarioData]="detalleJugador()"/>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+
+      <!-- MODAL BUSCAR JUGADORES -->
+      <ion-modal #modal trigger="open-modal-invite" [initialBreakpoint]="0.25" [breakpoints]="[0, 0.25, 0.5, 0.75]">
+        <ng-template>
+          <ion-content>
+            <ion-searchbar placeholder="Buscar jugador..." (click)="modal.setCurrentBreakpoint(0.75)"></ion-searchbar>
+            <ion-list>
+              @for (jugador of jugadoresDisponibles(); track $index) {
+                <ion-item>
+                  <ion-avatar slot="start">
+                    <img [src]="jugador.imagen_perfil ? 'http://localhost:3000' + jugador.imagen_perfil : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+                  </ion-avatar>
+                  <ion-label>
+                    <h2>{{jugador.nombre}} {{jugador.apellido}}</h2>
+                    <p>Jugador</p>
+                  </ion-label>
+                  <ion-button slot="end" color="tertiary">
+                    Invitar
+                    <!-- <ion-icon name="person-add-outline" slot="icon-only"/> -->
+                  </ion-button>
+                </ion-item>
+              } @empty {
+                <ion-item>
+                  <ion-label color="medium">
+                    <h2>No hay usuarios disponibles para este tipo de partido.</h2>
+                  </ion-label>
+                </ion-item>
+              }
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
     }
   </ion-grid>
 </ion-content>
+

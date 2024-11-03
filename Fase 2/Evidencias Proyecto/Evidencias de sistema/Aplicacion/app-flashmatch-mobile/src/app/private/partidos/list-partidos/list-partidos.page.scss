@@ -43,3 +43,11 @@ ion-list ion-item p {
 ion-list ion-item ion-icon {
   color:  var(--ion-color-light); /* Aplica color blanco al texto y a los íconos */
 }
+
+
+ion-modal.detail-user {
+  --height: 55%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  padding: 30px;
+}

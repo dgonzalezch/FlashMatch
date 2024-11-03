@@ -122,6 +122,10 @@ export const routes: Routes = [
         ]
       },
       {
+        path: 'matchmaking',
+        loadComponent: () => import('./private/matchmaking/matchmaking.page')
+      },
+      {
         path: 'requests',
         // loadComponent: () => import('./private/solicitudes/solicitudes.page'),
         children: [
