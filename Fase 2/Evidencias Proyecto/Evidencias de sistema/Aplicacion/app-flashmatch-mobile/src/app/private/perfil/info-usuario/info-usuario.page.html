@@ -20,7 +20,10 @@
           @case ('perfil') {
             <ion-col size="12">
               <ion-card class="modern-card" color="dark">
+                <app-header-map [ubication]="ubication()"/>
+
                 <ion-row class="ion-justify-content-center ion-text-center ion-margin-top">
+
                   <ion-col size="auto" class="ion-text-center">
                     <ion-avatar class="user-avatar-container">
                       <img [src]="selectedImage() ? selectedImage() : 'https://ionicframework.com/docs/img/demos/avatar.svg'" alt="Imagen del usuario" class="user-avatar" />

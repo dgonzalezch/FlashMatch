@@ -36,8 +36,24 @@ export class PartidoService {
     );
   }
 
-  joinPartido(usuarioPartidoData: { userId: string, partidoId: string  }) {
+  joinPartido(usuarioPartidoData: { userId: string, partidoId: string }) {
     return this.http.post<any>(this.urlBaseUsuarioPartido + 'join', usuarioPartidoData).pipe(
+      map(response => response),
+      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
+      timeout(environment.apiTime)
+    );
+  }
+
+  getPartidosDisponiblesUsuario(terms: { usuario_id: string, deporte_id: string, fecha?: string }) {
+    return this.http.post<any>(this.urlBasePartido + 'disponibles', terms).pipe(
+      map(response => response),
+      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
+      timeout(environment.apiTime)
+    );
+  }
+
+  partidoRellenarJugadores(idPartido: any) {
+    return this.http.patch<any>(this.urlBasePartido + idPartido + '/' + 'rellenar-jugadores', '').pipe(
       map(response => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)

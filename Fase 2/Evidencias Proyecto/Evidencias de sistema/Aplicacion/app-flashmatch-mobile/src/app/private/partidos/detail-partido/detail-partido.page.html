@@ -15,11 +15,25 @@
         <ion-row>
           <ion-col size="12" class="ion-text-center">
             <ion-card class="modern-card" color="dark">
-              <ion-card-content >
-                <ion-spinner name="crescent" color="primary"></ion-spinner>
-                <p>Esperando jugadores...</p>
+              <ion-card-content>
+                @if(partido.estado === 'confirmado') {
+                  <ion-spinner name="crescent" color="primary"/>
+                  <p>Esperando jugadores...</p>
+                } @else if (partido.estado == 'listo') {
+                  <ion-icon color="success" size="large" name="checkmark-circle-outline"/>
+                  <p>¡Partido listo!</p>
+                }
+                @else if(partido.estado == 'pendiente_reserva') {
+                  <ion-spinner name="crescent" color="primary"/>
+                  <p>Esperando cancha...</p>
+                }
+
                 <ion-progress-bar [color]="partido.jugadores_actuales == partido.jugadores_requeridos ? 'success' : 'secondary'" [value]="partido.jugadores_actuales / partido.jugadores_requeridos"/>
                 <small>{{ partido.jugadores_actuales }} / {{ partido.jugadores_requeridos }} jugadores</small>
+
+                @if(partido.estado == 'listo') {
+                  <h6 style="color: rgb(163, 163, 163)">¡Prepárate para jugar en la fecha y hora programada!</h6>
+                }
               </ion-card-content>
             </ion-card>
           </ion-col>
@@ -60,9 +74,9 @@
             </ion-card-header>
             <ion-card-content>
               <h3>Jugadores Confirmados</h3>
-              <ion-list>
+              <ion-list class="jugadores">
                 @for (jugador of partido.jugadores; track $index) {
-                  <ion-item lines="none" button (click)="openModal(jugador.usuario)">
+                  <ion-item lines="none" button (click)="openModal(jugador.usuario)" color="dark">
                     <ion-avatar slot="start">
                       <img [src]="jugador.usuario.imagen_perfil ? 'http://localhost:3000' + jugador.usuario.imagen_perfil : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
                     </ion-avatar>
@@ -75,22 +89,22 @@
                 }
               </ion-list>
 
-              <h3 class="ion-margin-top">Invitados Pendientes</h3>
-              <ion-list>
+              <!-- <h3 class="ion-margin-top">Invitados Pendientes</h3>
+              <ion-list class="jugadores">
                 @for (jugador of partido.jugadores; track $index) {
-                  <ion-item lines="none" button (click)="openModal(jugador.usuario)">
+                  <ion-item lines="none" button (click)="openModal(jugador.usuario)" color="dark">
                     <ion-avatar slot="start">
                       <img [src]="jugador.usuario.imagen_perfil ? 'http://localhost:3000' + jugador.usuario.imagen_perfil : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
                     </ion-avatar>
                     <ion-label>
                       <h2>{{ jugador.usuario.nombre }} {{jugador.usuario.apellido}}</h2>
-                      <!-- <p>Posición: {{ jugador.usuario.posicion || 'Por Definir' }}</p> -->
+                      <p>Posición: {{ jugador.usuario.posicion || 'Por Definir' }}</p>
                     </ion-label>
                     <ion-icon name="hourglass-outline" color="warning" slot="end"/>
                   </ion-item>
                 }
 
-              </ion-list>
+              </ion-list> -->
             </ion-card-content>
 
             <ion-footer class="ion-no-border ion-padding-horizontal ion-padding-bottom">
@@ -105,7 +119,7 @@
       <ion-modal class="detail-user" [isOpen]="isModalOpen()" (didDismiss)="closeModal()">
         <ng-template>
           <ion-content class="ion-padding" color="dark">
-            <app-user-info [usuarioData]="detalleJugador()"/>
+            <app-user-info [idUsuario]="detalleJugador().id_usuario"/>
           </ion-content>
         </ng-template>
       </ion-modal>
@@ -114,7 +128,7 @@
       <ion-modal #modal trigger="open-modal-invite" [initialBreakpoint]="0.25" [breakpoints]="[0, 0.25, 0.5, 0.75]">
         <ng-template>
           <ion-content>
-            <ion-searchbar placeholder="Buscar jugador..." (click)="modal.setCurrentBreakpoint(0.75)"></ion-searchbar>
+            <ion-searchbar placeholder="Buscar jugador..." (click)="modal.setCurrentBreakpoint(0.75)"/>
             <ion-list>
               @for (jugador of jugadoresDisponibles(); track $index) {
                 <ion-item>

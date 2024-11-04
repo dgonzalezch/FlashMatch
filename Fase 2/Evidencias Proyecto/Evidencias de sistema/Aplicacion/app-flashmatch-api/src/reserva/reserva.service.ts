@@ -14,6 +14,7 @@ import { NotificacionService } from 'src/common/notificacion/notificacion.servic
 import { PagoService } from 'src/common/pago/pago.service';
 import { getISOWeek } from 'date-fns';
 import { MatchmakingService } from 'src/matchmaking/matchmaking.service';
+import { PartidosGateway } from 'src/matchmaking/matchmaking.gateway';
 
 @Injectable()
 export class ReservaService {
@@ -29,8 +30,8 @@ export class ReservaService {
     @InjectRepository(DisponibilidadCancha)
     private readonly disponibilidadCanchaRepository: Repository<DisponibilidadCancha>,
     private readonly notificacionService: NotificacionService,
-    private readonly matchmakingService: MatchmakingService,
     private readonly pagoService: PagoService,
+    private readonly partidosGateway: PartidosGateway,
   ) { }
 
   async createReservaCancha(createReservaCanchaDto: CreateReservaCanchaDto): Promise<ResponseMessage<ReservaCancha>> {
@@ -109,10 +110,10 @@ export class ReservaService {
   }
 
   async findAllReservasCancha(paginationDto: PaginationDto): Promise<ResponseMessage<ReservaCancha[]>> {
-    const { limit = 10, offset = 0 } = paginationDto;
+    // const { limit = 10, offset = 0 } = paginationDto;
     const reservas = await this.reservaCanchaRepository.find({
-      take: limit,
-      skip: offset,
+      // take: limit,
+      // skip: offset,
       relations: ['cancha', 'partido.creador'],
     });
     return { message: 'Reservas obtenidas exitosamente.', data: reservas };
@@ -215,7 +216,7 @@ export class ReservaService {
     await this.reservaCanchaRepository.save(reservaCancha);
 
     const mensaje = estado === 'aceptada' ? 'Su reserva ha sido confirmada.' : 'Su reserva ha sido rechazada.';
-    this.matchmakingService.notifyQueue(reservaCancha.partido);
+    this.partidosGateway.emitirNuevoPartido(reservaCancha.partido);
     this.notificacionService.sendNotification(reservaCancha.partido.creador.id_usuario, mensaje);
 
     return { message: `Reserva ${estado} exitosamente.`, data: reservaCancha };

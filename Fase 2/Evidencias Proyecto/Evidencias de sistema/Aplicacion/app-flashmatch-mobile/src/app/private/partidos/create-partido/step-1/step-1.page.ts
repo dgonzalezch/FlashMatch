@@ -56,7 +56,7 @@ export default class Step1Page {
     tipo_partido_id: ['', [Validators.required]],
     nivel_habilidad_id: ['', [Validators.required]],
     rango_edad_id: ['', [Validators.required]],
-    tipo_emparejamiento_id: ['', [Validators.required]],
+    // tipo_emparejamiento_id: ['', [Validators.required]],
     partido_privado: [false, [Validators.required]],
     descripcion: ['']
   });
@@ -72,7 +72,6 @@ export default class Step1Page {
   onDateChange(event: any) {
     const dateWithTime = new Date(event.detail.value);
     const formattedDate = this.datePipe.transform(dateWithTime, 'yyyy-MM-ddTHH:mm:ss');
-    console.log()
     this.step1FormCreatePartido.get('fecha_partido')?.setValue(formattedDate);
   }
 

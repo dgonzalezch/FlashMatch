@@ -32,9 +32,9 @@ export class Partido {
   @JoinColumn({ name: 'rango_edad_id' })
   rangoEdad: RangoEdad;
 
-  @ManyToOne(() => TipoEmparejamiento, { nullable: false })
-  @JoinColumn({ name: 'tipo_emparejamiento_id' })
-  tipoEmparejamiento: TipoEmparejamiento;
+  // @ManyToOne(() => TipoEmparejamiento, { nullable: false })
+  // @JoinColumn({ name: 'tipo_emparejamiento_id' })
+  // tipoEmparejamiento: TipoEmparejamiento;
 
   @Column({ type: 'text', nullable: true })
   descripcion: string;

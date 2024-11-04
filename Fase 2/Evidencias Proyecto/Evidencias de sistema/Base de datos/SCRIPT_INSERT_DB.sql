@@ -52,6 +52,6 @@ INSERT INTO estadistica_detallada_usuario (usuario_id, deporte_id, parametro_ren
 ((SELECT id_usuario FROM usuario WHERE rut = '20160253K'), (SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11'), (SELECT id_parametro_rendimiento FROM parametro_rendimiento WHERE nombre_parametro_rendimiento = 'Táctica'), 90),  -- Resistencia
 ((SELECT id_usuario FROM usuario WHERE rut = '20160253K'), (SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11'), (SELECT id_parametro_rendimiento FROM parametro_rendimiento WHERE nombre_parametro_rendimiento = 'Técnica'), 90);  -- Resistencia
 
-INSERT INTO titulo_perfil (nombre_titulo, descripcion) VALUES
-('Novato', 'Jugó su primer partido'),
-('Experto', 'Jugó más de 100 partidos');
+-- INSERT INTO titulo_perfil (nombre_titulo, descripcion) VALUES
+-- ('Novato', 'Jugó su primer partido'),
+-- ('Experto', 'Jugó más de 100 partidos');

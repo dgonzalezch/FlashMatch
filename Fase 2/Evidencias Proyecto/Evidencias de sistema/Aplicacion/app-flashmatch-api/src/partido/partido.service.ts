@@ -18,6 +18,9 @@ import { ReservaCancha } from 'src/reserva/entities/reserva-cancha.entity';
 import { UsuarioPartido } from 'src/usuario-partido/entities/usuario-partido.entity';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { NotificacionService } from 'src/common/notificacion/notificacion.service';
+import { PartidosGateway } from 'src/matchmaking/matchmaking.gateway';
+import { getDistance } from 'geolib';
+import { FindAvailablePartidosDto } from './dto/find-available-partidos.dto';
 
 @Injectable()
 export class PartidoService {
@@ -44,21 +47,23 @@ export class PartidoService {
     private readonly usuarioPartidoRepository: Repository<UsuarioPartido>,
     private readonly errorHandlingService: ErrorHandlingService,
     private readonly notificacionService: NotificacionService,
+    private readonly partidosGateway: PartidosGateway,
   ) { }
 
   async create(createPartidoDto: CreatePartidoDto): Promise<ResponseMessage<Partido>> {
-    const { deporte_id, nivel_habilidad_id, tipo_emparejamiento_id, rango_edad_id, tipo_partido_id, creador_id } = createPartidoDto;
+    // const { deporte_id, nivel_habilidad_id, tipo_emparejamiento_id, rango_edad_id, tipo_partido_id, creador_id } = createPartidoDto;
+    const { deporte_id, nivel_habilidad_id, rango_edad_id, tipo_partido_id, creador_id } = createPartidoDto;
 
     const deporte = await this.deporteRepository.findOneBy({ id_deporte: deporte_id });
     const nivelHabilidad = await this.nivelHabilidadRepository.findOneBy({ id_nivel_habilidad: nivel_habilidad_id });
-    const tipoEmparejamiento = await this.tipoEmparejamientoRepository.findOneBy({ id_tipo_emparejamiento: tipo_emparejamiento_id });
+    // const tipoEmparejamiento = await this.tipoEmparejamientoRepository.findOneBy({ id_tipo_emparejamiento: tipo_emparejamiento_id });
     const rangoEdad = await this.rangoEdadRepository.findOneBy({ id_rango_edad: rango_edad_id });
     const tipoPartido = await this.tipoPartidoRepository.findOneBy({ id_tipo_partido: tipo_partido_id });
     const creador = await this.usuarioRepository.findOneBy({ id_usuario: creador_id });
 
     if (!deporte) throw new NotFoundException(`Deporte con ID ${deporte_id} no encontrado.`);
     if (!nivelHabilidad) throw new NotFoundException(`Nivel habilidad con ID ${nivel_habilidad_id} no encontrado.`);
-    if (!tipoEmparejamiento) throw new NotFoundException(`Tipo emparejamiento con ID ${tipo_emparejamiento_id} no encontrado.`);
+    // if (!tipoEmparejamiento) throw new NotFoundException(`Tipo emparejamiento con ID ${tipo_emparejamiento_id} no encontrado.`);
     if (!rangoEdad) throw new NotFoundException(`Rango edad con ID ${rango_edad_id} no encontrado.`);
     if (!tipoPartido) throw new NotFoundException(`Tipo partido con ID ${tipo_partido_id} no encontrado.`);
     if (!creador) throw new NotFoundException(`Usuario con ID ${creador_id} no encontrado.`);
@@ -71,7 +76,7 @@ export class PartidoService {
         ...createPartidoDto,
         deporte,
         nivelHabilidad,
-        tipoEmparejamiento,
+        // tipoEmparejamiento,
         rangoEdad,
         tipoPartido,
         creador,
@@ -89,7 +94,8 @@ export class PartidoService {
         estado: 'confirmado',
       });
       await this.usuarioPartidoRepository.save(usuarioPartido);
-
+      
+      this.partidosGateway.emitirNuevoPartido(partido);
       return { message: 'Partido creado exitosamente y creador añadido como jugador.', data: partido };
     } catch (error) {
       this.errorHandlingService.handleDBErrors(error);
@@ -99,8 +105,8 @@ export class PartidoService {
   async findAll(paginationDto: PaginationDto): Promise<ResponseMessage<Partido[]>> {
     const { limit = 10, offset = 0 } = paginationDto;
     const partidos = await this.partidoRepository.find({
-      take: limit,
-      skip: offset,
+      // take: limit,
+      // skip: offset,
       relations: {
         creador: {
           evaluaciones: true,
@@ -110,7 +116,7 @@ export class PartidoService {
         },
         deporte: true,
         nivelHabilidad: true,
-        tipoEmparejamiento: true,
+        // tipoEmparejamiento: true,
         rangoEdad: true,
         tipoPartido: true,
         reserva: {
@@ -131,6 +137,68 @@ export class PartidoService {
     return { message: 'Registros obtenidos exitosamente.', data: partidos };
   }
 
+  async findAvailablePartidos(findAvailablePartidosDto: FindAvailablePartidosDto): Promise<ResponseMessage<Partido[]>> {
+    const { usuario_id, deporte_id } = findAvailablePartidosDto;
+  
+    // Cargar preferencias del usuario desde la base de datos
+    const usuario = await this.usuarioRepository.findOne({
+      where: { id_usuario: usuario_id },
+      relations: ['rangoEdad', 'tipoPartido', 'nivelHabilidad'],
+    });
+  
+    if (!usuario) {
+      throw new Error('Usuario no encontrado');
+    }
+  
+    const { rangoEdad, tipoPartido, nivelHabilidad } = usuario;
+  
+    // Construir la consulta con las preferencias del usuario
+    const queryBuilder = this.partidoRepository.createQueryBuilder('partido')
+      .leftJoinAndSelect('partido.creador', 'creador')
+      .leftJoinAndSelect('partido.deporte', 'deporte')
+      .leftJoinAndSelect('partido.nivelHabilidad', 'nivelHabilidad')
+      .leftJoinAndSelect('partido.tipoPartido', 'tipoPartido')
+      .leftJoinAndSelect('partido.rangoEdad', 'rangoEdad')
+      .leftJoinAndSelect('partido.reserva', 'reserva')
+      .leftJoinAndSelect('reserva.cancha', 'cancha')
+      .leftJoinAndSelect('cancha.material', 'material')
+      .where('partido.estado = :estado', { estado: 'confirmado' })
+      .andWhere('partido.jugadores_actuales < partido.jugadores_requeridos')
+      .andWhere('rangoEdad.id_rango_edad = :rangoEdad', { rangoEdad: rangoEdad.id_rango_edad })
+      .andWhere('tipoPartido.id_tipo_partido = :tipoPartido', { tipoPartido: tipoPartido.id_tipo_partido })
+      .andWhere('nivelHabilidad.id_nivel_habilidad = :nivelHabilidad', { nivelHabilidad: nivelHabilidad.id_nivel_habilidad })
+      .andWhere('partido.partido_privado = :privado', { privado: false })
+          // .andWhere('deporte.nombre = :deporte', { deporte_id })
+      // .andWhere('partido.fecha_partido = :fecha', { fecha })
+      
+      // Excluir partidos en los que el usuario ya está unido
+      .andWhere(qb => {
+        const subQuery = qb.subQuery()
+          .select('1')
+          .from('usuario_partido', 'up')
+          .where('up.partido_id = partido.id_partido')
+          .andWhere('up.usuario_id = :usuarioId')
+          .getQuery();
+        return `NOT EXISTS (${subQuery})`;
+      })
+      .setParameter('usuarioId', usuario_id);
+  
+    const partidos = await queryBuilder.getMany();
+  
+    // Filtrar por distancia en memoria usando `geolib`
+    const partidosFiltrados = partidos.filter(partido => {
+      const { latitud, longitud } = partido.reserva.cancha;
+      const distanciaMetros = getDistance(
+        { latitude: usuario.latitud, longitude: usuario.longitud },
+        { latitude: latitud, longitude: longitud }
+      );
+      const distanciaKm = distanciaMetros / 1000;
+      return distanciaKm <= (usuario.distancia_cancha_max * 1000);
+    });
+  
+    return { message: 'Partidos disponibles obtenidos exitosamente.', data: partidosFiltrados };
+  }
+
   async findOne(term: string): Promise<ResponseMessage<Partido>> {
     let partido: Partido;
     if (isUUID(term)) {
@@ -140,7 +208,7 @@ export class PartidoService {
           creador: true,
           deporte: true,
           nivelHabilidad: true,
-          tipoEmparejamiento: true,
+          // tipoEmparejamiento: true,
           rangoEdad: true,
           tipoPartido: true,
           reserva: {
@@ -179,11 +247,13 @@ export class PartidoService {
   }
 
   async update(id_partido: string, updatePartidoDto: UpdatePartidoDto): Promise<ResponseMessage<Partido>> {
-    const { deporte_id, nivel_habilidad_id, tipo_emparejamiento_id, rango_edad_id, tipo_partido_id, creador_id } = updatePartidoDto;
+    // const { deporte_id, nivel_habilidad_id, tipo_emparejamiento_id, rango_edad_id, tipo_partido_id, creador_id } = updatePartidoDto;
+    const { deporte_id, nivel_habilidad_id, rango_edad_id, tipo_partido_id, creador_id } = updatePartidoDto;
+
 
     let deporte: Deporte;
     let nivelHabilidad: NivelHabilidad;
-    let tipoEmparejamiento: TipoEmparejamiento;
+    // let tipoEmparejamiento: TipoEmparejamiento;
     let rangoEdad: RangoEdad;
     let tipoPartido: TipoPartido;
     let creador: Usuario;
@@ -198,10 +268,10 @@ export class PartidoService {
       if (!nivelHabilidad) throw new NotFoundException(`Nivel habilidad con ID ${nivel_habilidad_id} no encontrado.`);
     }
 
-    if (tipo_emparejamiento_id) {
-      tipoEmparejamiento = await this.tipoEmparejamientoRepository.findOneBy({ id_tipo_emparejamiento: tipo_emparejamiento_id });
-      if (!tipoEmparejamiento) throw new NotFoundException(`Tipo emparejamiento con ID ${tipo_emparejamiento_id} no encontrado.`);
-    }
+    // if (tipo_emparejamiento_id) {
+    //   tipoEmparejamiento = await this.tipoEmparejamientoRepository.findOneBy({ id_tipo_emparejamiento: tipo_emparejamiento_id });
+    //   if (!tipoEmparejamiento) throw new NotFoundException(`Tipo emparejamiento con ID ${tipo_emparejamiento_id} no encontrado.`);
+    // }
 
     if (rango_edad_id) {
       rangoEdad = await this.rangoEdadRepository.findOneBy({ id_rango_edad: rango_edad_id });
@@ -223,7 +293,7 @@ export class PartidoService {
       ...updatePartidoDto,
       deporte,
       nivelHabilidad,
-      tipoEmparejamiento,
+      // tipoEmparejamiento,
       rangoEdad,
       tipoPartido,
       creador,
@@ -377,14 +447,25 @@ export class PartidoService {
   }
 
   async rellenarJugadores(partidoId: string): Promise<void> {
-    const partido = await this.partidoRepository.findOne({ where: { id_partido: partidoId }, relations: ['jugadores'] });
-    const jugadoresFaltantes = partido.jugadores_requeridos - partido.jugadores.length;
-    for (let i = 0; i < jugadoresFaltantes; i++) {
-      const jugador = this.usuarioPartidoRepository.create({
-        partido,
-        estado: 'confirmado',
-      });
-      await this.usuarioPartidoRepository.save(jugador);
+    const partido = await this.partidoRepository.findOne({ where: { id_partido: partidoId } });
+    if (!partido) throw new NotFoundException(`Partido con ID ${partidoId} no encontrado.`);
+    
+    const jugadoresFaltantes = partido.jugadores_requeridos - partido.jugadores_actuales;
+  
+    if (jugadoresFaltantes > 0) {
+      // Incrementar el contador de jugadores actuales
+      partido.jugadores_actuales += jugadoresFaltantes;
+  
+      // Si el partido está completo, cambia el estado a "listo"
+      if (partido.jugadores_actuales >= partido.jugadores_requeridos) {
+        partido.estado = 'listo';
+      }
+  
+
+      await this.partidoRepository.save(partido);
+      if(partido.estado == 'listo') {
+        this.partidosGateway.emitirNuevoPartido(partido);
+      }
     }
   }
 

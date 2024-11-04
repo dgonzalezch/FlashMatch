@@ -3,6 +3,7 @@ import { PartidoService } from './partido.service';
 import { CreatePartidoDto } from './dto/create-partido.dto';
 import { UpdatePartidoDto } from './dto/update-partido.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { FindAvailablePartidosDto } from './dto/find-available-partidos.dto';
 
 @Controller('partido')
 export class PartidoController {
@@ -84,4 +85,16 @@ export class PartidoController {
   ) {
     return this.partidoService.agregarReemplazo(partidoId, usuarioReemplazanteId, usuarioReemplazadoId);
   }
+
+  @Post('disponibles')
+  async findAvailablePartidos(
+    @Body() findAvailablePartidosDto: FindAvailablePartidosDto,
+  ) {
+    // Convierte la fecha a un objeto Date
+    // const fechaDate = new Date(findAvailablePartidosDto.fecha);
+    
+    // Pasa los parámetros directamente desde el DTO
+    return this.partidoService.findAvailablePartidos(findAvailablePartidosDto);
+  }
+
 }

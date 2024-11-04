@@ -1,6 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
 import { IonRow, IonCol, IonAvatar, IonButton, IonIcon, IonGrid, IonHeader, IonToolbar, IonSegment, IonSegmentButton, IonLabel, IonList, IonListHeader, IonItem, IonCard, IonBadge, IonThumbnail, IonChip } from "@ionic/angular/standalone";
+import { responseError } from 'src/app/interfaces/response-error.interface';
+import { responseSuccess } from 'src/app/interfaces/response-success.interface';
+import { UsuarioService } from 'src/app/services/usuario.service';
+import { AlertService } from '../../common/alert.service';
 
 @Component({
   selector: 'app-user-info',
@@ -11,8 +15,11 @@ import { IonRow, IonCol, IonAvatar, IonButton, IonIcon, IonGrid, IonHeader, IonT
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserInfoComponent implements OnInit {
+  private usuarioService = inject(UsuarioService);
+  private alertService = inject(AlertService);
 
-  usuarioData = input.required<any>();
+  idUsuario = input.required<any>();
+  usuarioData = signal<any>({});
   selectedSegment = signal<'info' | 'historial'>('info');
 
   matchesHistory = [
@@ -54,7 +61,15 @@ export class UserInfoComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selectedSegment.set('info');
+    this.usuarioService.getUsuario(this.idUsuario()).subscribe({
+      next: (resp: responseSuccess) => {
+        this.usuarioData.set(resp.data);
+        this.selectedSegment.set('info');
+      },
+      error: (err: responseError) => {
+        this.alertService.error(err.message);
+      }
+    });
   }
 
   onSegmentChange(event: CustomEvent) {

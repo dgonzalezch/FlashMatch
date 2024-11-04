@@ -21,9 +21,9 @@ export class CreatePartidoDto {
     @IsNotEmpty()
     rango_edad_id: string;
 
-    @IsUUID()
-    @IsNotEmpty()
-    tipo_emparejamiento_id: string;
+    // @IsUUID()
+    // @IsNotEmpty()
+    // tipo_emparejamiento_id: string;
 
     @IsBoolean()
     @IsNotEmpty()

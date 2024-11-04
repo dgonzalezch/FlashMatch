@@ -11,10 +11,11 @@ import { Partido } from 'src/partido/entities/partido.entity';
 import { NotificacionModule } from 'src/common/notificacion/notificacion.module';
 import { PagoModule } from 'src/common/pago/pago.module';
 import { MatchmakingService } from 'src/matchmaking/matchmaking.service';
+import { PartidosGateway } from 'src/matchmaking/matchmaking.gateway';
 
 @Module({
   controllers: [ReservaController],
-  providers: [ReservaService, ErrorHandlingService, MatchmakingService],
+  providers: [ReservaService, ErrorHandlingService, PartidosGateway],
   imports: [
     TypeOrmModule.forFeature([ReservaCancha, Cancha, Usuario, DisponibilidadCancha, Partido]),
     NotificacionModule,

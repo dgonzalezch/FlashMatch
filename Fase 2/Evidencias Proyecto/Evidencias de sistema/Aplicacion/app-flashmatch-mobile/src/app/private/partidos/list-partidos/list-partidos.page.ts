@@ -80,6 +80,18 @@ export default class ListPartidosPage {
     await alert.present();
   }
 
+  rellenarJugadores(idPartido: string) {
+    this.partidoService.partidoRellenarJugadores(idPartido).subscribe({
+      next: (resp: responseSuccess) => {
+        this.alertService.message('Partido listo.');
+        this.loadPartidos()
+      },
+      error: (err: responseError) => {
+        this.alertService.error(err.message);
+      }
+    })
+  }
+
   async joinPartido(partidoId: string) {
     // Validar si hay al menos un horario seleccionado
     const loading = await this.loadingController.create({
@@ -92,7 +104,7 @@ export default class ListPartidosPage {
     try {
       await loading.present();
 
-      this.partidoService.joinPartido({partidoId: partidoId, userId: user}).subscribe({
+      this.partidoService.joinPartido({ partidoId: partidoId, userId: user }).subscribe({
         next: async (resp: responseSuccess) => {
           this.loadPartidos();
           await loading.dismiss();
@@ -111,6 +123,8 @@ export default class ListPartidosPage {
 
   getColor(estado: string): string {
     switch (estado) {
+      case 'listo':
+        return 'success';
       case 'finalizado':
         return 'tertiary';
       case 'confirmado':
@@ -126,6 +140,8 @@ export default class ListPartidosPage {
 
   getEstadoLabel(estado: string): string {
     switch (estado) {
+      case 'listo':
+        return 'Listo';
       case 'finalizado':
         return 'Finalizado';
       case 'pendiente_reserva':

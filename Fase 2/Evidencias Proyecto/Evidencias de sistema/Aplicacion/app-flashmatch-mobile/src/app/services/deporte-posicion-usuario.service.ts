@@ -9,10 +9,10 @@ import { environment } from 'src/environments/environment';
 })
 export class DeportePosicionUsuarioService {
   private http = inject(HttpClient);
-  private urlBaseDeportePosicionUsuario = CONTEXT.API_DEPORTE_POSICION_USUARIO;
+  private urlBaseDeportePosicionUsuario = CONTEXT.API_USUARIO;
 
   createDeportePosicionUsuario(deportesPosicionesUsuariosForm: any): Observable<any> {
-    return this.http.post<any>(this.urlBaseDeportePosicionUsuario, deportesPosicionesUsuariosForm).pipe(
+    return this.http.post<any>(this.urlBaseDeportePosicionUsuario + 'deporte-posicion', deportesPosicionesUsuariosForm).pipe(
       map(response => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)

@@ -4,14 +4,16 @@ ion-avatar {
 
 
 
-// ion-list {
-//   background-color: var(--ion-color-dark);; /* Fondo personalizado para toda la lista */
-//   border: 1px solid var(--ion-color-primary); /* Bordes personalizados */
-// }
-// ion-list ion-item {
-//   --background: var(--ion-color-dark); /* Fondo de cada ion-item */
-//   --border-color: var(--ion-color-primary); /* Color del borde de cada ion-item */
-//   color: var(--ion-color-light); /* Color de texto para el contenido interno */
+ion-list.jugadores {
+  background-color: var(--ion-color-dark);; /* Fondo personalizado para toda la lista */
+  // border: 1px solid var(--ion-color-primary); /* Bordes personalizados */
+}
+// ion-list.jugadores ion-item {
+//   // --background: var(--ion-color-dark); /* Fondo de cada ion-item */
+//   // border: 1px solid var(--ion-color-primary);
+//   // color: var(--ion-color-light); /* Color de texto para el contenido interno */
+//   // --background: var(--ion-color-light); /* Fondo de cada ion-item */
+//   // border-radius: 8px;
 // }
 
 // ion-list ion-item h3 {

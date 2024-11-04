@@ -115,6 +115,7 @@ export default class InfoUsuarioPage {
   isModalOpen = signal<boolean>(false);
 
   async ionViewWillEnter() {
+    this.ubication.set(this.locationService.getLocation().ubicacion);
     this.idUsuario.set(await this.storageService.get('user'));
     this.selectedSegment.set('perfil');
     this.getListDeportes();
@@ -123,7 +124,6 @@ export default class InfoUsuarioPage {
     this.getListRangosEdad();
     this.getInfoUsuario();
     this.getRoleUser();
-    this.ubication.set(this.locationService.getLocation().ubicacion);
   }
 
   async getRoleUser() {
@@ -145,7 +145,7 @@ export default class InfoUsuarioPage {
 
   getInfoUsuario() {
     this.usuarioService.getUsuario(this.idUsuario()).subscribe({
-      next: async (resp: responseSuccess) => {
+      next: (resp: responseSuccess) => {
         this.infoUsuario.set(resp.data);
 
         if(resp.data.imagen_perfil) {
@@ -231,11 +231,12 @@ export default class InfoUsuarioPage {
   async onSubmit() {
     const fullFormDeportesPosicionesUsuarios = {
       ...this.deportesPosicionesUsuariosForm.value,
-      id_usuario: await this.storageService.get('user')
+      usuario_id: await this.storageService.get('user')
     };
 
     this.deportePosicionUsuarioService.createDeportePosicionUsuario(fullFormDeportesPosicionesUsuarios).subscribe({
       next: (resp: responseSuccess) => {
+        this.getInfoUsuario();
         this.alertService.message(resp.message);
         this.isModalOpen.set(false);
       },
@@ -261,12 +262,10 @@ export default class InfoUsuarioPage {
               ...this.userPreferencesForm.value
             };
 
-            debugger
             this.usuarioService.patchUsuario(this.idUsuario(), fullFormDataUserPreferences).subscribe({
               next: (resp) => {
                 this.alertService.message(resp.message);
                 this.getInfoUsuario();
-                debugger
                 this.editModeFormUserPreferences.set(false);
               },
               error: (err: responseError) => {

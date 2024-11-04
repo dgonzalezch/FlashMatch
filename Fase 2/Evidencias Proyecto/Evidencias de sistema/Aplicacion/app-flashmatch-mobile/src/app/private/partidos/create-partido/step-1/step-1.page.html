@@ -173,7 +173,7 @@
           }
         </ion-col>
 
-        <ion-col size="12">
+        <!-- <ion-col size="12">
           <ion-select formControlName="tipo_emparejamiento_id" label="Emparejamiento*" label-placement="floating" fill="outline" cancelText="cerrar">
             @for (tipoEmparejamiento of listTiposEmparejamientos(); track $index) {
               <ion-select-option [value]="tipoEmparejamiento.id_tipo_emparejamiento">{{tipoEmparejamiento.nombre_tipo_emparejamiento}}</ion-select-option>
@@ -188,7 +188,7 @@
               }
             </ion-text>
           }
-        </ion-col>
+        </ion-col> -->
         <ion-col size="12">
           <ion-textarea formControlName="descripcion" label="Descripción" labelPlacement="floating" fill="outline" placeholder="Descripción..."/>
         </ion-col>
@@ -198,8 +198,8 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar color="dark">
-    <ion-button class="ion-padding-horizontal" color="tertiary" expand="block" type="submit"
+  <ion-toolbar color="light">
+    <ion-button class="ion-padding-horizontal modern-button" color="tertiary" expand="block" type="submit"
       form="step1FormCreatePartido" [disabled]="!step1FormCreatePartido.valid">
       Establecer parámetros
     </ion-button>

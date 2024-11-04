@@ -1,6 +1,7 @@
-// matchmaking.service.ts (Angular/Ionic)
+// matchmaking.service.ts
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -8,15 +9,17 @@ import { Socket } from 'ngx-socket-io';
 export class MatchmakingService {
   constructor(private socket: Socket) {}
 
-  requestMatchmaking(tipoPartidoId: string, nivelHabilidadId: string, rangoEdadId: string) {
-    this.socket.emit('requestMatch', { tipoPartidoId, nivelHabilidadId, rangoEdadId });
+  conectarUsuario(userId: string, preferencias: any) {
+    debugger
+    this.socket.ioSocket.io.opts.query = {
+      userId,
+      preferencias: JSON.stringify(preferencias),
+    };
+    this.socket.connect();
   }
 
-  onMatchFound(callback: (data: any) => void) {
-    this.socket.on('matchFound', callback);
-  }
-
-  onNoMatchFound(callback: (message: string) => void) {
-    this.socket.on('noMatchFound', callback);
+  // Método para escuchar el evento "nuevoPartido"
+  onNuevoPartido(): Observable<any> {
+    return this.socket.fromEvent('nuevoPartido');
   }
 }

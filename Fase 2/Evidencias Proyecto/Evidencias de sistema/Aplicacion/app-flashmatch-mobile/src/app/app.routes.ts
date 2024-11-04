@@ -204,6 +204,10 @@ export const routes: Routes = [
         ]
       },
       {
+        path: 'invitations',
+        loadComponent: () => import('./private/invitaciones/invitaciones.page')
+      },
+      {
         path: 'configurations',
         loadComponent: () => import('./private/configurations/configurations.page')
       },

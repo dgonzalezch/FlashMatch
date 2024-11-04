@@ -38,13 +38,12 @@ export class UsuarioController {
   }
 
   // Endpoint para añadir una nueva relación deporte-posicion al usuario
-  @Post(':id/deporte-posicion')
+  @Post('deporte-posicion')
   addDeportePosicionUsuario(
-    @Param('id', ParseUUIDPipe) id: string,
     @Body() createDeportePosicionUsuarioDto: CreateDeportePosicionUsuarioDto
   ) {
-    const { deporte_id, deporte_posicion_id } = createDeportePosicionUsuarioDto;
-    return this.usuarioService.addDeportePosicionUsuario(id, deporte_id, deporte_posicion_id);
+    const { usuario_id, deporte_id, deporte_posicion_id } = createDeportePosicionUsuarioDto;
+    return this.usuarioService.addDeportePosicionUsuario(usuario_id, deporte_id, deporte_posicion_id);
   }
 
   // Endpoint para añadir una nueva estadística detallada al usuario

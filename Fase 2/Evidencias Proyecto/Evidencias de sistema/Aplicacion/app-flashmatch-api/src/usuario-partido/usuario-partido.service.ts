@@ -10,6 +10,7 @@ import { Partido } from 'src/partido/entities/partido.entity';
 import { ResponseMessage } from 'src/common/interfaces/response.interface';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { isUUID } from 'class-validator';
+import { PartidosGateway } from '../matchmaking/matchmaking.gateway';
 
 @Injectable()
 export class UsuarioPartidoService {
@@ -23,6 +24,7 @@ export class UsuarioPartidoService {
     @InjectRepository(Partido)
     private readonly partidoRepository: Repository<Partido>,
     private readonly errorHandlingService: ErrorHandlingService,
+    private readonly partidosGateway: PartidosGateway
   ) { }
 
   async create(createUsuarioPartidoDto: CreateUsuarioPartidoDto): Promise<ResponseMessage<UsuarioPartido>> {
@@ -152,11 +154,12 @@ export class UsuarioPartidoService {
   async joinUserToMatch(userId: string, partidoId: string): Promise<ResponseMessage<UsuarioPartido>> {
     const partido = await this.partidoRepository.findOneBy({ id_partido: partidoId });
     if (!partido) throw new NotFoundException(`Partido con ID ${partidoId} no encontrado.`);
+    
     // Validaciones
     if (new Date(partido.fecha_partido) <= new Date()) {
       throw new BadRequestException('No se puede unir a un partido que ya ha pasado.');
     }
-
+  
     const currentPlayers = await this.usuarioPartidoRepository.count({
       where: { partido: { id_partido: partidoId }, estado: 'confirmado' },
     });
@@ -168,7 +171,7 @@ export class UsuarioPartidoService {
     if (partido.estado !== 'confirmado' && partido.estado !== 'abierto') {
       throw new BadRequestException('Este partido no está abierto para nuevos jugadores.');
     }
-
+  
     const existingUserInMatch = await this.usuarioPartidoRepository.findOne({
       where: { usuario: { id_usuario: userId }, partido: { id_partido: partidoId } },
     });
@@ -189,6 +192,20 @@ export class UsuarioPartidoService {
   
     try {
       await this.usuarioPartidoRepository.save(usuarioPartido);
+  
+      // Incrementa el contador de jugadores actuales en el partido
+      partido.jugadores_actuales += 1;
+  
+      // Verificar si el partido está listo (se han unido todos los jugadores requeridos)
+      if (partido.jugadores_actuales >= partido.jugadores_requeridos) {
+        partido.estado = 'listo'; // Cambia el estado del partido a "listo"
+      }
+  
+      await this.partidoRepository.save(partido);
+  
+      // Notificación o emisión de evento si el partido está completo
+      this.partidosGateway.emitirNuevoPartido(``);
+
       return { message: 'Usuario unido al partido exitosamente.', data: usuarioPartido };
     } catch (error) {
       this.errorHandlingService.handleDBErrors(error);

@@ -10,10 +10,7 @@
     </ion-segment-button>
   </ion-segment>
 
-
-
   <ion-grid>
-
     @switch (selectedSegment()) {
       @case('info') {
         <ion-row class="ion-justify-content-center ion-text-center ion-margin-top animated">
@@ -32,7 +29,7 @@
                   <ion-icon [name]="getStarIcon($index + 1)" class="rating-star-gold" size="small"/>
                 }
               </div>
-              <h6 class="ion-no-margin">{{ usuario.promedio_evaluacion }} / 5 <span class="evaluation-count">({{ usuario.evaluaciones.length }})</span></h6>
+              <h6 class="ion-no-margin">{{ usuario.promedio_evaluacion }} / 5 <span class="evaluation-count">({{ usuario.evaluaciones ? usuario.evaluaciones.length : '0'}})</span></h6>
             </div>
           </ion-col>
 
