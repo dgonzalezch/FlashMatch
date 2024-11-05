@@ -131,19 +131,22 @@
             <ion-searchbar placeholder="Buscar jugador..." (click)="modal.setCurrentBreakpoint(0.75)"/>
             <ion-list>
               @for (jugador of jugadoresDisponibles(); track $index) {
-                <ion-item>
-                  <ion-avatar slot="start">
-                    <img [src]="jugador.imagen_perfil ? 'http://localhost:3000' + jugador.imagen_perfil : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
-                  </ion-avatar>
-                  <ion-label>
-                    <h2>{{jugador.nombre}} {{jugador.apellido}}</h2>
-                    <p>Jugador</p>
-                  </ion-label>
-                  <ion-button slot="end" color="tertiary">
-                    Invitar
-                    <!-- <ion-icon name="person-add-outline" slot="icon-only"/> -->
-                  </ion-button>
-                </ion-item>
+                @if (usuarioId() != jugador.id_usuario) {
+                  <ion-item>
+                    <ion-avatar slot="start">
+                      <img [src]="jugador.imagen_perfil ? 'http://localhost:3000' + jugador.imagen_perfil : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+                    </ion-avatar>
+                    <ion-label>
+                      <h2>{{jugador.nombre}} {{jugador.apellido}}</h2>
+                      <p>Jugador</p>
+                    </ion-label>
+                    <ion-button slot="end" color="tertiary">
+                      Invitar
+                      <!-- <ion-icon name="person-add-outline" slot="icon-only"/> -->
+                    </ion-button>
+                  </ion-item>
+                }
+
               } @empty {
                 <ion-item>
                   <ion-label color="medium">

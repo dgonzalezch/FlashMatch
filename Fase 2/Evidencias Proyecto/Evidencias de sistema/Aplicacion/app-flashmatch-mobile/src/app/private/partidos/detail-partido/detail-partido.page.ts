@@ -10,6 +10,7 @@ import { responseError } from 'src/app/interfaces/response-error.interface';
 import { Partido } from 'src/app/interfaces/partido.interface';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { UserInfoComponent } from 'src/app/shared/components/user-info/user-info.component';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-detail-partido',
@@ -24,6 +25,7 @@ export default class DetailPartidoPage {
   private partidoService = inject(PartidoService);
   private usuarioService = inject(UsuarioService);
   private alertService = inject(AlertService);
+  private storageService = inject(StorageService);
 
   partidoActual = signal<Partido | null>(null);
   detalleJugador = signal<any>(null);
@@ -31,7 +33,10 @@ export default class DetailPartidoPage {
   jugadoresDisponibles = signal<any>(null);
   isModalOpen = signal<boolean>(false);
 
-  ionViewWillEnter () {
+  usuarioId = signal<any>('');
+
+  async ionViewWillEnter () {
+    this.usuarioId.set(await this.storageService.get('user'));
     this.route.paramMap.subscribe(params => {
       this.partidoId.set(params.get('id_partido'));
     });

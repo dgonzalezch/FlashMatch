@@ -95,7 +95,7 @@ export default class Step2Page {
   async presentAlertConfirm(cancha: any) {
     const alert = await this.alertController.create({
       header: 'Confirmar reserva',
-      message: `¿Estás seguro de que deseas reservar ${cancha.nombre}?`,
+      message: `¿Estás seguro de que deseas reservar la cancha?`,
       buttons: [
         {
           text: 'Cancelar',
