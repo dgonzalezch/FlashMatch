@@ -44,16 +44,16 @@ export class UsuarioPartidoController {
   // Endpoint para eliminar a un usuario de un partido (creador del partido)
   @Delete('remove/:userId/:partidoId')
   removeUserFromMatch(
-    @Param('userId') userId: string, 
+    @Param('userId') userId: string,
     @Param('partidoId') partidoId: string
   ) {
     return this.usuarioPartidoService.removeUserFromMatch(userId, partidoId);
   }
 
-  // Endpoint para que un usuario se salga de un partido
-  @Patch('leave/:userId/:partidoId')
-  leaveMatch(
-    @Body() { userId, partidoId }: { userId: string; partidoId: string }
+  @Patch(':userId/:partidoId/leave')
+  async leaveMatch(
+    @Param('userId') userId: string,
+    @Param('partidoId') partidoId: string,
   ) {
     return this.usuarioPartidoService.leaveMatch(userId, partidoId);
   }

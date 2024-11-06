@@ -28,7 +28,8 @@ export class AuthService {
       const usuario = this.usuarioRepository.create({
         ...usuarioData,
         roles: [userType],
-        clave: bcrypt.hashSync(clave, 10)
+        clave: bcrypt.hashSync(clave, 10),
+        promedio_evaluacion: 5.00
       });
 
       await this.usuarioRepository.save(usuario);

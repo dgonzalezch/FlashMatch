@@ -9,17 +9,17 @@ import { Usuario } from 'src/usuario/entities/usuario.entity';
 import { DisponibilidadCancha } from 'src/cancha/entities/disponibilidad-cancha.entity';
 import { Partido } from 'src/partido/entities/partido.entity';
 import { NotificacionModule } from 'src/common/notificacion/notificacion.module';
-import { PagoModule } from 'src/common/pago/pago.module';
-import { MatchmakingService } from 'src/matchmaking/matchmaking.service';
 import { PartidosGateway } from 'src/matchmaking/matchmaking.gateway';
+import { MercadoPagoService } from 'src/mercadopago/mercadopago.service';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   controllers: [ReservaController],
-  providers: [ReservaService, ErrorHandlingService, PartidosGateway],
+  providers: [ReservaService, ErrorHandlingService, PartidosGateway, MercadoPagoService],
   imports: [
     TypeOrmModule.forFeature([ReservaCancha, Cancha, Usuario, DisponibilidadCancha, Partido]),
     NotificacionModule,
-    PagoModule,
+    ConfigModule
   ]
 })
 export class ReservaModule {}

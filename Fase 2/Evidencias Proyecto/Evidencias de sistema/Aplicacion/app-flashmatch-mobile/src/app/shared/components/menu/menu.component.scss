@@ -116,9 +116,11 @@ ion-list {
   border-left: 8px solid var(--ion-color-primary);
   border-radius: 8px;
   // transition: border-left-color 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 
-  // ion-icon, ion-label {
-  //   font-weight: bolder;
-  // }
+  ion-icon, ion-label {
+    font-weight: bolder;
+    color: var(--ion-color-primary);
+  }
 }
 

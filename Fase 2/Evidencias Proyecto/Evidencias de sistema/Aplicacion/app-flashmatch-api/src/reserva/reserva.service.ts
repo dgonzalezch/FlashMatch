@@ -11,10 +11,10 @@ import { ResponseMessage } from 'src/common/interfaces/response.interface';
 import { isUUID } from 'class-validator';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { NotificacionService } from 'src/common/notificacion/notificacion.service';
-import { PagoService } from 'src/common/pago/pago.service';
 import { getISOWeek } from 'date-fns';
 import { MatchmakingService } from 'src/matchmaking/matchmaking.service';
 import { PartidosGateway } from 'src/matchmaking/matchmaking.gateway';
+import { MercadoPagoService } from 'src/mercadopago/mercadopago.service';
 
 @Injectable()
 export class ReservaService {
@@ -30,11 +30,11 @@ export class ReservaService {
     @InjectRepository(DisponibilidadCancha)
     private readonly disponibilidadCanchaRepository: Repository<DisponibilidadCancha>,
     private readonly notificacionService: NotificacionService,
-    private readonly pagoService: PagoService,
     private readonly partidosGateway: PartidosGateway,
+    private readonly mercadopagoService: MercadoPagoService
   ) { }
 
-  async createReservaCancha(createReservaCanchaDto: CreateReservaCanchaDto): Promise<ResponseMessage<ReservaCancha>> {
+  async createReservaCancha(createReservaCanchaDto: CreateReservaCanchaDto): Promise<ResponseMessage<{ reservaCancha: ReservaCancha, paymentUrl: string }>> {
     const { cancha_id, partido_id } = createReservaCanchaDto;
 
     const cancha = await this.canchaRepository.findOneBy({ id_cancha: cancha_id });
@@ -47,6 +47,7 @@ export class ReservaService {
     const disponible = await this.checkAvailability(cancha_id, partido.fecha_partido);
     if (!disponible) throw new ConflictException(`La cancha no está disponible en el horario solicitado.`);
 
+    // Crear la reserva
     const reservaCancha = this.reservaCanchaRepository.create({
       cancha,
       partido,
@@ -55,18 +56,39 @@ export class ReservaService {
     });
     await this.reservaCanchaRepository.save(reservaCancha);
 
-    // Enviar notificación de creación
+    // Crear una preferencia de pago para el creador de la reserva
+    const precioPorHora = parseInt(String(cancha.precio_por_hora), 10);
+    const jugadoresRequeridos = partido.jugadores_requeridos;
+    
+    // Redondea el monto a pagar para cada jugador al entero más cercano
+    const amountToPay = Math.floor(precioPorHora / jugadoresRequeridos);
+    const diferencia = precioPorHora - (amountToPay * jugadoresRequeridos);
+
+    const userEmail = partido.creador.correo;
+
+    const paymentUrl = await this.mercadopagoService.createPaymentPreference(
+      partido_id,
+      partido.creador.id_usuario,
+      amountToPay,
+      userEmail,
+    );
+
+    // Notificar al creador que la reserva ha sido creada y está pendiente de pago
     this.notificacionService.sendNotification(partido.creador.id_usuario, 'Su reserva ha sido creada y está pendiente de pago.');
 
-    return { message: 'Reserva creada y pendiente de confirmación de pago.', data: reservaCancha };
+    return {
+      message: 'Reserva creada y pendiente de confirmación de pago.',
+      data: {
+        reservaCancha,
+        paymentUrl,
+      }
+    };
   }
 
   async confirmarReserva(id_reserva: string, monto: number): Promise<ResponseMessage<ReservaCancha>> {
     const reserva = await this.reservaCanchaRepository.findOne({ where: { id_reserva_cancha: id_reserva } });
     if (!reserva) throw new NotFoundException(`Reserva con ID ${id_reserva} no encontrada.`);
 
-    // Procesar pago parcial
-    await this.pagoService.procesarPago({ idReserva: id_reserva, monto });
 
     // Actualizar estado de la reserva
     reserva.estado = 'confirmada';
@@ -96,9 +118,6 @@ export class ReservaService {
     } else if (horasRestantes > 2) {
       porcentajeReembolso = 50;  // Reembolso parcial
     }
-
-    // Procesar reembolso
-    await this.pagoService.procesarReembolso({ idReserva: id_reserva, porcentaje: porcentajeReembolso });
 
     // Cambiar estado de la reserva
     reserva.estado = 'cancelado';

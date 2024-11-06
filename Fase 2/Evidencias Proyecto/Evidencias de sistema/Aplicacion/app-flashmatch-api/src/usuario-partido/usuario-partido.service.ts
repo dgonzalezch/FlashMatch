@@ -11,6 +11,8 @@ import { ResponseMessage } from 'src/common/interfaces/response.interface';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { isUUID } from 'class-validator';
 import { PartidosGateway } from '../matchmaking/matchmaking.gateway';
+import { MercadoPagoService } from 'src/mercadopago/mercadopago.service';
+import { ReservaCancha } from 'src/reserva/entities/reserva-cancha.entity';
 
 @Injectable()
 export class UsuarioPartidoService {
@@ -23,8 +25,11 @@ export class UsuarioPartidoService {
     private readonly usuarioRepository: Repository<Usuario>,
     @InjectRepository(Partido)
     private readonly partidoRepository: Repository<Partido>,
+    @InjectRepository(ReservaCancha)
+    private readonly reservaCanchaRepository: Repository<ReservaCancha>,
     private readonly errorHandlingService: ErrorHandlingService,
-    private readonly partidosGateway: PartidosGateway
+    private readonly partidosGateway: PartidosGateway,
+    private readonly mercadoPagoService: MercadoPagoService
   ) { }
 
   async create(createUsuarioPartidoDto: CreateUsuarioPartidoDto): Promise<ResponseMessage<UsuarioPartido>> {
@@ -147,66 +152,91 @@ export class UsuarioPartidoService {
       },
       relations: ['partido'],
     });
-  
+
     return !existingMatch; // Retorna true si el usuario no tiene partidos en ese horario
   }
 
-  async joinUserToMatch(userId: string, partidoId: string): Promise<ResponseMessage<UsuarioPartido>> {
-    const partido = await this.partidoRepository.findOneBy({ id_partido: partidoId });
-    if (!partido) throw new NotFoundException(`Partido con ID ${partidoId} no encontrado.`);
+  async joinUserToMatch(userId: string, partidoId: string): Promise<ResponseMessage<any>> {
+    const partido = await this.partidoRepository.findOne({
+      where: { id_partido: partidoId },
+      relations: ['reserva', 'reserva.cancha'],
+    });
     
-    // Validaciones
+    if (!partido) throw new NotFoundException(`Partido con ID ${partidoId} no encontrado.`);
+
+    // Validación de la fecha del partido
     if (new Date(partido.fecha_partido) <= new Date()) {
       throw new BadRequestException('No se puede unir a un partido que ya ha pasado.');
     }
-  
+
+    // Verifica si el partido ya está completo
     const currentPlayers = await this.usuarioPartidoRepository.count({
       where: { partido: { id_partido: partidoId }, estado: 'confirmado' },
     });
-  
     if (currentPlayers >= partido.jugadores_requeridos) {
       throw new BadRequestException('Este partido ya tiene el máximo de jugadores.');
     }
-  
+
+    // Validación del estado del partido
     if (partido.estado !== 'confirmado' && partido.estado !== 'abierto') {
       throw new BadRequestException('Este partido no está abierto para nuevos jugadores.');
     }
-  
+
+    // Verifica si el usuario ya está unido al partido
     const existingUserInMatch = await this.usuarioPartidoRepository.findOne({
       where: { usuario: { id_usuario: userId }, partido: { id_partido: partidoId } },
     });
-  
     if (existingUserInMatch) {
       throw new BadRequestException('El usuario ya está unido a este partido.');
     }
-  
+
+    // Verifica la disponibilidad del usuario para el horario del partido
     const isAvailable = await this.isUserAvailableForMatch(userId, partido.fecha_partido);
     if (!isAvailable) throw new BadRequestException('El usuario ya tiene un partido a la misma hora y día.');
-  
-    // Unión al partido
+
+    // Cálculo de la cantidad que el usuario debe pagar
+    const amountToPay = Math.round(partido.reserva.cancha.precio_por_hora / partido.jugadores_requeridos);
+    const userEmail = 'usuario@example.com'; // Obtén el email del usuario desde la base de datos
+
+    console.log(amountToPay)
+    // Crear la preferencia de pago en MercadoPago
+    const paymentUrl = await this.mercadoPagoService.createPaymentPreference(
+      partidoId,
+      userId,
+      amountToPay,
+      userEmail,
+    );
+
+    // Unión al partido en estado 'pendiente'
     const usuarioPartido = this.usuarioPartidoRepository.create({
       usuario: { id_usuario: userId },
       partido: partido,
       estado: 'pendiente',
     });
-  
+
     try {
       await this.usuarioPartidoRepository.save(usuarioPartido);
-  
+
       // Incrementa el contador de jugadores actuales en el partido
       partido.jugadores_actuales += 1;
-  
-      // Verificar si el partido está listo (se han unido todos los jugadores requeridos)
+
+      // Verificar si el partido está listo (todos los jugadores requeridos se han unido)
       if (partido.jugadores_actuales >= partido.jugadores_requeridos) {
         partido.estado = 'listo'; // Cambia el estado del partido a "listo"
       }
-  
-      await this.partidoRepository.save(partido);
-  
-      // Notificación o emisión de evento si el partido está completo
-      this.partidosGateway.emitirNuevoPartido(``);
 
-      return { message: 'Usuario unido al partido exitosamente.', data: usuarioPartido };
+      await this.partidoRepository.save(partido);
+
+      // Emite un evento si el partido alcanza el máximo de jugadores requeridos
+      this.partidosGateway.emitirNuevoPartido(partidoId);
+
+      return {
+        message: 'Usuario unido al partido. Complete el pago para confirmar su lugar.',
+        data: {
+          usuarioPartido,
+          paymentUrl,
+        }
+      }
     } catch (error) {
       this.errorHandlingService.handleDBErrors(error);
     }
@@ -219,11 +249,11 @@ export class UsuarioPartidoService {
         partido: { id_partido: partidoId },
       },
     });
-  
+
     if (!usuarioPartido) {
       throw new NotFoundException(`Usuario no está unido al partido.`);
     }
-  
+
     try {
       await this.usuarioPartidoRepository.remove(usuarioPartido);
       return { message: 'Usuario eliminado del partido exitosamente.', data: 'Success' };
@@ -234,22 +264,69 @@ export class UsuarioPartidoService {
 
   async leaveMatch(userId: string, partidoId: string): Promise<ResponseMessage<UsuarioPartido>> {
     const usuarioPartido = await this.usuarioPartidoRepository.findOne({
-      where: {
-        usuario: { id_usuario: userId },
-        partido: { id_partido: partidoId },
-      },
+      where: { usuario: { id_usuario: userId }, partido: { id_partido: partidoId } },
     });
-  
+
     if (!usuarioPartido) {
       throw new NotFoundException(`Usuario no está unido al partido.`);
     }
-  
+
+    if (!usuarioPartido.paymentId) {
+      throw new BadRequestException('No se encontró un pago registrado para este usuario.');
+    }
+
     try {
+      // Emitir el reembolso usando el paymentId
+      await this.mercadoPagoService.refundPayment(usuarioPartido.paymentId);
+
+      // Actualiza el estado del usuario en el partido
       usuarioPartido.estado = 'cancelado';
+      usuarioPartido.monto_pagado = 0; // Opcional: poner en cero el monto pagado después del reembolso
       await this.usuarioPartidoRepository.save(usuarioPartido);
-      return { message: 'Usuario ha salido del partido exitosamente.', data: usuarioPartido };
+
+      return { message: 'Usuario ha salido del partido y se ha emitido el reembolso.', data: usuarioPartido };
     } catch (error) {
       this.errorHandlingService.handleDBErrors(error);
     }
-  }  
+  }
+
+  async confirmPayment(userId: string, partidoId: string, paymentId: string, amountPaid: number) {
+    // Paso 1: Confirmación de pago individual
+    const usuarioPartido = await this.usuarioPartidoRepository.findOne({
+      where: { usuario: { id_usuario: userId }, partido: { id_partido: partidoId } },
+      relations: ['partido', 'partido.reserva'],
+    });
+
+    if (!usuarioPartido) {
+      throw new NotFoundException('No se encontró el usuario en el partido para confirmar el pago.');
+    }
+
+    // Actualiza el monto pagado, el ID de pago y el estado del usuario
+    usuarioPartido.monto_pagado = amountPaid;
+    usuarioPartido.paymentId = paymentId;
+    usuarioPartido.estado = 'confirmado';
+
+    await this.usuarioPartidoRepository.save(usuarioPartido);
+
+    // Paso 2: Verificación del pago total de la reserva
+    const totalPagado = await this.usuarioPartidoRepository
+      .createQueryBuilder('usuarioPartido')
+      .select('SUM(usuarioPartido.monto_pagado)', 'sum')
+      .where('usuarioPartido.partido.id_partido = :partidoId', { partidoId })
+      .getRawOne();
+
+    if (!totalPagado?.sum) {
+      totalPagado.sum = 0;
+    }
+    const reserva = usuarioPartido.partido.reserva;
+    const precioTotalCancha = parseFloat(String(reserva.cancha.precio_por_hora));
+
+    // Actualiza el estado de la reserva si el total se ha alcanzado
+    if (totalPagado.sum >= precioTotalCancha) {
+      reserva.estado_pago = 'completo';
+      reserva.monto_pagado = totalPagado.sum;
+      reserva.fecha_confirmacion = new Date();
+      await this.reservaCanchaRepository.save(reserva);
+    }
+  }
 }

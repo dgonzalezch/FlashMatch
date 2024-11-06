@@ -2,9 +2,30 @@
 
 <!-- <ion-header>
   <ion-toolbar color="dark">
+    @if (partido) {
+      <div style="text-align: center; margin: 10px;">
+        @if(partido.estado === 'confirmado') {
+          <ion-spinner name="crescent" color="primary"/>
+          <p style="margin: 6px; font-size: 14px;">Esperando jugadores...</p>
+        } @else if (partido.estado == 'listo') {
+          <ion-icon color="success" size="large" name="checkmark-circle-outline"/>
+          <p class="ion-no-margin">¡Partido listo!</p>
+        }
+        @else if(partido.estado == 'pendiente_reserva') {
+          <ion-spinner name="crescent" color="primary"/>
+          <p style="margin: 6px; font-size: 14px;">Esperando jugadores...</p>
+        }
 
+        <ion-progress-bar [color]="partido.jugadores_actuales == partido.jugadores_requeridos ? 'success' : 'secondary'" [value]="partido.jugadores_actuales / partido.jugadores_requeridos"/>
+        <small>{{ partido.jugadores_actuales }} / {{ partido.jugadores_requeridos }} jugadores</small>
+
+        @if(partido.estado == 'listo') {
+          <p style="color: rgb(163, 163, 163); margin: 6px; font-size: 14px;">¡Prepárate para jugar en la fecha y hora programada!</p>
+        }
+      </div>
+
+    }
   </ion-toolbar>
-
 </ion-header> -->
 
 <ion-content [fullscreen]="true" color="light">
@@ -32,7 +53,7 @@
                 <small>{{ partido.jugadores_actuales }} / {{ partido.jugadores_requeridos }} jugadores</small>
 
                 @if(partido.estado == 'listo') {
-                  <h6 style="color: rgb(163, 163, 163)">¡Prepárate para jugar en la fecha y hora programada!</h6>
+                  <p style="color: rgb(163, 163, 163); font-size: 14px;">¡Prepárate para jugar en la fecha y hora programada!</p>
                 }
               </ion-card-content>
             </ion-card>

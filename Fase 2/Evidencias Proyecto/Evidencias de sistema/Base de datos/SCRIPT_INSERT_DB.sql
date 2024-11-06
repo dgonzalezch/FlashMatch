@@ -1,4 +1,3 @@
--- Tabla deportes
 INSERT INTO deporte (nombre_deporte, cantidad_min_jugadores, cantidad_max_jugadores, icono) VALUES
 ('Fútbol 11', 22, 44, 'football-outline'),
 ('Fútbol 7', 14, 28, 'football-outline'),

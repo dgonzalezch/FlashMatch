@@ -13,7 +13,7 @@ export class ReservaController {
   @Post('cancha')
   createReservaCancha(
     @Body() createReservaCanchaDto: CreateReservaCanchaDto
-  ): Promise<ResponseMessage<ReservaCancha>> {
+  ): Promise<ResponseMessage<any>> {
     return this.reservaService.createReservaCancha(createReservaCanchaDto);
   }
 

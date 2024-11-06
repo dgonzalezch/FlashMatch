@@ -19,6 +19,9 @@ import { UsuarioPartidoModule } from './usuario-partido/usuario-partido.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { NotificacionModule } from './common/notificacion/notificacion.module';
 // import { MatchmakingModule } from './matchmaking/matchmaking.module';
+import { MercadoPagoService } from './mercadopago/mercadopago.service';
+import { MercadoPagoController } from './mercadopago/mercadopago.controller';
+import { MercadoPagoModule } from './mercadopago/mercadopago.module';
 
 @Module({
   imports: [
@@ -50,6 +53,7 @@ import { NotificacionModule } from './common/notificacion/notificacion.module';
     ReservaModule,
     UsuarioPartidoModule,
     NotificacionModule,
+    MercadoPagoModule,
   ],
   providers: [],
 })
