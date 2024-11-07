@@ -461,7 +461,6 @@ export class PartidoService {
         partido.estado = 'listo';
       }
   
-
       await this.partidoRepository.save(partido);
       if(partido.estado == 'listo') {
         this.partidosGateway.emitirNuevoPartido(partido);
@@ -545,6 +544,4 @@ export class PartidoService {
       }
     }
   }
-
-
 }

@@ -1,39 +1,41 @@
 // src/mercadopago/mercadopago.service.ts
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import MercadoPagoConfig, { Preference } from 'mercadopago';
+import MercadoPagoConfig, { Payment, Preference } from 'mercadopago';
 
 @Injectable()
 export class MercadoPagoService {
   private mercadopago;
 
   constructor(private readonly configService: ConfigService) {
-    this.mercadopago = new MercadoPagoConfig({accessToken: this.configService.get<any>('MERCADOPAGO_ACCESS_TOKEN')});
+    this.mercadopago = new MercadoPagoConfig({ accessToken: this.configService.get<any>('MERCADOPAGO_ACCESS_TOKEN') });
   }
 
   async createPaymentPreference(partidoId: string, userId: string, amount: number, userEmail: string) {
     try {
       const response = await new Preference(this.mercadopago).create({
         body: {
-          items: [{
-            id: partidoId,
-            title: 'Reserva de partido en FlashMatch',
-            quantity: 1,
-            currency_id: 'CLP',
-            unit_price: amount,
-          }],
+          items: [
+            {
+              id: partidoId,
+              title: 'Reserva de partido en FlashMatch',
+              quantity: 1,
+              currency_id: 'CLP',
+              unit_price: amount
+            }
+          ],
           payer: {
-            email: userEmail,
+            email: userEmail
           },
           back_urls: {
-            success: `https://yourdomain.com/success`,
+            success: `http://localhost:8100/private/matches/create-match/step-3`,
             failure: `https://yourdomain.com/failure`,
-            pending: `https://yourdomain.com/pending`,
+            pending: `https://yourdomain.com/pending`
           },
           auto_return: 'approved',
           metadata: {
             partidoId,
-            userId,
+            userId
           }
         }
       });
@@ -44,6 +46,14 @@ export class MercadoPagoService {
     }
   }
 
+  async getPaymentDetails(paymentId: string) {
+    try {
+      const response = await new Payment(this.mercadopago).get({id: paymentId})
+      return response;
+    } catch (error) {
+      throw new Error(`Error al obtener detalles del pago: ${error.message}`);
+    }
+  }
 
   async refundPayment(paymentId: string) {
     try {

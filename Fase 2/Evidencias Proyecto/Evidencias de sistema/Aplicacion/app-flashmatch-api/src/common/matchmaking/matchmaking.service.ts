@@ -59,20 +59,4 @@ export class MatchmakingService {
     // await this.partidoRepository.save(partido);
     // return partido;
   }
-
-  @Cron(CronExpression.EVERY_10_MINUTES)
-  async emparejamientoAutomatico() {
-    // const usuariosSinPartido = await this.usuarioRepository.find({
-    //   where: { estado: 'sin_partido' },
-    // });
-
-    // for (const usuario of usuariosSinPartido) {
-    //   try {
-    //     const partido = await this.encontrarPartido(usuario.id_usuario, 10000); // 10km de radio
-    //     await this.unirseAPartido(partido.id_partido, usuario.id_usuario);
-    //   } catch (error) {
-    //     console.log(`No se encontró partido para el usuario ${usuario.id_usuario}`);
-    //   }
-    // }
-  }
 }

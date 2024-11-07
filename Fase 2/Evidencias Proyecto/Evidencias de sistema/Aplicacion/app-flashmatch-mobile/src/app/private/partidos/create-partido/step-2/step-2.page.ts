@@ -12,19 +12,6 @@ import { responseError } from 'src/app/interfaces/response-error.interface';
 import { ReservaCanchaService } from 'src/app/services/reserva-cancha.service';
 import { PartidoService } from 'src/app/services/partido.service';
 
-// Definición de la interfaz Cancha
-interface Cancha {
-  id_cancha: string;
-  nombre: string;
-  precio_por_hora: number;
-  ubicacion: string;
-  descripcion: string;
-  tipoCancha: string;
-  imagen: string;
-  latitud: number;
-  longitud: number;
-}
-
 @Component({
   selector: 'app-step-2',
   templateUrl: './step-2.page.html',
@@ -132,7 +119,13 @@ export default class Step2Page {
       this.reservaCanchaService.createReservaCancha(dataSendCreateReserva).subscribe({
         next: async (resp) => {
           await loading.dismiss();
-          this.router.navigate(['/private/matches/create-match/step-3']);
+          if (resp.data && resp.data.paymentUrl) {
+            // Redirigir a la URL de pago proporcionada en la respuesta
+            window.location.href = resp.data.paymentUrl;
+          } else {
+            // Si no hay URL de pago, navega a la siguiente página
+            this.router.navigate(['/private/matches/create-match/step-3']);
+          }
         },
         error: async (err: responseError) => {
           await loading.dismiss();

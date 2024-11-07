@@ -13,6 +13,7 @@ import { isUUID } from 'class-validator';
 import { PartidosGateway } from '../matchmaking/matchmaking.gateway';
 import { MercadoPagoService } from 'src/mercadopago/mercadopago.service';
 import { ReservaCancha } from 'src/reserva/entities/reserva-cancha.entity';
+import { NotificacionService } from 'src/common/notificacion/notificacion.service';
 
 @Injectable()
 export class UsuarioPartidoService {
@@ -29,7 +30,8 @@ export class UsuarioPartidoService {
     private readonly reservaCanchaRepository: Repository<ReservaCancha>,
     private readonly errorHandlingService: ErrorHandlingService,
     private readonly partidosGateway: PartidosGateway,
-    private readonly mercadoPagoService: MercadoPagoService
+    private readonly mercadoPagoService: MercadoPagoService,
+    private readonly notificacionService: NotificacionService,
   ) { }
 
   async create(createUsuarioPartidoDto: CreateUsuarioPartidoDto): Promise<ResponseMessage<UsuarioPartido>> {
@@ -198,7 +200,6 @@ export class UsuarioPartidoService {
     const amountToPay = Math.round(partido.reserva.cancha.precio_por_hora / partido.jugadores_requeridos);
     const userEmail = 'usuario@example.com'; // Obtén el email del usuario desde la base de datos
 
-    console.log(amountToPay)
     // Crear la preferencia de pago en MercadoPago
     const paymentUrl = await this.mercadoPagoService.createPaymentPreference(
       partidoId,
@@ -294,39 +295,52 @@ export class UsuarioPartidoService {
     // Paso 1: Confirmación de pago individual
     const usuarioPartido = await this.usuarioPartidoRepository.findOne({
       where: { usuario: { id_usuario: userId }, partido: { id_partido: partidoId } },
-      relations: ['partido', 'partido.reserva'],
+      relations: ['partido', 'partido.reserva.cancha', 'usuario'],
     });
-
+  
     if (!usuarioPartido) {
       throw new NotFoundException('No se encontró el usuario en el partido para confirmar el pago.');
     }
-
+  
     // Actualiza el monto pagado, el ID de pago y el estado del usuario
     usuarioPartido.monto_pagado = amountPaid;
     usuarioPartido.paymentId = paymentId;
     usuarioPartido.estado = 'confirmado';
-
+  
     await this.usuarioPartidoRepository.save(usuarioPartido);
-
+  
+    // Envía notificación de confirmación de pago al usuario
+    await this.notificacionService.sendNotification(
+      usuarioPartido.usuario.id_usuario,
+      'Tu pago ha sido recibido y confirmado. ¡Gracias por unirte al partido!'
+    );
+  
     // Paso 2: Verificación del pago total de la reserva
     const totalPagado = await this.usuarioPartidoRepository
       .createQueryBuilder('usuarioPartido')
       .select('SUM(usuarioPartido.monto_pagado)', 'sum')
       .where('usuarioPartido.partido.id_partido = :partidoId', { partidoId })
       .getRawOne();
-
+  
     if (!totalPagado?.sum) {
       totalPagado.sum = 0;
     }
     const reserva = usuarioPartido.partido.reserva;
     const precioTotalCancha = parseFloat(String(reserva.cancha.precio_por_hora));
-
+  
     // Actualiza el estado de la reserva si el total se ha alcanzado
     if (totalPagado.sum >= precioTotalCancha) {
       reserva.estado_pago = 'completo';
       reserva.monto_pagado = totalPagado.sum;
       reserva.fecha_confirmacion = new Date();
       await this.reservaCanchaRepository.save(reserva);
+  
+      // Envía notificación al creador del partido sobre el estado de pago completo
+      await this.notificacionService.sendNotification(
+        usuarioPartido.partido.creador.id_usuario,
+        'El pago total de la reserva ha sido completado. ¡El partido está listo para jugar!'
+      );
     }
   }
+  
 }
