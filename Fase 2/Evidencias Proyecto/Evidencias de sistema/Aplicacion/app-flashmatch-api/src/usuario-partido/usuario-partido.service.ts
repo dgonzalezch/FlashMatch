@@ -292,10 +292,9 @@ export class UsuarioPartidoService {
   }
 
   async confirmPayment(userId: string, partidoId: string, paymentId: string, amountPaid: number) {
-    // Paso 1: Confirmación de pago individual
     const usuarioPartido = await this.usuarioPartidoRepository.findOne({
       where: { usuario: { id_usuario: userId }, partido: { id_partido: partidoId } },
-      relations: ['partido', 'partido.reserva.cancha', 'usuario'],
+      relations: ['partido', 'partido.reserva.cancha', 'partido.creador', 'partido.reserva.cancha.administrador'],
     });
   
     if (!usuarioPartido) {
@@ -306,41 +305,56 @@ export class UsuarioPartidoService {
     usuarioPartido.monto_pagado = amountPaid;
     usuarioPartido.paymentId = paymentId;
     usuarioPartido.estado = 'confirmado';
-  
     await this.usuarioPartidoRepository.save(usuarioPartido);
   
-    // Envía notificación de confirmación de pago al usuario
-    await this.notificacionService.sendNotification(
-      usuarioPartido.usuario.id_usuario,
-      'Tu pago ha sido recibido y confirmado. ¡Gracias por unirte al partido!'
-    );
+    // Verificar si el usuario es el creador de la reserva
+    const isCreador = usuarioPartido.partido.creador.id_usuario == userId;
+    if (isCreador) {
+      // Si el creador pagó, actualizar la reserva a `pendiente_confirmacion`
+      const reserva = usuarioPartido.partido.reserva;
+      reserva.estado = 'pendiente_confirmacion';
   
-    // Paso 2: Verificación del pago total de la reserva
-    const totalPagado = await this.usuarioPartidoRepository
-      .createQueryBuilder('usuarioPartido')
-      .select('SUM(usuarioPartido.monto_pagado)', 'sum')
-      .where('usuarioPartido.partido.id_partido = :partidoId', { partidoId })
-      .getRawOne();
-  
-    if (!totalPagado?.sum) {
-      totalPagado.sum = 0;
-    }
-    const reserva = usuarioPartido.partido.reserva;
-    const precioTotalCancha = parseFloat(String(reserva.cancha.precio_por_hora));
-  
-    // Actualiza el estado de la reserva si el total se ha alcanzado
-    if (totalPagado.sum >= precioTotalCancha) {
-      reserva.estado_pago = 'completo';
-      reserva.monto_pagado = totalPagado.sum;
-      reserva.fecha_confirmacion = new Date();
       await this.reservaCanchaRepository.save(reserva);
   
-      // Envía notificación al creador del partido sobre el estado de pago completo
-      await this.notificacionService.sendNotification(
-        usuarioPartido.partido.creador.id_usuario,
-        'El pago total de la reserva ha sido completado. ¡El partido está listo para jugar!'
+      // Notificar al administrador de la cancha
+      this.notificacionService.sendNotification(
+        reserva.cancha.administrador.id_usuario,
+        `La reserva para ${reserva.cancha.nombre_cancha} está pendiente de tu confirmación.`
       );
-    }
-  }
   
+      console.log('Reserva actualizada a pendiente_confirmacion y notificación enviada al administrador de la cancha.');
+  
+    } else {
+      // Verificar si todos los jugadores requeridos han pagado y están en estado `confirmado`
+      const jugadoresConfirmados = await this.usuarioPartidoRepository.count({
+        where: {
+          partido: { id_partido: partidoId },
+          estado: 'confirmado',
+        },
+      });
+  
+      const jugadoresRequeridos = usuarioPartido.partido.jugadores_requeridos;
+  
+      // Actualizar el estado de la reserva si todos los jugadores requeridos han pagado
+      if (jugadoresConfirmados >= jugadoresRequeridos) {
+        const reserva = usuarioPartido.partido.reserva;
+        reserva.estado = 'completa';
+        reserva.monto_pagado = jugadoresConfirmados * amountPaid; // Ajuste según cantidad de jugadores confirmados
+        reserva.fecha_confirmacion = new Date();
+        await this.reservaCanchaRepository.save(reserva);
+  
+        // Notificar al administrador de la cancha que todos los jugadores han pagado
+        this.notificacionService.sendNotification(
+          reserva.cancha.administrador.id_usuario,
+          `Todos los jugadores han completado el pago. La reserva para ${reserva.cancha.nombre_cancha} está confirmada.`
+        );
+      }
+    }
+  
+    // Notificar al usuario que el pago fue recibido
+    this.notificacionService.sendNotification(
+      userId,
+      'Tu pago ha sido recibido y procesado exitosamente.'
+    );
+  }
 }

@@ -13,12 +13,17 @@
       <ion-row class="ion-align-items-center">
         <ion-col size="12">
           <ion-input
-            formControlName="correo" type="email"
-            class="ion-input-form modern-input"
+            formControlName="correo"
+            class="ion-input-form"
+            type="email"
+            placeholder=""
+            labelPlacement="stacked"
+            label="Email"
             preventSpaces
-            label="Email" maxlength="25"
-            labelPlacement="floating"
-          />
+            maxlength="50"
+          >
+            <ion-icon slot="start" name="mail-outline" aria-hidden="true"/>
+          </ion-input>
           @if (loginForm.get('correo')?.touched && loginForm.get('correo')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
@@ -34,17 +39,21 @@
         </ion-col>
 
         <!-- CLAVE -->
+
         <ion-col size="12">
           <ion-input
             formControlName="clave"
+            class="ion-input-form"
             type="password"
-            class="ion-input-form modern-input"
-            preventSpaces
+            placeholder=""
+            labelPlacement="stacked"
             label="Contraseña"
-            labelPlacement="floating">
-            @if (loginForm.get('clave')?.value) {
-              <ion-input-password-toggle slot="end"/>
-            }
+            preventSpaces
+            placeholder=""
+            maxlength="50"
+          >
+            <ion-icon slot="start" name="lock-closed-outline" aria-hidden="true"/>
+            <ion-input-password-toggle slot="end"/>
           </ion-input>
 
           @if (loginForm.get('clave')?.touched && loginForm.get('clave')?.invalid) {
@@ -71,12 +80,18 @@
 
         <!-- BOTÓN INGRESAR -->
         <ion-col size="12">
-          <ion-button type="submit" [disabled]="loginForm.invalid" color="primary" expand="block" class="modern-button">INGRESAR</ion-button>
+          <ion-button type="submit" [disabled]="loginForm.invalid" color="primary" expand="block" class="modern-button">
+            <ion-icon slot="start" name="log-in-outline"/>
+            INGRESAR
+          </ion-button>
         </ion-col>
 
         <!-- BOTÓN REGISTRARSE -->
         <ion-col size="12">
-          <ion-button type="button" color="secondary" [routerLink]="['/auth/register']" expand="block" class="modern-button">REGÍSTRATE</ion-button>
+          <ion-button type="button" color="secondary" [routerLink]="['/auth/register']" expand="block" class="modern-button">
+            <ion-icon slot="start" name="person-add-outline"/>
+            REGÍSTRATE
+          </ion-button>
         </ion-col>
 
         <!-- ENLACE OLVIDASTE CONTRASEÑA -->

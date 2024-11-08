@@ -47,25 +47,21 @@ export class ReservaService {
     const disponible = await this.checkAvailability(cancha_id, partido.fecha_partido);
     if (!disponible) throw new ConflictException(`La cancha no está disponible en el horario solicitado.`);
 
-    // Crear la reserva
+    // Crear la reserva con estado 'pendiente_pago_reserva'
     const reservaCancha = this.reservaCanchaRepository.create({
       cancha,
       partido,
       fecha_hora_reserva: partido.fecha_partido,
-      estado: 'pendiente',
+      estado: 'pendiente_pago_reserva',
     });
     await this.reservaCanchaRepository.save(reservaCancha);
 
-    // Crear una preferencia de pago para el creador de la reserva
+    // Crear preferencia de pago para el primer pago del creador
     const precioPorHora = parseInt(String(cancha.precio_por_hora), 10);
     const jugadoresRequeridos = partido.jugadores_requeridos;
-    
-    // Redondea el monto a pagar para cada jugador al entero más cercano
     const amountToPay = Math.floor(precioPorHora / jugadoresRequeridos);
-    const diferencia = precioPorHora - (amountToPay * jugadoresRequeridos);
 
     const userEmail = partido.creador.correo;
-
     const paymentUrl = await this.mercadopagoService.createPaymentPreference(
       partido_id,
       partido.creador.id_usuario,
@@ -88,7 +84,6 @@ export class ReservaService {
   async confirmarReserva(id_reserva: string, monto: number): Promise<ResponseMessage<ReservaCancha>> {
     const reserva = await this.reservaCanchaRepository.findOne({ where: { id_reserva_cancha: id_reserva } });
     if (!reserva) throw new NotFoundException(`Reserva con ID ${id_reserva} no encontrada.`);
-
 
     // Actualizar estado de la reserva
     reserva.estado = 'confirmada';
@@ -214,7 +209,7 @@ export class ReservaService {
       relations: ['cancha', 'partido', 'partido.creador'],
     });
 
-    if (!reservaCancha || reservaCancha.estado !== 'pendiente') {
+    if (!reservaCancha || reservaCancha.estado !== 'pendiente_confirmacion') {
       throw new NotFoundException(`Reserva no encontrada o ya procesada.`);
     }
 
@@ -240,7 +235,6 @@ export class ReservaService {
 
     return { message: `Reserva ${estado} exitosamente.`, data: reservaCancha };
   }
-
 
   private calcularHorasRestantes(fechaHoraReserva: Date): number {
     const ahora = new Date();

@@ -29,8 +29,8 @@ export class MercadoPagoService {
           },
           back_urls: {
             success: `http://localhost:8100/private/matches/create-match/step-3`,
-            failure: `https://yourdomain.com/failure`,
-            pending: `https://yourdomain.com/pending`
+            failure: `http://localhost:8100/private/matches/create-match/step-2`,
+            pending: `http://localhost:8100/private/matches/create-match/step-2`
           },
           auto_return: 'approved',
           metadata: {

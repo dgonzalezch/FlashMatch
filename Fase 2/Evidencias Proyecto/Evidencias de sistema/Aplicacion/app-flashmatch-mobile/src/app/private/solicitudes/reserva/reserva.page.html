@@ -11,60 +11,74 @@
 
 <ion-content [fullscreen]="true" color="light">
   <ion-grid>
-    @for (reserva of listReservasCancha(); track $index) {
+
+      <!-- Barra de búsqueda estilizada -->
       <ion-row>
         <ion-col size="12">
-          <ion-card class="modern-card">
-            <ion-card-header>
-              <ion-row>
-                <ion-col size="8">
-                  <ion-card-title>{{ reserva.cancha.nombre_cancha }}</ion-card-title>
-                  <ion-card-subtitle>Fecha: {{ reserva.fecha_hora_reserva | date: 'dd/MM/yyyy, HH:mm' }}</ion-card-subtitle>
-                </ion-col>
-                <ion-col size="4" class="ion-text-end">
-                  <ion-badge [color]="reserva.estado === 'aceptada' ? 'success' : reserva.estado === 'rechazada' ? 'danger' : 'warning'">
-                    {{ reserva.estado | titlecase }}
-                  </ion-badge>
-                </ion-col>
-              </ion-row>
-            </ion-card-header>
-
-            <ion-card-content>
-              <ion-grid>
-                <ion-row>
-                  <ion-col size="12">
-                    <p><strong>Solicitante:</strong> {{ reserva.partido.creador.nombre }} {{ reserva.partido.creador.apellido }}</p>
-                  </ion-col>
-                  <ion-col size="12">
-                    @if (reserva.comentario) {
-                      <p><strong>Comentarios:</strong> {{ reserva.comentario }}</p>
-                    } @else {
-                      <p>Sin comentarios</p>
-                    }
-                  </ion-col>
-                </ion-row>
-              </ion-grid>
-            </ion-card-content>
-
-            <ion-row class="ion-justify-content-end ion-padding">
-            @if (reserva.estado == 'pendiente') {
-              <ion-col size="auto">
-                <ion-button size="small" color="tertiary"  (click)="sendRespuestaReserva(reserva.id_reserva_cancha, 'aceptada')">Aceptar</ion-button>
-              </ion-col>
-              <ion-col size="auto">
-                <ion-button size="small" color="danger"  (click)="sendRespuestaReserva(reserva.id_reserva_cancha, 'rechazada')">Rechazar</ion-button>
-              </ion-col>
-            }
-            @else {
-              <ion-col size="auto">
-                <ion-button size="small" color="primary">Ver detalles</ion-button>
-              </ion-col>
-            }
-           </ion-row>
-          </ion-card>
+          <ion-searchbar class="searchbar-modern animated" placeholder="Buscar solicitud..."/>
         </ion-col>
       </ion-row>
-    }
-  </ion-grid>
 
+      <ion-row>
+        @for (reserva of listReservasCancha(); track $index) {
+          <ion-col size="12">
+            <ion-card class="modern-card">
+              <ion-card-header>
+                <ion-row>
+                  <ion-col size="7">
+                    <ion-card-title>{{ reserva.cancha.nombre_cancha }}</ion-card-title>
+                    <ion-card-subtitle>Fecha: {{ reserva.fecha_hora_reserva | date: 'dd/MM/yyyy, HH:mm' }}</ion-card-subtitle>
+                  </ion-col>
+                  <ion-col size="5" class="ion-text-end">
+                    <ion-badge [color]="reserva.estado === 'aceptada' ? 'success' : reserva.estado === 'rechazada' ? 'danger' : 'warning'">
+                      {{ formatEstadoReserva(reserva.estado) }}
+                    </ion-badge>
+                  </ion-col>
+                </ion-row>
+              </ion-card-header>
+
+              <ion-card-content>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size="12">
+                      <p><strong>Solicitante:</strong> {{ reserva.partido.creador.nombre }} {{ reserva.partido.creador.apellido }}</p>
+                    </ion-col>
+                    <ion-col size="12">
+                      @if (reserva.comentario) {
+                        <p><strong>Comentarios:</strong> {{ reserva.comentario }}</p>
+                      } @else {
+                        <p>Sin comentarios</p>
+                      }
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card-content>
+
+              <ion-row class="ion-justify-content-end ion-padding">
+              @if (reserva.estado == 'pendiente_confirmacion') {
+                <ion-col size="auto">
+                  <ion-button size="small" color="tertiary" (click)="sendRespuestaReserva(reserva.id_reserva_cancha, 'aceptada')">Aceptar</ion-button>
+                </ion-col>
+                <ion-col size="auto">
+                  <ion-button size="small" color="danger" (click)="sendRespuestaReserva(reserva.id_reserva_cancha, 'rechazada')">Rechazar</ion-button>
+                </ion-col>
+              }
+              @else {
+                <ion-col size="auto">
+                  <ion-button size="small" color="primary">Ver detalles</ion-button>
+                </ion-col>
+              }
+            </ion-row>
+            </ion-card>
+          </ion-col>
+        }
+        @empty {
+          <ion-col size="12" class="animated">
+            <ion-item lines="none" color="light">
+              <ion-label color="medium" class="ion-text-center">Aún no tienes ninguna solicitud.</ion-label>
+            </ion-item>
+          </ion-col>
+        }
+      </ion-row>
+  </ion-grid>
 </ion-content>

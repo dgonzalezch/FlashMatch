@@ -139,7 +139,6 @@ export default class Step2Page {
     }
   }
 
-
   segmentChanged(event: any) {
     this.selectedSegment.set(event.detail.value);
   }

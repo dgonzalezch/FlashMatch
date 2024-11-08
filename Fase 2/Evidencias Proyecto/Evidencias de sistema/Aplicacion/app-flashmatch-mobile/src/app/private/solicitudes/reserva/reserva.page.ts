@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonLabel, IonItem, IonList, IonItemGroup, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonRow, IonCol, IonButton, IonSelect, IonSelectOption, IonDatetime, IonBadge, IonGrid, IonButtons, IonBackButton, IonIcon, IonFooter, AlertController, LoadingController } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonLabel, IonItem, IonList, IonItemGroup, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonRow, IonCol, IonButton, IonSelect, IonSelectOption, IonDatetime, IonBadge, IonGrid, IonButtons, IonBackButton, IonIcon, IonFooter, AlertController, LoadingController, IonSearchbar } from '@ionic/angular/standalone';
 import { ReservaCanchaService } from 'src/app/services/reserva-cancha.service';
 import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { responseError } from 'src/app/interfaces/response-error.interface';
@@ -13,7 +13,7 @@ import { ReservaCancha } from 'src/app/interfaces/reserva-cancha.interface';
   templateUrl: './reserva.page.html',
   styleUrls: ['./reserva.page.scss'],
   standalone: true,
-  imports: [IonFooter, IonIcon, IonBackButton, IonButtons, IonGrid, IonBadge, IonDatetime, IonButton, IonCol, IonRow, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonItemGroup, IonList, IonItem, IonLabel, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, IonSelect, IonSelectOption, CommonModule, FormsModule]
+  imports: [IonSearchbar, IonFooter, IonIcon, IonBackButton, IonButtons, IonGrid, IonBadge, IonDatetime, IonButton, IonCol, IonRow, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonItemGroup, IonList, IonItem, IonLabel, IonCard, IonContent, IonHeader, IonTitle, IonToolbar, IonSelect, IonSelectOption, CommonModule, FormsModule]
 })
 export default class ReservaPage implements OnInit {
   private reservaCanchaService = inject(ReservaCanchaService);
@@ -38,11 +38,10 @@ export default class ReservaPage implements OnInit {
     })
   }
 
-
   async sendRespuestaReserva(id_reserva: string, status: 'aceptada' | 'rechazada') {
     const alert = await this.alertController.create({
       header: 'Confirmar reserva',
-      message: status =='aceptada' ? `¿Estás seguro de que deseas aceptar la reserva?`: `¿Estás seguro de que deseas rechazar la reserva?`,
+      message: status == 'aceptada' ? `¿Estás seguro de que deseas aceptar la reserva?` : `¿Estás seguro de que deseas rechazar la reserva?`,
       buttons: [
         {
           text: 'Cancelar',
@@ -74,6 +73,20 @@ export default class ReservaPage implements OnInit {
     });
 
     await alert.present();
+  }
 
+  formatEstadoReserva(estado: string): string {
+    switch (estado) {
+      case 'pendiente_pago_reserva':
+        return 'P. pago';
+      case 'pendiente_confirmacion':
+        return 'P. confirmación';
+      case 'aceptada':
+        return 'Aceptada';
+      case 'rechazada':
+        return 'Rechazada';
+      default:
+        return estado;
+    }
   }
 }

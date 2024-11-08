@@ -13,7 +13,6 @@ import { ReservaCancha } from 'src/reserva/entities/reserva-cancha.entity';
 import { Cancha } from 'src/cancha/entities/cancha.entity';
 import { DisponibilidadCancha } from 'src/cancha/entities/disponibilidad-cancha.entity';
 import { NotificacionModule } from 'src/common/notificacion/notificacion.module';
-import { NotificacionService } from 'src/common/notificacion/notificacion.service';
 
 @Module({
   controllers: [UsuarioPartidoController],

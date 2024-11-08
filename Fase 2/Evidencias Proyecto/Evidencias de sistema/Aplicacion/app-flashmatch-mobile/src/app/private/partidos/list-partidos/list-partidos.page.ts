@@ -108,7 +108,11 @@ export default class ListPartidosPage {
         next: async (resp: responseSuccess) => {
           this.loadPartidos();
           await loading.dismiss();
-          this.alertService.message(resp.message);
+          if (resp.data && resp.data.paymentUrl) {
+            // Redirigir a la URL de pago proporcionada en la respuesta
+            window.location.href = resp.data.paymentUrl;
+          }
+          // this.alertService.message(resp.message);
         },
         error: async (err: responseError) => {
           await loading.dismiss();

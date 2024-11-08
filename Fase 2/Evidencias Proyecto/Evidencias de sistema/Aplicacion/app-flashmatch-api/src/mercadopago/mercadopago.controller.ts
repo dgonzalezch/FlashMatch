@@ -19,6 +19,7 @@ export class MercadoPagoController {
 
         // Obtener los detalles del pago desde MercadoPago
         const paymentDetails = await this.mercadopagoService.getPaymentDetails(paymentId);
+
         // Obtener `metadata` y otros datos necesarios del pago
         const metadata = paymentDetails.metadata || {};
         const partidoId = metadata.partido_id;

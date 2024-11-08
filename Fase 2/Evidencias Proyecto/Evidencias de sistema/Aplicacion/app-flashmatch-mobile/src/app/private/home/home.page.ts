@@ -17,12 +17,6 @@ export default class HomePage implements OnInit {
 
   router = inject(Router)
 
-  userPerformance = {
-    averageScore: 8.5,
-    matchesPlayed: 20,
-    matchesWon: 12
-  };
-
   upcomingMatches = [
     { title: 'Partido en la cancha A', date: new Date(), location: 'Cancha A' },
     { title: 'Partido en la cancha B', date: new Date(), location: 'Cancha B' }

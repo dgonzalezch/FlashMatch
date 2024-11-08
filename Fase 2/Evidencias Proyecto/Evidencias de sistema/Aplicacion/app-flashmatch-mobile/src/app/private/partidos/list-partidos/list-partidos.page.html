@@ -83,7 +83,7 @@
                             <ion-label>
                               @if(partido.reserva) {
                                 <h3>Ubicación ({{partido.reserva.cancha.nombre_cancha}})</h3>
-                                <p style="font-size: 13px;">{{partido.reserva.cancha.ubicacion}}</p>
+                                <p style="font-size: small;">{{partido.reserva.cancha.ubicacion}}</p>
                                 <ion-button class="ion-no-margin">Ver en mapa</ion-button>
                               } @else {
                                 <h3>Ubicación</h3>
@@ -147,9 +147,9 @@
         </ion-col>
       }
       @empty {
-        <ion-col size="12">
-          <ion-item lines="none">
-            <ion-label color="medium" class="ion-text-center">Esperando partidos...</ion-label>
+        <ion-col size="12" class="animated">
+          <ion-item lines="none" color="light">
+            <ion-label color="medium" class="ion-text-center">Aún no estás en ningún partido.</ion-label>
           </ion-item>
         </ion-col>
       }

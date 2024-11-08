@@ -18,7 +18,7 @@ export class ReservaCancha {
   @Column({ type: 'timestamp' })
   fecha_hora_reserva: Date;
 
-  @Column({ type: 'varchar', length: 20, default: 'pendiente' })
+  @Column({ type: 'varchar', length: 50, default: 'pendiente' })
   estado: string;
 
   @Column({ type: 'text', nullable: true })
@@ -28,8 +28,6 @@ export class ReservaCancha {
   fecha_solicitud: Date;
 
   // Campos adicionales
-  @Column({ type: 'varchar', length: 20, default: 'pendiente' })
-  estado_pago: string;
 
   @Column({ type: 'varchar', nullable: true })
   payment_id: string;
