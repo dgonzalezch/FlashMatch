@@ -21,18 +21,56 @@
               <ion-card-title class="ion-text-center">Tus Preferencias</ion-card-title>
             </ion-card-header>
             <ion-card-content>
-              <p><strong>Tipo partido:</strong> {{usuario.tipoPartido ? usuario.tipoPartido.nombre_tipo_partido : 'N/D'}}</p>
+              <!-- <p><strong>Tipo partido:</strong> {{usuario.tipoPartido ? usuario.tipoPartido.nombre_tipo_partido : 'N/D'}}</p>
               <p><strong>Nivel de Habilidad:</strong> {{usuario.nivelHabilidad ? usuario.nivelHabilidad.nombre_nivel_habilidad : 'N/D'}}</p>
               <p><strong>Rango de Edad:</strong> {{usuario.rangoEdad ? usuario.rangoEdad.descripcion : 'N/D'}}</p>
-              <p><strong>Distancia max:</strong> {{usuario.distancia_cancha_max ? usuario.distancia_cancha_max + ' KM' : 'N/D'}}</p>
+              <p><strong>Distancia max:</strong> {{usuario.distancia_cancha_max ? usuario.distancia_cancha_max + ' KM' : 'N/D'}}</p> -->
+
+
+              <div class="preferences-container animated">
+                <div class="preference-item">
+                  <ion-icon name="walk-outline" class="preference-icon"/>
+                  <div class="preference-text">
+                    <p class="preference-title">Rango edad</p>
+                    <p class="preference-value">{{usuario.rangoEdad ? usuario.rangoEdad.descripcion : 'N/D'}}</p>
+                  </div>
+                </div>
+                <div class="preference-item">
+                  <ion-icon name="barbell-outline" class="preference-icon"/>
+                  <div class="preference-text">
+                    <p class="preference-title">Nivel habilidad</p>
+                    <p class="preference-value">{{usuario.nivelHabilidad ? usuario.nivelHabilidad.nombre_nivel_habilidad : 'N/D'}}</p>
+                  </div>
+                </div>
+                <div class="preference-item">
+                  <ion-icon name="dice-outline" class="preference-icon"/>
+                  <div class="preference-text">
+                    <p class="preference-title">Tipo partido</p>
+                    <p class="preference-value">{{usuario.tipoPartido ? usuario.tipoPartido.nombre_tipo_partido : 'N/D'}}</p>
+                  </div>
+                </div>
+                <div class="preference-item">
+                  <ion-icon name="location-outline" class="preference-icon"/>
+                  <div class="preference-text">
+                    <p class="preference-title">Distancia max</p>
+                    <p class="preference-value">{{usuario.distancia_cancha_max ? usuario.distancia_cancha_max + ' KM' : 'N/D' }}</p>
+                  </div>
+                </div>
+              </div>
             </ion-card-content>
 
             <ion-footer class="ion-no-border ion-padding-horizontal ion-padding-bottom ion-text-center">
               @if(!inMatchmaking()) {
                 <ion-button class="ion-no-margin" size="block" (click)="getPartidosDisponiblesUsuario(); iniciarMatchmaking();">Entrar en match</ion-button>
               }@else {
-                <ion-spinner name="crescent" color="primary"></ion-spinner>
+                <ion-spinner class="ion-margin-top" name="crescent" color="primary"/>
                 <p>Estás en matchmaking...</p>
+
+                <ion-card color="tertiary">
+                  <ion-card-content>
+                    {{ mensajeActual() }}
+                  </ion-card-content>
+                </ion-card>
               }
             </ion-footer>
           </ion-card>
@@ -154,7 +192,7 @@
                         <ion-button color="secondary" style="margin-right: 6px;" class="ion-no-margin" size="small" [routerLink]="'/private/matches/detail-match/' + partido.id_partido">Detalle</ion-button>
 
                         @if (partido.estado === 'confirmado' && !partido.partido_privado) {
-                          <ion-button color="primary" class="ion-no-margin" size="small" (click)="joinPartido(partido.id_partido)">Unirse</ion-button>
+                          <ion-button color="primary" class="ion-no-margin" size="small" (click)="presentAlertConfirmJoinPartido(partido.id_partido)">Unirse</ion-button>
                         }
                       </div>
                     </ion-col>
@@ -175,9 +213,15 @@
         } @empty {
           @if (inMatchmaking()) {
             <ion-col size="12" class="animated">
-              <ion-item lines="none" color="light">
-                <ion-label color="medium" class="ion-text-center">Esperando partidos...</ion-label>
-              </ion-item>
+              <ion-card class="modern-card" color="dark">
+                <ion-card-content>
+                  <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <ion-text color="primary">Esperando partidos...</ion-text>
+                    <ion-spinner name="dots" color="primary"/>
+                  </div>
+                  <!-- <ion-progress-bar color="secondary" type="indeterminate"/> -->
+                </ion-card-content>
+              </ion-card>
             </ion-col>
           }
         }

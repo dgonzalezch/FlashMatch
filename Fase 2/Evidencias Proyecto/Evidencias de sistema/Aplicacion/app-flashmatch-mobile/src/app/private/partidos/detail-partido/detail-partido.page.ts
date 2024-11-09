@@ -27,7 +27,7 @@ export default class DetailPartidoPage {
   private alertService = inject(AlertService);
   private storageService = inject(StorageService);
 
-  partidoActual = signal<Partido | null>(null);
+  partidoActual = signal<any | null>(null);
   detalleJugador = signal<any>(null);
   partidoId = signal<any>('');
   jugadoresDisponibles = signal<any>(null);
@@ -75,5 +75,19 @@ export default class DetailPartidoPage {
   closeModal() {
     this.isModalOpen.set(false);
     this.detalleJugador.set(null); // Limpiar el detalle del jugador al cerrar
+  }
+
+  getStarIcon(starNumber: number, promedio_evaluacion: number): string {
+    const rating = promedio_evaluacion;
+    if (rating >= starNumber) {
+      // Si la calificación es mayor o igual al número de la estrella, muestra una estrella completa
+      return 'star';
+    } else if (rating >= starNumber - 0.5) {
+      // Si la calificación está entre la estrella actual y 0.5 menos, muestra una media estrella
+      return 'star-half';
+    } else {
+      // Si la calificación es menor, muestra una estrella vacía
+      return 'star-outline';
+    }
   }
 }

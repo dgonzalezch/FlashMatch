@@ -13,12 +13,13 @@ import { RangoEdad } from 'src/rango-edad/entities/rango-edad.entity';
 import { NivelHabilidad } from 'src/nivel-habilidad/entities/nivel-habilidad.entity';
 import { TipoPartido } from 'src/tipo-partido/entities/tipo-partido.entity';
 import { EvaluacionModule } from 'src/common/evaluacion/evaluacion.module';
+import { Notificacion } from 'src/common/notificacion/entities/notificacion.entity';
 
 @Module({
   controllers: [UsuarioController],
   providers: [UsuarioService, ErrorHandlingService],
   imports: [
-    TypeOrmModule.forFeature([Usuario, Deporte, DeportePosicion, DeportePosicionUsuario, EstadisticaDetalladaUsuario, ParametroRendimiento, RangoEdad, NivelHabilidad, TipoPartido]),
+    TypeOrmModule.forFeature([Usuario, Deporte, DeportePosicion, DeportePosicionUsuario, EstadisticaDetalladaUsuario, ParametroRendimiento, RangoEdad, NivelHabilidad, TipoPartido, Notificacion]),
     EvaluacionModule
   ]
 })

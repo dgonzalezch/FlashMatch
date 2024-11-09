@@ -5,3 +5,11 @@ ion-toolbar {
 ion-buttons {
   color: white;
 }
+
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -4px;
+  font-size: 10px;
+  border-radius: 50%;
+}

@@ -62,17 +62,6 @@ export class NotificacionService {
   sendNotification(userId: string, message: string) {
     // Lógica para enviar la notificación
     console.log(`Notificación para ${userId}: ${message}`);
-  }
-
-  async notificarCambioEstado(partidoId: string, mensaje: string) {
-    // Lógica para enviar notificación de cambio de estado
-  }
-
-  async notificarConfirmacionFinal(partidoId: string, mensaje: string) {
-    // Lógica para enviar notificación de confirmación final
-  }
-
-  async notificarSancion(userId: string, mensaje: string) {
-    // Lógica para notificar sanciones al usuario
+    this.createInAppNotification(userId, message);
   }
 }

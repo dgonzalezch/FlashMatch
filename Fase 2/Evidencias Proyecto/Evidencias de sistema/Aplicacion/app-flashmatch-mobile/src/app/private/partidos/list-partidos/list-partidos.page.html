@@ -112,22 +112,25 @@
                 <ion-col size="12" class="ion-no-padding">
                   <div style="display: flex; justify-content: end;">
 
-                    @if (partido.estado === 'pendiente_reserva') {
-                      @if (partido.reserva) {
-                        <ion-button color="primary" class="ion-no-margin" style="margin-right: 6px;" size="small">Consultar</ion-button>
-                      } @else {
-                        <ion-button color="primary" class="ion-no-margin" style="margin-right: 6px;" size="small" [routerLink]="'/private/matches/create-match/' + partido.id_partido + '/step-2'">Reservar</ion-button>
+                    @switch (partido.estado) {
+                      @case ('pendiente_reserva') {
+                        @if (partido.reserva) {
+                          <ion-button color="primary" class="ion-no-margin" style="margin-right: 6px;" size="small">Consultar</ion-button>
+                        } @else {
+                          <ion-button color="primary" class="ion-no-margin" style="margin-right: 6px;" size="small" [routerLink]="'/private/matches/create-match/' + partido.id_partido + '/step-2'">Reservar</ion-button>
+                        }
+                      }
+                      @case ('confirmado') {
+                        @if (!partido.partido_privado) {
+                          <ion-button color="primary" class="ion-no-margin" style="margin-right: 6px;" size="small" (click)="rellenarJugadores(partido.id_partido)">Rellenar</ion-button>
+                          <ion-button color="primary" class="ion-no-margin" style="margin-right: 6px;" size="small" (click)="presentAlertConfirmJoinPartido(partido.id_partido)">Unirse</ion-button>
+                        }
+                      }
+                      @case ('finalizado') {
+                        <ion-button color="warning" style="margin-right: 6px;" class="ion-no-margin" size="small" [routerLink]="'/private/matches/detail-match/' + partido.id_partido">Calificar</ion-button>
                       }
                     }
-                    @if(partido.estado == 'finalizado') {
-                      <ion-button color="warning" style="margin-right: 6px;" class="ion-no-margin" size="small" [routerLink]="'/private/matches/detail-match/' + partido.id_partido">Calificar</ion-button>
-                    }
-                    <ion-button color="secondary" style="margin-right: 6px;" class="ion-no-margin" size="small" [routerLink]="'/private/matches/detail-match/' + partido.id_partido">Detalle</ion-button>
-
-                    @if (partido.estado === 'confirmado' && !partido.partido_privado) {
-                    <ion-button color="primary" class="ion-no-margin" style="margin-right: 6px;" size="small" (click)="rellenarJugadores(partido.id_partido)">Rellenar</ion-button>
-                      <ion-button color="primary" class="ion-no-margin" size="small" (click)="joinPartido(partido.id_partido)">Unirse</ion-button>
-                    }
+                    <ion-button color="secondary" class="ion-no-margin" size="small" [routerLink]="'/private/matches/detail-match/' + partido.id_partido">Detalle</ion-button>
 
                   </div>
                 </ion-col>

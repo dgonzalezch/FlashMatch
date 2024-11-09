@@ -61,8 +61,8 @@ export default class ListPartidosPage {
 
   async presentAlertConfirmJoinPartido(partidoId: string) {
     const alert = await this.alertController.create({
-      header: 'Confirmar',
-      message: `¿Estás seguro de que deseas unirte al partido?`,
+      header: 'Unirse a partido',
+      message: `¿Estás seguro de que deseas unirte al partido?. Una vez que aceptes, serás redireccionado al pago.`,
       buttons: [
         {
           text: 'Cancelar',
@@ -106,7 +106,6 @@ export default class ListPartidosPage {
 
       this.partidoService.joinPartido({ partidoId: partidoId, userId: user }).subscribe({
         next: async (resp: responseSuccess) => {
-          this.loadPartidos();
           await loading.dismiss();
           if (resp.data && resp.data.paymentUrl) {
             // Redirigir a la URL de pago proporcionada en la respuesta
@@ -154,6 +153,8 @@ export default class ListPartidosPage {
         return 'Cancelado';
       case 'confirmado':
         return 'Confirmado';
+      case 'en_curso':
+        return 'En Curso'
       default:
         return estado; // Retorna el estado tal cual si no encuentra una coincidencia
     }

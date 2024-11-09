@@ -2,7 +2,6 @@ import { Equipo } from "src/equipo/entities/equipo.entity";
 import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { DeportePosicionUsuario } from "./deporte-posicion-usuario.entity";
 import { EstadisticaDetalladaUsuario } from "./estadistica-detallada-usuario.entity";
-import { ReservaCancha } from "src/reserva/entities/reserva-cancha.entity";
 import { UsuarioPartido } from "src/usuario-partido/entities/usuario-partido.entity";
 import { TipoPartido } from "src/tipo-partido/entities/tipo-partido.entity";
 import { NivelHabilidad } from "src/nivel-habilidad/entities/nivel-habilidad.entity";
@@ -83,7 +82,7 @@ export class Usuario {
     partidos: UsuarioPartido[];
 
     @OneToMany(() => Notificacion, notificacion => notificacion.usuario)
-    notificaciones: Notification[];
+    notificaciones: Notificacion[];
 
     @CreateDateColumn({ name: 'creado_en' })
     creado_en: Date;

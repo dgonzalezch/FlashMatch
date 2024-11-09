@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Query, ParseUUIDPipe, UseInterceptors, UploadedFile, Req, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Query, ParseUUIDPipe, UseInterceptors, UploadedFile, Req, BadRequestException, Put } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
@@ -83,5 +83,14 @@ export class UsuarioController {
     const filePath = `/uploads/profile-pictures/${file.filename}`;
     await this.usuarioService.updateProfilePicture(userId, filePath);
     return { message: 'Imagen de perfil actualizada con éxito', filePath };
+  }
+
+  @Put(':id/notificaciones/marcar-leidas')
+  async markNotificationsAsRead(
+    @Param('id') userId: string
+  )
+  {
+    await this.usuarioService.markAllNotificationsAsRead(userId);
+    return { message: 'Todas las notificaciones han sido marcadas como leídas.' };
   }
 }

@@ -17,6 +17,7 @@ import { RangoEdad } from 'src/rango-edad/entities/rango-edad.entity';
 import { TipoPartido } from 'src/tipo-partido/entities/tipo-partido.entity';
 import * as fs from 'fs';
 import * as path from 'path';
+import { Notificacion } from 'src/common/notificacion/entities/notificacion.entity';
 
 @Injectable()
 export class UsuarioService {
@@ -41,6 +42,8 @@ export class UsuarioService {
     private readonly nivelHabilidadRepository: Repository<NivelHabilidad>,
     @InjectRepository(TipoPartido)
     private readonly tipoPartidoRepository: Repository<TipoPartido>,
+    @InjectRepository(Notificacion)
+    private readonly notificacionRepository: Repository<Notificacion>,
     private readonly errorHandlingService: ErrorHandlingService,
   ) { }
 
@@ -67,7 +70,7 @@ export class UsuarioService {
     if (isUUID(term)) {
       usuario = await this.usuarioRepository.findOne({
         where: { id_usuario: term },
-        relations: ['rangoEdad', 'nivelHabilidad', 'tipoPartido', 'equipos', 'deportesPosicionesUsuarios.deportePosicion', 'estadisticasDetalladasUsuarios.parametroRendimiento', 'evaluaciones'],
+        relations: ['rangoEdad', 'nivelHabilidad', 'tipoPartido', 'equipos', 'deportesPosicionesUsuarios.deportePosicion', 'estadisticasDetalladasUsuarios.parametroRendimiento', 'evaluaciones', 'partidos', 'notificaciones'],
       });
     } else {
       usuario = await this.usuarioRepository.createQueryBuilder('usuario')
@@ -209,5 +212,21 @@ export class UsuarioService {
     usuario.imagen_perfil = imagePath;
     await this.usuarioRepository.save(usuario);
     return usuario;
+  }
+
+  async markAllNotificationsAsRead(userId: string): Promise<void> {
+    const usuario = await this.usuarioRepository.findOne({
+      where: { id_usuario: userId },
+      relations: ['notificaciones'],
+    });
+
+    if (!usuario) {
+      throw new NotFoundException(`Usuario con ID ${userId} no encontrado`);
+    }
+
+    await this.notificacionRepository.update(
+      { usuario: { id_usuario: userId }, leido: false },
+      { leido: true },
+    );
   }
 }

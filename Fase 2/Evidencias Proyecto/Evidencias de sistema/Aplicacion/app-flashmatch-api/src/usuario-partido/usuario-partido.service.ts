@@ -313,7 +313,8 @@ export class UsuarioPartidoService {
       // Si el creador pagó, actualizar la reserva a `pendiente_confirmacion`
       const reserva = usuarioPartido.partido.reserva;
       reserva.estado = 'pendiente_confirmacion';
-  
+      console.log('Entré aca')
+
       await this.reservaCanchaRepository.save(reserva);
   
       // Notificar al administrador de la cancha
@@ -324,6 +325,12 @@ export class UsuarioPartidoService {
   
       console.log('Reserva actualizada a pendiente_confirmacion y notificación enviada al administrador de la cancha.');
   
+      // Notificar al usuario que el pago fue recibido
+      this.notificacionService.sendNotification(
+        userId,
+        'Tu pago ha sido recibido y procesado exitosamente. Se ha notificado al administrador de la cancha.'
+      );
+
     } else {
       // Verificar si todos los jugadores requeridos han pagado y están en estado `confirmado`
       const jugadoresConfirmados = await this.usuarioPartidoRepository.count({
@@ -346,15 +353,9 @@ export class UsuarioPartidoService {
         // Notificar al administrador de la cancha que todos los jugadores han pagado
         this.notificacionService.sendNotification(
           reserva.cancha.administrador.id_usuario,
-          `Todos los jugadores han completado el pago. La reserva para ${reserva.cancha.nombre_cancha} está confirmada.`
+          `Todos los jugadores han completado el pago. La reserva para ${reserva.cancha.nombre_cancha} está completa.`
         );
       }
     }
-  
-    // Notificar al usuario que el pago fue recibido
-    this.notificacionService.sendNotification(
-      userId,
-      'Tu pago ha sido recibido y procesado exitosamente.'
-    );
   }
 }

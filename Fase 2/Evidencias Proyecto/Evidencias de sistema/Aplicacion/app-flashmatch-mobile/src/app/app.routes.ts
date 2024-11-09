@@ -204,6 +204,10 @@ export const routes: Routes = [
         ]
       },
       {
+        path: 'voucher',
+        loadComponent: () => import('./private/comprobante/comprobante.page')
+      },
+      {
         path: 'invitations',
         loadComponent: () => import('./private/invitaciones/invitaciones.page')
       },
@@ -213,7 +217,7 @@ export const routes: Routes = [
       },
       {
         path: 'notifications',
-        loadComponent: () => import('./private/notifications/notifications.page')
+        loadComponent: () => import('./private/notificaciones/notificaciones.page')
       },
       {
         path: '**',

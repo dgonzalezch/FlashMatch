@@ -1,66 +1,47 @@
 @let partido = partidoActual();
 
-<!-- <ion-header>
-  <ion-toolbar color="dark">
-    @if (partido) {
-      <div style="text-align: center; margin: 10px;">
-        @if(partido.estado === 'confirmado') {
-          <ion-spinner name="crescent" color="primary"/>
-          <p style="margin: 6px; font-size: 14px;">Esperando jugadores...</p>
-        } @else if (partido.estado == 'listo') {
-          <ion-icon color="success" size="large" name="checkmark-circle-outline"/>
-          <p class="ion-no-margin">¡Partido listo!</p>
-        }
-        @else if(partido.estado == 'pendiente_reserva') {
-          <ion-spinner name="crescent" color="primary"/>
-          <p style="margin: 6px; font-size: 14px;">Esperando jugadores...</p>
-        }
+<ion-header >
+  @if (partido) {
+      <ion-card class="ion-no-margin" color="dark" style="border-radius: 0;">
+        <ion-card-content class="ion-text-center">
+          @switch (partido.estado) {
+            @case('confirmado') {
+              <ion-spinner name="crescent" color="primary"/>
+              <p>Esperando jugadores...</p>
+            }
+            @case('listo') {
+              <ion-icon color="success" size="large" name="checkmark-circle-outline"/>
+              <p>¡Partido listo!</p>
+            }
+            @case('pendiente_reserva') {
+              <ion-spinner name="crescent" color="primary"/>
+              <p>Esperando cancha...</p>
+            }
+            @case('finalizado') {
+              <ion-icon color="success" size="large" name="checkmark-circle-outline"/>
+              <p>¡Partido terminado!</p>
+            }
+          }
 
-        <ion-progress-bar [color]="partido.jugadores_actuales == partido.jugadores_requeridos ? 'success' : 'secondary'" [value]="partido.jugadores_actuales / partido.jugadores_requeridos"/>
-        <small>{{ partido.jugadores_actuales }} / {{ partido.jugadores_requeridos }} jugadores</small>
+          <ion-progress-bar [color]="partido.jugadores_actuales == partido.jugadores_requeridos ? 'success' : 'secondary'" [value]="partido.jugadores_actuales / partido.jugadores_requeridos"/>
+          <small>{{ partido.jugadores_actuales }} / {{ partido.jugadores_requeridos }} jugadores</small>
 
-        @if(partido.estado == 'listo') {
-          <p style="color: rgb(163, 163, 163); margin: 6px; font-size: 14px;">¡Prepárate para jugar en la fecha y hora programada!</p>
-        }
-      </div>
-
-    }
-  </ion-toolbar>
-</ion-header> -->
+          @switch (partido.estado) {
+            @case('listo') {
+              <p style="color: rgb(163, 163, 163); font-size: 14px;">¡Prepárate para jugar en la fecha y hora programada!</p>
+            }
+            @case('finalizado') {
+              <p style="color: rgb(163, 163, 163); font-size: 14px;">El partido ha terminado, a continuación puedes evaluar a los jugadores del partido.</p>
+            }
+          }
+        </ion-card-content>
+      </ion-card>
+  }
+</ion-header>
 
 <ion-content [fullscreen]="true" color="light">
   <ion-grid>
     @if (partido) {
-      <!-- Indicador de búsqueda de jugadores -->
-      <!-- @if (partido.estado === 'confirmado' && !partido.partido_privado) { -->
-        <ion-row>
-          <ion-col size="12" class="ion-text-center">
-            <ion-card class="modern-card" color="dark">
-              <ion-card-content>
-                @if(partido.estado === 'confirmado') {
-                  <ion-spinner name="crescent" color="primary"/>
-                  <p>Esperando jugadores...</p>
-                } @else if (partido.estado == 'listo') {
-                  <ion-icon color="success" size="large" name="checkmark-circle-outline"/>
-                  <p>¡Partido listo!</p>
-                }
-                @else if(partido.estado == 'pendiente_reserva') {
-                  <ion-spinner name="crescent" color="primary"/>
-                  <p>Esperando cancha...</p>
-                }
-
-                <ion-progress-bar [color]="partido.jugadores_actuales == partido.jugadores_requeridos ? 'success' : 'secondary'" [value]="partido.jugadores_actuales / partido.jugadores_requeridos"/>
-                <small>{{ partido.jugadores_actuales }} / {{ partido.jugadores_requeridos }} jugadores</small>
-
-                @if(partido.estado == 'listo') {
-                  <p style="color: rgb(163, 163, 163); font-size: 14px;">¡Prepárate para jugar en la fecha y hora programada!</p>
-                }
-              </ion-card-content>
-            </ion-card>
-          </ion-col>
-        </ion-row>
-      <!-- } -->
-
       <!-- Información general del partido -->
       <ion-row>
         <ion-col size="12">
@@ -94,8 +75,10 @@
               <ion-card-title>Jugadores</ion-card-title>
             </ion-card-header>
             <ion-card-content>
-              <h3>Jugadores Confirmados</h3>
-              <ion-list class="jugadores">
+              @if (partido.estado == 'Finalizado') {
+                <h3>Confirmados</h3>
+              }
+              <ion-list class="jugadores ion-no-padding">
                 @for (jugador of partido.jugadores; track $index) {
                   <ion-item lines="none" button (click)="openModal(jugador.usuario)" color="dark">
                     <ion-avatar slot="start">
@@ -103,6 +86,13 @@
                     </ion-avatar>
                     <ion-label>
                       <h2>{{ jugador.usuario.nombre }} {{jugador.usuario.apellido}}</h2>
+                      <div class="rating-stars">
+                        @for (star of [1, 2, 3, 4, 5]; track $index) {
+                          <ion-icon [name]="getStarIcon(star, jugador.usuario.promedio_evaluacion)" class="rating-star-gold" size="small"></ion-icon>
+                        }
+                        <h6 class="ion-no-margin">{{ jugador.usuario.promedio_evaluacion }} / 5 <span class="evaluation-count">({{ jugador.usuario.evaluaciones.length }})</span></h6>
+                      </div>
+                      <!-- <p>Posición: {{ jugador.usuario.posicion || 'Por Definir' }}</p> -->
                       <!-- <p>Posición: {{ jugador.usuario.posicion || 'Por Definir' }}</p> -->
                     </ion-label>
                     <ion-icon name="checkmark-circle-outline" color="success" slot="end"/>
@@ -128,11 +118,13 @@
               </ion-list> -->
             </ion-card-content>
 
-            <ion-footer class="ion-no-border ion-padding-horizontal ion-padding-bottom">
-              <ion-button id="open-modal-invite" class="ion-no-margin" expand="block" color="secondary" (click)="getJugadoresDisponibles()">
-                Invitar Jugadores
-              </ion-button>
-            </ion-footer>
+            @if (partido.estado == 'confirmado') {
+              <ion-footer class="ion-no-border ion-padding-horizontal ion-padding-bottom">
+                <ion-button id="open-modal-invite" class="ion-no-margin" expand="block" color="secondary" (click)="getJugadoresDisponibles()">
+                  Invitar Jugadores
+                </ion-button>
+              </ion-footer>
+            }
           </ion-card>
         </ion-col>
       </ion-row>

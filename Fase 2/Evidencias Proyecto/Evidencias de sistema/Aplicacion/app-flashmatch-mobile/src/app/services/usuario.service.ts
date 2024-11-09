@@ -45,4 +45,12 @@ export class UsuarioService {
       timeout(environment.apiTime)
     );
   }
+
+  markNotificationsAsRead(userId: string) {
+    return this.http.put<any>(this.urlBaseUsuario + `${userId}/notificaciones/marcar-leidas`, {}).pipe(
+      map((response) => response),
+      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
+      timeout(environment.apiTime)
+    );
+  }
 }

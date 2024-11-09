@@ -1,0 +1,25 @@
+<ion-content [fullscreen]="true" color="light" class="ion-padding">
+  <ion-grid class="full-height-grid animated">
+    <ion-row class="ion-justify-content-center ion-align-items-center full-height-row ">
+      <ion-col size="auto" class="ion-text-center modern-card ion-padding-vertical" style="background-color: var(--ion-color-dark);">
+        <ion-icon color="tertiary" name="checkmark-circle-outline" style="font-size: 60px;"/>
+        <ion-text color="light">
+          <h1><strong>¡Pago enviado con éxito!</strong></h1>
+        </ion-text>
+        <ion-note color="primary" class="ion-margin-top ion-text-center">
+          Tu pago ha sido enviado exitosamente, se te notificará cuando este sea procesado.
+          <br />
+          En caso de ser una reserva, si tu solicitud es aceptada o rechazada se te notificará.
+        </ion-note>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="light">
+    <ion-button class="ion-padding-horizontal modern-button" color="tertiary" expand="block" type="button" [routerLink]="['/private/matches/list-matches']">
+      Volver a partidos
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
