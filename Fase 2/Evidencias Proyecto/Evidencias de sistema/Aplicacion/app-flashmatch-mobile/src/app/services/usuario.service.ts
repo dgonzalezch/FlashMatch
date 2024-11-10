@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 export class UsuarioService {
   private http = inject(HttpClient);
   private urlBaseUsuario = CONTEXT.API_USUARIO;
+  private urlBaseEvaluacion = CONTEXT.API_EVALUACION
 
   getUsuarios(): Observable<any> {
     return this.http.get<any>(this.urlBaseUsuario).pipe(
@@ -48,6 +49,15 @@ export class UsuarioService {
 
   markNotificationsAsRead(userId: string) {
     return this.http.put<any>(this.urlBaseUsuario + `${userId}/notificaciones/marcar-leidas`, {}).pipe(
+      map((response) => response),
+      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
+      timeout(environment.apiTime)
+    );
+  }
+
+  enviarEvaluacion(formEvaluacionUsuario: any) {
+    debugger
+    return this.http.post<any>(this.urlBaseEvaluacion, formEvaluacionUsuario).pipe(
       map((response) => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)

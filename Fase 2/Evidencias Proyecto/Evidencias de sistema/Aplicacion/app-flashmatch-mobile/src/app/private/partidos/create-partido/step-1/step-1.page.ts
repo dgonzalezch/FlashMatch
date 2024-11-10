@@ -61,12 +61,21 @@ export default class Step1Page {
     descripcion: ['']
   });
 
+  minDate = signal<string>('');
+
   ionViewWillEnter() {
     this.getListDeportes();
     this.getListTiposPartidos();
     this.getListNivelesHabilidad();
     this.getListRangosEdad();
     this.getListTiposEmparejamientos();
+  }
+
+  constructor() {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1); // Añadir 1 día a la fecha actual
+    this.minDate.set(tomorrow.toISOString().split('T')[0]); // Formato ISO solo con la fecha
   }
 
   onDateChange(event: any) {

@@ -41,8 +41,8 @@ export default class ListPartidosPage {
     this.loadPartidos();
   }
 
-  loadPartidos() {
-    this.partidoService.getPartidos().subscribe({
+  async loadPartidos() {
+    this.partidoService.getPartidosUsuario(await this.storageService.get('user')).subscribe({
       next: (resp: responseSuccess) => {
         this.listPartidos.set(resp.data);
       },

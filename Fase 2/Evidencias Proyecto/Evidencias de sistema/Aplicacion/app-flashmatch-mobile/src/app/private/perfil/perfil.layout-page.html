@@ -5,14 +5,17 @@
         <ion-icon name="information-circle-outline"></ion-icon>
         <ion-label>Información</ion-label>
       </ion-tab-button>
-      <ion-tab-button tab="statistics">
-        <ion-icon name="stats-chart-outline"></ion-icon>
-        <ion-label>Estadisticas</ion-label>
-      </ion-tab-button>
-      <ion-tab-button tab="historical">
-        <ion-icon name="timer-outline"></ion-icon>
-        <ion-label>Historial</ion-label>
-      </ion-tab-button>
+
+      @if (!isCancha()) {
+        <ion-tab-button tab="statistics">
+          <ion-icon name="stats-chart-outline"></ion-icon>
+          <ion-label>Estadisticas</ion-label>
+        </ion-tab-button>
+        <ion-tab-button tab="historical">
+          <ion-icon name="timer-outline"></ion-icon>
+          <ion-label>Historial</ion-label>
+        </ion-tab-button>
+      }
     </ion-tab-bar>
   </ion-tabs>
 </ion-content>

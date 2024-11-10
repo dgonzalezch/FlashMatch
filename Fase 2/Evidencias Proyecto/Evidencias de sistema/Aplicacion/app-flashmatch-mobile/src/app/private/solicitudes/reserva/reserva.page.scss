@@ -1,0 +1,12 @@
+.calendar-chip {
+  background: var(--ion-color-tertiary);
+  color: var(--ion-color-light);
+  font-weight: bold;
+  border: none;
+}
+
+.user-avatar-container {
+  position: relative;
+  border: 2px solid var(--ion-color-primary);
+  border-radius: 50%;
+}

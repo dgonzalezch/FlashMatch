@@ -15,18 +15,84 @@
   <ion-grid>
     @if (usuario) {
       <ion-row>
+        <ion-col size="12" class="ion-no-padding">
+          <ion-accordion-group expand="inset" class="ion-no-margin ion-margin-top ion-margin-horizontal animated" [value]="['first']">
+            <ion-accordion value="first" class="ion-no-margin">
+              <ion-item lines="full" slot="header" color="dark">
+                @if(inMatchmaking()) {
+                  <ion-spinner class="ion-margin-end" name="crescent" color="primary"/>
+                } @else {
+                  <ion-icon name="flash-outline" class="ion-margin-end"/>
+                }
+                <ion-label>
+                  <h3>Tus preferencias</h3>
+                  @if (inMatchmaking()) {
+                    <p style="color: var(--ion-color-primary);">Estás en matchmaking...</p>
+                    <p style="color: var(--ion-color-primary);">Matches: {{partidosEncontrados().length}}</p>
+                  } @else {
+                    <p>Matchmaking no iniciado</p>
+                  }
+                </ion-label>
+              </ion-item>
+              <div class="ion-padding" slot="content"  style="background-color: var(--ion-color-dark);">
+
+                <div class="preferences-container">
+                  <div class="preference-item">
+                    <ion-icon name="walk-outline" class="preference-icon"/>
+                    <div class="preference-text">
+                      <p class="preference-title">Rango edad</p>
+                      <p class="preference-value">{{usuario.rangoEdad ? usuario.rangoEdad.descripcion : 'N/D'}}</p>
+                    </div>
+                  </div>
+                  <div class="preference-item">
+                    <ion-icon name="barbell-outline" class="preference-icon"/>
+                    <div class="preference-text">
+                      <p class="preference-title">Nivel habilidad</p>
+                      <p class="preference-value">{{usuario.nivelHabilidad ? usuario.nivelHabilidad.nombre_nivel_habilidad : 'N/D'}}</p>
+                    </div>
+                  </div>
+                  <div class="preference-item">
+                    <ion-icon name="dice-outline" class="preference-icon"/>
+                    <div class="preference-text">
+                      <p class="preference-title">Tipo partido</p>
+                      <p class="preference-value">{{usuario.tipoPartido ? usuario.tipoPartido.nombre_tipo_partido : 'N/D'}}</p>
+                    </div>
+                  </div>
+                  <div class="preference-item">
+                    <ion-icon name="location-outline" class="preference-icon"/>
+                    <div class="preference-text">
+                      <p class="preference-title">Distancia max</p>
+                      <p class="preference-value">{{usuario.distancia_cancha_max ? usuario.distancia_cancha_max + ' KM' : 'N/D' }}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <ion-footer class="ion-no-border ion-padding-top  ion-text-center">
+                  @if(!inMatchmaking()) {
+                    <ion-button class="ion-no-margin" size="block" (click)="getPartidosDisponiblesUsuario(); iniciarMatchmaking();">Entrar en match</ion-button>
+                  }@else {
+                    <!-- <ion-spinner class="ion-margin-top animated" name="crescent" color="primary"/> -->
+                    <!-- <p class="animated" style="color: var(--ion-color-primary);">Matchmaking iniciado...</p> -->
+
+                    <ion-card color="tertiary" class="animated">
+                      <ion-card-content>
+                        {{ mensajeActual() }}
+                      </ion-card-content>
+                    </ion-card>
+                  }
+                </ion-footer>
+              </div>
+            </ion-accordion>
+          </ion-accordion-group>
+        </ion-col>
+      </ion-row>
+      <!-- <ion-row>
         <ion-col size="12">
           <ion-card color="dark" class="modern-card">
             <ion-card-header>
               <ion-card-title class="ion-text-center">Tus Preferencias</ion-card-title>
             </ion-card-header>
             <ion-card-content>
-              <!-- <p><strong>Tipo partido:</strong> {{usuario.tipoPartido ? usuario.tipoPartido.nombre_tipo_partido : 'N/D'}}</p>
-              <p><strong>Nivel de Habilidad:</strong> {{usuario.nivelHabilidad ? usuario.nivelHabilidad.nombre_nivel_habilidad : 'N/D'}}</p>
-              <p><strong>Rango de Edad:</strong> {{usuario.rangoEdad ? usuario.rangoEdad.descripcion : 'N/D'}}</p>
-              <p><strong>Distancia max:</strong> {{usuario.distancia_cancha_max ? usuario.distancia_cancha_max + ' KM' : 'N/D'}}</p> -->
-
-
               <div class="preferences-container animated">
                 <div class="preference-item">
                   <ion-icon name="walk-outline" class="preference-icon"/>
@@ -63,10 +129,10 @@
               @if(!inMatchmaking()) {
                 <ion-button class="ion-no-margin" size="block" (click)="getPartidosDisponiblesUsuario(); iniciarMatchmaking();">Entrar en match</ion-button>
               }@else {
-                <ion-spinner class="ion-margin-top" name="crescent" color="primary"/>
-                <p>Estás en matchmaking...</p>
+                <ion-spinner class="ion-margin-top animated" name="crescent" color="primary"/>
+                <p class="animated">Estás en matchmaking...</p>
 
-                <ion-card color="tertiary">
+                <ion-card color="tertiary" class="animated">
                   <ion-card-content>
                     {{ mensajeActual() }}
                   </ion-card-content>
@@ -75,44 +141,14 @@
             </ion-footer>
           </ion-card>
         </ion-col>
-      </ion-row>
-
-
-       <!-- Selección de Fecha y Hora -->
-      <!-- <ion-row>
-        <ion-col size="12" class="ion-text-center">
-          <h4>Selecciona una fecha y hora.</h4>
-          <ion-datetime-button datetime="datetime"/>
-          <ion-modal [keepContentsMounted]="true">
-            <ng-template>
-              <ion-datetime
-                id="datetime"
-                locale="es-ES"
-                [showDefaultButtons]="true"
-                cancelText="cerrar"
-                doneText="confirmar"
-                presentation="date-time"
-                hourValues="8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23"
-                minuteValues="0"
-                [formatOptions]="{
-                  date: {
-                    weekday: 'short',
-                    month: 'long',
-                    day: '2-digit',
-                  },
-                  time: {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  },
-                }"
-                (ionChange)="onDateChange($event)"
-              />
-            </ng-template>
-          </ion-modal>
-        </ion-col>
       </ion-row> -->
 
       <ion-row>
+        @if (partidosEncontrados()) {
+          <ion-col size="12" class="ion-margin-start">
+            <h5 style="color: var(--ion-color-medium);" class="ion-no-margin ion-margin-top">Partidos:</h5>
+          </ion-col>
+        }
         @for (partido of partidosEncontrados(); track $index) {
           <ion-col size="12">
             <ion-card color="dark" class="modern-card">
@@ -141,13 +177,11 @@
                       {{getEstadoLabel(partido.estado)}}
                     </ion-badge>
 
-
                     <ion-col size="12" class="ion-no-padding ion-margin-vertical">
-
                       <ion-accordion-group class="ion-no-margin">
                         <ion-accordion>
                           <ion-item slot="header" color="dark">
-                            <ion-icon style="margin-right: 5px;" name="location-outline" />
+                            <ion-icon style="margin-right: 5px;" name="location-outline"/>
                             <ion-label>Ubicación</ion-label>
                           </ion-item>
                           <div slot="content">
@@ -198,12 +232,10 @@
                     </ion-col>
                   </ion-row>
                 </ion-card-content>
-
-
               <ion-footer class="ion-no-border ion-padding-horizontal ion-padding-bottom">
                 <ion-chip color="primary" [outline]="true" class="creator-chip ion-no-margin" (click)="openModal(partido.creador)">
                   <ion-avatar>
-                    <img [src]="partido.creador.imagen_perfil ? 'http://localhost:3000' + partido.creador.imagen_perfil : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+                    <img [src]="partido.creador.imagen_perfil ? 'http://localhost:3000' + partido.creador.imagen_perfil : 'assets/images/default-avatar.svg'" />
                   </ion-avatar>
                   <ion-label>{{ partido.creador.nombre }} {{partido.creador.apellido}}</ion-label>
                 </ion-chip>
@@ -219,7 +251,6 @@
                     <ion-text color="primary">Esperando partidos...</ion-text>
                     <ion-spinner name="dots" color="primary"/>
                   </div>
-                  <!-- <ion-progress-bar color="secondary" type="indeterminate"/> -->
                 </ion-card-content>
               </ion-card>
             </ion-col>
@@ -237,30 +268,9 @@
     }
   </ion-grid>
 
-  <!-- Resultados de Partidos Encontrados
-  <div *ngIf="partidosEncontrados().length > 0">
-    <h3 class="ion-text-center ion-margin-top">Partidos Encontrados ({{ partidosEncontrados() }})</h3>
-    <ion-grid>
-      <ion-row>
-        <ion-col size="12" *ngFor="let partido of partidosEncontrados()">
-          <ion-card color="light" class="result-card ion-no-margin">
-            <ion-card-header>
-              <ion-card-subtitle>{{ partido.deporte.nombre_deporte }}</ion-card-subtitle>
-              <ion-card-title>Nivel: {{ partido.nivelHabilidad.nombre_nivel_habilidad }}</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <p><strong>Edad:</strong> {{ partido.rangoEdad.descripcion }}</p>
-              <p><strong>Fecha:</strong> {{ partido.fecha | date:'mediumDate' }}</p>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div> -->
-
   <!-- Estado de búsqueda de partido -->
   <div *ngIf="buscandoPartido()" class="ion-text-center ion-padding">
-    <ion-spinner name="crescent"></ion-spinner>
+    <ion-spinner name="crescent"/>
     <p>Buscando partido...</p>
   </div>
 </ion-content>

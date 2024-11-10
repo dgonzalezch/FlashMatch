@@ -28,6 +28,14 @@ export class PartidoService {
     );
   }
 
+  getPartidosUsuario(idUsuario: string): Observable<any> {
+    return this.http.get<any>(this.urlBasePartido + 'usuario/' + idUsuario).pipe(
+      map((response) => response),
+      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
+      timeout(environment.apiTime)
+    );
+  }
+
   getPartido(id_partido: string): Observable<any> {
     return this.http.get<any>(this.urlBasePartido + id_partido).pipe(
       map((response) => response),

@@ -86,7 +86,7 @@
             <ion-datetime-button datetime="datetime" style="margin-top: 8px;"/>
             <ion-modal [keepContentsMounted]="true">
               <ng-template>
-                <ion-datetime id="datetime" cancelText="cerrar" doneText="confirmar" presentation="date" (ionChange)="onDateChange($event)" [showDefaultButtons]="true"  />
+                <ion-datetime id="datetime" [max]="maxDate()" cancelText="cerrar" doneText="confirmar" presentation="date" (ionChange)="onDateChange($event)" [showDefaultButtons]="true"  />
               </ng-template>
             </ion-modal>
             @if (step1Form.get('fecha_nacimiento')?.invalid) {

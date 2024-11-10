@@ -1,25 +1,34 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, input, OnInit, signal } from '@angular/core';
-import { IonRow, IonCol, IonAvatar, IonButton, IonIcon, IonGrid, IonHeader, IonToolbar, IonSegment, IonSegmentButton, IonLabel, IonList, IonListHeader, IonItem, IonCard, IonBadge, IonThumbnail, IonChip } from "@ionic/angular/standalone";
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, input, OnInit, Output, signal } from '@angular/core';
+import { IonRow, IonCol, IonAvatar, IonButton, IonIcon, IonGrid, IonTextarea, IonList, IonItem, ModalController } from "@ionic/angular/standalone";
 import { responseError } from 'src/app/interfaces/response-error.interface';
 import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { AlertService } from '../../common/alert.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-user-evaluation',
   templateUrl: './user-evaluation.component.html',
   styleUrls: ['./user-evaluation.component.scss'],
   standalone: true,
-  imports: [IonChip, IonBadge, IonCard, IonItem, IonListHeader, IonList, IonLabel, IonSegmentButton, IonSegment, IonToolbar, IonHeader, IonGrid, IonIcon, IonButton, IonAvatar, IonCol, IonRow, IonThumbnail, CommonModule],
+  imports: [IonItem, IonList, CommonModule, IonTextarea, IonGrid, IonIcon, IonButton, IonAvatar, IonCol, IonRow],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserEvaluationComponent  implements OnInit {
+export class UserEvaluationComponent implements OnInit {
   private usuarioService = inject(UsuarioService);
   private alertService = inject(AlertService);
+  private storageService = inject(StorageService);
+  private modalController = inject(ModalController); // Inyecta ModalController
+  @Output() evaluacionEnviada = new EventEmitter<void>(); // Define el evento a emitir
 
   idUsuario = input.required<any>();
+  idPartido = input.required<any>();
   usuarioData = signal<any>({});
+  puntuacion = signal<number>(0);
+  comentario = signal<string>('');
+  usuarioActualId = signal<string>('');
+  stars = [1, 2, 3, 4, 5]; // Array para iterar en la plantilla
 
   ngOnInit() {
     this.usuarioService.getUsuario(this.idUsuario()).subscribe({
@@ -33,16 +42,39 @@ export class UserEvaluationComponent  implements OnInit {
   }
 
   getStarIcon(starNumber: number): string {
-    const rating = this.usuarioData().promedio_evaluacion;
-    if (rating >= starNumber) {
-      // Si la calificación es mayor o igual al número de la estrella, muestra una estrella completa
-      return 'star';
-    } else if (rating >= starNumber - 0.5) {
-      // Si la calificación está entre la estrella actual y 0.5 menos, muestra una media estrella
-      return 'star-half';
-    } else {
-      // Si la calificación es menor, muestra una estrella vacía
-      return 'star-outline';
+    const rating = this.puntuacion();
+    return rating >= starNumber ? 'star' : rating >= starNumber - 0.5 ? 'star-half' : 'star-outline';
+  }
+
+  setRating(starNumber: number) {
+    this.puntuacion.set(starNumber);
+  }
+
+  async enviarEvaluacion() {
+    try {
+      this.usuarioService.enviarEvaluacion({
+        partidoId: this.idPartido(),
+        evaluadorId: await this.storageService.get('user'),
+        evaluadoId: this.idUsuario(),
+        puntuacion: this.puntuacion() + 1,
+        comentario: this.comentario(),
+      }).subscribe({
+        next: () => {
+          this.alertService.message("Evaluación enviada con éxito.");
+        },
+        error: () => {
+          this.alertService.error("Error al enviar la evaluación.");
+        },
+        complete: async () => {
+          this.evaluacionEnviada.emit();
+          await this.modalController.dismiss(); // Cierra el modal
+        }
+      });
+
+    } catch (error) {
+      this.alertService.error("Error al enviar la evaluación.");
     }
   }
+
+
 }

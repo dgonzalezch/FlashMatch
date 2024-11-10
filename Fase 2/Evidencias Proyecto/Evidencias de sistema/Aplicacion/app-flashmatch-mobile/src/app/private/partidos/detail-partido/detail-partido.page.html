@@ -75,29 +75,54 @@
               <ion-card-title>Jugadores</ion-card-title>
             </ion-card-header>
             <ion-card-content>
-              @if (partido.estado == 'Finalizado') {
+              @if (partido.estado != 'finalizado') {
                 <h3>Confirmados</h3>
               }
               <ion-list class="jugadores ion-no-padding">
                 @for (jugador of partido.jugadores; track $index) {
-                  <ion-item lines="none" button (click)="openModal(jugador.usuario)" color="dark">
-                    <ion-avatar slot="start">
-                      <img [src]="jugador.usuario.imagen_perfil ? 'http://localhost:3000' + jugador.usuario.imagen_perfil : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
-                    </ion-avatar>
-                    <ion-label>
-                      <h2>{{ jugador.usuario.nombre }} {{jugador.usuario.apellido}}</h2>
-                      <div class="rating-stars">
-                        @for (star of [1, 2, 3, 4, 5]; track $index) {
-                          <ion-icon [name]="getStarIcon(star, jugador.usuario.promedio_evaluacion)" class="rating-star-gold" size="small"></ion-icon>
-                        }
-                        <h6 class="ion-no-margin">{{ jugador.usuario.promedio_evaluacion }} / 5 <span class="evaluation-count">({{ jugador.usuario.evaluaciones.length }})</span></h6>
-                      </div>
-                      <!-- <p>Posición: {{ jugador.usuario.posicion || 'Por Definir' }}</p> -->
-                      <!-- <p>Posición: {{ jugador.usuario.posicion || 'Por Definir' }}</p> -->
-                    </ion-label>
-                    <ion-icon name="checkmark-circle-outline" color="success" slot="end"/>
-                  </ion-item>
+                  @if (partido.estado != 'finalizado') {
+                    <ion-item lines="none" button (click)="openModal(jugador.usuario, 'detail')" color="dark">
+                      <ion-avatar slot="start">
+                        <img [src]="jugador.usuario.imagen_perfil ? 'http://localhost:3000' + jugador.usuario.imagen_perfil : 'assets/images/default-avatar.svg'" />
+                      </ion-avatar>
+                      <ion-label>
+                        <h3>{{ jugador.usuario.nombre }} {{jugador.usuario.apellido}} {{usuarioId() == jugador.usuario.id_usuario ? '(Tú)' : ''}}</h3>
+                        <div class="rating-stars">
+                          @for (star of [1, 2, 3, 4, 5]; track $index) {
+                            <ion-icon [name]="getStarIcon(star, jugador.usuario.promedio_evaluacion)" class="rating-star-gold" size="small"/>
+                          }
+                          <h6 class="ion-no-margin">{{ jugador.usuario.promedio_evaluacion }} / 5 <span class="evaluation-count">({{ jugador.usuario.evaluaciones.length }})</span></h6>
+                        </div>
+                      </ion-label>
+                      <ion-icon name="checkmark-circle-outline" color="success" slot="end"/>
+                    </ion-item>
+                  } @else {
+                    <ion-item lines="none" button (click)="openModal(jugador.usuario, 'evaluate')" color="dark" [disabled]="usuarioId() == jugador.usuario.id_usuario || haEvaluadoJugador(jugador)">
+                      <ion-avatar slot="start">
+                        <img [src]="jugador.usuario.imagen_perfil ? 'http://localhost:3000' + jugador.usuario.imagen_perfil : 'assets/images/default-avatar.svg'" />
+                      </ion-avatar>
+                      <ion-label>
+                        <h3>{{ jugador.usuario.nombre }} {{jugador.usuario.apellido}} {{usuarioId() == jugador.usuario.id_usuario ? '(Tú)' :''}}</h3>
+                        <div class="rating-stars">
+                          @for (star of [1, 2, 3, 4, 5]; track $index) {
+                            <ion-icon [name]="getStarIcon(star, jugador.usuario.promedio_evaluacion)" class="rating-star-gold" size="small"></ion-icon>
+                          }
+                          <h6 class="ion-no-margin">{{ jugador.usuario.promedio_evaluacion }} / 5 <span class="evaluation-count">({{ jugador.usuario.evaluaciones.length }})</span></h6>
+                        </div>
+                      </ion-label>
+
+                      @if (haEvaluadoJugador(jugador)) {
+                        <ion-badge color="success" class="ion-text-end ion-no-margin">Evaluado</ion-badge>
+                      } @else if(!haEvaluadoJugador(jugador) && jugador.usuario.id_usuario != usuarioId()) {
+                        <ion-badge color="warning" class="ion-text-end ion-no-margin">P. Evaluación</ion-badge>
+                      }
+                      @if(jugador.usuario.id_usuario == usuarioId()) {
+                        <ion-icon name="person-outline" color="primary" slot="end"/>
+                      }
+                    </ion-item>
+                  }
                 }
+
               </ion-list>
 
               <!-- <h3 class="ion-margin-top">Invitados Pendientes</h3>
@@ -119,11 +144,13 @@
             </ion-card-content>
 
             @if (partido.estado == 'confirmado') {
-              <ion-footer class="ion-no-border ion-padding-horizontal ion-padding-bottom">
-                <ion-button id="open-modal-invite" class="ion-no-margin" expand="block" color="secondary" (click)="getJugadoresDisponibles()">
-                  Invitar Jugadores
-                </ion-button>
-              </ion-footer>
+              @if(partido.creador.id_usuario == usuarioId()) {
+                <ion-footer class="ion-no-border ion-padding-horizontal ion-padding-bottom">
+                  <ion-button id="open-modal-invite" class="ion-no-margin" expand="block" color="secondary" (click)="getJugadoresDisponibles()">
+                    Invitar Jugadores
+                  </ion-button>
+                </ion-footer>
+              }
             }
           </ion-card>
         </ion-col>
@@ -133,6 +160,14 @@
         <ng-template>
           <ion-content class="ion-padding" color="dark">
             <app-user-info [idUsuario]="detalleJugador().id_usuario"/>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+
+      <ion-modal class="evaluation-user" [isOpen]="isModalOpenEvaluate()" (didDismiss)="closeModal()">
+        <ng-template>
+          <ion-content class="ion-padding" color="dark">
+            <app-user-evaluation [idUsuario]="detalleJugador().id_usuario" [idPartido]="partidoId()" (evaluacionEnviada)="onEvaluacionEnviada()"/>
           </ion-content>
         </ng-template>
       </ion-modal>
@@ -147,7 +182,7 @@
                 @if (usuarioId() != jugador.id_usuario) {
                   <ion-item>
                     <ion-avatar slot="start">
-                      <img [src]="jugador.imagen_perfil ? 'http://localhost:3000' + jugador.imagen_perfil : 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+                      <img [src]="jugador.imagen_perfil ? 'http://localhost:3000' + jugador.imagen_perfil : 'assets/images/default-avatar.svg'" />
                     </ion-avatar>
                     <ion-label>
                       <h2>{{jugador.nombre}} {{jugador.apellido}}</h2>
@@ -155,11 +190,9 @@
                     </ion-label>
                     <ion-button slot="end" color="tertiary">
                       Invitar
-                      <!-- <ion-icon name="person-add-outline" slot="icon-only"/> -->
                     </ion-button>
                   </ion-item>
                 }
-
               } @empty {
                 <ion-item>
                   <ion-label color="medium">

@@ -17,7 +17,7 @@
           <ion-card-content>
             <ion-row class="ion-align-items-center ion-justify-content-center">
               <ion-col size="auto">
-                <ion-icon name="albums-outline" class="icon-large"/>
+                <ion-icon color="tertiary" name="albums-outline" class="icon-large"/>
               </ion-col>
               <ion-col>
                 <ion-text class="modern-text">
@@ -80,7 +80,7 @@
                   @for (cancha of listCanchas(); track $index) {
                     <ion-item>
                       <ion-thumbnail slot="start">
-                        <img [src]="'https://ionicframework.com/docs/img/demos/thumbnail.svg'" alt="cancha">
+                        <img [src]="'assets/images/default-thumbnail.svg'" alt="cancha">
                       </ion-thumbnail>
                       <ion-label>
                         <h2>{{ cancha.nombre }}</h2>

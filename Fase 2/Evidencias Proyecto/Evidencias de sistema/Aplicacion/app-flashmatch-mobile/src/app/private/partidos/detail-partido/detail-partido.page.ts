@@ -11,13 +11,14 @@ import { Partido } from 'src/app/interfaces/partido.interface';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { UserInfoComponent } from 'src/app/shared/components/user-info/user-info.component';
 import { StorageService } from 'src/app/services/storage.service';
+import { UserEvaluationComponent } from 'src/app/shared/components/user-evaluation/user-evaluation.component';
 
 @Component({
   selector: 'app-detail-partido',
   templateUrl: './detail-partido.page.html',
   styleUrls: ['./detail-partido.page.scss'],
   standalone: true,
-  imports: [IonNote, IonImg, IonSearchbar, IonModal, IonFooter, IonIcon, IonProgressBar, IonSpinner, IonButtons, IonBackButton, IonAvatar, IonButton, IonList, IonLabel, IonItem, IonCardContent, IonBadge, IonCardTitle, IonCardHeader, IonCard, IonCol, IonGrid, IonRow, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, UserInfoComponent],
+  imports: [IonNote, IonImg, IonSearchbar, IonModal, IonFooter, IonIcon, IonProgressBar, IonSpinner, IonButtons, IonBackButton, IonAvatar, IonButton, IonList, IonLabel, IonItem, IonCardContent, IonBadge, IonCardTitle, IonCardHeader, IonCard, IonCol, IonGrid, IonRow, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, UserInfoComponent, UserEvaluationComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class DetailPartidoPage {
@@ -32,6 +33,8 @@ export default class DetailPartidoPage {
   partidoId = signal<any>('');
   jugadoresDisponibles = signal<any>(null);
   isModalOpen = signal<boolean>(false);
+  isModalOpenEvaluate = signal<boolean>(false);
+
 
   usuarioId = signal<any>('');
 
@@ -41,6 +44,11 @@ export default class DetailPartidoPage {
       this.partidoId.set(params.get('id_partido'));
     });
 
+    this.getDatosPartido()
+  }
+
+  getDatosPartido() {
+    debugger
     this.partidoService.getPartido(this.partidoId()).subscribe({
       next: (resp: responseSuccess) => {
         this.partidoActual.set(resp.data);
@@ -49,6 +57,12 @@ export default class DetailPartidoPage {
         this.alertService.error(err.message);
       }
     })
+  }
+
+  onEvaluacionEnviada() {
+    // Lógica para recargar los datos o realizar la acción
+    console.log("Evaluación enviada, recargando datos...");
+    this.getDatosPartido();
   }
 
   getJugadoresDisponibles() {
@@ -67,14 +81,33 @@ export default class DetailPartidoPage {
     // Lógica para invitar jugadores
   }
 
-  openModal(creador: any) {
+  openModal(creador: any, typeModal: string) {
     this.detalleJugador.set(creador);
-    this.isModalOpen.set(true);
+
+    switch(typeModal) {
+      case 'detail':
+        this.isModalOpen.set(true);
+        break;
+      case 'evaluate':
+        this.isModalOpenEvaluate.set(true);
+        break;
+    }
   }
 
   closeModal() {
     this.isModalOpen.set(false);
-    this.detalleJugador.set(null); // Limpiar el detalle del jugador al cerrar
+    this.isModalOpenEvaluate.set(false);
+    this.detalleJugador.set(null);
+  }
+
+  // Función para verificar si el usuario ya ha evaluado a un jugador específico
+  haEvaluadoJugador(jugador: any): boolean {
+    return jugador.usuario.evaluaciones.some((evaluacion: any) => {
+      return (
+        evaluacion.evaluador.id_usuario === this.usuarioId() &&
+        evaluacion.partido.id_partido === this.partidoActual().id_partido
+      );
+    });
   }
 
   getStarIcon(starNumber: number, promedio_evaluacion: number): string {

@@ -33,8 +33,8 @@ export class PartidoService {
     private readonly deporteRepository: Repository<Deporte>,
     @InjectRepository(NivelHabilidad)
     private readonly nivelHabilidadRepository: Repository<NivelHabilidad>,
-    @InjectRepository(TipoEmparejamiento)
-    private readonly tipoEmparejamientoRepository: Repository<TipoEmparejamiento>,
+    // @InjectRepository(TipoEmparejamiento)
+    // private readonly tipoEmparejamientoRepository: Repository<TipoEmparejamiento>,
     @InjectRepository(RangoEdad)
     private readonly rangoEdadRepository: Repository<RangoEdad>,
     @InjectRepository(TipoPartido)
@@ -137,6 +137,48 @@ export class PartidoService {
     return { message: 'Registros obtenidos exitosamente.', data: partidos };
   }
 
+
+  async findAllPartidosUsuario(paginationDto: PaginationDto, userId: string): Promise<ResponseMessage<Partido[]>> {
+    // const { limit = 10, offset = 0 } = paginationDto;
+  
+    const partidos = await this.partidoRepository.find({
+      where: [
+        { creador: { id_usuario: userId } }, // Partidos donde el usuario es el creador
+        { jugadores: { usuario: { id_usuario: userId } } } // Partidos donde el usuario es jugador
+      ],
+      // take: limit,
+      // skip: offset,
+      relations: {
+        creador: {
+          evaluaciones: true,
+          rangoEdad: true,
+          nivelHabilidad: true,
+          tipoPartido: true
+        },
+        deporte: true,
+        nivelHabilidad: true,
+        rangoEdad: true,
+        tipoPartido: true,
+        reserva: {
+          cancha: {
+            material: true
+          }
+        },
+        jugadores: {
+          usuario: {
+            evaluaciones: true,
+            rangoEdad: true,
+            nivelHabilidad: true,
+            tipoPartido: true
+          }
+        }
+      }
+    });
+  
+    return { message: 'Registros obtenidos exitosamente.', data: partidos };
+  }
+  
+
   async findAvailablePartidos(findAvailablePartidosDto: FindAvailablePartidosDto): Promise<ResponseMessage<Partido[]>> {
     const { usuario_id, deporte_id } = findAvailablePartidosDto;
   
@@ -218,7 +260,11 @@ export class PartidoService {
           },
           jugadores: {
             usuario: {
-              evaluaciones: true,
+              evaluaciones: {
+                evaluado: true,
+                evaluador: true,
+                partido: true
+              },
               rangoEdad: true,
               nivelHabilidad: true,
               tipoPartido: true
@@ -232,7 +278,7 @@ export class PartidoService {
         .leftJoinAndSelect('partido.creador', 'creador')
         .leftJoinAndSelect('partido.deporte', 'deporte')
         .leftJoinAndSelect('partido.nivelHabilidad', 'nivelHabilidad')
-        .leftJoinAndSelect('partido.tipoEmparejamiento', 'tipoEmparejamiento')
+        // .leftJoinAndSelect('partido.tipoEmparejamiento', 'tipoEmparejamiento')
         .leftJoinAndSelect('partido.rangoEdad', 'rangoEdad')
         .leftJoinAndSelect('partido.tipoPartido', 'tipoPartido')
         .leftJoinAndSelect('partido.reserva', 'reserva')

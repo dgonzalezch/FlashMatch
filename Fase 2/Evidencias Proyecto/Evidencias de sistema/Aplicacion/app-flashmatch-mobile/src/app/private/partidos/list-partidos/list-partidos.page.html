@@ -28,7 +28,7 @@
               <ion-row class="ion-justify-content-between">
                 <ion-chip color="tertiary" class="ion-no-margin calendar-chip" [outline]="true">
                   <ion-icon name="calendar-outline"/>
-                  <ion-label>{{partido.fecha_partido | date: 'dd-MM-YYYY, hh:mm'}}</ion-label>
+                  <ion-label>{{partido.fecha_partido | date: 'dd-MM-YYYY, HH:mm'}}</ion-label>
                 </ion-chip>
                 @if (partido.reserva) {
                   <ion-button size="small" color="secondary" fill="outline" style="margin-right: 0px;">
@@ -123,15 +123,17 @@
                       @case ('confirmado') {
                         @if (!partido.partido_privado) {
                           <ion-button color="primary" class="ion-no-margin" style="margin-right: 6px;" size="small" (click)="rellenarJugadores(partido.id_partido)">Rellenar</ion-button>
-                          <ion-button color="primary" class="ion-no-margin" style="margin-right: 6px;" size="small" (click)="presentAlertConfirmJoinPartido(partido.id_partido)">Unirse</ion-button>
+                          <!-- <ion-button color="primary" class="ion-no-margin" style="margin-right: 6px;" size="small" (click)="presentAlertConfirmJoinPartido(partido.id_partido)">Unirse</ion-button> -->
                         }
                       }
                       @case ('finalizado') {
                         <ion-button color="warning" style="margin-right: 6px;" class="ion-no-margin" size="small" [routerLink]="'/private/matches/detail-match/' + partido.id_partido">Calificar</ion-button>
                       }
                     }
-                    <ion-button color="secondary" class="ion-no-margin" size="small" [routerLink]="'/private/matches/detail-match/' + partido.id_partido">Detalle</ion-button>
 
+                    @if(partido.estado != 'finalizado') {
+                      <ion-button color="secondary" class="ion-no-margin" size="small" [routerLink]="'/private/matches/detail-match/' + partido.id_partido">Detalle</ion-button>
+                    }
                   </div>
                 </ion-col>
               </ion-row>
@@ -140,7 +142,7 @@
             <ion-footer class="ion-no-border ion-padding-horizontal ion-padding-bottom">
               <ion-chip color="primary" [outline]="true" class="creator-chip ion-no-margin" (click)="openModal(partido.creador)">
                 <ion-avatar>
-                  <img [src]="partido.creador.imagen_perfil ? 'http://localhost:3000' + partido.creador.imagen_perfil : 'https://ionicframework.com/docs/img/demos/avatar.svg'" alt="Imagen del usuario" />
+                  <img [src]="partido.creador.imagen_perfil ? 'http://localhost:3000' + partido.creador.imagen_perfil : 'assets/images/default-avatar.svg'" alt="Imagen del usuario" />
                 </ion-avatar>
                 <ion-label>{{ partido.creador.nombre }} {{partido.creador.apellido}}</ion-label>
               </ion-chip>

@@ -114,6 +114,13 @@ export default class InfoUsuarioPage {
 
   isModalOpen = signal<boolean>(false);
 
+  maxDate = signal<string>('');
+
+  constructor() {
+    const today = new Date();
+    this.maxDate.set(today.toISOString().split('T')[0]);
+  }
+
   async ionViewWillEnter() {
     this.ubication.set(this.locationService.getLocation().ubicacion);
     this.idUsuario.set(await this.storageService.get('user'));

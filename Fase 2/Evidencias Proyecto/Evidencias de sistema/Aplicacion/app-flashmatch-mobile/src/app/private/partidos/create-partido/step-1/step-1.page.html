@@ -20,7 +20,7 @@
           <ion-card-content>
             <ion-row class="ion-align-items-center ion-justify-content-center">
               <ion-col size="auto">
-                <ion-icon name="football-outline" class="icon-large"/>
+                <ion-icon color="primary" name="football-outline" class="icon-large"/>
               </ion-col>
               <ion-col>
                 <ion-text class="modern-text">
@@ -58,14 +58,14 @@
         </ion-accordion>
       </ion-accordion-group>
 
-      <ion-accordion-group expand="inset" class="ion-no-margin ion-margin-horizontal ion-margin-bottom animated">
+      <ion-accordion-group expand="inset" class="ion-no-margin ion-margin-horizontal ion-margin-bottom animated" [value]="['second']">
         <ion-accordion value="second" class="ion-no-margin ion-margin-bottom">
           <ion-item slot="header" [color]="step1FormCreatePartido.get('fecha_partido')?.invalid ? 'danger' : 'tertiary'">
             <ion-icon name="calendar-outline" class="ion-margin-end"/>
             <ion-label>
               <h3>Fecha partido*</h3>
               @if (step1FormCreatePartido.get('fecha_partido')?.invalid) {
-                <p>No seleccionado</p>
+                <p>No seleccionada</p>
               } @else {
                 {{step1FormCreatePartido.get('fecha_partido')!.value | date: 'dd/MM/yyyy, HH:mm'}}hrs
               }
@@ -84,19 +84,20 @@
                   presentation="date-time"
                   hourValues="8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23"
                   minuteValues="0"
+                  [min]="minDate()"
                   [formatOptions]="{
                     date: {
                       weekday: 'short',
                       month: 'long',
-                      day: '2-digit',
+                      day: '2-digit'
                     },
                     time: {
                       hour: '2-digit',
-                      minute: '2-digit',
-                    },
+                      minute: '2-digit'
+                    }
                   }"
                   (ionChange)="onDateChange($event)"
-                />
+                ></ion-datetime>
               </ng-template>
             </ion-modal>
           </div>

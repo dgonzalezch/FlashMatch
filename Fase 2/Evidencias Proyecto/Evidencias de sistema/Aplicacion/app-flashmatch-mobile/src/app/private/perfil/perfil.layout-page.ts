@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonCol, IonRow, IonGrid, IonButton, IonIcon, IonAvatar, IonChip, IonLabel, IonList, IonItem, IonFooter, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonButtons, IonRange, IonAccordion, IonBadge, IonAccordionGroup, IonText, IonTabs, IonTabBar, IonTabButton, IonSegment, IonSegmentButton } from '@ionic/angular/standalone';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-perfil',
@@ -13,4 +14,30 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonCol, IonRow, IonGrid, I
 })
 export default class PerfilPage {
 
+  private storageService = inject(StorageService);
+  // Para verificación de permisos
+  isJugador = signal<boolean>(false);
+  isCancha = signal<boolean>(false);
+  isAdmin = signal<boolean>(false);
+
+  ionViewWillEnter() {
+    this.getRoleUser();
+  }
+
+  async getRoleUser() {
+    let roleUser = await this.storageService.get('roles');
+    switch(roleUser[0]) {
+      case 'jugador':
+        this.isJugador.set(true);
+        debugger
+        break;
+      case 'cancha':
+        this.isCancha.set(true);
+        debugger
+        break;
+      case 'admin':
+        this.isAdmin.set(true);
+        break;
+    }
+  }
 }

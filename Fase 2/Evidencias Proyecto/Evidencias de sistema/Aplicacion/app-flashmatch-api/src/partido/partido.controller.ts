@@ -14,9 +14,14 @@ export class PartidoController {
     return this.partidoService.create(createPartidoDto);
   }
 
-  @Get()
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.partidoService.findAll(paginationDto);
+  // @Get()
+  // findAll(@Query() paginationDto: PaginationDto) {
+  //   return this.partidoService.findAll(paginationDto);
+  // }
+
+  @Get('usuario/:idUsuario')
+  findAllPartidosUsuario(@Query() paginationDto: PaginationDto, @Param('idUsuario', ParseUUIDPipe) idUsuario : string) {
+    return this.partidoService.findAllPartidosUsuario(paginationDto, idUsuario);
   }
 
   @Get(':term')

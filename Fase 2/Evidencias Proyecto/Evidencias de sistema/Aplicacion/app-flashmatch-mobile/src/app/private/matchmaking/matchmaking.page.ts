@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonList, IonItem, IonLabel, IonIcon, IonGrid, IonRow, IonCol, IonCardContent, IonCard, IonCardSubtitle, IonCardHeader, IonCardTitle, IonSpinner, IonDatetime, IonAvatar, IonChip, IonDatetimeButton, IonModal, IonSegmentButton, IonFooter, IonBadge, IonAccordionGroup, IonAccordion, IonText, IonProgressBar, LoadingController, AlertController } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonList, IonItem, IonLabel, IonIcon, IonGrid, IonRow, IonCol, IonCardContent, IonCard, IonCardSubtitle, IonCardHeader, IonCardTitle, IonSpinner, IonDatetime, IonAvatar, IonChip, IonDatetimeButton, IonModal, IonSegmentButton, IonFooter, IonBadge, IonAccordionGroup, IonAccordion, IonText, IonProgressBar, LoadingController, AlertController, IonToggle } from '@ionic/angular/standalone';
 import { MatchmakingService } from 'src/app/services/matchmaking.service';
 import { StorageService } from 'src/app/services/storage.service';
 import { UsuarioService } from '../../services/usuario.service';
@@ -17,7 +17,7 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './matchmaking.page.html',
   styleUrls: ['./matchmaking.page.scss'],
   standalone: true,
-  imports: [IonProgressBar, IonText, IonAccordion, IonAccordionGroup, IonBadge, IonFooter, IonSegmentButton, IonModal, IonDatetimeButton, IonChip, IonAvatar, IonDatetime, IonSpinner, IonCardTitle, IonCardHeader, IonCardSubtitle, IonCard, IonCardContent, IonCol, IonRow, IonGrid, IonIcon, IonLabel, IonItem, IonList, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, IonDatetime, RouterLink, UserInfoComponent, CommonModule, FormsModule],
+  imports: [IonToggle, IonProgressBar, IonText, IonAccordion, IonAccordionGroup, IonBadge, IonFooter, IonSegmentButton, IonModal, IonDatetimeButton, IonChip, IonAvatar, IonDatetime, IonSpinner, IonCardTitle, IonCardHeader, IonCardSubtitle, IonCard, IonCardContent, IonAccordion, IonAccordionGroup, IonCol, IonRow, IonGrid, IonIcon, IonLabel, IonItem, IonList, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, IonDatetime, RouterLink, UserInfoComponent, CommonModule, FormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class MatchmakingPage {

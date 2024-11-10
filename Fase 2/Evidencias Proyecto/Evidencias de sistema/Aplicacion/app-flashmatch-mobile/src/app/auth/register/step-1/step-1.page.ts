@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonGrid, IonRow, IonCol, IonInput, IonCheckbox, IonButton, IonCard, IonFooter, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonIcon, IonText, IonNavLink, IonModal, IonDatetime, IonDatetimeButton, IonLabel, IonItem, IonList, IonButtons, IonBackButton } from '@ionic/angular/standalone';
@@ -32,6 +32,13 @@ export default class Step1Page {
     telefono: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(10)]],
     fecha_nacimiento: ['', [Validators.required]]
   });
+
+  maxDate = signal<string>('');
+
+  constructor() {
+    const today = new Date();
+    this.maxDate.set(today.toISOString().split('T')[0]);
+  }
 
   onDateChange(event: any) {
     const dateWithTime = new Date(event.detail.value);
