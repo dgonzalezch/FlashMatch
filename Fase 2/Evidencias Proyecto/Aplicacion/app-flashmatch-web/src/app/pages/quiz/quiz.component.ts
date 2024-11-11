@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 
 @Component({
-  selector: 'app-about',
+  selector: 'app-quiz',
   standalone: true,
   imports: [HeaderComponent],
-  templateUrl: './about.component.html',
-  styleUrl: './about.component.scss'
+  templateUrl: './quiz.component.html',
+  styleUrl: './quiz.component.scss'
 })
-export class AboutComponent {
+export class QuizComponent {
 
 }

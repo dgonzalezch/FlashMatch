@@ -1,1 +1,58 @@
-<p>about works!</p>
+<section class="bg-[url('https://images.unsplash.com/photo-1544914379-806667cd9489?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dGV4dHVyYXMlMjBkZSUyMGMlQzMlQTlzcGVkfGVufDB8fDB8fHww')] bg-cover bg-center min-h-screen text-white">
+  <div class="bg-gradient-to-b from-black via-transparent to-black min-h-screen py-16 px-6 flex items-center justify-center">
+    <div class="max-w-screen-lg mx-auto text-center space-y-8">
+      <h1 class="text-5xl lg:text-6xl font-extrabold mb-6 text-yellow-400 animate-fade-in">¿Quiénes Somos?</h1>
+      <p class="text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto text-white/90">
+        En FlashMatch, nuestra misión es conectar a personas mediante el deporte. Facilitamos la organización de partidos y la reserva de canchas, proporcionando una experiencia única y divertida para todos.
+      </p>
+
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mt-12">
+        <!-- Misión -->
+        <div class="bg-white bg-opacity-90 p-8 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:bg-yellow-500 hover:bg-opacity-90 hover:text-gray-900 text-gray-800">
+          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="w-20 h-20 mx-auto mb-4" alt="Misión">
+          <h3 class="text-2xl font-semibold mb-4 text-yellow-500">Nuestra Misión</h3>
+          <p>
+            Desarrollar soluciones tecnológicas innovadoras que transformen la manera en que las personas organizan y participan en eventos deportivos, facilitando la conexión entre jugadores y administradores de canchas a través de una plataforma digital eficiente y accesible.
+          </p>
+        </div>
+
+        <!-- Visión -->
+        <div class="bg-white bg-opacity-90 p-8 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:bg-yellow-500 hover:bg-opacity-90 hover:text-gray-900 text-gray-800">
+          <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" class="w-20 h-20 mx-auto mb-4" alt="Visión">
+          <h3 class="text-2xl font-semibold mb-4 text-yellow-500">Nuestra Visión</h3>
+          <p>
+            Ser la empresa líder en tecnología deportiva en América Latina, reconocida por impulsar la participación en deportes amateur y por ofrecer una plataforma versátil y escalable que responda a las necesidades cambiantes de nuestras comunidades deportivas.
+          </p>
+        </div>
+
+        <!-- Valores -->
+        <div class="bg-white bg-opacity-90 p-8 rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:bg-yellow-500 hover:bg-opacity-90 hover:text-gray-900 text-gray-800">
+          <img src="https://cdn-icons-png.flaticon.com/512/1828/1828843.png" class="w-20 h-20 mx-auto mb-4" alt="Valores">
+          <h3 class="text-2xl font-semibold mb-4 text-yellow-500">Nuestros Valores</h3>
+          <ul class="list-disc list-inside space-y-2">
+            <li>Innovación: Nos comprometemos a estar a la vanguardia tecnológica para ofrecer la mejor experiencia a nuestros usuarios.</li>
+            <li>Comunidad: Creemos en el poder de los deportes para unir a las personas y promover un sentido de pertenencia y trabajo en equipo.</li>
+            <li>Calidad y Eficiencia: Trabajamos para simplificar procesos y asegurar un servicio confiable y de alto rendimiento.</li>
+            <li>Transparencia: Nos enfocamos en ser honestos y claros en todas nuestras operaciones, manteniendo siempre la confianza de nuestros clientes y colaboradores.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-16">
+        <img src="images/about.png"
+             alt="Equipo FlashMatch" 
+             class="mx-auto rounded-lg shadow-lg w-full max-w-screen-md transition-transform transform hover:scale-105 hover:shadow-2xl">
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in {
+    animation: fade-in 1s ease-out;
+  }
+</style>
