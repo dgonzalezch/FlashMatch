@@ -313,7 +313,6 @@ export class UsuarioPartidoService {
       // Si el creador pagó, actualizar la reserva a `pendiente_confirmacion`
       const reserva = usuarioPartido.partido.reserva;
       reserva.estado = 'pendiente_confirmacion';
-      console.log('Entré aca')
 
       await this.reservaCanchaRepository.save(reserva);
   

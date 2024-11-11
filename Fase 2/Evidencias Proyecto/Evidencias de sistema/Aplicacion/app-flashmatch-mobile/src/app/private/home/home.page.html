@@ -1,90 +1,53 @@
 <ion-content [fullscreen]="true" color="light" class="animated">
-  <!-- Header de Bienvenida -->
+  <!-- Encabezado de Bienvenida -->
   <div class="header-banner">
     <ion-grid>
-      <ion-row class="ion-align-items-center">
-        <ion-col size="3" class="ion-text-center">
-          <ion-avatar>
-            <img src="assets/images/default-avatar.svg" class="user-avatar" />
-          </ion-avatar>
-        </ion-col>
-        <ion-col size="9">
-          <h2 class="welcome-title ion-no-margin">¡Hola, Daniel!</h2>
-          <p class="welcome-subtitle">Explora y gestiona tus partidos</p>
+      <ion-row class="ion-align-items-center ion-text-center">
+        <ion-col size="12">
+          <h2 class="welcome-title ion-no-margin">¡Hola, {{userName()}}!</h2>
+          <p class="welcome-subtitle ion-no-margin ion-margin-top">¿Qué deseas hacer hoy?</p>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
 
-  <!-- Accesos Rápidos Mejorados -->
-  <section class="ion-padding-horizontal shortcut-section">
+  <!-- Menú de Opciones en Tarjetas -->
+  <section class="ion-padding-horizontal ion-margin-top">
     <ion-grid>
-      <ion-row class="ion-justify-content-around ion-align-items-center">
-        <ion-col size="3" class="shortcut-item">
-          <div class="shortcut-icon-wrapper">
-            <ion-icon name="albums-outline" class="shortcut-icon"/>
-          </div>
-          <p>Canchas</p>
-        </ion-col>
-        <ion-col size="3" class="shortcut-item">
-          <div class="shortcut-icon-wrapper">
-            <ion-icon name="archive-outline" class="shortcut-icon"/>
-          </div>
-          <p>Solicitudes</p>
-        </ion-col>
-        <ion-col size="3" class="shortcut-item" >
-          <div class="shortcut-icon-wrapper">
-            <ion-icon name="stats-chart-outline" class="shortcut-icon"/>
-          </div>
-          <p>Historial</p>
-        </ion-col>
+      <ion-row>
+        @for (item of menuItems(); track $index) {
+          <ion-col size="12">
+            <ion-card button [routerLink]="item.route" color="dark" class="menu-card ion-no-margin">
+              <ion-card-content class="ion-align-items-center">
+                <ion-grid>
+                  <ion-row class="ion-align-items-center">
+                    <!-- Columna para el ícono encerrado en una pelotita -->
+                    <ion-col size="3" class="icon-bubble-container ion-text-center">
+                      <div class="icon-bubble">
+                        <ion-icon [name]="item.icon" class="menu-icon"></ion-icon>
+                      </div>
+                    </ion-col>
+                    <!-- Columna para el texto -->
+                    <ion-col size="9" class="text-content">
+                      <ion-card-title class="menu-label">{{ item.label }}</ion-card-title>
+                      <p class="menu-description">{{ item.description }}</p>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        }
       </ion-row>
     </ion-grid>
   </section>
-
-  <!-- Próximos Partidos -->
-  <section class="ion-padding">
-    <h3 class="section-title ion-no-margin">Próximos Partidos</h3>
-    <ion-card class="modern-card">
-      <ion-list>
-        @for (match of upcomingMatches; track $index) {
-          <ion-item [lines]="$index === upcomingMatches.length - 1 ? 'none' : 'inset'" [routerLink]="['/private/match-details']" button>
-            <ion-icon name="calendar-outline" slot="start" color="primary"></ion-icon>
-            <ion-label>
-              <h3 class="item-title">{{ match.title }}</h3>
-              <p class="item-subtitle">{{ match.date | date: 'shortDate' }} - {{ match.location }}</p>
-            </ion-label>
-          </ion-item>
-        }
-        @empty {
-          <ion-item lines="none">
-            <ion-label color="medium" class="ion-text-center">No tienes partidos próximos.</ion-label>
-          </ion-item>
-        }
-      </ion-list>
-    </ion-card>
-  </section>
-
-  <!-- Invitaciones -->
-  <section class="ion-padding">
-    <h3 class="section-title ion-no-margin">Tus Invitaciones</h3>
-    <ion-card class="modern-card">
-      <ion-list >
-        @for (invitation of invitations; track $index) {
-          <ion-item [lines]="$index === invitations.length - 1 ? 'none' : 'inset'" [routerLink]="['/private/invitation-details']" button>
-            <ion-icon name="mail-outline" slot="start" color="tertiary"></ion-icon>
-            <ion-label>
-              <h3 class="item-title">{{ invitation.match.title }}</h3>
-              <p class="item-subtitle">Invitado por: {{ invitation.inviterName }}</p>
-            </ion-label>
-          </ion-item>
-        }
-        @empty {
-          <ion-item lines="none">
-            <ion-label color="medium" class="ion-text-center">No tienes nuevas invitaciones.</ion-label>
-          </ion-item>
-        }
-      </ion-list>
-    </ion-card>
-  </section>
 </ion-content>
+
+<!-- Footer de Notificaciones -->
+<ion-footer>
+  <ion-toolbar color="dark" class="ion-padding-horizontal">
+    <p class="info-text ion-no-margin ion-text-center">
+      ¡Aquí verás información y recordatorios si existe algún inconveniente!
+    </p>
+  </ion-toolbar>
+</ion-footer>

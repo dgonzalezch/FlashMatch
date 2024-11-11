@@ -26,5 +26,6 @@ export enum ENDPOINT {
   RESERVA_CANCHA = 'cancha/',
   JOIN_PARTIDO = 'join',
   CANCHAS_DISPONIBLES = 'disponibles',
-  UPLOAD_PROFILE_PICTURE = 'upload-profile-picture/'
+  UPLOAD_PROFILE_PICTURE = 'upload-profile-picture/',
+  UPLOAD_IMAGE_CANCHA = 'upload-image/'
 }

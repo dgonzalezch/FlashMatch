@@ -76,9 +76,9 @@
           @switch (selectedSegment()) {
             @case ('list') {
               <ion-col size="12" class="animated">
-                <ion-list>
+                <ion-list class="ion-no-padding" style="background-color: var(--ion-color-light);">
                   @for (cancha of listCanchas(); track $index) {
-                    <ion-item>
+                    <ion-item color="dark modern-card ion-margin-bottom">
                       <ion-thumbnail slot="start">
                         <img [src]="'assets/images/default-thumbnail.svg'" alt="cancha">
                       </ion-thumbnail>
@@ -102,7 +102,7 @@
                 <ion-col size="12">
                   <ion-card class="modern-card">
                     <div class="image-container">
-                      <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+                      <img src="assets/images/default-card-media.png" />
                       <div class="price-badge">
                         <p>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }} / hora</p>
                       </div>

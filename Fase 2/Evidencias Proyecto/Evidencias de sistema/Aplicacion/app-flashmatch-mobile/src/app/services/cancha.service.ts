@@ -20,6 +20,14 @@ export class CanchaService {
     );
   }
 
+  getCancha(idCancha: string): Observable<any> {
+    return this.http.get<any>(this.urlBaseCancha + idCancha).pipe(
+      map((response) => response),
+      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
+      timeout(environment.apiTime)
+    );
+  }
+
   getCanchasCercanasHorario(partido: {latitud: any, longitud: any, partido_id: string}): Observable<any> {
     return this.http.post<any>(this.urlBaseCancha + this.urlEndpointDisponibles, partido).pipe(
       map(response => response),
@@ -30,6 +38,25 @@ export class CanchaService {
 
   createCancha(createCanchaFormData: any): Observable<any> {
     return this.http.post<any>(this.urlBaseCancha, createCanchaFormData).pipe(
+      map(response => response),
+      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
+      timeout(environment.apiTime)
+    );
+  }
+
+  uploadImageCancha(id_partido: string, file: Blob): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file, 'profile.jpg');
+
+    return this.http.post<any>(this.urlBaseCancha + ENDPOINT.UPLOAD_IMAGE_CANCHA + id_partido, formData).pipe(
+      map((response) => response),
+      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
+      timeout(environment.apiTime)
+    );
+  }
+
+  deleteImagenCancha(idImagenCancha: any): Observable<any> {
+    return this.http.delete<any>(this.urlBaseCancha + 'delete-image/' + idImagenCancha).pipe(
       map(response => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
       timeout(environment.apiTime)

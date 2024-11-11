@@ -70,7 +70,7 @@ export class UsuarioService {
     if (isUUID(term)) {
       usuario = await this.usuarioRepository.findOne({
         where: { id_usuario: term },
-        relations: ['rangoEdad', 'nivelHabilidad', 'tipoPartido', 'equipos', 'deportesPosicionesUsuarios.deportePosicion', 'estadisticasDetalladasUsuarios.parametroRendimiento', 'evaluaciones', 'partidos', 'notificaciones'],
+        relations: ['rangoEdad', 'nivelHabilidad', 'tipoPartido', 'equipos', 'deportesPosicionesUsuarios.deportePosicion', 'estadisticasDetalladasUsuarios.parametroRendimiento', 'evaluaciones', 'partidos.partido', 'notificaciones'],
       });
     } else {
       usuario = await this.usuarioRepository.createQueryBuilder('usuario')

@@ -28,7 +28,7 @@
                   <h3>Tus preferencias</h3>
                   @if (inMatchmaking()) {
                     <p style="color: var(--ion-color-primary);">Estás en matchmaking...</p>
-                    <p style="color: var(--ion-color-primary);">Matches: {{partidosEncontrados().length}}</p>
+                    <p style="color: var(--ion-color-primary);">Matches: {{partidosEncontrados()?.length}}</p>
                   } @else {
                     <p>Matchmaking no iniciado</p>
                   }
@@ -146,7 +146,7 @@
       <ion-row>
         @if (partidosEncontrados()) {
           <ion-col size="12" class="ion-margin-start">
-            <h5 style="color: var(--ion-color-medium);" class="ion-no-margin ion-margin-top">Partidos:</h5>
+            <h5 style="color: var(--ion-color-medium);" class="ion-no-margin ion-margin-top animated">Partidos:</h5>
           </ion-col>
         }
         @for (partido of partidosEncontrados(); track $index) {

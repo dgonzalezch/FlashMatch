@@ -115,6 +115,10 @@ export const routes: Routes = [
             ]
           },
           {
+            path: 'detail-court/:id_cancha',
+            loadComponent: () => import('./private/canchas/detail-cancha/detail-cancha.page')
+          },
+          {
             path: '**',
             redirectTo: 'list-courts',
             pathMatch: 'full'

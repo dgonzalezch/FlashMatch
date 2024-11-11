@@ -48,7 +48,6 @@ export default class DetailPartidoPage {
   }
 
   getDatosPartido() {
-    debugger
     this.partidoService.getPartido(this.partidoId()).subscribe({
       next: (resp: responseSuccess) => {
         this.partidoActual.set(resp.data);

@@ -1,0 +1,128 @@
+@let cancha = datosCancha();
+
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-title>
+      <div class="ion-text-center">
+        <h5 class="ion-no-margin">Detalles de Cancha</h5>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" color="light">
+
+  @if (cancha) {
+    <ion-grid>
+      <ion-row class="ion-padding animated">
+        <swiper-container [loop]="true" [pagination]="true" [autoplay]="true">
+          @for (imagen of cancha.imagenes; track $index) {
+            <swiper-slide>
+              <ion-img [src]="'http://localhost:3000' + imagen.url_imagen" class="cancha-img-modern" />
+            </swiper-slide>
+          }@empty {
+            <ion-img [src]="'assets/images/default-card-media.png'" class="cancha-img-modern" />
+          }
+        </swiper-container>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="12">
+          <ion-card class="modern-card" color="dark">
+            <ion-card-header class="ion-text-center">
+              <ion-card-title>{{cancha.nombre_cancha}}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content class="ion-no-padding ion-padding-horizontal ion-padding-top">
+              @if(!isImageUploadPressed()) {
+                <div class="preferences-container animated">
+                  <div class="preference-item">
+                    <ion-icon name="football-outline" color="primary" class="preference-icon"/>
+                    <div class="preference-text">
+                      <p class="preference-title">Deporte</p>
+                      <p class="preference-value">{{cancha.deporte?.nombre_deporte}}</p>
+                    </div>
+                  </div>
+                  <div class="preference-item">
+                    <ion-icon name="albums-outline" color="secondary" class="preference-icon"/>
+                    <div class="preference-text">
+                      <p class="preference-title">Material</p>
+                      <p class="preference-value">{{cancha.material?.nombre_material_cancha}}</p>
+                    </div>
+                  </div>
+                  <div class="preference-item">
+                    <ion-icon name="cash-outline" color="tertiary" class="preference-icon"/>
+                    <div class="preference-text">
+                      <p class="preference-title">Precio / hora</p>
+                      <p class="preference-value">{{ cancha.precio_por_hora | currency:'CLP':'symbol' }}</p>
+                    </div>
+                  </div>
+
+                  <div class="preference-item">
+                    <ion-icon name="shield-checkmark-outline" class="preference-icon"/>
+                    <div class="preference-text">
+                      <p class="preference-title">Disponible</p>
+                      <p class="preference-value">{{ cancha.disponible ? 'Si' : 'No' }}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="ion-margin-top animated">
+                  <div class="header-with-button" style="margin-bottom: 5px;">
+                    <h5 class="ion-no-margin" style="font-size: 16px;">Ubicación</h5>
+                    <ion-button size="small">
+                      Ver en mapa
+                    </ion-button>
+                  </div>
+
+                  <p class="ion-no-margin" style="color: var(--ion-color-primary);">
+                    <ion-icon name="location-outline"/> {{cancha.ubicacion}}
+                  </p>
+                </div>
+              } @else {
+                @if(cancha.imagenes?.length) {
+                  <ion-row class="animated ion-justify-content-center ion-text-center">
+                    <ion-col size="12">
+                      <ion-button color="secondary" size="small" (click)="selectImage()">Subir imágen</ion-button>
+                    </ion-col>
+                  </ion-row>
+                }
+                <ion-row class="animated">
+                  @for (imagen of cancha.imagenes; track $index) {
+                    <ion-col size="4" class="ion-no-padding">
+                      <ion-card>
+                        <ion-button size="small" color="danger" class="delete-button" (click)="deleteImage(imagen.id_imagen_cancha)">
+                          <ion-icon slot="icon-only" name="trash-outline"/>
+                        </ion-button>
+                        <ion-img [src]="'http://localhost:3000' + imagen.url_imagen" class="cancha-img-mini" />
+                      </ion-card>
+                    </ion-col>
+                  } @empty {
+                    <ion-col size="12">
+                      <ion-row class="ion-justify-content-center animated">
+                        <h5 class="ion-text-center">
+                          Aún no has subido ninguna imágen.
+                        </h5>
+                      </ion-row>
+                      <ion-row class="animated ion-justify-content-center">
+                        <ion-col size="6">
+                          <ion-button color="secondary" size="small" (click)="selectImage()">Subir imágen</ion-button>
+                        </ion-col>
+                      </ion-row>
+                    </ion-col>
+                  }
+                </ion-row>
+              }
+
+            </ion-card-content>
+
+            <ion-footer class="animated ion-no-border ion-padding">
+              @if (cancha.administrador?.id_usuario == usuarioId()) {
+                <ion-button size="block" (click)="OnUploadImagesToggle()">{{!isImageUploadPressed() ? 'Subir imágenes' : 'Atrás'}}</ion-button>
+              }
+            </ion-footer>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  }
+</ion-content>

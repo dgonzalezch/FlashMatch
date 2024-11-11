@@ -16,6 +16,7 @@ import { Usuario } from 'src/usuario/entities/usuario.entity';
 import * as geolib from 'geolib';
 import { CanchasDisponiblesBodyDto } from './dto/canchas-disponibles-body.dto';
 import { Partido } from 'src/partido/entities/partido.entity';
+import { ImagenCancha } from './entities/imagen-cancha.entity';
 
 @Injectable()
 export class CanchaService {
@@ -34,6 +35,8 @@ export class CanchaService {
     private readonly materialCanchaRepository: Repository<MaterialCancha>,
     @InjectRepository(Partido)
     private readonly partidoRepository: Repository<Partido>,
+    @InjectRepository(ImagenCancha)
+    private readonly imagenCanchaRepository: Repository<ImagenCancha>,
     private readonly errorHandlingService: ErrorHandlingService
   ) { }
 
@@ -115,7 +118,7 @@ export class CanchaService {
     if (isUUID(term)) {
       cancha = await this.canchaRepository.findOne({
         where: { id_cancha: term },
-        relations: ['administrador_cancha', 'deporte', 'material', 'imagenes', ],
+        relations: ['administrador', 'deporte', 'material', 'imagenes', ],
       });
     } else {
       const queryBuilder = this.canchaRepository.createQueryBuilder('cancha');
@@ -244,6 +247,26 @@ export class CanchaService {
     return { message: 'Canchas disponibles encontradas.', data: canchasDisponibles };
   }
   
-  
+  async addCanchaImage(canchaId: string, imagePath: string) {
+    const cancha = await this.canchaRepository.findOne({ where: { id_cancha: canchaId }, relations: ['imagenes'] });
+    if (!cancha) throw new NotFoundException('Cancha no encontrada.');
 
+    // Guardar la nueva imagen en la base de datos
+    const nuevaImagen = new ImagenCancha();
+    nuevaImagen.url_imagen = imagePath;
+    nuevaImagen.cancha = cancha;
+    await this.imagenCanchaRepository.save(nuevaImagen);
+
+    return cancha;
+  }
+
+  async findCanchaImageById(idImagen: string): Promise<ImagenCancha> {
+    const imagen = await this.imagenCanchaRepository.findOne({ where: { id_imagen_cancha: idImagen } });
+    if (!imagen) throw new NotFoundException('Imagen no encontrada');
+    return imagen;
+  }
+
+  async deleteImageById(idImagen: string): Promise<void> {
+    await this.imagenCanchaRepository.delete(idImagen);
+  }
 }
