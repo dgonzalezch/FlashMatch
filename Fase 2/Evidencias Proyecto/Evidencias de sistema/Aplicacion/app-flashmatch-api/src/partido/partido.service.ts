@@ -255,7 +255,8 @@ export class PartidoService {
           tipoPartido: true,
           reserva: {
             cancha: {
-              material: true
+              material: true,
+              imagenes: true
             }
           },
           jugadores: {
