@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonCol, IonRow, IonGrid, IonCard, IonCardHeader, IonCardContent, IonCardSubtitle, IonCardTitle } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonCol, IonRow, IonGrid, IonCard, IonCardHeader, IonCardContent, IonCardSubtitle, IonCardTitle, IonBackButton } from '@ionic/angular/standalone';
 import { StorageService } from 'src/app/services/storage.service';
 import { CanchaService } from 'src/app/services/cancha.service';
-import { register } from 'swiper/element/bundle'
 import { AlertService } from 'src/app/shared/common/alert.service';
 import { ActivatedRoute } from '@angular/router';
 import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { responseError } from 'src/app/interfaces/response-error.interface';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { register } from 'swiper/element/bundle'
 
 register()
 @Component({
@@ -17,7 +17,7 @@ register()
   templateUrl: './detail-cancha.page.html',
   styleUrls: ['./detail-cancha.page.scss'],
   standalone: true,
-  imports: [IonCardTitle, IonCardSubtitle, IonCardContent, IonCardHeader, IonCard, IonGrid, IonRow, IonCol, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule],
+  imports: [IonCardTitle, IonCardSubtitle, IonCardContent, IonCardHeader, IonCard, IonGrid, IonRow, IonCol, IonContent, IonHeader, IonTitle, IonToolbar, IonBackButton, CommonModule, FormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

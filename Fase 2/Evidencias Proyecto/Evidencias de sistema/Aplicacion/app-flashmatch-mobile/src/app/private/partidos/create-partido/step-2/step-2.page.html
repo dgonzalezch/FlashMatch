@@ -80,7 +80,8 @@
                   @for (cancha of listCanchas(); track $index) {
                     <ion-item color="dark modern-card ion-margin-bottom">
                       <ion-thumbnail slot="start">
-                        <img [src]="'assets/images/default-thumbnail.svg'" alt="cancha">
+                        <img [src]="cancha.imagenes?.length ? 'http://localhost:3000' + cancha.imagenes[0].url_imagen : 'assets/images/default-thumbnail.svg'" alt="cancha">
+
                       </ion-thumbnail>
                       <ion-label>
                         <h2>{{ cancha.nombre }}</h2>
@@ -99,30 +100,54 @@
             }
             @case ('grid') {
               @for (cancha of listCanchas(); track $index) {
-                <ion-col size="12">
-                  <ion-card class="modern-card">
-                    <div class="image-container">
-                      <img src="assets/images/default-card-media.png" />
-                      <div class="price-badge">
-                        <p>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }} / hora</p>
-                      </div>
-                    </div>
+                <ion-col size="12" size-md="6" size-lg="4">
+                  <ion-card class="modern-card" color="dark" style="margin-top: 0px;">
+                    <swiper-container [loop]="true" [pagination]="true" [autoplay]="true">
+                      @for (imagen of cancha.imagenes; track $index) {
+                        <swiper-slide>
+                          <ion-img [src]="'http://localhost:3000' + imagen.url_imagen" class="cancha-img-modern" />
+                        </swiper-slide>
+                        <!-- <div class="price-badge">
+                          <p>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }} / hora</p>
+                        </div> -->
+                      }@empty {
+                        <ion-img [src]="'assets/images/default-card-media.png'" class="cancha-img-modern" />
+                      }
+                    </swiper-container>
 
+                    <!-- Precio sobre el slider -->
+                    <div class="price-badge">
+                      <p>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }} / hora</p>
+                    </div>
                     <ion-card-header>
-                      <ion-card-title>{{ cancha.nombre }}</ion-card-title>
-                      <ion-card-subtitle>{{ cancha.deporte.nombre_deporte }}</ion-card-subtitle>
+                      <ion-card-title class="title-modern">
+                        <div class="header-with-button" style="margin-bottom: 5px;">
+                          <h5 class="ion-no-margin">{{ cancha.nombre_cancha }}</h5>
+                          <ion-button size="small">
+                            Ver en mapa
+                          </ion-button>
+                        </div>
+
+                      </ion-card-title>
+                      <ion-card-subtitle class="subtitle-modern" >
+                        <div style="color: var(--ion-color-primary)">
+                          <ion-icon color="primary" name="location-outline"/> {{ cancha.ubicacion }}
+                        </div>
+                        <div class="ion-margin-top" style="display: flex;align-items: center;">
+                          <ion-icon style="margin-right: 4px;" color="tertiary" name="albums-outline"/> {{ cancha.material.nombre_material_cancha }}
+                        </div>
+                      </ion-card-subtitle>
                     </ion-card-header>
 
-                    <ion-card-content>
-                      {{ cancha.descripcion }}
+                    <ion-card-content class="card-content-modern">
+                      {{ cancha.descripcion ? cancha.descripcion : 'Sin descripción.'}}
                     </ion-card-content>
 
-                    <ion-footer class="ion-no-border ion-padding footer-aligned-end">
-                      <ion-button color="secondary" (click)="presentAlertConfirm(cancha)">
-                        <ion-icon slot="start" name="ticket-outline"/>
-                        Reservar
-                      </ion-button>
-                    </ion-footer>
+                    <!-- Botón interactivo para reservar cancha -->
+                    <ion-button class="ion-no-margin" color="secondary" (click)="presentAlertConfirm(cancha)" style="display: block; padding: 6px 10px;">
+                      <ion-icon slot="start" name="ticket-outline"/>
+                      Reservar
+                    </ion-button>
                   </ion-card>
                 </ion-col>
               }

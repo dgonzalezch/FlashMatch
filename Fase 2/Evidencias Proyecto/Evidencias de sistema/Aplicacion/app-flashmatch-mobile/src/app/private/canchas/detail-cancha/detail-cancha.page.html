@@ -2,16 +2,16 @@
 
 <ion-header [translucent]="true">
   <ion-toolbar color="dark">
-    <ion-title>
-      <div class="ion-text-center">
-        <h5 class="ion-no-margin">Detalles de Cancha</h5>
-      </div>
+    <ion-buttons class="route-buttons" slot="start">
+      <ion-back-button defaultHref="/"/>
+    </ion-buttons>
+    <ion-title class="ion-text-center">
+      Detalles de Cancha
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" color="light">
-
   @if (cancha) {
     <ion-grid>
       <ion-row class="ion-padding animated">

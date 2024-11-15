@@ -66,3 +66,11 @@ swiper-slide {
   right: 0px;
   z-index: 10;
 }
+
+.back-button-absolute {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}

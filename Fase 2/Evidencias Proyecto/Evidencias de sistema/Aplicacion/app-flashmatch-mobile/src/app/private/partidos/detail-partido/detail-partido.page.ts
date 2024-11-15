@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonRow, IonGrid, IonCol, IonCard, IonCardHeader, IonCardTitle, IonBadge, IonCardContent, IonItem, IonLabel, IonList, IonButton, IonAvatar, IonBackButton, IonButtons, IonSpinner, IonProgressBar, IonIcon, IonFooter, IonModal, IonSearchbar, IonImg, IonNote } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonRow, IonGrid, IonCol, IonCard, IonCardHeader, IonCardTitle, IonBadge, IonCardContent, IonItem, IonLabel, IonList, IonButton, IonAvatar, IonBackButton, IonButtons, IonSpinner, IonProgressBar, IonIcon, IonFooter, IonModal, IonSearchbar, IonImg, IonNote, IonChip, IonCardSubtitle } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PartidoService } from 'src/app/services/partido.service';
 import { responseSuccess } from 'src/app/interfaces/response-success.interface';
@@ -12,14 +12,17 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import { UserInfoComponent } from 'src/app/shared/components/user-info/user-info.component';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserEvaluationComponent } from 'src/app/shared/components/user-evaluation/user-evaluation.component';
+import { register } from 'swiper/element/bundle'
 
+register()
 @Component({
   selector: 'app-detail-partido',
   templateUrl: './detail-partido.page.html',
   styleUrls: ['./detail-partido.page.scss'],
   standalone: true,
-  imports: [IonNote, IonImg, IonSearchbar, IonModal, IonFooter, IonIcon, IonProgressBar, IonSpinner, IonButtons, IonBackButton, IonAvatar, IonButton, IonList, IonLabel, IonItem, IonCardContent, IonBadge, IonCardTitle, IonCardHeader, IonCard, IonCol, IonGrid, IonRow, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, UserInfoComponent, UserEvaluationComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [IonCardSubtitle, IonChip, IonNote, IonImg, IonSearchbar, IonModal, IonFooter, IonIcon, IonProgressBar, IonSpinner, IonButtons, IonBackButton, IonAvatar, IonButton, IonList, IonLabel, IonItem, IonCardContent, IonBadge, IonCardTitle, IonCardHeader, IonCard, IonCol, IonGrid, IonRow, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, UserInfoComponent, UserEvaluationComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export default class DetailPartidoPage {
   private route = inject(ActivatedRoute);

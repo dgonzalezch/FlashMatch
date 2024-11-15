@@ -9,7 +9,6 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content [fullscreen]="true" color="light">
   <ion-grid>
     <!-- Barra de búsqueda estilizada -->
@@ -23,11 +22,29 @@
     <ion-row>
       @for (cancha of listCanchas(); track $index) {
         <ion-col size="12" size-md="6" size-lg="4">
-          <ion-card class="modern-card" color="dark" button>
-            <ion-img [src]="cancha.imagen ? 'http://localhost:3000' + cancha.imagen : 'assets/images/default-card-media.png'" class="cancha-img-modern"/>
+          <ion-card class="modern-card" color="dark">
+            <swiper-container [loop]="true" [pagination]="true" [autoplay]="true">
+              @for (imagen of cancha.imagenes; track $index) {
+                <swiper-slide>
+                  <ion-img [src]="'http://localhost:3000' + imagen.url_imagen" class="cancha-img-modern" />
+                </swiper-slide>
+                <!-- <div class="price-badge">
+                  <p>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }} / hora</p>
+                </div> -->
+              }@empty {
+                <ion-img [src]="'assets/images/default-card-media.png'" class="cancha-img-modern" />
+              }
+            </swiper-container>
+
+            <!-- Precio sobre el slider -->
+            <div class="price-badge">
+              <p>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }} / hora</p>
+            </div>
             <ion-card-header>
               <ion-card-title class="title-modern">{{ cancha.nombre_cancha }}</ion-card-title>
-              <ion-card-subtitle class="subtitle-modern"><ion-icon color="primary" name="location-outline"/> {{ cancha.ubicacion }}</ion-card-subtitle>
+              <ion-card-subtitle class="subtitle-modern">
+                <ion-icon color="primary" name="location-outline"/> {{ cancha.ubicacion }}
+              </ion-card-subtitle>
             </ion-card-header>
 
             <ion-card-content class="card-content-modern">

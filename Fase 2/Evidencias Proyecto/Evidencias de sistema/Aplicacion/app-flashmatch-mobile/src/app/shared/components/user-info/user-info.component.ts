@@ -21,6 +21,7 @@ export class UserInfoComponent implements OnInit {
   idUsuario = input.required<any>();
   usuarioData = signal<any>({});
   selectedSegment = signal<'info' | 'historial'>('info');
+  partidosFinalizados = signal<any[]>([]);
 
   matchesHistory = [
     {
@@ -65,6 +66,7 @@ export class UserInfoComponent implements OnInit {
       next: (resp: responseSuccess) => {
         this.usuarioData.set(resp.data);
         this.selectedSegment.set('info');
+        this.filtrarPartidosFinalizados();
       },
       error: (err: responseError) => {
         this.alertService.error(err.message);
@@ -74,5 +76,13 @@ export class UserInfoComponent implements OnInit {
 
   onSegmentChange(event: CustomEvent) {
     this.selectedSegment.set(event.detail.value);
+  }
+
+  filtrarPartidosFinalizados() {
+    const finalizados = this.usuarioData().partidos.filter(
+      (partidoUsuario: any) => partidoUsuario.partido.estado === 'finalizado'
+    );
+    debugger
+    this.partidosFinalizados.set(finalizados);
   }
 }

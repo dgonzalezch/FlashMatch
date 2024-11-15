@@ -114,11 +114,13 @@
 
                     @switch (partido.estado) {
                       @case ('pendiente_reserva') {
-                        @if (partido.reserva) {
-                          <ion-button color="primary" class="ion-no-margin" style="margin-right: 6px;" size="small">Consultar</ion-button>
-                        } @else {
+                        @if (!partido.reserva) {
+                          <!-- <ion-button color="primary" class="ion-no-margin" style="margin-right: 6px;" size="small">Consultar</ion-button> -->
                           <ion-button color="primary" class="ion-no-margin" style="margin-right: 6px;" size="small" [routerLink]="'/private/matches/create-match/' + partido.id_partido + '/step-2'">Reservar</ion-button>
                         }
+                        <!-- @else {
+                          <ion-button color="primary" class="ion-no-margin" style="margin-right: 6px;" size="small" [routerLink]="'/private/matches/create-match/' + partido.id_partido + '/step-2'">Reservar</ion-button>
+                        } -->
                       }
                       @case ('confirmado') {
                         @if (!partido.partido_privado) {

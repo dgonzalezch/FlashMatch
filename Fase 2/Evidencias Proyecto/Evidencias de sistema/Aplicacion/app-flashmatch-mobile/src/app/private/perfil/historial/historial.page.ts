@@ -25,7 +25,7 @@ export default class HistorialPage {
 
   infoUsuario = signal<any>(null);
   idUsuario = signal<string>('');
-  partidosFinalizados = signal<any[]>([]); // Nueva señal para partidos finalizados
+  partidosFinalizados = signal<any[]>([]);
 
   async ionViewWillEnter() {
     this.idUsuario.set(await this.storageService.get('user'));
@@ -49,7 +49,6 @@ export default class HistorialPage {
     const finalizados = this.infoUsuario().partidos.filter(
       (partidoUsuario: any) => partidoUsuario.partido.estado === 'finalizado'
     );
-    debugger
     this.partidosFinalizados.set(finalizados);
   }
 }
