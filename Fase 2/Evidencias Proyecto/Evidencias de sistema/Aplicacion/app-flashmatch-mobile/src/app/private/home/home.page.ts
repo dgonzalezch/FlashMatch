@@ -26,7 +26,7 @@ export default class HomePage {
     switch (role[0]) {
       case 'jugador':
         this.menuItems.set([
-          { icon: 'flash-outline', label: 'Matchmaking', route: '/private/matchmaking', description: 'Encuentra tu match y únete a un equipo de manera rápida.' },
+          { icon: 'flash-outline', label: 'Matchmaking', route: '/private/matchmaking', description: 'Encuentra tu match y únete a un partido de manera rápida.' },
           { icon: 'football-outline', label: 'Partidos', route: '/private/matches', description: 'Visualiza el estado y detalles de tus próximos partidos.' },
           { icon: 'archive-outline', label: 'Invitaciones', route: '/private/invitations', description: 'Consulta tus invitaciones pendientes y únete.' },
           { icon: 'person-outline', label: 'Perfil', route: '/private/profile/user-info', description: 'Administra tu perfil y ajusta tus datos personales.' },
