@@ -1,0 +1,44 @@
+@let usuario = usuarioData();
+
+@if (usuario) {
+  <h3 class="ion-no-margin ion-text-center">Evaluación</h3>
+  <ion-grid>
+    <ion-row class="ion-justify-content-center ion-text-center ion-margin-top animated">
+      <ion-col size="auto" class="ion-text-center">
+        <ion-avatar class="user-avatar-container">
+          <img [src]="usuario.imagen_perfil ? 'http://localhost:3000' + usuario.imagen_perfil : 'assets/images/default-avatar.svg'" alt="Imagen del usuario" class="user-avatar" />
+        </ion-avatar>
+      </ion-col>
+      <ion-col size="12">
+        <h4 class="ion-no-margin">{{ usuario.nombre }} {{ usuario.apellido }}</h4>
+      </ion-col>
+      <ion-col size="12" class="ion-no-padding">
+        <div class="user-rating">
+          <div class="rating-stars">
+            @for (star of [1, 2, 3, 4, 5]; track $index) {
+              <ion-icon
+                size="large"
+                [name]="getStarIcon($index)"
+                class="rating-star-gold"
+                (click)="setRating($index)"
+              ></ion-icon>
+            }
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="12">
+        <ion-list [inset]="true" style="border-radius: 10px; margin: 0; margin-top: 5px;">
+          <ion-item>
+            <ion-textarea [value]="comentario()"
+            (ionInput)="comentario.set($event.target.value!)" label="Comentarios" labelPlacement="floating" rows="4"/>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+
+      <ion-col size="12">
+        <ion-button color="warning" expand="block" (click)="enviarEvaluacion()">Enviar evaluación</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+}

@@ -1,11 +1,11 @@
-<ion-menu type="push" contentId="main-content">
+<ion-menu type="push" contentId="main-content" class="modern-menu">
   <ion-header>
     <ion-toolbar>
       <ion-title class="ion-no-padding">
         <ion-grid>
           <ion-row class="ion-align-items-center">
             <ion-col size="auto">
-              <ion-img class="custom-img" style="height: 35px;" src="assets/icon/favicon.png" alt="logo-flashmatch"></ion-img>
+              <ion-img class="custom-img" style="height: 35px;" src="assets/icon/favicon.png" alt="logo-flashmatch"/>
             </ion-col>
             <ion-col size="auto">
               <ion-title class="text-white">Bienvenido(a)!</ion-title>
@@ -16,33 +16,47 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-content>
-    <ion-list lines="none" class="menu-list">
-    @for (item of menuItemsPrivate(); track $index) {
-      <ion-menu-toggle auto-hide="false">
-        <ion-item button [routerLink]="item.route" detail>
-          <ion-icon [name]="item.icon" slot="start" size="large"/>
-          <ion-label class="menu-item-label">{{ item.label }}</ion-label>
+  <ion-content color="dark">
+    <div class="user-info ion-text-center">
+      <ion-avatar class="modern-avatar">
+        <ion-img [src]="storageService.imageUrl() ? 'http://localhost:3000' + storageService.imageUrl() : 'assets/images/default-avatar.svg'" alt="Usuario"/>
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ storageService.fullName() }}</h2>
+        <p>{{ userData().correo }}</p>
+        <ion-menu-toggle auto-hide="false">
+          <ion-button size="small" expand="block" fill="solid" color="secondary" [routerLink]="'/private/profile'" class="profile-button-modern">
+            Perfil
+          </ion-button>
+        </ion-menu-toggle>
+      </ion-label>
+    </div>
+    <ion-list>
+      <!-- Items del menú -->
+      @for (item of menuItems(); track $index) {
+        <ion-menu-toggle auto-hide="false">
+          <ion-item button routerLinkActive="active-link" [routerLink]="item.route" class="menu-item-modern" lines="none" detail color="dark">
+            <ion-icon [name]="item.icon" slot="start" class="menu-icon-modern"/>
+            <ion-label class="menu-item-label-modern">{{ item.label }}</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      }
+
+      <!-- Cerrar sesión -->
+      <ion-menu-toggle>
+        <ion-item button (click)="logOut()" class="menu-item-modern" lines="none" color="danger">
+          <ion-icon name="log-out-outline" slot="start" class="menu-icon-modern"/>
+          <ion-label class="menu-item-label-modern">Cerrar Sesión</ion-label>
         </ion-item>
       </ion-menu-toggle>
-    }
-    <ion-menu-toggle>
-      <ion-item button (click)="logOut()" detail>
-        <ion-icon name="log-out-outline" slot="start" size="large"/>
-        <ion-label class="menu-item-label">Cerrar Sesión</ion-label>
-      </ion-item>
-    </ion-menu-toggle>
     </ion-list>
   </ion-content>
 
   <ion-footer>
-    <ion-toolbar>
-      <ion-title color="medium" class="ion-text-center" style="font-size: 14px;">
+    <ion-toolbar color="dark">
+      <ion-title class="footer-version-modern ion-text-center">
         Versión 1.0.0
       </ion-title>
     </ion-toolbar>
   </ion-footer>
 </ion-menu>
-
-
-

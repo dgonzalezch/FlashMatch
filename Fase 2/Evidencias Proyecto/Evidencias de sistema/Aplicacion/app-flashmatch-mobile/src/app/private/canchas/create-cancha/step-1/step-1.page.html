@@ -1,0 +1,135 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-buttons class="route-buttons" slot="start">
+      <ion-back-button defaultHref="/private/courts/list-courts"/>
+    </ion-buttons>
+    <ion-title>
+      <div class="ion-text-center">
+        <h5 class="ion-no-margin">Crear cancha</h5>
+        <p class="ion-no-margin" style="font-size: small; font-weight: 300;">Datos de cancha</p>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" color="light">
+  <ion-grid>
+    <ion-row class="ion-justify-content-center">
+      <ion-col size="12" size-md="8" size-lg="6">
+        <ion-card class="modern-card">
+          <ion-card-content>
+            <ion-row class="ion-align-items-center ion-justify-content-center">
+              <ion-col size="auto">
+                <ion-icon color="tertiary" name="albums-outline" class="icon-large"/>
+              </ion-col>
+              <ion-col>
+                <ion-text class="modern-text">
+                  <b>Primero,</b> ingresa la información de tu cancha.
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <form [formGroup]="step1FormCreateCancha" id="step1FormCreateCancha" (ngSubmit)="onSubmit()">
+      <ion-accordion-group expand="inset" class="ion-no-margin ion-margin-horizontal ion-margin-bottom animated">
+        <ion-accordion value="location">
+          <ion-item slot="header" color="primary">
+            <ion-icon name="location-outline" class="ion-margin-end"/>
+            <ion-label>
+              <h3>Ubicación*</h3>
+              <p style="font-size: small;">{{ selectedLocation() ? selectedLocation() : 'No seleccionada' }}</p>
+            </ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content">
+            <div>
+              <ion-button  expand="block" color="secondary" [routerLink]="'/private/map'">
+                Cambiar Ubicación
+                <ion-icon name="navigate-circle-outline" slot="end"/>
+              </ion-button>
+            </div>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
+
+      <ion-row class="modern-card-form ion-padding ion-margin">
+        <ion-col size="12">
+          <ion-input type="text" formControlName="nombre_cancha" label="Nombre cancha*" labelPlacement="floating" fill="outline" [clearInput]="true"/>
+          @if (step1FormCreateCancha.get('nombre_cancha')?.touched && step1FormCreateCancha.get('nombre_cancha')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1FormCreateCancha.get('nombre_cancha')?.hasError('required')) {
+                  *El nombre de cancha es requerido.
+                }
+              }
+            </ion-text>
+          }
+        </ion-col>
+
+        <ion-col size="12">
+          <ion-input type="text" formControlName="precio_por_hora" label="Precio por hora*" labelPlacement="floating" fill="outline" [clearInput]="true" currencyFormat preventSpaces onlyNumbers />
+          @if (step1FormCreateCancha.get('precio_por_hora')?.touched && step1FormCreateCancha.get('precio_por_hora')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1FormCreateCancha.get('precio_por_hora')?.hasError('required')) {
+                  *El precio por hora es requerido.
+                }
+              }
+            </ion-text>
+          }
+        </ion-col>
+
+
+        <ion-col size="12">
+          <ion-select formControlName="deporte_id" label="Deporte*" label-placement="floating" fill="outline" cancelText="cerrar">
+            @for (deporte of listDeportes(); track $index) {
+              <ion-select-option [value]="deporte.id_deporte">{{deporte.nombre_deporte}}</ion-select-option>
+            }
+          </ion-select>
+          @if (step1FormCreateCancha.get('deporte_id')?.touched && step1FormCreateCancha.get('deporte_id')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1FormCreateCancha.get('deporte_id')?.hasError('required')) {
+                  *Debes seleccionar un deporte.
+                }
+              }
+            </ion-text>
+          }
+        </ion-col>
+
+        <ion-col size="12">
+          <ion-select formControlName="material_cancha_id" label="Material cancha*" label-placement="floating" fill="outline" cancelText="cerrar">
+            @for (materialCancha of listMaterialesCancha(); track $index) {
+              <ion-select-option [value]="materialCancha.id_material_cancha">{{materialCancha.nombre_material_cancha}}</ion-select-option>
+            }
+          </ion-select>
+          @if (step1FormCreateCancha.get('material_cancha_id')?.touched && step1FormCreateCancha.get('material_cancha_id')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1FormCreateCancha.get('material_cancha_id')?.hasError('required')) {
+                  *Debes seleccionar el material de tu cancha.
+                }
+              }
+            </ion-text>
+          }
+        </ion-col>
+
+        <ion-col size="12">
+          <ion-textarea formControlName="descripcion" label="Descripción" labelPlacement="floating" fill="outline" placeholder="Descripción..."/>
+        </ion-col>
+      </ion-row>
+
+    </form>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="light">
+    <ion-button class="ion-padding-horizontal modern-button" color="tertiary" expand="block"
+      type="submit" form="step1FormCreateCancha" [disabled]="!step1FormCreateCancha.valid">
+      Siguiente
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

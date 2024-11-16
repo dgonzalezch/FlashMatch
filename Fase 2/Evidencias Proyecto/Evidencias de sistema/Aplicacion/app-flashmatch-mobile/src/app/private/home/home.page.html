@@ -1,76 +1,53 @@
-<ion-content [fullscreen]="true" class="ion-padding" color="light">
-  <ion-title class="ion-text-center">¡Bienvenido/a Daniel!</ion-title>
+<ion-content [fullscreen]="true" color="light" class="animated">
+  <!-- Encabezado de Bienvenida -->
+  <div class="header-banner">
+    <ion-grid>
+      <ion-row class="ion-align-items-center ion-text-center">
+        <ion-col size="12">
+          <h2 class="welcome-title ion-no-margin">¡Hola, {{userName()}}!</h2>
+          <p class="welcome-subtitle ion-no-margin ion-margin-top">¿Qué deseas hacer hoy?</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 
-  <h6 class="ion-margin-start font-bold"><b>Próximos Partidos</b></h6>
-  <ion-card class="ion-no-margin ion-margin-vertical">
-    <ion-card-content class="ion-no-padding">
-      <ion-list class="ion-no-padding">
-        @for (match of upcomingMatches; track $index) {
-          <ion-item [lines]="$index === upcomingMatches.length - 1 ? 'none' : 'full'" [routerLink]="['/private/search']"  button>
-            <ion-label>
-              <h3>{{ match.title }}</h3>
-              <p>{{ match.date | date:'shortDate' }} - {{ match.location }}</p>
-            </ion-label>
-          </ion-item>
+  <!-- Menú de Opciones en Tarjetas -->
+  <section class="ion-padding-horizontal ion-margin-top">
+    <ion-grid>
+      <ion-row>
+        @for (item of menuItems(); track $index) {
+          <ion-col size="12">
+            <ion-card button [routerLink]="item.route" color="dark" class="menu-card ion-no-margin">
+              <ion-card-content class="ion-align-items-center">
+                <ion-grid>
+                  <ion-row class="ion-align-items-center">
+                    <!-- Columna para el ícono encerrado en una pelotita -->
+                    <ion-col size="3" class="icon-bubble-container ion-text-center">
+                      <div class="icon-bubble">
+                        <ion-icon [name]="item.icon" class="menu-icon"></ion-icon>
+                      </div>
+                    </ion-col>
+                    <!-- Columna para el texto -->
+                    <ion-col size="9" class="text-content">
+                      <ion-card-title class="menu-label">{{ item.label }}</ion-card-title>
+                      <p class="menu-description">{{ item.description }}</p>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
         }
-        @empty {
-          <ion-item>
-            <ion-label>No tienes partidos próximos.</ion-label>
-          </ion-item>
-        }
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-
-  <h6 class="ion-margin-start"><b>Partidos Pasados</b></h6>
-  <ion-card class="ion-no-margin ion-margin-vertical" button>
-    <ion-card-content class="ion-no-padding">
-      <ion-list class="ion-no-padding">
-        @for (match of pastMatches; track $index) {
-          <ion-item [lines]="$index === pastMatches.length - 1 ? 'none' : 'full'" [routerLink]="['/private/search']" button>
-            <ion-label>
-              <h3>{{ match.title }}</h3>
-              <p>{{ match.date | date:'shortDate' }} - {{ match.result }}</p>
-            </ion-label>
-          </ion-item>
-        }
-        @if (!pastMatches.length) {
-          <ion-item>
-            <ion-label>No tienes partidos anteriores.</ion-label>
-          </ion-item>
-        }
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-
-  <h6 class="ion-margin-start"><b>Rendimiento</b></h6>
-  <ion-card class="ion-no-margin ion-margin-vertical" [routerLink]="['/private/search']" button>
-    <ion-card-content>
-      <p>Puntaje promedio: {{ userPerformance.averageScore }} / 10</p>
-      <p>Partidos Jugados: {{ userPerformance.matchesPlayed }}</p>
-      <p>Partidos Ganados: {{ userPerformance.matchesWon }}</p>
-    </ion-card-content>
-  </ion-card>
-
-  <h6 class="ion-margin-start"><b>Invitaciones</b></h6>
-  <ion-card class="ion-no-margin ion-margin-vertical" button>
-    <ion-card-content class="ion-no-padding">
-      <ion-list class="ion-no-padding">
-        @for (invitation of invitations; track $index) {
-          <ion-item [lines]="$index === invitations.length - 1 ? 'none' : 'full'" [routerLink]="['/private/search']" button>
-            <ion-label>
-              <h3>{{ invitation.match.title }}</h3>
-              <p>Invitado por: {{ invitation.inviterName }}</p>
-            </ion-label>
-          </ion-item>
-        }
-
-        @if (!invitations.length) {
-          <ion-item>
-            <ion-label>No tienes nuevas invitaciones.</ion-label>
-          </ion-item>
-        }
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
+      </ion-row>
+    </ion-grid>
+  </section>
 </ion-content>
+
+<!-- Footer de Notificaciones -->
+<ion-footer>
+  <ion-toolbar color="dark" class="ion-padding-horizontal">
+    <p class="info-text ion-no-margin ion-text-center">
+      ¡Aquí verás información y recordatorios si existe algún inconveniente!
+    </p>
+  </ion-toolbar>
+</ion-footer>

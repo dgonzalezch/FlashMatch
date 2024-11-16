@@ -1,5 +1,7 @@
 .user-avatar-container {
   position: relative;
+  border: 2px solid var(--ion-color-primary);
+  border-radius: 50%;
 }
 
 .edit-avatar-button {
@@ -8,36 +10,105 @@
   right: 0;
 }
 
-.custom-card {
-  border: 1px solid #ccc; /* Opcional: añade un borde personalizado */
-  border-radius: 5px; /* Mantiene el borde redondeado */
-  overflow: hidden; /* Asegura que los hijos respeten el borde redondeado */
-  margin: 0px;
-  box-shadow: none;
-
-  ion-card-content {
-    padding: 0px;
-  }
-
-  ion-list {
-    padding: 0px;
-  }
-}
-
-
 .user-rating {
   display: flex;
   flex-direction: column;
   align-items: center;
+  h6 {
+    margin-top: 5px;
+  }
 }
 
 .rating-stars {
   display: flex;
   justify-content: center;
 }
-.description-box {
-  border: 1px solid var(--ion-color-medium); /* Borde gris medio */
-  border-radius: 10px; /* Bordes redondeados */
-  padding: 10px; /* Espaciado interno */
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
+
+.preferences-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.preference-item {
+  display: flex;
+  align-items: center;
+  width: calc(50% - 10px); /* Dos columnas en pantallas grandes */
+}
+
+.preference-icon {
+  font-size: 24px;
+  margin-right: 10px;
+  color: #ffffff;
+}
+
+.preference-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.preference-title {
+  font-size: 0.9rem;
+  color: #cccccc;
+  margin: 0;
+}
+
+.preference-value {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0;
+}
+
+@media (max-width: 360px) {
+  .preference-item {
+    width: 100%; /* Una columna en pantallas pequeñas */
+  }
+}
+
+ion-datetime-button::part(native) {
+  width: 100%;
+}
+
+ion-segment {
+  --background: var(--ion-color-dark); /* Fondo del segmento */
+
+  ion-segment-button {
+    --color: #ffffff; /* Color del texto en botones no seleccionados */
+  }
+}
+
+ion-list.animated {
+  background-color: var(--ion-color-dark); /* Fondo personalizado para toda la lista */
+  border: 1px solid var(--ion-color-primary); /* Bordes personalizados */
+  border-radius: 8px; /* Bordes redondeados opcionales */
+}
+
+ion-list.animated ion-item {
+  --background: var(--ion-color-dark); /* Fondo de cada ion-item */
+  --border-color: var(--ion-color-primary); /* Color del borde de cada ion-item */
+  color: var(--ion-color-light); /* Color de texto para el contenido interno */
+}
+
+ion-list.animated ion-item h3 {
+  font-weight: bold;
+  color: var(--ion-color-light);
+}
+ion-list.animated ion-item p {
+  color: var(--ion-color-light);
+}
+ion-list.animated ion-item ion-icon {
+  color: var(--ion-color-light); /* Aplica color blanco al texto y a los íconos */
+}
+
+.text-small.input-error {
+  background-color: var(--ion-color-danger);
+  color: var(--ion-color-light);
+  border-radius: 5px;
+  padding: 3px;
+}
+
+.evaluation-count {
+  color: var(--ion-color-medium);
 }

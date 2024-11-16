@@ -1,0 +1,16 @@
+<ion-header  class="ion-no-border">
+  <ion-toolbar color="dark">
+    <ion-item lines="none" color="dark">
+      <!-- Icono de ubicación -->
+      <ion-icon color="primary" slot="start" name="location-outline" style="margin-right: 8px;"/>
+
+      <!-- Dirección o texto de ubicación -->
+      <ion-text color="primary" style="font-size: small;">
+        {{ ubication() || 'Ubicación no proporcionada' }}
+      </ion-text>
+
+      <!-- Icono para sugerir que se puede cambiar -->
+      <ion-icon button [routerLink]="['/private/map']" color="secondary" slot="end" name="create-outline"/>
+    </ion-item>
+  </ion-toolbar>
+</ion-header>

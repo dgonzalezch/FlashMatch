@@ -2,18 +2,52 @@ ion-checkbox::part(container) {
   border-radius: 10px;
 }
 
-::part(background) {
-  // background-color: var(--ion-color-dark);
-  // background-image: url(./../../../assets/images/fondo-login.jpeg);
-  // background-position: center;
-  // background-size: cover;
-  // background-repeat: no-repeat;
-}
-
 .content-center {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
+}
+
+.modern-input {
+  --border-radius: 12px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  transition: box-shadow 0.3s ease;
+}
+
+.modern-input:focus {
+  --box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.modern-checkbox {
+  --background: #f4f4f9;
+  --border-radius: 12px;
+}
+
+.modern-link a {
+  color: #4c8cfa;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.modern-link a:hover {
+  text-decoration: underline;
+}
+
+.form-modern {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: .5px solid var(--ion-color-primary);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.password-toggle {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
 }

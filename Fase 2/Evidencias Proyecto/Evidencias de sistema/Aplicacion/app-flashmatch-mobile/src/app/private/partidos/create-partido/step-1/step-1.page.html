@@ -1,25 +1,30 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-buttons class="route-buttons" slot="start">
       <ion-back-button defaultHref="/private/matches/list-matches"/>
     </ion-buttons>
-    <ion-title>Crear partido (1)</ion-title>
+    <ion-title>
+      <div class="ion-text-center">
+        <h5 class="ion-no-margin">Crear Partido</h5>
+        <p class="ion-no-margin" style="font-size: small; font-weight: 300;">Datos de partido</p>
+      </div>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" color="light">
   <ion-grid>
     <ion-row class="ion-justify-content-center">
-      <ion-col size="auto">
-        <ion-card>
+      <ion-col size="12" size-md="8" size-lg="6">
+        <ion-card class="modern-card">
           <ion-card-content>
             <ion-row class="ion-align-items-center ion-justify-content-center">
               <ion-col size="auto">
-                <ion-icon name="football-outline" style="font-size: 25px; margin-right: 10px;"/>
+                <ion-icon color="primary" name="football-outline" class="icon-large"/>
               </ion-col>
               <ion-col>
-                <ion-text>
-                  <b>Primero,</b> ingresa la fecha del partido y los parámetros de este.
+                <ion-text class="modern-text">
+                  Establece la fecha y configura los parámetros del partido antes de seleccionar la cancha.
                 </ion-text>
               </ion-col>
             </ion-row>
@@ -28,88 +33,176 @@
       </ion-col>
     </ion-row>
 
-    <form action="">
-      <ion-row>
-        <ion-col size="12">
-          <ion-accordion-group class="ion-no-margin" expand="inset">
-            <ion-accordion value="first" class="ion-no-margin">
-              <ion-item slot="header" color="danger">
-                <ion-icon name="calendar-outline" class="ion-margin-end"></ion-icon>
-                <ion-label>
-                  <h3>Fecha partido*</h3>
-                  <p>No seleccionado</p>
-                </ion-label>
-              </ion-item>
-              <div class="ion-padding" slot="content">
-                <ion-datetime-button datetime="datetime"/>
+    <form [formGroup]="step1FormCreatePartido" id="step1FormCreatePartido" (ngSubmit)="onSubmit()">
+      <ion-accordion-group expand="inset" class="ion-no-margin ion-margin-horizontal ion-margin-bottom animated">
+        <ion-accordion value="first" class="ion-no-margin">
+          <ion-item lines="full" slot="header" [color]="step1FormCreatePartido.get('partido_privado')?.value ? 'dark' : 'primary'">
+            <ion-icon [name]="step1FormCreatePartido.get('partido_privado')?.value ? 'lock-closed-outline' : 'lock-open-outline'" class="ion-margin-end"/>
+            <ion-label>
+              <h3>Configuración de Invitaciones</h3>
+              @if (step1FormCreatePartido.get('partido_privado')?.value == true) {
+                <p>Solo invitados</p>
+              } @else {
+                <p>Cualquiera puede unirse</p>
+              }
+            </ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content">
+            <ion-item lines="full" class="ion-margin-bottom">
+              <ion-toggle justify="space-between" formControlName="partido_privado">Hacer el partido privado</ion-toggle>
+            </ion-item>
+            <ion-text color="medium">
+              Al activar esta opción, el partido será accesible solo para invitados.
+            </ion-text>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
 
-                <ion-modal [keepContentsMounted]="true">
-                  <ng-template>
-                    <ion-datetime
-                      id="datetime"
-                      locale="es-ES"
-                      showDefaultButtons="true"
-                      cancelText="cerrar"
-                      doneText="confirmar"
-                      presentation="date-time"
-                      hourValues="10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22"
-                      minuteValues="0"
-                      [formatOptions]="{
-                        date: {
-                          weekday: 'short',
-                          month: 'long',
-                          day: '2-digit',
-                        },
-                        time: {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        },
-                      }"
-                    />
-                  </ng-template>
-                </ion-modal>
-              </div>
-            </ion-accordion>
-          </ion-accordion-group>
-        </ion-col>
+      <ion-accordion-group expand="inset" class="ion-no-margin ion-margin-horizontal ion-margin-bottom animated" [value]="['second']">
+        <ion-accordion value="second" class="ion-no-margin ion-margin-bottom">
+          <ion-item slot="header" [color]="step1FormCreatePartido.get('fecha_partido')?.invalid ? 'danger' : 'tertiary'">
+            <ion-icon name="calendar-outline" class="ion-margin-end"/>
+            <ion-label>
+              <h3>Fecha partido*</h3>
+              @if (step1FormCreatePartido.get('fecha_partido')?.invalid) {
+                <p>No seleccionada</p>
+              } @else {
+                {{step1FormCreatePartido.get('fecha_partido')!.value | date: 'dd/MM/yyyy, HH:mm'}}hrs
+              }
+            </ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content">
+            <ion-datetime-button datetime="datetime"/>
+            <ion-modal [keepContentsMounted]="true">
+              <ng-template>
+                <ion-datetime
+                  id="datetime"
+                  locale="es-ES"
+                  [showDefaultButtons]="true"
+                  cancelText="cerrar"
+                  doneText="confirmar"
+                  presentation="date-time"
+                  hourValues="8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23"
+                  minuteValues="0"
+                  [min]="minDate()"
+                  [formatOptions]="{
+                    date: {
+                      weekday: 'short',
+                      month: 'long',
+                      day: '2-digit'
+                    },
+                    time: {
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    }
+                  }"
+                  (ionChange)="onDateChange($event)"
+                ></ion-datetime>
+              </ng-template>
+            </ion-modal>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
 
+
+      <ion-row class="modern-card-form ion-padding ion-margin">
         <ion-col size="12">
-          <ion-select label="Deporte*" label-placement="floating" fill="outline" cancelText="cerrar">
-            <ion-select-option></ion-select-option>
+          <ion-select formControlName="deporte_id" label="Deporte*" label-placement="floating" fill="outline" cancelText="cerrar">
+            @for (deporte of listDeportes(); track $index) {
+              <ion-select-option [value]="deporte.id_deporte">{{deporte.nombre_deporte}}</ion-select-option>
+            }
           </ion-select>
+          @if (step1FormCreatePartido.get('deporte_id')?.touched && step1FormCreatePartido.get('deporte_id')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1FormCreatePartido.get('deporte_id')?.hasError('required')) {
+                  *Debes seleccionar un deporte.
+                }
+              }
+            </ion-text>
+          }
         </ion-col>
 
         <ion-col size="12">
-          <ion-select label="Tipo partido*" label-placement="floating" fill="outline" cancelText="cerrar">
-            <ion-select-option></ion-select-option>
+          <ion-select formControlName="tipo_partido_id" label="Tipo partido*" label-placement="floating" fill="outline" cancelText="cerrar">
+            @for (tipoPartido of listTiposPartidos(); track $index) {
+              <ion-select-option [value]="tipoPartido.id_tipo_partido">{{tipoPartido.nombre_tipo_partido}}</ion-select-option>
+            }
           </ion-select>
+          @if (step1FormCreatePartido.get('tipo_partido_id')?.touched && step1FormCreatePartido.get('tipo_partido_id')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1FormCreatePartido.get('tipo_partido_id')?.hasError('required')) {
+                  *Debes seleccionar un tipo de partido.
+                }
+              }
+            </ion-text>
+          }
         </ion-col>
 
         <ion-col size="12">
-          <ion-select label="Rango edad*" label-placement="floating" fill="outline" cancelText="cerrar">
-            <ion-select-option></ion-select-option>
+          <ion-select formControlName="nivel_habilidad_id" label="Nivel habilidad*" label-placement="floating" fill="outline" cancelText="cerrar">
+            @for (nivelHabilidad of listNivelesHabilidad(); track $index) {
+              <ion-select-option [value]="nivelHabilidad.id_nivel_habilidad">{{nivelHabilidad.nombre_nivel_habilidad}}</ion-select-option>
+            }
           </ion-select>
+          @if (step1FormCreatePartido.get('nivel_habilidad_id')?.touched && step1FormCreatePartido.get('nivel_habilidad_id')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1FormCreatePartido.get('nivel_habilidad_id')?.hasError('required')) {
+                  *Debes seleccionar un nivel de habilidad.
+                }
+              }
+            </ion-text>
+          }
         </ion-col>
 
         <ion-col size="12">
-          <ion-select label="Emparejamiento*"  label-placement="floating" fill="outline" cancelText="cerrar">
-            <ion-select-option></ion-select-option>
+          <ion-select formControlName="rango_edad_id" label="Rango edad*" label-placement="floating" fill="outline" cancelText="cerrar">
+            @for (rangoEdad of listRangosEdad(); track $index) {
+              <ion-select-option [value]="rangoEdad.id_rango_edad">{{rangoEdad.descripcion}}</ion-select-option>
+            }
           </ion-select>
+          @if (step1FormCreatePartido.get('rango_edad_id')?.touched && step1FormCreatePartido.get('rango_edad_id')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1FormCreatePartido.get('rango_edad_id')?.hasError('required')) {
+                  *Debes seleccionar un rango de edad.
+                }
+              }
+            </ion-text>
+          }
         </ion-col>
 
+        <!-- <ion-col size="12">
+          <ion-select formControlName="tipo_emparejamiento_id" label="Emparejamiento*" label-placement="floating" fill="outline" cancelText="cerrar">
+            @for (tipoEmparejamiento of listTiposEmparejamientos(); track $index) {
+              <ion-select-option [value]="tipoEmparejamiento.id_tipo_emparejamiento">{{tipoEmparejamiento.nombre_tipo_emparejamiento}}</ion-select-option>
+            }
+          </ion-select>
+          @if (step1FormCreatePartido.get('tipo_emparejamiento_id')?.touched && step1FormCreatePartido.get('tipo_emparejamiento_id')?.invalid) {
+            <ion-text class="text-small" color="danger">
+              @switch (true) {
+                @case (step1FormCreatePartido.get('tipo_emparejamiento_id')?.hasError('required')) {
+                  *Debes seleccionar un tipo de emparejamiento.
+                }
+              }
+            </ion-text>
+          }
+        </ion-col> -->
         <ion-col size="12">
-          <ion-textarea label="Descripción" labelPlacement="floating" fill="outline" placeholder="Enter text"></ion-textarea>
+          <ion-textarea formControlName="descripcion" label="Descripción" labelPlacement="floating" fill="outline" placeholder="Descripción..."/>
         </ion-col>
       </ion-row>
     </form>
   </ion-grid>
 </ion-content>
 
-<ion-footer class="ion-no-border">
-  <ion-toolbar>
-    <ion-button class="ion-padding-horizontal" color="tertiary" expand="block"
-      type="submit" form="step1Form" [routerLink]="['/private/matches/create-match/step-2']">
-      Siguiente
+<ion-footer>
+  <ion-toolbar color="light">
+    <ion-button class="ion-padding-horizontal modern-button" color="tertiary" expand="block" type="submit"
+      form="step1FormCreatePartido" [disabled]="!step1FormCreatePartido.valid">
+      Establecer parámetros
     </ion-button>
   </ion-toolbar>
 </ion-footer>

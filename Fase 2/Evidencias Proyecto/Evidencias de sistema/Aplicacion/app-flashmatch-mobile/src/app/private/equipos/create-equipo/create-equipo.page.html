@@ -28,7 +28,7 @@
       </ion-col>
     </ion-row>
 
-    <form [formGroup]="equipoForm" id="equipoForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="equipoForm" id="equipoForm" class="modern-card-form ion-padding ion-margin" (ngSubmit)="onSubmit()">
       <ion-row>
         <ion-col size="12">
           <!-- NOMBRE_EQUIPO -->
@@ -59,15 +59,15 @@
 
         <ion-col size="12">
           <!-- DEPORTE -->
-          <ion-select formControlName="id_deporte" class="ion-input-form" label="Deporte dedicado*" label-placement="floating" cancelText="cancelar" okText="seleccionar">
+          <ion-select formControlName="deporte_id" class="ion-input-form" label="Deporte dedicado*" label-placement="floating" cancelText="cancelar" okText="seleccionar">
             @for (deporte of listDeportes(); track $index) {
               <ion-select-option [value]="deporte.id_deporte">{{deporte.nombre_deporte}}</ion-select-option>
             }
           </ion-select>
-          @if (equipoForm.get('id_deporte')?.touched && equipoForm.get('id_deporte')?.invalid) {
+          @if (equipoForm.get('deporte_id')?.touched && equipoForm.get('deporte_id')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
-                @case (equipoForm.get('id_deporte')?.hasError('required')) {
+                @case (equipoForm.get('deporte_id')?.hasError('required')) {
                   *Debes seleccionar un deporte.
                 }
               }
@@ -77,15 +77,15 @@
 
         <ion-col size="12">
           <!-- RANGO EDAD -->
-          <ion-select formControlName="id_rango" class="ion-input-form" label="Rango edad del equipo*" label-placement="floating" cancelText="cancelar" okText="seleccionar">
+          <ion-select formControlName="rango_edad_id" class="ion-input-form" label="Rango edad del equipo*" label-placement="floating" cancelText="cancelar" okText="seleccionar">
             @for (rangoEdad of listRangosEdad(); track $index) {
-              <ion-select-option [value]="rangoEdad.id_rango">{{rangoEdad.descripcion}}</ion-select-option>
+              <ion-select-option [value]="rangoEdad.id_rango_edad">{{rangoEdad.descripcion}}</ion-select-option>
             }
           </ion-select>
-          @if (equipoForm.get('id_rango')?.touched && equipoForm.get('id_rango')?.invalid) {
+          @if (equipoForm.get('rango_edad_id')?.touched && equipoForm.get('rango_edad_id')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
-                @case (equipoForm.get('id_rango')?.hasError('required')) {
+                @case (equipoForm.get('rango_edad_id')?.hasError('required')) {
                   *Debes seleccionar un rango de edad.
                 }
               }
@@ -111,9 +111,10 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer class="ion-no-border ion-padding">
-  <ion-toolbar>
-    <ion-button class="ion-no-margin" color="tertiary" expand="block" type="submit" form="equipoForm" [disabled]="!equipoForm.valid">
+<ion-footer>
+  <ion-toolbar color="light">
+    <ion-button class="ion-padding-horizontal modern-button" color="tertiary" expand="block" type="submit"
+      form="equipoForm" [disabled]="!equipoForm.valid">
       Confirmar
     </ion-button>
   </ion-toolbar>

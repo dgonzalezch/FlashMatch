@@ -5,7 +5,6 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonFooter, IonButton, IonI
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { catchError, switchMap, throwError } from 'rxjs';
 import { FormValidatorService } from 'src/app/shared/common/form-validator-service.service';
 import { PreventSpacesDirective } from 'src/app/shared/common/prevent-spaces.directive';
 import { responseError } from 'src/app/interfaces/response-error.interface';
@@ -33,12 +32,10 @@ export default class Step2Page implements OnInit {
     correo: ['', [
       Validators.required,
       Validators.email,
-      Validators.maxLength(25),
     ]],
     repeatCorreo: ['', [
       Validators.required,
       Validators.email,
-      Validators.maxLength(25),
     ]],
     clave: ['', [
       Validators.required,
@@ -74,8 +71,9 @@ export default class Step2Page implements OnInit {
       clave: this.step2Form.get('clave')?.value
     };
 
-    this.authService.registerUser(fullFormDataRegister).subscribe({
+    this.authService.registerUser(fullFormDataRegister, 'jugador').subscribe({
       next: (resp) => {
+        this.alertService.message(resp.message);
         this.router.navigate(['/private/home']);
       },
       error: (err: responseError) => {

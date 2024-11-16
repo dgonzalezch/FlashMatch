@@ -1,0 +1,29 @@
+.user-avatar-container {
+  position: relative;
+  border: 2px solid var(--ion-color-primary);
+  border-radius: 50%;
+}
+
+.user-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h6 {
+    margin-top: 5px;
+  }
+}
+
+.rating-stars {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 360px) {
+  .preference-item {
+    width: 100%; /* Una columna en pantallas pequeñas */
+  }
+}
+
+.evaluation-count {
+  color: var(--ion-color-medium);
+}

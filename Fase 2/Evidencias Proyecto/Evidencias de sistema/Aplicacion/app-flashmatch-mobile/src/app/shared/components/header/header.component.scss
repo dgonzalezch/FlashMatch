@@ -6,6 +6,10 @@ ion-buttons {
   color: white;
 }
 
-.route-buttons {
-  position: fixed;
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -4px;
+  font-size: 10px;
+  border-radius: 50%;
 }

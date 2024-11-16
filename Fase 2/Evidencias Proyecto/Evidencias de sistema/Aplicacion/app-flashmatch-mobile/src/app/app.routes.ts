@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { RedirectIfAuthenticatedGuard } from './guards/redirect-if-authenticated.guard';
+import { LocationResolver } from './shared/common/location.resolver';
 
 export const routes: Routes = [
   {
@@ -24,15 +25,15 @@ export const routes: Routes = [
             loadComponent: () => import('./auth/register/step-2/step-2.page')
           },
           {
-            path: 'step-3',
-            loadComponent: () => import('./auth/register/step-3/step-3.page')
-          },
-          {
             path: '**',
             redirectTo: 'step-1',
             pathMatch: 'full'
           }
         ]
+      },
+      {
+        path: 'help',
+        loadComponent: () => import('./ayuda/ayuda.page')
       },
       {
         path: 'recovery-password',
@@ -47,12 +48,20 @@ export const routes: Routes = [
   },
   {
     path: 'private',
-    loadComponent: () => import('./private/private.layout-page'),
+    loadComponent: () => import('./private/private.main-page'),
     canActivate: [AuthGuard],
     children: [
       {
         path: 'home',
         loadComponent: () => import('./private/home/home.page'),
+      },
+      {
+        path: 'map',
+        loadComponent: () => import('./private/map/map.page')
+      },
+      {
+        path: 'map/:lat/:lng',
+        loadComponent: () => import('./private/map/map.page')
       },
       {
         path: 'matches',
@@ -69,7 +78,7 @@ export const routes: Routes = [
                 loadComponent: () => import('./private/partidos/create-partido/step-1/step-1.page')
               },
               {
-                path: 'step-2',
+                path: ':id_partido/step-2',
                 loadComponent: () => import('./private/partidos/create-partido/step-2/step-2.page')
               },
               {
@@ -79,8 +88,8 @@ export const routes: Routes = [
             ]
           },
           {
-            path: 'detail-match/:id',
-            loadComponent: () => import('./private/partidos/detail-partido/detail-partido.page').then( m => m.DetailPartidoPage)
+            path: 'detail-match/:id_partido',
+            loadComponent: () => import('./private/partidos/detail-partido/detail-partido.page')
           },
           {
             path: '**',
@@ -88,7 +97,6 @@ export const routes: Routes = [
             pathMatch: 'full'
           }
         ]
-
       },
       {
         path: 'courts',
@@ -98,8 +106,48 @@ export const routes: Routes = [
             loadComponent: () => import('./private/canchas/list-canchas/list-canchas.page')
           },
           {
+            path: 'create-court',
+            children: [
+              {
+                path: 'step-1',
+                loadComponent: () => import('./private/canchas/create-cancha/step-1/step-1.page')
+              },
+              {
+                path: 'step-2',
+                loadComponent: () => import('./private/canchas/create-cancha/step-2/step-2.page')
+              },
+              {
+                path: 'step-3',
+                loadComponent: () => import('./private/canchas/create-cancha/step-3/step-3.page')
+              },
+            ]
+          },
+          {
+            path: 'detail-court/:id_cancha',
+            loadComponent: () => import('./private/canchas/detail-cancha/detail-cancha.page')
+          },
+          {
             path: '**',
             redirectTo: 'list-courts',
+            pathMatch: 'full'
+          }
+        ]
+      },
+      {
+        path: 'matchmaking',
+        loadComponent: () => import('./private/matchmaking/matchmaking.page')
+      },
+      {
+        path: 'requests',
+        // loadComponent: () => import('./private/solicitudes/solicitudes.page'),
+        children: [
+          {
+            path: 'reserve',
+            loadComponent: () => import('./private/solicitudes/reserva/reserva.page')
+          },
+          {
+            path: '**',
+            redirectTo: 'reserve',
             pathMatch: 'full'
           }
         ]
@@ -168,19 +216,30 @@ export const routes: Routes = [
         ]
       },
       {
+        path: 'voucher',
+        loadComponent: () => import('./private/comprobante/comprobante.page')
+      },
+      {
+        path: 'invitations',
+        loadComponent: () => import('./private/invitaciones/invitaciones.page')
+      },
+      {
         path: 'configurations',
         loadComponent: () => import('./private/configurations/configurations.page')
       },
       {
         path: 'notifications',
-        loadComponent: () => import('./private/notifications/notifications.page')
+        loadComponent: () => import('./private/notificaciones/notificaciones.page')
       },
       {
         path: '**',
         redirectTo: 'home',
         pathMatch: 'full'
       }
-    ]
+    ],
+    resolve: {
+      location: LocationResolver,
+    },
   },
   {
     path: '**',

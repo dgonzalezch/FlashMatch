@@ -1,6 +1,11 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Estadísticas</ion-title>
+  <ion-toolbar color="dark">
+    <ion-title>
+      <div class="ion-text-center">
+        <h5 class="ion-no-margin">Estadísticas</h5>
+        <p class="ion-no-margin" style="font-size: small; font-weight: 300;">Parámetros</p>
+      </div>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -9,8 +14,8 @@
     <ion-row>
       <ion-col size="12">
         <ion-select label="Deporte" label-placement="floating" fill="outline" cancelText="cancelar" (ionChange)="selectedDeporte.set($event.detail.value); updateChartData()">
-          @for (deportePosicion of infoUsuario()?.deportesPosicionesUsuarios; track $index) {
-            <ion-select-option [value]="deportePosicion.posicion">{{deportePosicion.posicion.deporte.nombre_deporte}}</ion-select-option>
+          @for (deportePosicionUsuario of infoUsuario()?.deportesPosicionesUsuarios; track $index) {
+            <ion-select-option [value]="deportePosicionUsuario.deportePosicion">{{deportePosicionUsuario.deportePosicion.deporte.nombre_deporte}}</ion-select-option>
           }
         </ion-select>
       </ion-col>
@@ -21,10 +26,10 @@
     @if (selectedDeporte()) {
       <ion-row>
         <ion-col size="12">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="header-with-button">
             <h4 class="ion-no-margin">Rendimiento</h4>
             <ion-button color="secondary" size="small">
-              <ion-icon slot="start" name="pencil-outline"></ion-icon>
+              <ion-icon slot="start" name="pencil-outline"/>
               Editar
             </ion-button>
           </div>

@@ -1,20 +1,29 @@
 <app-header [typeHeader]="'public'"/>
 
-<ion-content [fullscreen]="true" class="ion-padding">
+<ion-content [fullscreen]="true" class="ion-padding content-center">
   <ion-grid class="ion-margin-top">
-    <!-- LOGO -->
-    <ion-row class="ion-justify-content-center ion-margin-vertical">
-      <ion-col size="12" class="ion-text-center">
+
+    <ion-row class="ion-justify-content-center ion-margin-vertical ">
+      <ion-col size="12" class="ion-text-center animated">
         <ion-img class="custom-img" style="height: 5rem;" src="assets/logo/logo-flashmatch.png" alt="logo-flashmatch"></ion-img>
       </ion-col>
     </ion-row>
 
-    <!-- FORMULARIO -->
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form-modern animated dark">
       <ion-row class="ion-align-items-center">
-        <!-- CORREO -->
         <ion-col size="12">
-          <ion-input formControlName="correo" type="email" class="ion-input-form" preventSpaces label="Email" maxlength="25" labelPlacement="floating"/>
+          <ion-input
+            formControlName="correo"
+            class="ion-input-form"
+            type="email"
+            placeholder=""
+            labelPlacement="stacked"
+            label="Email"
+            preventSpaces
+            maxlength="50"
+          >
+            <ion-icon slot="start" name="mail-outline" aria-hidden="true"/>
+          </ion-input>
           @if (loginForm.get('correo')?.touched && loginForm.get('correo')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
@@ -30,8 +39,23 @@
         </ion-col>
 
         <!-- CLAVE -->
+
         <ion-col size="12">
-          <ion-input formControlName="clave" type="password" class="ion-input-form" preventSpaces label="Contraseña" labelPlacement="floating"/>
+          <ion-input
+            formControlName="clave"
+            class="ion-input-form"
+            type="password"
+            placeholder=""
+            labelPlacement="stacked"
+            label="Contraseña"
+            preventSpaces
+            placeholder=""
+            maxlength="50"
+          >
+            <ion-icon slot="start" name="lock-closed-outline" aria-hidden="true"/>
+            <ion-input-password-toggle slot="end"/>
+          </ion-input>
+
           @if (loginForm.get('clave')?.touched && loginForm.get('clave')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
@@ -51,22 +75,28 @@
 
         <!-- RECORDAR CONTRASEÑA -->
         <ion-col size="12">
-          <ion-checkbox class="ion-margin-vertical" labelPlacement="end">Recordar contraseña</ion-checkbox>
+          <ion-checkbox class="modern-checkbox ion-margin-vertical" labelPlacement="end">Recordar contraseña</ion-checkbox>
         </ion-col>
 
         <!-- BOTÓN INGRESAR -->
         <ion-col size="12">
-          <ion-button type="submit" [disabled]="loginForm.invalid" color="primary" expand="block">INGRESAR</ion-button>
+          <ion-button type="submit" [disabled]="loginForm.invalid" color="primary" expand="block" class="modern-button">
+            <ion-icon slot="start" name="log-in-outline"/>
+            INGRESAR
+          </ion-button>
         </ion-col>
 
         <!-- BOTÓN REGISTRARSE -->
         <ion-col size="12">
-          <ion-button type="button" color="secondary" [routerLink]="['/auth/register']" expand="block">REGÍSTRATE</ion-button>
+          <ion-button type="button" color="secondary" [routerLink]="['/auth/register']" expand="block" class="modern-button">
+            <ion-icon slot="start" name="person-add-outline"/>
+            REGÍSTRATE
+          </ion-button>
         </ion-col>
 
         <!-- ENLACE OLVIDASTE CONTRASEÑA -->
         <ion-col size="12">
-          <div class="ion-text-center ion-margin-top">
+          <div class="ion-text-center ion-margin-top modern-link">
             <a [routerLink]="['/auth/recovery-password']">¿Olvidaste tu contraseña?</a>
           </div>
         </ion-col>

@@ -1,0 +1,82 @@
+ion-avatar {
+  border: 1px solid var(--ion-color-primary);
+}
+
+ion-list.jugadores {
+  background-color: var(--ion-color-dark);; /* Fondo personalizado para toda la lista */
+}
+
+ion-modal.detail-user {
+  --height: 55%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  padding: 30px;
+}
+
+ion-modal.evaluation-user {
+  --height: 55%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  padding: 30px;
+}
+
+.user-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h6 {
+    margin-top: 5px;
+  }
+}
+
+.preferences-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.preference-item {
+  display: flex;
+  align-items: center;
+  width: calc(50% - 10px);
+  /* Dos columnas en pantallas grandes */
+}
+
+.preference-icon {
+  font-size: 24px;
+  margin-right: 10px;
+  color: #ffffff;
+}
+
+.preference-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.preference-title {
+  font-size: 0.9rem;
+  color: #cccccc;
+  margin: 0;
+}
+
+.preference-value {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0;
+}
+
+.calendar-chip {
+  background: var(--ion-color-tertiary);
+  color: var(--ion-color-light);
+  font-weight: bold;
+  border: none;
+}
+
+.cancha-img-modern {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  height: 200px;
+  object-fit: cover;
+}

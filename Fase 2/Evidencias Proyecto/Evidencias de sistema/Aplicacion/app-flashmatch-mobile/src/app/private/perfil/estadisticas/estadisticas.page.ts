@@ -5,8 +5,7 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonRange, IonItem, IonLabe
 import { BaseChartDirective } from 'ng2-charts';
 import { AlertService } from 'src/app/shared/common/alert.service';
 import { StorageService } from 'src/app/services/storage.service';
-import { UsuariosService } from 'src/app/services/usuarios.service';
-import { DeportesService } from 'src/app/services/deportes.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { responseError } from 'src/app/interfaces/response-error.interface';
 
@@ -22,7 +21,7 @@ export default class EstadisticasPage {
   private fb = inject(FormBuilder);
   private alertService = inject(AlertService);
   private storageService = inject(StorageService);
-  private usuariosService = inject(UsuariosService);
+  private usuarioService = inject(UsuarioService);
 
   infoUsuario = signal<any>(null);
   idUsuario = signal<string>('');
@@ -34,7 +33,7 @@ export default class EstadisticasPage {
   tacticaValue = signal<any>(0);
 
   estadisticasDetalladasUsuariosForm = this.fb.group({
-    id_deporte: ['', [Validators.required]],
+    deporte_id: ['', [Validators.required]],
   });
 
   radarChartLabels = signal<any>(['Velocidad', 'Resistencia', 'Técnica', 'Táctica']);
@@ -73,7 +72,7 @@ export default class EstadisticasPage {
   }
 
   getInfoUsuario() {
-    this.usuariosService.getUsuario(this.idUsuario()).subscribe({
+    this.usuarioService.getUsuario(this.idUsuario()).subscribe({
       next: (resp: responseSuccess) => {
         this.infoUsuario.set(resp.data);
       },
@@ -85,20 +84,20 @@ export default class EstadisticasPage {
 
   updateChartData() {
     if (this.selectedDeporte() && this.infoUsuario()) {
-      const selectedPosition = this.infoUsuario().deportesPosicionesUsuarios.find((dp: any) => dp.posicion.deporte.id_deporte === this.selectedDeporte().deporte.id_deporte);
+      const selectedPosition = this.infoUsuario().deportesPosicionesUsuarios.find((dp: any) => dp.deportePosicion.deporte.id_deporte === this.selectedDeporte().deporte.id_deporte);
       if (selectedPosition) {
         const estadisticas = this.infoUsuario().estadisticasDetalladasUsuarios;
 
         this.radarChartData()[0].data = this.radarChartLabels().map((label: any) => {
-          const est = estadisticas.find((est: any) => est.parametroRendimiento.nombre_parametro === label);
+          const est = estadisticas.find((est: any) => est.parametroRendimiento.nombre_parametro_rendimiento === label);
           return est ? parseFloat(est.parametro_valor) : 0;
         });
 
         // Asignar los valores a los rangos
-        this.velocidadValue.set(parseFloat(estadisticas.find((est:any) => est.parametroRendimiento.nombre_parametro === 'Velocidad')?.parametro_valor) || 0);
-        this.resistenciaValue.set(parseFloat(estadisticas.find((est:any) => est.parametroRendimiento.nombre_parametro === 'Resistencia')?.parametro_valor) || 0);
-        this.tacticaValue.set(parseFloat(estadisticas.find((est:any) => est.parametroRendimiento.nombre_parametro === 'Táctica')?.parametro_valor) || 0);
-        this.tecnicaValue.set(parseFloat(estadisticas.find((est:any) => est.parametroRendimiento.nombre_parametro === 'Técnica')?.parametro_valor) || 0);
+        this.velocidadValue.set(parseFloat(estadisticas.find((est:any) => est.parametroRendimiento.nombre_parametro_rendimiento === 'Velocidad')?.parametro_valor) || 0);
+        this.resistenciaValue.set(parseFloat(estadisticas.find((est:any) => est.parametroRendimiento.nombre_parametro_rendimiento === 'Resistencia')?.parametro_valor) || 0);
+        this.tacticaValue.set(parseFloat(estadisticas.find((est:any) => est.parametroRendimiento.nombre_parametro_rendimiento === 'Táctica')?.parametro_valor) || 0);
+        this.tecnicaValue.set(parseFloat(estadisticas.find((est:any) => est.parametroRendimiento.nombre_parametro_rendimiento === 'Técnica')?.parametro_valor) || 0);
       }
     }
   }

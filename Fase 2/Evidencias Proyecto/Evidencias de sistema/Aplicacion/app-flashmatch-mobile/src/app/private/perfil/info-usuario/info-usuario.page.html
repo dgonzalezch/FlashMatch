@@ -1,225 +1,657 @@
-<ion-header [translucent]="true">
+@let usuario = infoUsuario();
+<ion-header>
   <ion-toolbar>
-    <ion-title>Información</ion-title>
+    <ion-segment value="perfil" (ionChange)="onSegmentChange($event)">
+      <ion-segment-button value="perfil">
+        <ion-label>Perfil</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="datos">
+        <ion-label>Datos</ion-label>
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <ion-grid>
+@if (usuario) {
+  <ion-content [fullscreen]="true" color="light">
+    <ion-grid>
+      <ion-row>
+        @switch (selectedSegment()) {
+          @case ('perfil') {
+            <ion-col size="12">
+              <ion-card class="modern-card" color="dark">
+                <app-header-map [ubication]="ubication()"/>
 
-    <!-- Avatar del usuario -->
-    <ion-row class="ion-justify-content-center">
-      <ion-col size="auto" class="ion-text-center">
-        <ion-avatar class="user-avatar-container">
-          <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="Imagen del usuario" class="user-avatar" />
-        </ion-avatar>
-        <ion-button shape="round" color="secondary" size="small" class="edit-avatar-button">
-          <ion-icon slot="icon-only" name="camera-outline"/>
-        </ion-button>
-      </ion-col>
-    </ion-row>
+                <ion-row class="ion-justify-content-center ion-text-center" [class]="isCancha() ? 'ion-margin-vertical' : 'ion-margin-top'">
 
-    <!-- Nombre del usuario -->
-    <ion-row class="ion-justify-content-center ion-text-center">
-      <ion-col size="auto" class="ion-no-padding">
-        <h2 class="ion-no-margin">{{ infoUsuario()?.nombre }} {{ infoUsuario()?.apellido }}</h2>
-      </ion-col>
-    </ion-row>
-
-    <!-- Calificación del usuario -->
-    <ion-row class="ion-justify-content-center">
-      <ion-col size="12" class="ion-text-center">
-        <div class="user-rating">
-          <div class="rating-stars">
-            @for (star of [1, 2, 3, 4, 5]; track $index) {
-              <ion-icon
-                [name]="getStarIcon($index + 1)"
-                class="rating-star-gold"
-                size="small"/>
-            }
-          </div>
-          <h5 class="ion-no-margin ion-margin-top">{{ user.rating }} / 5</h5>
-        </div>
-      </ion-col>
-    </ion-row>
-
-    <!-- Títulos del usuario -->
-    <ion-row class="ion-justify-content-center ion-text-center">
-      <ion-col size="12">
-        @for (title of user.titles; track $index) {
-          <ion-chip color="secondary">{{ title }}</ion-chip>
-        }
-      </ion-col>
-      <ion-button size="small" color="secondary">
-        <ion-icon slot="start" name="pencil-outline"></ion-icon>
-        Editar títulos
-      </ion-button>
-    </ion-row>
-
-    <ion-accordion-group class="ion-no-margin ion-margin-top" expand="inset">
-      <ion-accordion class="ion-no-margin" value="first">
-        <ion-item slot="header" color="tertiary">
-          <ion-icon name="football-outline" class="ion-margin-end"/>
-          <ion-label>
-            <h3>Deportes</h3>
-          </ion-label>
-        </ion-item>
-        <div class="ion-padding" slot="content">
-          <ion-button class="ion-no-margin" color="tertiary" expand="block" (click)="setOpen(true)">Añadir Deporte</ion-button>
-
-          <ion-list>
-            @for (deportePosicion of infoUsuario()?.deportesPosicionesUsuarios; track $index) {
-              <ion-item button lines="full">
-                <!-- Agrega un ion-icon para mostrar el ícono del deporte -->
-                <ion-icon slot="start"[name]="deportePosicion.posicion.deporte.icono"/>
-                <ion-label>
-                  <h4>{{ deportePosicion.posicion.deporte.nombre_deporte }}</h4>
-                  <p class="ion-no-margin">{{ deportePosicion.posicion.nombre }}</p>
-                </ion-label>
-                <ion-buttons slot="end">
-                  <ion-button fill="clear" color="secondary" aria-label="Editar deporte">
-                    <ion-icon name="pencil-outline"/>
-                  </ion-button>
-                  <ion-button fill="clear" color="danger" aria-label="Eliminar deporte" >
-                    <ion-icon name="trash-outline"/>
-                  </ion-button>
-                </ion-buttons>
-              </ion-item>
-            }
-            @empty {
-              <ion-item button lines="full">
-                <ion-label>
-                  <h4>Aún no has añadido ningún deporte.</h4>
-                </ion-label>
-              </ion-item>
-            }
-          </ion-list>
-          <ion-note color="medium" class="ion-margin-top">
-            Toca el icono para editar o ver detalles del deporte y la posición.
-          </ion-note>
-        </div>
-      </ion-accordion>
-    </ion-accordion-group>
-
-    <ion-accordion-group class="ion-no-margin ion-margin-top" expand="inset">
-      <ion-accordion class="ion-no-margin" value="first">
-        <ion-item slot="header" color="primary">
-          <ion-icon name="people-circle-outline" class="ion-margin-end"/>
-          <ion-label>
-            <h3>Equipos</h3>
-          </ion-label>
-        </ion-item>
-        <div class="ion-padding" slot="content">
-          <!-- Sección de Equipos -->
-          <ion-list class="ion-no-padding ion-padding-bottom">
-            @for (equipo of infoUsuario()?.equipos; track $index) {
-              <ion-item button lines="full">
-                <ion-avatar slot="start">
-                  <img [src]="'https://ionicframework.com/docs/img/demos/avatar.svg'" alt="{{ equipo.nombre_equipo }} Logo" />
-                </ion-avatar>
-                <ion-label>
-                  <h4>{{ equipo.nombre_equipo }}</h4>
-                </ion-label>
-                <ion-buttons slot="end">
-                  <ion-button fill="clear" color="secondary" aria-label="Editar equipo">
-                    <ion-icon name="pencil-outline"/>
-                  </ion-button>
-                  <ion-button fill="clear" color="danger" aria-label="Eliminar deporte" >
-                    <ion-icon name="log-out-outline"/>
-                  </ion-button>
-                </ion-buttons>
-              </ion-item>
-            }
-          </ion-list>
-          <ion-note color="medium" class="ion-margin-top">
-            Toca el icono para editar o ver detalles del equipo.
-          </ion-note>
-        </div>
-      </ion-accordion>
-    </ion-accordion-group>
-  </ion-grid>
-</ion-content>
-
-
-<!-- MODAL AÑADIR DEPORTE -->
-<ion-modal [isOpen]="isModalOpen()">
-  <ng-template>
-    <ion-header>
-      <ion-toolbar color="dark">
-        <ion-title>Añadir Deporte</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="setOpen(false)">Cerrar</ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content [fullscreen]="true" class="ion-padding">
-      <ion-grid class="ion-no-padding">
-        <ion-row class="ion-justify-content-center">
-          <ion-col size-xs="auto">
-            <ion-card class="ion-no-margin">
-              <ion-card-content>
-                <ion-row class="ion-align-items-center ion-justify-content-center">
-                  <ion-col size="auto">
-                    <ion-icon name="football-outline" style="font-size: 25px; margin-right: 10px;"></ion-icon>
+                  <ion-col size="auto" class="ion-text-center">
+                    <ion-avatar class="user-avatar-container">
+                      <img [src]="selectedImage() ? selectedImage() : 'assets/images/default-avatar.svg'" alt="Imagen del usuario" class="user-avatar" />
+                    </ion-avatar>
+                    <ion-button shape="round" color="secondary" size="small" class="edit-avatar-button" (click)="selectImage()">
+                      <ion-icon slot="icon-only" name="camera-outline"/>
+                    </ion-button>
                   </ion-col>
-                  <ion-col>
-                    <ion-text>
-                      Ingresa los datos solicitados para añadir un deporte a tu perfil.
-                    </ion-text>
+                  <ion-col size="12">
+                    <h4 class="ion-no-margin">{{ usuario.nombre }} {{ usuario.apellido }}</h4>
+                  </ion-col>
+                  <ion-col size="12" class="ion-no-padding">
+                    <div class="user-rating">
+                      <div class="rating-stars">
+                        @for (star of [1, 2, 3, 4, 5]; track $index) {
+                          <ion-icon [name]="getStarIcon($index + 1)" class="rating-star-gold" size="small"/>
+                        }
+                      </div>
+                      <h6 class="ion-no-margin">{{ usuario.promedio_evaluacion }} / 5 <span class="evaluation-count">({{ usuario.evaluaciones.length }})</span></h6>
+                    </div>
                   </ion-col>
                 </ion-row>
-              </ion-card-content>
-            </ion-card>
-          </ion-col>
-        </ion-row>
 
-        <form [formGroup]="deportesPosicionesUsuariosForm" class="ion-margin-vertical" id="deportesPosicionesUsuariosForm" (ngSubmit)="onSubmit()">
-          <ion-row>
-            <ion-col size="12">
-              <!-- DEPORTE -->
-              <ion-select formControlName="id_deporte" class="ion-input-form" label="Deporte*" label-placement="floating" cancelText="cancelar" okText="seleccionar" (ionChange)="onDeporteChange($event)">
-                @for (deporte of listDeportes(); track $index) {
-                  <ion-select-option [value]="deporte.id_deporte">{{deporte.nombre_deporte}}</ion-select-option>
-                }
-              </ion-select>
-              @if (deportesPosicionesUsuariosForm.get('id_deporte')?.touched && deportesPosicionesUsuariosForm.get('id_deporte')?.invalid) {
-                <ion-text class="text-small" color="danger">
-                  @switch (true) {
-                    @case (deportesPosicionesUsuariosForm.get('id_deporte')?.hasError('required')) {
-                      *Debes seleccionar un deporte.
+                @if (!isCancha()) {
+                  <ion-card-header class="header-with-button">
+                    <h5 class="ion-no-margin">Preferencias</h5>
+                    <ion-button [color]="this.editModeFormUserPreferences() ? 'danger': 'secondary'" size="small" (click)="toggleEditMode('userPreferences')">
+                      <ion-icon slot="start" [name]="this.editModeFormUserPreferences() ? 'close-outline' : 'create-outline'"/>
+                      {{this.editModeFormUserPreferences() ? 'Atrás' : 'Editar'}}
+                    </ion-button>
+                  </ion-card-header>
+
+                  <ion-card-content>
+                    @if (editModeFormUserPreferences()) {
+                      <form [formGroup]="userPreferencesForm" id="userPreferencesForm" class="animated" (ngSubmit)="onSubmitUserPreferencesForm()">
+                        <ion-row>
+                          <ion-col size="12">
+                            <ion-select formControlName="rango_edad_id" label="Rango Edad*" label-placement="floating" fill="outline" cancelText="cerrar">
+                              @for (rangoEdad of listRangosEdad(); track $index) {
+                                <ion-select-option [value]="rangoEdad.id_rango_edad">{{rangoEdad.descripcion}}</ion-select-option>
+                              }
+                              </ion-select>
+                              @if (userPreferencesForm.get('rango_edad_id')?.touched && userPreferencesForm.get('rango_edad_id')?.invalid) {
+                                <ion-text class="text-small input-error" color="danger">
+                                  @switch (true) {
+                                    @case (userPreferencesForm.get('rango_edad_id')?.hasError('required')) {
+                                      *Debes seleccionar un rango edad.
+                                    }
+                                  }
+                                </ion-text>
+                              }
+                          </ion-col>
+
+                          <ion-col size="12">
+                            <ion-select formControlName="nivel_habilidad_id" label="Nivel Habilidad*" label-placement="floating" fill="outline" cancelText="cerrar">
+                              @for (nivelHabilidad of listNivelesHabilidad(); track $index) {
+                                <ion-select-option [value]="nivelHabilidad.id_nivel_habilidad">{{nivelHabilidad.nombre_nivel_habilidad}}</ion-select-option>
+                              }
+                              </ion-select>
+                              @if (userPreferencesForm.get('nivel_habilidad_id')?.touched && userPreferencesForm.get('nivel_habilidad_id')?.invalid) {
+                                <ion-text class="text-small input-error" color="danger">
+                                  @switch (true) {
+                                    @case (userPreferencesForm.get('nivel_habilidad_id')?.hasError('required')) {
+                                      *Debes seleccionar un nivel habilidad.
+                                    }
+                                  }
+                                </ion-text>
+                              }
+                          </ion-col>
+
+                          <ion-col size="12">
+                            <ion-select formControlName="tipo_partido_id" label="Tipo Partido*" label-placement="floating" fill="outline" cancelText="cerrar">
+                              @for (tipoPartido of listTiposPartidos(); track $index) {
+                                <ion-select-option [value]="tipoPartido.id_tipo_partido">{{tipoPartido.nombre_tipo_partido}}</ion-select-option>
+                              }
+                              </ion-select>
+                              @if (userPreferencesForm.get('tipo_partido_id')?.touched && userPreferencesForm.get('tipo_partido_id')?.invalid) {
+                                <ion-text class="text-small input-error" color="danger">
+                                  @switch (true) {
+                                    @case (userPreferencesForm.get('tipo_partido_id')?.hasError('required')) {
+                                      *Debes seleccionar un tipo partido.
+                                    }
+                                  }
+                                </ion-text>
+                              }
+                          </ion-col>
+
+                          <ion-col size="12">
+                            <ion-select formControlName="distancia_cancha_max" label="Distancia Máxima*" label-placement="floating" fill="outline" cancelText="cerrar">
+                                <ion-select-option [value]="1">1 km</ion-select-option>
+                                <ion-select-option [value]="3">3 km</ion-select-option>
+                                <ion-select-option [value]="5">5 km</ion-select-option>
+                                <ion-select-option [value]="10">10 km</ion-select-option>
+                                <ion-select-option [value]="100">Cualquiera</ion-select-option>
+                              </ion-select>
+                              @if (userPreferencesForm.get('distancia_cancha_max')?.touched && userPreferencesForm.get('distancia_cancha_max')?.invalid) {
+                                <ion-text class="text-small input-error" color="danger">
+                                  @switch (true) {
+                                    @case (userPreferencesForm.get('distancia_cancha_max')?.hasError('required')) {
+                                      *Debes seleccionar un deporte.
+                                    }
+                                  }
+                                </ion-text>
+                              }
+                          </ion-col>
+                        </ion-row>
+                      </form>
+                    } @else {
+                      <div class="preferences-container animated">
+                        <div class="preference-item">
+                          <ion-icon name="walk-outline" class="preference-icon"/>
+                          <div class="preference-text">
+                            <p class="preference-title">Rango edad</p>
+                            <p class="preference-value">{{usuario.rangoEdad ? usuario.rangoEdad.descripcion : 'N/D'}}</p>
+                          </div>
+                        </div>
+                        <div class="preference-item">
+                          <ion-icon name="barbell-outline" class="preference-icon"/>
+                          <div class="preference-text">
+                            <p class="preference-title">Nivel habilidad</p>
+                            <p class="preference-value">{{usuario.nivelHabilidad ? usuario.nivelHabilidad.nombre_nivel_habilidad : 'N/D'}}</p>
+                          </div>
+                        </div>
+                        <div class="preference-item">
+                          <ion-icon name="dice-outline" class="preference-icon"/>
+                          <div class="preference-text">
+                            <p class="preference-title">Tipo partido</p>
+                            <p class="preference-value">{{usuario.tipoPartido ? usuario.tipoPartido.nombre_tipo_partido : 'N/D'}}</p>
+                          </div>
+                        </div>
+                        <div class="preference-item">
+                          <ion-icon name="location-outline" class="preference-icon"/>
+                          <div class="preference-text">
+                            <p class="preference-title">Distancia max</p>
+                            <p class="preference-value">{{usuario.distancia_cancha_max ? usuario.distancia_cancha_max + ' KM' : 'N/D' }}</p>
+                          </div>
+                        </div>
+                      </div>
                     }
+
+                  </ion-card-content>
+
+
+
+                  @if (this.editModeFormUserPreferences()) {
+                    <ion-footer class="animated">
+                      <ion-toolbar color="dark">
+                        <ion-button type="submit" form="userPreferencesForm" [disabled]="!userPreferencesForm.valid" class="ion-margin-horizontal ion-margin-bottom" expand="block" color="tertiary" >
+                          Guardar Preferencias
+                        </ion-button>
+                      </ion-toolbar>
+                    </ion-footer>
+                  } @else {
+                    <ion-accordion-group expand="inset" class="ion-no-margin ion-margin-horizontal ion-margin-bottom animated">
+                      <ion-accordion value="first">
+                        <ion-item slot="header" color="tertiary">
+                          <ion-icon name="football-outline" class="ion-margin-end"/>
+                          <ion-label>
+                            <h3>Deportes</h3>
+                          </ion-label>
+                        </ion-item>
+                        <div class="ion-padding" slot="content">
+                          <ion-button class="ion-no-margin" color="tertiary" expand="block" (click)="setOpen(true)">Añadir Deporte</ion-button>
+                          <ion-list>
+                            @for (deportePosicionUsuario of usuario.deportesPosicionesUsuarios; track $index) {
+                              <ion-item button lines="full">
+                                <!-- Agrega un ion-icon para mostrar el ícono del deporte -->
+                                <ion-icon slot="start" [name]="deportePosicionUsuario.deportePosicion.deporte.icono"/>
+                                <ion-label>
+                                  <h4>{{ deportePosicionUsuario.deportePosicion.deporte.nombre_deporte }}</h4>
+                                  <p class="ion-no-margin">{{ deportePosicionUsuario.deportePosicion.nombre_posicion }}</p>
+                                </ion-label>
+                                <ion-buttons slot="end">
+                                  <ion-button fill="clear" color="secondary" aria-label="Editar deporte">
+                                    <ion-icon name="pencil-outline"/>
+                                  </ion-button>
+                                  <ion-button fill="clear" color="danger" aria-label="Eliminar deporte" >
+                                    <ion-icon name="trash-outline"/>
+                                  </ion-button>
+                                </ion-buttons>
+                              </ion-item>
+                            }
+                            @empty {
+                              <ion-item button lines="full">
+                                <ion-label>
+                                  <h4>Aún no has añadido ningún deporte.</h4>
+                                </ion-label>
+                              </ion-item>
+                            }
+                          </ion-list>
+                          <ion-note color="medium" class="ion-margin-top">
+                            Toca el icono para editar o ver detalles del deporte y la posición.
+                          </ion-note>
+                        </div>
+                      </ion-accordion>
+                    </ion-accordion-group>
                   }
-                </ion-text>
-              }
+                }
+
+
+
+              </ion-card>
+            </ion-col>
+          }
+          @case ('datos') {
+            <ion-col size="12">
+              <ion-card class="modern-card" color="dark">
+                <ion-card-header class="header-with-button">
+                  <h5 class="ion-no-margin">Datos Personales</h5>
+                  <ion-button [color]="this.editModeFormUserData() ? 'danger': 'secondary'" size="small" (click)="toggleEditMode('userData')">
+                    <ion-icon slot="start" [name]="this.editModeFormUserData() ? 'close-outline' : 'create-outline'"/>
+                    {{this.editModeFormUserData() ? 'Atrás' : 'Editar'}}
+                  </ion-button>
+                </ion-card-header>
+
+                <ion-card-content>
+                  @if (this.editModeFormUserData()) {
+                    <form [formGroup]="userDataForm" id="userDataForm" class="animated" (ngSubmit)="onSubmitUserDataForm()">
+                      <ion-row>
+                        <ion-col size="12">
+                          <ion-input type="email" formControlName="correo" fill="outline" preventSpaces label="Correo*" labelPlacement="floating" [clearInput]="true"/>
+                        </ion-col>
+                        <ion-col size="12">
+                          <ion-input type="text" formControlName="rut" fill="outline" formatRut preventSpaces formatRut label="RUT*" labelPlacement="floating" [clearInput]="true"/>
+                        </ion-col>
+                        <ion-col size="12">
+                          <ion-input type="text" formControlName="nombre" fill="outline" preventSpaces label="Nombre*" labelPlacement="floating" [clearInput]="true"/>
+                          @if (userDataForm.get('nombre')?.touched && userDataForm.get('nombre')?.invalid) {
+                            <ion-text class="text-small input-error" color="danger">
+                              @switch (true) {
+                                @case (userDataForm.get('nombre')?.hasError('required')) {
+                                  *El nombre es requerido.
+                                }
+                                @case (userDataForm.get('nombre')?.hasError('minlength')) {
+                                  *El nombre debe tener al menos 2 caracteres.
+                                }
+                                @case (userDataForm.get('nombre')?.hasError('maxlength')) {
+                                  *El nombre no puede ser mayor a 50 caracteres.
+                                }
+                              }
+                            </ion-text>
+                          }
+                        </ion-col>
+                        <ion-col size="12">
+                          <ion-input type="text" formControlName="apellido" fill="outline" preventSpaces label="Apellido*" labelPlacement="floating" [clearInput]="true"/>
+                          @if (userDataForm.get('apellido')?.touched && userDataForm.get('apellido')?.invalid) {
+                            <ion-text class="text-small input-error" color="danger">
+                              @switch (true) {
+                                @case (userDataForm.get('apellido')?.hasError('required')) {
+                                  *El apellido es requerido.
+                                }
+                                @case (userDataForm.get('apellido')?.hasError('minlength')) {
+                                  *El apellido debe tener al menos 2 caracteres.
+                                }
+                                @case (userDataForm.get('apellido')?.hasError('maxlength')) {
+                                  *El apellido no puede ser mayor a 50 caracteres.
+                                }
+                              }
+                            </ion-text>
+                          }
+                        </ion-col>
+                        <ion-col size="12" style="margin-bottom: 6px;">
+                          <ion-label [color]="userDataForm.get('fecha_nacimiento')?.invalid ? 'danger' : ''">Fecha nacimiento*</ion-label>
+                          <ion-datetime-button datetime="datetime" style="margin-top: 6px;"/>
+                          <ion-modal [keepContentsMounted]="true">
+                            <ng-template>
+                              <ion-datetime
+                                id="datetime"
+                                cancelText="cerrar"
+                                doneText="confirmar"
+                                presentation="date"
+                                (ionChange)="onDateChange($event)"
+                                [value]="userDataForm.get('fecha_nacimiento')?.value"
+                                [showDefaultButtons]="true"
+                                [max]="maxDate()"
+                              />
+                            </ng-template>
+                          </ion-modal>
+                          @if (userDataForm.get('fecha_nacimiento')?.invalid) {
+                            <ion-text class="text-small input-error" color="danger">
+                              @switch (true) {
+                                @case (userDataForm.get('fecha_nacimiento')?.hasError('required')) {
+                                  *Selecciona una fecha de nacimiento.
+                                }
+                              }
+                            </ion-text>
+                          }
+                        </ion-col>
+                        <ion-col size="12">
+                          <ion-input type="tel" formControlName="telefono" fill="outline" onlyNumbers preventSpaces label="Número de Teléfono*" labelPlacement="floating" placeholder="912345678" maxlength="9" [clearInput]="true"/>
+                          @if (userDataForm.get('telefono')?.touched && userDataForm.get('telefono')?.invalid) {
+                            <ion-text class="text-small input-error" color="danger">
+                              @switch (true) {
+                                @case (userDataForm.get('telefono')?.hasError('required')) {
+                                  *El teléfono es requerido.
+                                }
+                                @case (userDataForm.get('telefono')?.hasError('minlength')) {
+                                  *El teléfono debe tener al menos 9 caracteres.
+                                }
+                              }
+                            </ion-text>
+                          }
+                        </ion-col>
+                      </ion-row>
+                    </form>
+                  } @else {
+                    <ion-list class="ion-no-padding animated">
+                      <ion-item lines="full">
+                        <ion-icon name="person-outline" slot="start"/>
+                        <ion-label>
+                          <h3>{{usuario.nombre}} {{usuario.apellido}}</h3>
+                          <p>{{usuario.rut}}</p>
+                        </ion-label>
+                      </ion-item>
+                      <ion-item lines="full">
+                        <ion-icon name="mail-outline" slot="start"/>
+                        <ion-label>
+                          <h3>Correo electrónico</h3>
+                          <p>{{usuario.correo}}</p>
+                        </ion-label>
+                      </ion-item>
+                      <ion-item lines="full">
+                        <ion-icon name="call-outline" slot="start"/>
+                        <ion-label>
+                          <h3>Teléfono</h3>
+                          <p>{{usuario.telefono | formatPhone}}</p>
+                        </ion-label>
+                      </ion-item>
+                      <ion-item lines="none">
+                        <ion-icon name="calendar-number-outline" slot="start"/>
+                        <ion-label>
+                          <h3>Fecha nacimiento</h3>
+                          <p>{{usuario.fecha_nacimiento | date: 'dd-MM-yyyy'}}</p>
+                        </ion-label>
+                      </ion-item>
+                    </ion-list>
+                  }
+                </ion-card-content>
+
+                @if (this.editModeFormUserData()) {
+                  <ion-footer class="animated">
+                    <ion-toolbar color="dark">
+                      <ion-button type="submit" form="userDataForm" [disabled]="!userDataForm.valid" class="ion-margin-horizontal ion-margin-bottom" expand="block" color="tertiary" >
+                        Guardar Cambios
+                      </ion-button>
+                    </ion-toolbar>
+                  </ion-footer>
+                }
+              </ion-card>
             </ion-col>
 
-            <ion-col size="12" class="ion-margin-vertical">
-              <ion-select formControlName="id_posicion" class="ion-input-form" label="Posición*" label-placement="floating" cancelText="cancelar" okText="seleccionar">
-                @for (posicion of listPosiciones(); track $index) {
-                  <ion-select-option [value]="posicion.id_posicion">{{posicion.nombre}}</ion-select-option>
-                }
-              </ion-select>
-              @if (deportesPosicionesUsuariosForm.get('id_posicion')?.touched && deportesPosicionesUsuariosForm.get('id_posicion')?.invalid) {
-                <ion-text class="text-small" color="danger">
-                  @switch (true) {
-                    @case (deportesPosicionesUsuariosForm.get('id_posicion')?.hasError('required')) {
-                      *Debes seleccionar una posicion.
-                    }
-                  }
-                </ion-text>
+            <ion-col size="12">
+              <ion-card class="modern-card" color="dark">
+                <ion-card-header class="header-with-button">
+                  <h5 class="ion-no-margin">Cambiar Contraseña</h5>
+                </ion-card-header>
+
+                <ion-card-content>
+                  <form [formGroup]="changePasswordForm" id="changePasswordForm" class="animated" (ngSubmit)="onSubmitChangePasswordForm()">
+                    <ion-row>
+                      <ion-col size="12">
+                        <ion-input type="password" formControlName="claveActual" fill="outline" preventSpaces label="Contraseña Actual*" labelPlacement="floating">
+                          <ion-input-password-toggle slot="end"/>
+                        </ion-input>
+                        @if (changePasswordForm.get('claveActual')?.touched && changePasswordForm.get('claveActual')?.invalid) {
+                          <ion-text class="text-small input-error" color="danger">
+                            @switch (true) {
+                              @case (changePasswordForm.get('claveActual')?.hasError('required')) {
+                                *Debes ingresar tu contraseña actual.
+                              }
+                              @case (changePasswordForm.get('claveActual')?.hasError('minlength')) {
+                                *La contraseña debe tener al menos 8 caracteres.
+                              }
+                              @case (changePasswordForm.get('claveActual')?.hasError('maxlength')) {
+                                *La contraseña no puede tener más de 25 caracteres.
+                              }
+                              @case (changePasswordForm.get('claveActual')?.hasError('pattern')) {
+                                *La contraseña debe tener al menos una letra minúscula, una letra mayúscula, un número y un carácter especial (como $, !, %, *, ?, &).
+                              }
+                            }
+                          </ion-text>
+                        }
+                      </ion-col>
+                      <ion-col size="12">
+                        <ion-input type="password" formControlName="nuevaClave" fill="outline" preventSpaces label="Nueva Contraseña*" labelPlacement="floating">
+                          <ion-input-password-toggle slot="end"/>
+                        </ion-input>
+                        @if (changePasswordForm.get('nuevaClave')?.touched && changePasswordForm.get('nuevaClave')?.invalid) {
+                          <ion-text class="text-small input-error" color="danger">
+                            @switch (true) {
+                              @case (changePasswordForm.get('nuevaClave')?.hasError('required')) {
+                                *Debes ingresar una contraseña.
+                              }
+                              @case (changePasswordForm.get('nuevaClave')?.hasError('minlength')) {
+                                *La contraseña debe tener al menos 8 caracteres.
+                              }
+                              @case (changePasswordForm.get('nuevaClave')?.hasError('maxlength')) {
+                                *La contraseña no puede tener más de 25 caracteres.
+                              }
+                              @case (changePasswordForm.get('nuevaClave')?.hasError('pattern')) {
+                                *La contraseña debe tener al menos una letra minúscula, una letra mayúscula, un número y un carácter especial (como $, !, %, *, ?, &).
+                              }
+                            }
+                          </ion-text>
+                        }
+                      </ion-col>
+                      <ion-col size="12">
+                        <ion-input type="password" formControlName="repeatNuevaClave" fill="outline" preventSpaces label="Repite Nueva Contraseña*" labelPlacement="floating">
+                          <ion-input-password-toggle slot="end"/>
+                        </ion-input>
+                        @if (changePasswordForm.get('repeatNuevaClave')?.touched && changePasswordForm.get('repeatNuevaClave')?.invalid) {
+                          <ion-text class="text-small input-error" color="danger">
+                            @switch (true) {
+                              @case (changePasswordForm.get('repeatNuevaClave')?.hasError('required')) {
+                                *Debes ingresar una contraseña.
+                              }
+                              @case (changePasswordForm.get('repeatNuevaClave')?.hasError('minlength')) {
+                                *La contraseña debe tener al menos 8 caracteres.
+                              }
+                              @case (changePasswordForm.get('repeatNuevaClave')?.hasError('maxlength')) {
+                                *La contraseña no puede tener más de 25 caracteres.
+                              }
+                              @case (changePasswordForm.get('repeatNuevaClave')?.hasError('pattern')) {
+                                *La contraseña debe tener al menos una letra minúscula, una letra mayúscula, un número y un carácter especial (como $, !, %, *, ?, &).
+                              }
+                              @case (changePasswordForm.get('repeatNuevaClave')?.hasError('mismatch')) {
+                                *Las contraseñas no coinciden.
+                              }
+                            }
+                          </ion-text>
+                        }
+                      </ion-col>
+                    </ion-row>
+                  </form>
+                </ion-card-content>
+
+                <!-- Botón Guardar Cambios -->
+                <ion-footer>
+                  <ion-toolbar color="dark">
+                    <ion-button type="submit" form="changePasswordForm" [disabled]="!changePasswordForm.valid" class="ion-margin-horizontal ion-margin-bottom" expand="block" color="tertiary" >
+                      Cambiar contraseña
+                    </ion-button>
+                  </ion-toolbar>
+                </ion-footer>
+              </ion-card>
+            </ion-col>
+          }
+        }
+      </ion-row>
+
+      <!-- Títulos del usuario -->
+      <!-- <ion-row class="ion-justify-content-center ion-text-center modern-card ion-margin ion-padding">
+        <ion-col size="12">
+          @for (title of user.titles; track $index) {
+            <ion-chip color="secondary">{{ title }}</ion-chip>
+          }
+        </ion-col>
+        <ion-button size="small" color="secondary">
+          <ion-icon slot="start" name="pencil-outline"></ion-icon>
+          Editar títulos
+        </ion-button>
+      </ion-row> -->
+
+      <!-- <ion-accordion-group expand="inset">
+        <ion-accordion value="first">
+          <ion-item slot="header" color="tertiary">
+            <ion-icon name="football-outline" class="ion-margin-end"/>
+            <ion-label>
+              <h3>Deportes</h3>
+            </ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content">
+            <ion-button class="ion-no-margin" color="tertiary" expand="block" (click)="setOpen(true)">Añadir Deporte</ion-button>
+
+            <ion-list>
+              @for (deportePosicionUsuario of usuario.deportesPosicionesUsuarios; track $index) {
+                <ion-item button lines="full">
+                  <ion-icon slot="start"[name]="deportePosicionUsuario.deportePosicion.deporte.icono"/>
+                  <ion-label>
+                    <h4>{{ deportePosicionUsuario.deportePosicion.deporte.nombre_deporte }}</h4>
+                    <p class="ion-no-margin">{{ deportePosicionUsuario.deportePosicion.nombre_posicion }}</p>
+                  </ion-label>
+                  <ion-buttons slot="end">
+                    <ion-button fill="clear" color="secondary" aria-label="Editar deporte">
+                      <ion-icon name="pencil-outline"/>
+                    </ion-button>
+                    <ion-button fill="clear" color="danger" aria-label="Eliminar deporte" >
+                      <ion-icon name="trash-outline"/>
+                    </ion-button>
+                  </ion-buttons>
+                </ion-item>
               }
+              @empty {
+                <ion-item button lines="full">
+                  <ion-label>
+                    <h4>Aún no has añadido ningún deporte.</h4>
+                  </ion-label>
+                </ion-item>
+              }
+            </ion-list>
+            <ion-note color="medium" class="ion-margin-top">
+              Toca el icono para editar o ver detalles del deporte y la posición.
+            </ion-note>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group> -->
+
+      <!-- <ion-accordion-group expand="inset">
+        <ion-accordion value="first">
+          <ion-item slot="header" color="primary">
+            <ion-icon name="people-circle-outline" class="ion-margin-end"/>
+            <ion-label>
+              <h3>Equipos</h3>
+            </ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content">
+            <ion-list>
+              @for (equipo of usuario.equipos; track $index) {
+                <ion-item button lines="full">
+                  <ion-avatar slot="start">
+                    <img [src]="'https://ionicframework.com/docs/img/demos/avatar.svg'" alt="{{ equipo.nombre_equipo }} Logo" />
+                  </ion-avatar>
+                  <ion-label>
+                    <h4>{{ equipo.nombre_equipo }}</h4>
+                  </ion-label>
+                  <ion-buttons slot="end">
+                    <ion-button fill="clear" color="secondary" aria-label="Editar equipo">
+                      <ion-icon name="pencil-outline"/>
+                    </ion-button>
+                    <ion-button fill="clear" color="danger" aria-label="Eliminar deporte" >
+                      <ion-icon name="log-out-outline"/>
+                    </ion-button>
+                  </ion-buttons>
+                </ion-item>
+              }
+            </ion-list>
+            <ion-note color="medium" class="ion-margin-top">
+              Toca el icono para editar o ver detalles del equipo.
+            </ion-note>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group> -->
+    </ion-grid>
+  </ion-content>
+
+
+  <!-- MODAL AÑADIR DEPORTE -->
+  <ion-modal [isOpen]="isModalOpen()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="dark">
+          <ion-title>Añadir Deporte</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setOpen(false)">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content [fullscreen]="true">
+        <ion-grid>
+          <ion-row class="ion-justify-content-center">
+            <ion-col size="12" size-md="8" size-lg="6">
+              <ion-card class="modern-card">
+                <ion-card-content>
+                  <ion-row class="ion-align-items-center ion-justify-content-center">
+                    <ion-col size="auto">
+                      <ion-icon name="football-outline" class="icon-large"/>
+                    </ion-col>
+                    <ion-col>
+                      <ion-text class="modern-text">
+                        Ingresa los datos solicitados para añadir un deporte a tu perfil.
+                      </ion-text>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-content>
+              </ion-card>
             </ion-col>
           </ion-row>
-        </form>
-      </ion-grid>
-    </ion-content>
 
-    <ion-footer class="ion-no-border ion-padding">
-      <ion-toolbar>
-        <ion-button class="ion-no-margin" color="tertiary" expand="block" type="submit" form="deportesPosicionesUsuariosForm" [disabled]="!deportesPosicionesUsuariosForm.valid">
-          Confirmar
-        </ion-button>
-      </ion-toolbar>
-    </ion-footer>
-  </ng-template>
-</ion-modal>
+          <form [formGroup]="deportesPosicionesUsuariosForm" id="deportesPosicionesUsuariosForm" class="modern-card-form ion-padding ion-margin"  (ngSubmit)="onSubmit()">
+            <ion-row>
+              <ion-col size="12">
+                <!-- DEPORTE -->
+                <ion-select formControlName="deporte_id" class="ion-input-form" label="Deporte*" label-placement="floating" cancelText="cancelar" okText="seleccionar" (ionChange)="onDeporteChange($event)">
+                  @for (deporte of listDeportes(); track $index) {
+                    <ion-select-option [value]="deporte.id_deporte">{{deporte.nombre_deporte}}</ion-select-option>
+                  }
+                </ion-select>
+                @if (deportesPosicionesUsuariosForm.get('deporte_id')?.touched && deportesPosicionesUsuariosForm.get('deporte_id')?.invalid) {
+                  <ion-text class="text-small" color="danger">
+                    @switch (true) {
+                      @case (deportesPosicionesUsuariosForm.get('deporte_id')?.hasError('required')) {
+                        *Debes seleccionar un deporte.
+                      }
+                    }
+                  </ion-text>
+                }
+              </ion-col>
+
+              <ion-col size="12" class="ion-margin-bottom">
+                <ion-select formControlName="deporte_posicion_id" class="ion-input-form" label="Posición*" label-placement="floating" cancelText="cancelar" okText="seleccionar">
+                  @for (posicion of listPosiciones(); track $index) {
+                    <ion-select-option [value]="posicion.id_deporte_posicion">{{posicion.nombre_deporte_posicion}}</ion-select-option>
+                  }
+                </ion-select>
+                @if (deportesPosicionesUsuariosForm.get('deporte_posicion_id')?.touched && deportesPosicionesUsuariosForm.get('deporte_posicion_id')?.invalid) {
+                  <ion-text class="text-small" color="danger">
+                    @switch (true) {
+                      @case (deportesPosicionesUsuariosForm.get('deporte_posicion_id')?.hasError('required')) {
+                        *Debes seleccionar una posicion.
+                      }
+                    }
+                  </ion-text>
+                }
+              </ion-col>
+            </ion-row>
+          </form>
+        </ion-grid>
+      </ion-content>
+
+      <ion-footer>
+        <ion-toolbar>
+          <ion-button class="ion-padding-horizontal" color="tertiary" expand="block" type="submit" form="deportesPosicionesUsuariosForm" [disabled]="!deportesPosicionesUsuariosForm.valid">
+            Confirmar
+          </ion-button>
+        </ion-toolbar>
+      </ion-footer>
+    </ng-template>
+  </ion-modal>
+}
+
+

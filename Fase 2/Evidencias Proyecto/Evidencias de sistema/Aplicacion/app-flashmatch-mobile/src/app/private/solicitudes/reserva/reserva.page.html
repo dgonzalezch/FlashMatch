@@ -1,0 +1,102 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-title>
+      <div class="ion-text-center">
+        <h5 class="ion-no-margin">Solicitudes de Reserva</h5>
+        <p class="ion-no-margin" style="font-size: small; font-weight: 300;">Gestión de solicitudes</p>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" color="light">
+  <ion-grid>
+
+    <!-- Barra de búsqueda -->
+    <ion-row>
+      <ion-col size="12">
+        <ion-searchbar class="searchbar-modern animated" placeholder="Buscar solicitud..."/>
+      </ion-col>
+
+      <ion-col size="12">
+        <ion-row class="ion-justify-content-center ion-wrap animated">
+          <ion-chip (click)="onFilterChange('todos')"
+            [outline]="true"
+            [color]="currentFilter() === 'todos' ? 'primary' : 'medium'"
+          >
+            <ion-label>Todas</ion-label>
+          </ion-chip>
+          <ion-chip (click)="onFilterChange('pendiente_confirmacion')"
+            [outline]="true"
+            [color]="currentFilter() === 'pendiente_confirmacion' ? 'primary' : 'medium'"
+          >
+            <ion-label>P. Confirmacion</ion-label>
+          </ion-chip>
+          <ion-chip (click)="onFilterChange('aceptada')"
+            [outline]="true"
+            [color]="currentFilter() === 'aceptada' ? 'primary' : 'medium'"
+          >
+            <ion-label>Aceptada</ion-label>
+          </ion-chip>
+          <ion-chip (click)="onFilterChange('pendiente_pago_reserva')"
+            [outline]="true"
+            [color]="currentFilter() === 'pendiente_pago_reserva' ? 'primary' : 'medium'"
+          >
+            <ion-label>P. pago</ion-label>
+          </ion-chip>
+          <ion-chip (click)="onFilterChange('rechazada')"
+            [outline]="true"
+            [color]="currentFilter() === 'rechazada' ? 'primary' : 'medium'"
+          >
+            <ion-label>Rechazada</ion-label>
+          </ion-chip>
+
+        </ion-row>
+      </ion-col>
+    </ion-row>
+
+    <!-- Lista de solicitudes de reserva -->
+    <ion-row>
+      @for (reserva of filteredReservas(); track $index) {
+        <ion-col size="12">
+          <ion-card color="dark" class="ion-margin-bottom modern-card">
+            <ion-item color="dark" lines="none">
+              <ion-avatar slot="start" class="user-avatar-container" style="width: 50px; height: 50px;">
+                <img [src]="reserva.partido.creador.imagen_perfil ? 'http://localhost:3000' + reserva.partido.creador.imagen_perfil : 'assets/images/default-avatar.svg'" />
+              </ion-avatar>
+              <ion-label>
+                <ion-chip color="tertiary" class="ion-no-margin calendar-chip" [outline]="true">
+                  <ion-icon name="calendar-outline"/>
+                  <ion-label>{{ reserva.fecha_hora_reserva | date: 'dd/MM/yyyy, HH:mm' }}</ion-label>
+                </ion-chip>
+                <div style="display: flex; align-items: center; margin: 5px 0px">
+                  <ion-icon color="primary" name="albums-outline" style="margin-right: 5px; width: 17px; height: 17px;"/>
+                  <h2>{{ reserva.cancha.nombre_cancha }}</h2>
+                </div>
+                <p style="font-size: 0.85em; color: #d3d3d3;">Solicitante: {{ reserva.partido.creador.nombre }} {{ reserva.partido.creador.apellido }}</p>
+              </ion-label>
+            </ion-item>
+
+            <ion-item color="dark" lines="none">
+              @if (reserva.estado === 'pendiente_confirmacion') {
+                <ion-button expand="block" color="primary" class="ion-margin-end" (click)="sendRespuestaReserva(reserva.id_reserva_cancha, 'aceptada')">Aceptar</ion-button>
+                <ion-button expand="block" color="danger" (click)="sendRespuestaReserva(reserva.id_reserva_cancha, 'rechazada')">Rechazar</ion-button>
+              } @else {
+                <ion-badge [color]="reserva.estado === 'aceptada' ? 'success' : reserva.estado === 'rechazada' ? 'danger' : 'warning'" slot="end">
+                  {{ formatEstadoReserva(reserva.estado) }}
+                </ion-badge>              }
+            </ion-item>
+          </ion-card>
+        </ion-col>
+      }
+      @empty {
+        <ion-col size="12" class="animated">
+          <ion-item lines="none" color="light">
+            <ion-label color="medium" class="ion-text-center">Sin registros.</ion-label>
+          </ion-item>
+        </ion-col>
+      }
+    </ion-row>
+
+  </ion-grid>
+</ion-content>

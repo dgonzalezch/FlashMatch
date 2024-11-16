@@ -1,29 +1,63 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Historial</ion-title>
+  <ion-toolbar color="dark">
+    <ion-title>
+      <div class="ion-text-center">
+        <h5 class="ion-no-margin">Historial de Partidos</h5>
+        <p class="ion-no-margin" style="font-size: small; font-weight: 300;">Tus partidos finalizados</p>
+      </div>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" color="light">
   <ion-grid>
+
+    <!-- Barra de búsqueda -->
     <ion-row>
       <ion-col size="12">
-        <ion-list>
-          <ng-container *ngFor="let match of user.matches">
-            <ion-card class="match-card" color="light">
-              <ion-card-header>
-                <ion-card-title>{{ match.opponent }}</ion-card-title>
-                <ion-card-subtitle>
-                  {{ match.date | date: 'longDate' }} - {{ match.position }}
-                </ion-card-subtitle>
-              </ion-card-header>
-              <ion-card-content>
-
-              </ion-card-content>
-            </ion-card>
-          </ng-container>
-        </ion-list>
+        <ion-searchbar class="searchbar-modern animated" placeholder="Buscar partido..."></ion-searchbar>
       </ion-col>
     </ion-row>
+
+    <!-- Lista de partidos finalizados -->
+    <ion-row>
+      @for (partidoUsuario of partidosFinalizados(); track $index) {
+        <ion-col size="12">
+          <ion-card color="dark" class="ion-margin-bottom modern-card">
+            <ion-card-header>
+              <ion-chip color="tertiary" class="ion-no-margin calendar-chip ion-justify-content-center" [outline]="true">
+                <ion-icon name="calendar-outline"></ion-icon>
+                <ion-label>{{ partidoUsuario.partido.fecha_partido | date: 'dd/MM/yyyy, HH:mm' }}</ion-label>
+              </ion-chip>
+            </ion-card-header>
+
+            <ion-card-content>
+              <ion-row>
+                <ion-col>
+                  <div style="display: flex; align-items: center; margin: 5px 0;">
+                    <ion-icon color="primary" name="football-outline" style="margin-right: 5px; width: 17px; height: 17px;"></ion-icon>
+                    <h2>Partido Finalizado</h2>
+                  </div>
+                  <p style="font-size: 0.85em; color: #d3d3d3;">Descripción: {{ partidoUsuario.partido.descripcion || 'Sin descripción' }}</p>
+                  <p><strong>Monto Pagado:</strong> {{ partidoUsuario.monto_pagado | currency: 'CLP':'symbol'}}</p>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+
+            <ion-footer class="ion-padding-horizontal ion-padding-bottom ion-no-border">
+              <ion-button  expand="block" color="secondary" [routerLink]="['/private/matches/detail-match/', partidoUsuario.partido.id_partido]">Ver Detalles</ion-button>
+            </ion-footer>
+          </ion-card>
+        </ion-col>
+      }
+      @empty {
+        <ion-col size="12" class="animated">
+          <ion-item lines="none" color="light">
+            <ion-label color="medium" class="ion-text-center">No tienes partidos finalizados en tu historial.</ion-label>
+          </ion-item>
+        </ion-col>
+      }
+    </ion-row>
+
   </ion-grid>
 </ion-content>

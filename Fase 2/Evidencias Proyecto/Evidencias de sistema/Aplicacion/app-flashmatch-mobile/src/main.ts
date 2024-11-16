@@ -12,14 +12,19 @@ import { Drivers } from '@ionic/storage';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { LOCALE_ID } from '@angular/core'; // Importa LOCALE_ID
 import localeES from '@angular/common/locales/es-CL'; // Importa la configuración regional
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
-import { registerLocaleData } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 registerLocaleData(localeES);
-
+const config: SocketIoConfig = {
+  url: 'http://localhost:3000', // URL del servidor de WebSocket
+  options: { autoConnect: false }, // Desactiva la conexión automática
+};
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
+    importProvidersFrom(SocketIoModule.forRoot(config)),
     importProvidersFrom(IonicStorageModule.forRoot({
       name: 'storagedb',
       driverOrder: [Drivers.IndexedDB]
@@ -27,7 +32,8 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(),
     provideCharts(withDefaultRegisterables()),
-    { provide: LOCALE_ID, useValue: 'es-CL' } // Establece la configuración regional aquí
+    { provide: LOCALE_ID, useValue: 'es-CL' }, // Establece la configuración regional aquí
+    DatePipe
   ],
 });
 defineCustomElements(window);

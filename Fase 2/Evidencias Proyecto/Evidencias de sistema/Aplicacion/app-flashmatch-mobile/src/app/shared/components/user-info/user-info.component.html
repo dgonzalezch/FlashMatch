@@ -1,0 +1,105 @@
+@let usuario = usuarioData();
+
+@if (usuario) {
+  <ion-segment value="info" (ionChange)="onSegmentChange($event)">
+    <ion-segment-button value="info">
+      <ion-label>Info</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="historial">
+      <ion-label>Historial</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-grid>
+    @switch (selectedSegment()) {
+      @case('info') {
+        <ion-row class="ion-justify-content-center ion-text-center ion-margin-top animated">
+          <ion-col size="auto" class="ion-text-center">
+            <ion-avatar class="user-avatar-container">
+              <img [src]="usuario.imagen_perfil ? 'http://localhost:3000' + usuario.imagen_perfil : 'assets/images/default-avatar.svg'" alt="Imagen del usuario" class="user-avatar" />
+            </ion-avatar>
+          </ion-col>
+          <ion-col size="12">
+            <h4 class="ion-no-margin">{{ usuario.nombre }} {{ usuario.apellido }}</h4>
+          </ion-col>
+          <ion-col size="12" class="ion-no-padding">
+            <div class="user-rating">
+              <div class="rating-stars">
+                @for (star of [1, 2, 3, 4, 5]; track $index) {
+                  <ion-icon [name]="getStarIcon($index + 1)" class="rating-star-gold" size="small"/>
+                }
+              </div>
+              <h6 class="ion-no-margin">{{ usuario.promedio_evaluacion }} / 5 <span class="evaluation-count">({{ usuario.evaluaciones ? usuario.evaluaciones.length : '0'}})</span></h6>
+            </div>
+          </ion-col>
+
+          <ion-col size="12" class="ion-no-padding ion-margin-top">
+            <h5 class="ion-no-margin ion-margin-bottom">Preferencias</h5>
+            <div class="preferences-container animated">
+              <div class="preference-item">
+                <ion-icon name="walk-outline" class="preference-icon"/>
+                <div class="preference-text">
+                  <p class="preference-title">Rango edad</p>
+                  <p class="preference-value">{{usuario.rangoEdad ? usuario.rangoEdad.descripcion : 'N/D'}}</p>
+                </div>
+              </div>
+              <div class="preference-item">
+                <ion-icon name="barbell-outline" class="preference-icon"/>
+                <div class="preference-text">
+                  <p class="preference-title">Nivel habilidad</p>
+                  <p class="preference-value">{{usuario.nivelHabilidad ? usuario.nivelHabilidad.nombre_nivel_habilidad : 'N/D'}}</p>
+                </div>
+              </div>
+              <div class="preference-item">
+                <ion-icon name="dice-outline" class="preference-icon"/>
+                <div class="preference-text">
+                  <p class="preference-title">Tipo partido</p>
+                  <p class="preference-value">{{usuario.tipoPartido ? usuario.tipoPartido.nombre_tipo_partido : 'N/D'}}</p>
+                </div>
+              </div>
+              <div class="preference-item">
+                <ion-icon name="location-outline" class="preference-icon"/>
+                <div class="preference-text">
+                  <p class="preference-title">Distancia max</p>
+                  <p class="preference-value">{{usuario.distancia_cancha_max ? usuario.distancia_cancha_max + ' KM' : 'N/D' }}</p>
+                </div>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      }
+      @case('historial') {
+        <ion-row>
+          <ion-col size="12" class="animated">
+            <h6 class="ion-no-margin ion-margin-bottom">Partidos jugados</h6>
+            <ion-list lines="full" class="ion-no-padding" style="border: 1px solid var(--ion-color-primary)">
+              <!-- Item de partido -->
+
+              @for (match of partidosFinalizados(); track $index) {
+                <ion-item color="dark" style="border: 1px solid var(--ion-color-primary)">
+
+                  <ion-icon size="large" slot="start" name="football-outline" />
+                  <ion-label>
+                    <!-- <h2>{{ match.monto_pagado | currency: 'CLP':'symbol' }}</h2> -->
+                    <ion-badge color="tertiary">Fecha: {{ match.partido.fecha_partido | date: 'dd/MM/yyyy' }}</ion-badge>
+                    <!-- <ion-badge color="primary">Hora: {{ match.date | date: 'hh:mm' }}</ion-badge> -->
+                  </ion-label>
+                </ion-item>
+              } @empty {
+                <ion-item color="dark" style="border: 1px solid var(--ion-color-primary)">
+
+                  <ion-label>
+                    Sin partidos jugados...
+                  </ion-label>
+                </ion-item>
+
+              }
+            </ion-list>
+          </ion-col>
+        </ion-row>
+      }
+    }
+
+  </ion-grid>
+}
+

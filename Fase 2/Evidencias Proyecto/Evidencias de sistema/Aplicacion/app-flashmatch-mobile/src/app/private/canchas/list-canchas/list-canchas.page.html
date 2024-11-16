@@ -1,35 +1,78 @@
-<app-map/>
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-title>
+      <div class="ion-text-center">
+        <h5 class="ion-no-margin">Canchas</h5>
+        <p class="ion-no-margin" style="font-size: small; font-weight: 300;">Listado de mis canchas</p>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" color="light">
   <ion-grid>
+    <!-- Barra de búsqueda estilizada -->
     <ion-row>
       <ion-col size="12">
-        <ion-searchbar placeholder="Buscar cancha..."/>
+        <ion-searchbar class="searchbar-modern animated" placeholder="Buscar cancha..."/>
       </ion-col>
+    </ion-row>
 
+    <!-- Listado de canchas con tarjetas grandes -->
+    <ion-row>
       @for (cancha of listCanchas(); track $index) {
-        <ion-col size="12" size-md="6">
-          <ion-card button>
-            <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+        <ion-col size="12" size-md="6" size-lg="4">
+          <ion-card class="modern-card" color="dark">
+            <swiper-container [loop]="true" [pagination]="true" [autoplay]="true">
+              @for (imagen of cancha.imagenes; track $index) {
+                <swiper-slide>
+                  <ion-img [src]="'http://localhost:3000' + imagen.url_imagen" class="cancha-img-modern" />
+                </swiper-slide>
+                <!-- <div class="price-badge">
+                  <p>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }} / hora</p>
+                </div> -->
+              }@empty {
+                <ion-img [src]="'assets/images/default-card-media.png'" class="cancha-img-modern" />
+              }
+            </swiper-container>
+
+            <!-- Precio sobre el slider -->
+            <div class="price-badge">
+              <p>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }} / hora</p>
+            </div>
             <ion-card-header>
-              <ion-card-title>Card Title</ion-card-title>
-              <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+              <ion-card-title class="title-modern">{{ cancha.nombre_cancha }}</ion-card-title>
+              <ion-card-subtitle class="subtitle-modern">
+                <ion-icon color="primary" name="location-outline"/> {{ cancha.ubicacion }}
+              </ion-card-subtitle>
             </ion-card-header>
 
-            <ion-card-content>
-              Here's a small text description for the card content. Nothing more, nothing less.
+            <ion-card-content class="card-content-modern">
+              {{ cancha.descripcion }}
             </ion-card-content>
+
+            <!-- Botón interactivo para reservar cancha -->
+            <ion-button fill="clear" color="primary" expand="full" class="reserve-button-modern" [routerLink]="['/private/courts/detail-court/', cancha.id_cancha]">
+              Detalles
+            </ion-button>
           </ion-card>
         </ion-col>
       }
       @empty {
-        <ion-col>
-          <ion-item lines="none">
-            <ion-label>No hay canchas disponibles.</ion-label>
+        <ion-col size="12" class="animated">
+          <ion-item lines="none" color="light">
+            <ion-label color="medium" class="ion-text-center">Aún no has creado ninguna cancha.</ion-label>
           </ion-item>
         </ion-col>
       }
-
     </ion-row>
   </ion-grid>
+
+  <!-- Botón flotante para Crear Cancha -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="secondary" [routerLink]="['/private/courts/create-court/step-1']" >
+      <ion-icon name="add-circle-outline"/>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
+

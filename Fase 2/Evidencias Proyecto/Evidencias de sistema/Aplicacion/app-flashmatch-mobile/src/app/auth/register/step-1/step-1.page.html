@@ -1,17 +1,16 @@
 <app-header [typeHeader]="'public-route'"/>
-
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" color="light">
   <ion-grid>
     <ion-row class="ion-justify-content-center">
-      <ion-col size="auto">
-        <ion-card>
+      <ion-col size="12" size-md="8" size-lg="6">
+        <ion-card class="modern-card">
           <ion-card-content>
             <ion-row class="ion-align-items-center ion-justify-content-center">
               <ion-col size="auto">
-                <ion-icon name="person-outline" style="font-size: 25px; margin-right: 10px;"></ion-icon>
+                <ion-icon color="primary" name="person-outline" class="icon-large"/>
               </ion-col>
               <ion-col>
-                <ion-text>
+                <ion-text class="modern-text">
                   <b>Primero,</b> ingresa tus datos que se asociarán a la cuenta.
                 </ion-text>
               </ion-col>
@@ -21,7 +20,7 @@
       </ion-col>
     </ion-row>
 
-    <form [formGroup]="step1Form" id="step1Form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="step1Form" id="step1Form" class="modern-card-form ion-padding ion-margin" (ngSubmit)="onSubmit()">
       <ion-row>
         <!-- NOMBRE -->
         <ion-col size="12">
@@ -87,7 +86,7 @@
             <ion-datetime-button datetime="datetime" style="margin-top: 8px;"/>
             <ion-modal [keepContentsMounted]="true">
               <ng-template>
-                <ion-datetime id="datetime" cancelText="cancelar" doneText="confirmar" presentation="date" (ionChange)="onDateChange($event)" [showDefaultButtons]="true"  />
+                <ion-datetime id="datetime" [max]="maxDate()" cancelText="cerrar" doneText="confirmar" presentation="date" (ionChange)="onDateChange($event)" [showDefaultButtons]="true"  />
               </ng-template>
             </ion-modal>
             @if (step1Form.get('fecha_nacimiento')?.invalid) {
@@ -103,8 +102,8 @@
         </ion-col>
 
         <!-- TELEFONO -->
-        <ion-col size="12">
-          <ion-input type="tel" formControlName="telefono" class="ion-input-form" preventSpaces onlyNumbers label="Número de teléfono*" placeholder="9123456" labelPlacement="floating" maxlength="9" [clearInput]="true"/>
+        <ion-col size="12" class="ion-margin-bottom">
+          <ion-input type="tel" formControlName="telefono" class="ion-input-form" preventSpaces onlyNumbers label="Número de teléfono*" placeholder="912345678" labelPlacement="floating" maxlength="9" [clearInput]="true"/>
           @if (step1Form.get('telefono')?.touched && step1Form.get('telefono')?.invalid) {
             <ion-text class="text-small" color="danger">
               @switch (true) {
@@ -120,15 +119,14 @@
         </ion-col>
       </ion-row>
     </form>
-
-
   </ion-grid>
 </ion-content>
 
-<ion-footer class="ion-no-border ion-padding">
-  <ion-toolbar>
-    <ion-button class="ion-no-margin" color="tertiary" expand="block"
-      type="submit" form="step1Form" [disabled]="!step1Form.valid">Siguiente
+<ion-footer>
+  <ion-toolbar color="light">
+    <ion-button class="ion-padding-horizontal modern-button" color="tertiary" expand="block"
+      type="submit" form="step1Form" [disabled]="!step1Form.valid">
+      Siguiente
     </ion-button>
   </ion-toolbar>
 </ion-footer>
