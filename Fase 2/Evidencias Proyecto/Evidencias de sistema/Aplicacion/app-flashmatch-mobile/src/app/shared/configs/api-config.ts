@@ -15,7 +15,8 @@ export enum CONTEXT {
   API_PARTIDO = '/api/partido/',
   API_USUARIO_PARTIDO = '/api/usuario-partido/',
   API_MATCHMAKING = '/api/matchmaking/',
-  API_EVALUACION = '/api/evaluacion/'
+  API_EVALUACION = '/api/evaluacion/',
+  API_FAQ = '/api/preguntas-frecuentes/'
 }
 
 export enum ENDPOINT {

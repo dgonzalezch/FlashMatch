@@ -36,6 +36,15 @@ INSERT INTO material_cancha (nombre_material_cancha, descripcion) VALUES
 ('Pasto Sintético', 'Superficie sintética que imita el pasto natural, utilizada en campos más modernos y bajo mantenimiento.'),
 ('Pavimento', 'Superficie de cemento o asfalto, típica en canchas urbanas y multifuncionales.');
 
+
+INSERT INTO pregunta_frecuente (pregunta, respuesta)
+VALUES
+  ('¿Cómo creo una cuenta?', 'Para crear una cuenta, haga clic en "Registrarse" en la pantalla principal e ingrese su información personal.'),
+  ('¿Cómo reservo una cancha?', 'Vaya a la sección de "Reservar" en el menú principal, elija una fecha y hora disponibles, y confirme su reserva.'),
+  ('¿Qué hago si olvido mi contraseña?', 'Seleccione "Olvidé mi contraseña" en la pantalla de inicio de sesión y siga las instrucciones para recuperarla.'),
+  ('¿Cómo puedo ser un usuario cancha?', 'Contáctate con nuestro equipo al teléfono 800 800 9000 o por medio de nuestro email contacto@flashmatch.cl para solicitar ingresar como un usuario tipo cancha.');
+
+
 INSERT INTO parametro_rendimiento (nombre_parametro_rendimiento, deporte_id) VALUES
 ('Velocidad', (SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11')),
 ('Resistencia', (SELECT id_deporte FROM deporte WHERE nombre_deporte = 'Fútbol 11')),

@@ -22,6 +22,7 @@ import { NotificacionModule } from './common/notificacion/notificacion.module';
 import { MercadoPagoService } from './mercadopago/mercadopago.service';
 import { MercadoPagoController } from './mercadopago/mercadopago.controller';
 import { MercadoPagoModule } from './mercadopago/mercadopago.module';
+import { PreguntaFrecuenteModule } from './pregunta-frecuente/pregunta-frecuente.module';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { MercadoPagoModule } from './mercadopago/mercadopago.module';
     UsuarioPartidoModule,
     NotificacionModule,
     MercadoPagoModule,
+    PreguntaFrecuenteModule,
   ],
   providers: [],
 })

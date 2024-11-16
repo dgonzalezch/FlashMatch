@@ -1,0 +1,33 @@
+ion-content {
+  --background: var(--ion-color-light);
+}
+
+h1 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--ion-color-primary);
+}
+
+p {
+  color: var(--ion-color-medium);
+}
+
+ion-accordion-group {
+  --border-color: var(--ion-color-medium-shade);
+}
+
+ion-item[slot='header'] {
+  --background: var(--ion-color-light);
+  --color: var(--ion-color-dark);
+  --border-color: var(--ion-color-medium-shade);
+}
+
+ion-item[slot='header'] ion-label {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+div[slot='content'] p {
+  font-size: 0.9rem;
+  color: var(--ion-color-medium);
+}

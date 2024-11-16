@@ -1,4 +1,37 @@
-<app-header [typeHeader]="'public-route'"/>
-<ion-content [fullscreen]="true" color="light" class="ion-padding">
-  asdsa
+<app-header [typeHeader]="'public-route'"></app-header>
+<ion-content [fullscreen]="true" color="light" class="ion-padding animated">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <h1 class="ion-text-center ion-no-margin">Ayuda</h1>
+        <p class="ion-text-center ion-margin-bottom" style="font-size: small; font-weight: 300;">
+          Encuentra respuestas a las preguntas frecuentes
+        </p>
+      </ion-col>
+    </ion-row>
+
+    <!-- Lista de preguntas frecuentes -->
+    <ion-row>
+      <ion-col size="12">
+        <ion-accordion-group>
+          @for (faq of faqs(); track $index) {
+            <ion-accordion>
+              <ion-item slot="header" color="dark">
+                <ion-label>{{ faq.pregunta }}</ion-label>
+              </ion-item>
+              <div slot="content" class="ion-padding-horizontal ion-text-justify">
+                <p>{{ faq.respuesta }}</p>
+              </div>
+            </ion-accordion>
+          }
+        </ion-accordion-group>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
+
+<ion-footer class="animated">
+  <ion-toolbar color="dark" class="ion-padding-horizontal">
+    Llama al 800 800 9000 si necesitas soporte de un ejecutivo.
+  </ion-toolbar>
+</ion-footer>
