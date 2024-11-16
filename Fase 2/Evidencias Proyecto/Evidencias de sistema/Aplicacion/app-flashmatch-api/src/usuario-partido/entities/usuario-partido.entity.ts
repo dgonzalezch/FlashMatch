@@ -26,4 +26,7 @@ export class UsuarioPartido {
 
   @Column({ type: 'varchar', nullable: true })
   paymentId?: string;
+
+  @Column({ type: 'text', nullable: true })
+  mensaje_invitacion?: string;
 }

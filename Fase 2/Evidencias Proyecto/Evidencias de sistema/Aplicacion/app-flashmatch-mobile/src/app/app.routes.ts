@@ -32,6 +32,10 @@ export const routes: Routes = [
         ]
       },
       {
+        path: 'help',
+        loadComponent: () => import('./ayuda/ayuda.page')
+      },
+      {
         path: 'recovery-password',
         loadComponent: () => import('./auth/recovery-password/recovery-password.page')
       },
@@ -53,6 +57,10 @@ export const routes: Routes = [
       },
       {
         path: 'map',
+        loadComponent: () => import('./private/map/map.page')
+      },
+      {
+        path: 'map/:lat/:lng',
         loadComponent: () => import('./private/map/map.page')
       },
       {

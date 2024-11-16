@@ -10,7 +10,6 @@ export class MatchmakingService {
   constructor(private socket: Socket) {}
 
   conectarUsuario(userId: string, preferencias: any) {
-    debugger
     this.socket.ioSocket.io.opts.query = {
       userId,
       preferencias: JSON.stringify(preferencias),

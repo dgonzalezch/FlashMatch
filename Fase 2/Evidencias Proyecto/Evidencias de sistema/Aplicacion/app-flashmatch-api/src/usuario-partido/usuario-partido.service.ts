@@ -163,7 +163,7 @@ export class UsuarioPartidoService {
       where: { id_partido: partidoId },
       relations: ['reserva', 'reserva.cancha'],
     });
-    
+
     if (!partido) throw new NotFoundException(`Partido con ID ${partidoId} no encontrado.`);
 
     // Validación de la fecha del partido
@@ -296,17 +296,17 @@ export class UsuarioPartidoService {
       where: { usuario: { id_usuario: userId }, partido: { id_partido: partidoId } },
       relations: ['partido', 'partido.reserva.cancha', 'partido.creador', 'partido.reserva.cancha.administrador'],
     });
-  
+
     if (!usuarioPartido) {
       throw new NotFoundException('No se encontró el usuario en el partido para confirmar el pago.');
     }
-  
+
     // Actualiza el monto pagado, el ID de pago y el estado del usuario
     usuarioPartido.monto_pagado = amountPaid;
     usuarioPartido.paymentId = paymentId;
     usuarioPartido.estado = 'confirmado';
     await this.usuarioPartidoRepository.save(usuarioPartido);
-  
+
     // Verificar si el usuario es el creador de la reserva
     const isCreador = usuarioPartido.partido.creador.id_usuario == userId;
     if (isCreador) {
@@ -315,15 +315,15 @@ export class UsuarioPartidoService {
       reserva.estado = 'pendiente_confirmacion';
 
       await this.reservaCanchaRepository.save(reserva);
-  
+
       // Notificar al administrador de la cancha
       this.notificacionService.sendNotification(
         reserva.cancha.administrador.id_usuario,
         `La reserva para ${reserva.cancha.nombre_cancha} está pendiente de tu confirmación.`
       );
-  
+
       console.log('Reserva actualizada a pendiente_confirmacion y notificación enviada al administrador de la cancha.');
-  
+
       // Notificar al usuario que el pago fue recibido
       this.notificacionService.sendNotification(
         userId,
@@ -338,9 +338,9 @@ export class UsuarioPartidoService {
           estado: 'confirmado',
         },
       });
-  
+
       const jugadoresRequeridos = usuarioPartido.partido.jugadores_requeridos;
-  
+
       // Actualizar el estado de la reserva si todos los jugadores requeridos han pagado
       if (jugadoresConfirmados >= jugadoresRequeridos) {
         const reserva = usuarioPartido.partido.reserva;
@@ -348,7 +348,7 @@ export class UsuarioPartidoService {
         reserva.monto_pagado = jugadoresConfirmados * amountPaid; // Ajuste según cantidad de jugadores confirmados
         reserva.fecha_confirmacion = new Date();
         await this.reservaCanchaRepository.save(reserva);
-  
+
         // Notificar al administrador de la cancha que todos los jugadores han pagado
         this.notificacionService.sendNotification(
           reserva.cancha.administrador.id_usuario,
@@ -357,4 +357,158 @@ export class UsuarioPartidoService {
       }
     }
   }
+
+  async sendInvitation(usuarioId: string, partidoId: string, mensaje?: string): Promise<ResponseMessage<UsuarioPartido>> {
+    const usuario = await this.usuarioRepository.findOneBy({ id_usuario: usuarioId });
+    const partido = await this.partidoRepository.findOneBy({ id_partido: partidoId });
+  
+    if (!usuario) throw new NotFoundException(`Usuario con ID ${usuarioId} no encontrado.`);
+    if (!partido) throw new NotFoundException(`Partido con ID ${partidoId} no encontrado.`);
+  
+    // Verificar si ya existe una invitación pendiente
+    const existingInvitation = await this.usuarioPartidoRepository.findOne({
+      where: {
+        usuario: { id_usuario: usuarioId },
+        partido: { id_partido: partidoId },
+        estado: 'invitado',
+      },
+    });
+  
+    if (existingInvitation) {
+      throw new BadRequestException('Ya existe una invitación pendiente para este usuario y partido.');
+    }
+  
+    const usuarioPartido = this.usuarioPartidoRepository.create({
+      usuario,
+      partido,
+      estado: 'invitado',
+      mensaje_invitacion: mensaje || '',
+    });
+  
+    try {
+      await this.usuarioPartidoRepository.save(usuarioPartido);
+  
+      // Enviar notificación al usuario invitado
+      this.notificacionService.sendNotification(
+        usuarioId,
+        `Has sido invitado a un partido, revisa tus invitaciones.`
+      );
+  
+      return { message: 'Invitación enviada exitosamente.', data: usuarioPartido };
+    } catch (error) {
+      this.errorHandlingService.handleDBErrors(error);
+    }
+  }
+
+  async acceptInvitation(usuarioId: string, partidoId: string): Promise<ResponseMessage<any>> {
+    const usuarioPartido = await this.usuarioPartidoRepository.findOne({
+      where: {
+        usuario: { id_usuario: usuarioId },
+        partido: { id_partido: partidoId },
+        estado: 'invitado',
+      },
+      relations: ['partido', 'partido.reserva', 'partido.reserva.cancha', 'usuario'], // Relación necesaria para el precio
+    });
+  
+    if (!usuarioPartido) {
+      throw new NotFoundException('No se encontró una invitación pendiente para este partido.');
+    }
+  
+    const partido = usuarioPartido.partido;
+  
+    // Validar que el partido sigue en estado abierto
+    if (partido.estado !== 'confirmado' && partido.estado !== 'abierto') {
+      throw new BadRequestException('Este partido ya no está disponible para nuevos jugadores.');
+    }
+  
+    // Verificar si el partido ya está completo
+    const jugadoresConfirmados = await this.usuarioPartidoRepository.count({
+      where: { partido: { id_partido: partidoId }, estado: 'confirmado' },
+    });
+  
+    if (jugadoresConfirmados >= partido.jugadores_requeridos) {
+      throw new BadRequestException('El partido ya tiene el máximo de jugadores.');
+    }
+  
+    // Cálculo del monto a pagar por jugador
+    const amountToPay = Math.round(partido.reserva.cancha.precio_por_hora / partido.jugadores_requeridos);
+    const userEmail = usuarioPartido.usuario.correo; // Obtén el email del usuario
+  
+    // Crear la preferencia de pago en MercadoPago
+    const paymentUrl = await this.mercadoPagoService.createPaymentPreference(
+      partido.id_partido,
+      usuarioId,
+      amountToPay,
+      userEmail,
+    );
+  
+    usuarioPartido.estado = 'pendiente';
+    await this.usuarioPartidoRepository.save(usuarioPartido);
+  
+    return {
+      message: 'Invitación aceptada. Por favor, completa el pago para confirmar tu lugar.',
+      data: {
+        paymentUrl,
+        usuarioPartido,
+      },
+    };
+  }
+  
+  async rejectInvitation(usuarioId: string, partidoId: string): Promise<ResponseMessage<UsuarioPartido>> {
+    const usuarioPartido = await this.usuarioPartidoRepository.findOne({
+      where: {
+        usuario: { id_usuario: usuarioId },
+        partido: { id_partido: partidoId },
+        estado: 'invitado',
+      },
+      relations: ['partido'],
+    });
+  
+    if (!usuarioPartido) {
+      throw new NotFoundException('No se encontró una invitación pendiente para este partido.');
+    }
+  
+    // Cambiar el estado a 'rechazada'
+    usuarioPartido.estado = 'rechazada';
+  
+    try {
+      await this.usuarioPartidoRepository.save(usuarioPartido);
+  
+      return { message: 'Invitación rechazada exitosamente.', data: usuarioPartido };
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Ocurrió un error al rechazar la invitación. Por favor, intenta nuevamente.'
+      );
+    }
+  }  
+  
+  async getPendingInvitations(usuarioId: string): Promise<ResponseMessage<UsuarioPartido[]>> {
+    const invitaciones = await this.usuarioPartidoRepository.find({
+      where: { usuario: { id_usuario: usuarioId }, estado: 'invitado' },
+      relations: ['partido', 'partido.reserva', 'partido.reserva.cancha', 'partido.deporte'],
+    });
+  
+    return { message: 'Invitaciones pendientes obtenidas exitosamente.', data: invitaciones };
+  }
+
+  async cancelInvitation(usuarioId: string, partidoId: string): Promise<ResponseMessage<string>> {
+    const usuarioPartido = await this.usuarioPartidoRepository.findOne({
+      where: {
+        usuario: { id_usuario: usuarioId },
+        partido: { id_partido: partidoId },
+        estado: 'pendiente',
+      },
+    });
+  
+    if (!usuarioPartido) {
+      throw new NotFoundException('No se encontró la invitación para cancelar.');
+    }
+  
+    usuarioPartido.estado = 'cancelada';
+  
+    await this.usuarioPartidoRepository.save(usuarioPartido);
+  
+    return { message: 'Invitación cancelada exitosamente.', data: 'Success' };
+  }
+  
 }

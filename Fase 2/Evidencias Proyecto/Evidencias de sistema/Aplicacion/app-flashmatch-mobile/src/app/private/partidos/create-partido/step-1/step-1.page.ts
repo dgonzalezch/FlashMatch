@@ -123,7 +123,6 @@ export default class Step1Page {
       this.partidoService.createPartido(fullFormCreatePartido).subscribe({
         next: async (resp) => {
           await loading.dismiss();
-          debugger
           this.alertService.info('¡Partido creado!', 'El partido ha sido creado con éxito, ahora elige una cancha para tu partido.');
           this.router.navigate([`/private/matches/create-match/${resp.data.id_partido}/step-2`]);
         },

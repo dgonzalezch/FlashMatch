@@ -74,15 +74,26 @@
             <h6 class="ion-no-margin ion-margin-bottom">Partidos jugados</h6>
             <ion-list lines="full" class="ion-no-padding" style="border: 1px solid var(--ion-color-primary)">
               <!-- Item de partido -->
-              <ion-item *ngFor="let match of partidosFinalizados()" color="dark" style="border: 1px solid var(--ion-color-primary)">
 
-                <ion-icon size="large" slot="start" name="football-outline" />
-                <ion-label>
-                  <h2>{{ match.monto_pagado | currency: 'CLP':'symbol' }}</h2>
-                  <ion-badge color="tertiary">Fecha: {{ match.partido.fecha_partido | date: 'dd/MM/yyyy' }}</ion-badge>
-                  <!-- <ion-badge color="primary">Hora: {{ match.date | date: 'hh:mm' }}</ion-badge> -->
-                </ion-label>
-              </ion-item>
+              @for (match of partidosFinalizados(); track $index) {
+                <ion-item color="dark" style="border: 1px solid var(--ion-color-primary)">
+
+                  <ion-icon size="large" slot="start" name="football-outline" />
+                  <ion-label>
+                    <!-- <h2>{{ match.monto_pagado | currency: 'CLP':'symbol' }}</h2> -->
+                    <ion-badge color="tertiary">Fecha: {{ match.partido.fecha_partido | date: 'dd/MM/yyyy' }}</ion-badge>
+                    <!-- <ion-badge color="primary">Hora: {{ match.date | date: 'hh:mm' }}</ion-badge> -->
+                  </ion-label>
+                </ion-item>
+              } @empty {
+                <ion-item color="dark" style="border: 1px solid var(--ion-color-primary)">
+
+                  <ion-label>
+                    Sin partidos jugados...
+                  </ion-label>
+                </ion-item>
+
+              }
             </ion-list>
           </ion-col>
         </ion-row>

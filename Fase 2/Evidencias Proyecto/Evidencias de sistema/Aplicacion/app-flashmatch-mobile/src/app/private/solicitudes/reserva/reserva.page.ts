@@ -22,6 +22,7 @@ export default class ReservaPage implements OnInit {
   private loadingController = inject(LoadingController);
 
   listReservasCancha = signal<ReservaCancha[]>([]);
+  currentFilter = signal<string>('todos');
 
   ngOnInit() {
     this.getListReservas();
@@ -36,6 +37,17 @@ export default class ReservaPage implements OnInit {
         this.alertService.error(err.message);
       }
     })
+  }
+  onFilterChange(filter: string) {
+    this.currentFilter.set(filter);
+  }
+
+  filteredReservas() {
+    const filter = this.currentFilter();
+    if (filter === 'todos') {
+      return this.listReservasCancha();
+    }
+    return this.listReservasCancha().filter(reserva => reserva.estado === filter);
   }
 
   async sendRespuestaReserva(id_reserva: string, status: 'aceptada' | 'rechazada') {

@@ -19,7 +19,7 @@ register()
   templateUrl: './step-2.page.html',
   styleUrls: ['./step-2.page.scss'],
   standalone: true,
-  imports: [IonImg, IonInfiniteScrollContent, IonInfiniteScroll, IonNote, IonSpinner, IonAlert, IonSegmentButton, IonSegment, IonCardSubtitle, IonCardTitle, IonCardHeader, IonAccordionGroup, IonAccordion, IonDatetime, IonModal, IonDatetimeButton, IonList, IonItem, IonLabel, IonFooter, IonButton, IonIcon, IonCardContent, IonText, IonCol, IonRow, IonGrid, IonCard, IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, IonToggle, IonThumbnail, IonNote],
+  imports: [IonImg, IonInfiniteScrollContent, IonInfiniteScroll, IonNote, IonSpinner, IonAlert, IonSegmentButton, IonSegment, IonCardSubtitle, IonCardTitle, IonCardHeader, IonAccordionGroup, IonAccordion, IonDatetime, IonModal, IonDatetimeButton, IonList, IonItem, IonLabel, IonFooter, IonButton, IonIcon, IonCardContent, IonText, IonCol, IonRow, IonGrid, IonCard, IonBackButton, IonButtons, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterLink, IonToggle, IonThumbnail, IonNote, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
@@ -85,7 +85,7 @@ export default class Step2Page {
   async presentAlertConfirm(cancha: any) {
     const alert = await this.alertController.create({
       header: 'Confirmar reserva',
-      message: `¿Estás seguro de que deseas reservar la cancha, serás redirigido al pago?`,
+      message: `¿Estás seguro de que deseas reservar la cancha?. Serás redirigido al pago`,
       buttons: [
         {
           text: 'Cancelar',
@@ -132,7 +132,6 @@ export default class Step2Page {
         },
         error: async (err: responseError) => {
           await loading.dismiss();
-          debugger
           this.alertService.error(err.message);
         }
       });

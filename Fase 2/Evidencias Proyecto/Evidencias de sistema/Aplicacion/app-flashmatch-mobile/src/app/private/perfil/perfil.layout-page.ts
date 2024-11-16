@@ -29,11 +29,9 @@ export default class PerfilPage {
     switch(roleUser[0]) {
       case 'jugador':
         this.isJugador.set(true);
-        debugger
         break;
       case 'cancha':
         this.isCancha.set(true);
-        debugger
         break;
       case 'admin':
         this.isAdmin.set(true);

@@ -67,4 +67,36 @@ export class PartidoService {
       timeout(environment.apiTime)
     );
   }
+
+  getInvitaciones(userId: string) {
+    return this.http.get<any>(this.urlBaseUsuarioPartido + 'pending-invitations/' + userId).pipe(
+      map(response => response),
+      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
+      timeout(environment.apiTime)
+    );
+  }
+
+  sendInvitacion(bodyRequest: {usuario_id: string, partido_id: string}) {
+    return this.http.post<any>(this.urlBaseUsuarioPartido + 'send-invitation', bodyRequest).pipe(
+      map(response => response),
+      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
+      timeout(environment.apiTime)
+    );
+  }
+
+  acceptInvitacion(bodyRequest: {usuario_id: string, partido_id: string}) {
+    return this.http.post<any>(this.urlBaseUsuarioPartido + 'accept-invitation', bodyRequest).pipe(
+      map(response => response),
+      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
+      timeout(environment.apiTime)
+    );
+  }
+
+  rejectInvitacion(bodyRequest: {usuario_id: string, partido_id: string}) {
+    return this.http.post<any>(this.urlBaseUsuarioPartido + 'reject-invitation', bodyRequest).pipe(
+      map(response => response),
+      catchError(({ error }: HttpErrorResponse) => throwError(() => error)),
+      timeout(environment.apiTime)
+    );
+  }
 }

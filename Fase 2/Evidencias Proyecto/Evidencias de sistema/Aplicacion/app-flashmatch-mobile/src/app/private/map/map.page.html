@@ -1,19 +1,30 @@
 <ion-header>
   @if (!isLoading()) {
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-button color="primary" (click)="centerMapOnCurrentLocation()">
-          <ion-icon slot="start" name="locate-outline"/>
-          Mi ubicación
-        </ion-button>
-      </ion-buttons>
-      <ion-buttons slot="end">
-        <ion-button color="secondary" (click)="confirmUbicationSelection()">
-          <ion-icon slot="start" name="checkmark-outline"/>
-          Seleccionar
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
+    @if (!isViewOnly()) {
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button color="primary" (click)="centerMapOnCurrentLocation()">
+            <ion-icon slot="start" name="locate-outline"/>
+            Mi ubicación
+          </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button color="secondary" (click)="confirmUbicationSelection()">
+            <ion-icon slot="start" name="checkmark-outline"/>
+            Seleccionar
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    } @else {
+      <ion-toolbar color="dark">
+        <ion-buttons class="route-buttons" slot="start">
+          <ion-back-button defaultHref="auth"/>
+        </ion-buttons>
+        <ion-title class="ion-text-center">
+          Mapa
+        </ion-title>
+      </ion-toolbar>
+    }
   }
 </ion-header>
 

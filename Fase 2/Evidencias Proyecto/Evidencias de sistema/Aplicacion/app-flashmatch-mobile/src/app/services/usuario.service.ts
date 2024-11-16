@@ -56,7 +56,6 @@ export class UsuarioService {
   }
 
   enviarEvaluacion(formEvaluacionUsuario: any) {
-    debugger
     return this.http.post<any>(this.urlBaseEvaluacion, formEvaluacionUsuario).pipe(
       map((response) => response),
       catchError(({ error }: HttpErrorResponse) => throwError(() => error)),

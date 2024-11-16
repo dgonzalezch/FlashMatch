@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonFooter, IonSegmentButton, IonIcon, IonButtons, IonSegment, IonModal, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonList, IonItem, IonLabel, IonGrid, IonRow, IonCol, IonCardSubtitle, IonText, IonProgressBar, IonChip, IonSpinner, IonBadge, IonSearchbar, IonFab, IonImg, IonAvatar, LoadingController, AlertController, IonAccordionGroup, IonAccordion } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonFooter, IonSegmentButton, IonIcon, IonButtons, IonSegment, IonModal, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonList, IonItem, IonLabel, IonGrid, IonRow, IonCol, IonCardSubtitle, IonText, IonProgressBar, IonChip, IonSpinner, IonBadge, IonSearchbar, IonFab, IonImg, IonAvatar, LoadingController, AlertController, IonAccordionGroup, IonAccordion, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { HeaderMapComponent } from 'src/app/shared/components/header-map/header-map.component';
 import { LocationService } from '../../../shared/common/location.service';
@@ -18,7 +18,7 @@ import { UserInfoComponent } from 'src/app/shared/components/user-info/user-info
   templateUrl: './list-partidos.page.html',
   styleUrls: ['./list-partidos.page.scss'],
   standalone: true,
-  imports: [IonAccordion, IonModal, IonAccordionGroup, IonAvatar, IonImg, IonFab, IonSearchbar, IonBadge, IonSpinner, IonChip, IonProgressBar, IonText, IonCardSubtitle, IonCol, IonRow, IonGrid, IonLabel, IonItem, IonList, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonModal, IonSegment, IonButtons, IonIcon, IonSegmentButton, IonFooter, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderMapComponent, RouterLink, UserInfoComponent],
+  imports: [IonAccordion, IonModal, IonAccordionGroup, IonAvatar, IonImg, IonFab, IonSearchbar, IonBadge, IonSpinner, IonChip, IonProgressBar, IonText, IonCardSubtitle, IonCol, IonRow, IonGrid, IonLabel, IonItem, IonList, IonCardContent, IonCardTitle, IonCardHeader, IonCard, IonModal, IonSegment, IonButtons, IonIcon, IonSegmentButton, IonFooter, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, HeaderMapComponent, RouterLink, UserInfoComponent, IonSelect, IonSelectOption],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ListPartidosPage {
@@ -32,8 +32,11 @@ export default class ListPartidosPage {
   userId = signal<string>('');
   ubication = signal<string>('');
   listPartidos = signal<Partido[]>([]);
+  filteredPartidos = signal<Partido[]>([]); // Partidos filtrados
   detalleJugador = signal<any>(null);
   isModalOpen = signal<boolean>(false);
+  currentFilter = signal<string>('todos'); // Filtro seleccionado
+  searchTerm = signal<string>(''); // Término de búsqueda
 
   ionViewWillEnter() {
     this.ubication.set(this.locationService.getLocation().ubicacion);
@@ -45,6 +48,7 @@ export default class ListPartidosPage {
     this.partidoService.getPartidosUsuario(await this.storageService.get('user')).subscribe({
       next: (resp: responseSuccess) => {
         this.listPartidos.set(resp.data);
+        this.filterPartidos();
       },
       error: (err: responseError) => {
         this.alertService.error(err.message);
@@ -78,6 +82,29 @@ export default class ListPartidosPage {
     });
 
     await alert.present();
+  }
+
+  onFilterChange(filter: string) {
+    this.currentFilter.set(filter);
+    this.filterPartidos();
+  }
+
+  filterPartidos() {
+    const searchTerm = this.searchTerm();
+    const currentFilter = this.currentFilter();
+    const filtered = this.listPartidos().filter(partido => {
+      // Filtrar por estado si no es "todos"
+      const matchesFilter = currentFilter === 'todos' || partido.estado === currentFilter;
+
+      // Filtrar por término de búsqueda
+      const matchesSearch =
+        partido.deporte.nombre_deporte.toLowerCase().includes(searchTerm) ||
+        partido.estado.toLowerCase().includes(searchTerm);
+
+      return matchesFilter && matchesSearch;
+    });
+
+    this.filteredPartidos.set(filtered);
   }
 
   rellenarJugadores(idPartido: string) {

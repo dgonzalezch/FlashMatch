@@ -44,17 +44,55 @@ export class UsuarioPartidoController {
   // Endpoint para eliminar a un usuario de un partido (creador del partido)
   @Delete('remove/:userId/:partidoId')
   removeUserFromMatch(
-    @Param('userId') userId: string,
-    @Param('partidoId') partidoId: string
+    @Param('userId', ParseUUIDPipe) userId: string,
+    @Param('partidoId', ParseUUIDPipe) partidoId: string
   ) {
     return this.usuarioPartidoService.removeUserFromMatch(userId, partidoId);
   }
 
   @Patch(':userId/:partidoId/leave')
   async leaveMatch(
-    @Param('userId') userId: string,
-    @Param('partidoId') partidoId: string,
+    @Param('userId', ParseUUIDPipe) userId: string,
+    @Param('partidoId', ParseUUIDPipe) partidoId: string,
   ) {
     return this.usuarioPartidoService.leaveMatch(userId, partidoId);
+  }
+
+  @Post('send-invitation')
+  async sendInvitation(
+    @Body('usuario_id', ParseUUIDPipe) usuarioId: string,
+    @Body('partido_id', ParseUUIDPipe) partidoId: string,
+    @Body('mensaje') mensaje?: string
+  ) {
+    return await this.usuarioPartidoService.sendInvitation(usuarioId, partidoId, mensaje);
+  }
+
+  @Post('accept-invitation')
+  async acceptInvitation(
+    @Body('usuario_id', ParseUUIDPipe) usuarioId: string,
+    @Body('partido_id', ParseUUIDPipe) partidoId: string
+  ) {
+    return await this.usuarioPartidoService.acceptInvitation(usuarioId, partidoId);
+  }  
+
+  @Post('reject-invitation')
+  async rejectInvitation(
+    @Body('usuario_id', ParseUUIDPipe) usuarioId: string,
+    @Body('partido_id', ParseUUIDPipe) partidoId: string
+  ) {
+    return await this.usuarioPartidoService.rejectInvitation(usuarioId, partidoId);
+  }
+
+  @Get('pending-invitations/:usuario_id')
+  async getPendingInvitations(@Param('usuario_id', ParseUUIDPipe) usuarioId: string) {
+    return await this.usuarioPartidoService.getPendingInvitations(usuarioId);
+  }
+
+  @Delete('cancel-invitation')
+  async cancelInvitation(
+    @Body('usuario_id', ParseUUIDPipe) usuarioId: string,
+    @Body('partido_id', ParseUUIDPipe) partidoId: string
+  ) {
+    return await this.usuarioPartidoService.cancelInvitation(usuarioId, partidoId);
   }
 }

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AlertController, IonContent, IonHeader, IonTitle, IonToolbar, NavController } from '@ionic/angular/standalone';
+import { AlertController, IonContent, IonHeader, IonTitle, IonToolbar, NavController, IonBackButton } from '@ionic/angular/standalone';
 import { GoogleMap } from '@capacitor/google-maps';
 import { Geolocation } from '@capacitor/geolocation';
 import { environment } from 'src/environments/environment';
@@ -12,6 +12,7 @@ import { StorageService } from 'src/app/services/storage.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { responseError } from 'src/app/interfaces/response-error.interface';
 import { AlertService } from 'src/app/shared/common/alert.service';
+import { ActivatedRoute } from '@angular/router';
 
 const apiKey = environment.googleMapsApiKey;
 
@@ -20,17 +21,18 @@ const apiKey = environment.googleMapsApiKey;
   templateUrl: './map.page.html',
   styleUrls: ['./map.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule],
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonBackButton],
   changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export default class MapPage implements OnInit {
+export default class MapPage {
   alertController = inject(AlertController);
   navController = inject(NavController);
   locationService = inject(LocationService);
   storageService = inject(StorageService);
   usuarioService = inject(UsuarioService);
   alertService = inject(AlertService);
+  route = inject(ActivatedRoute);
 
   map!: GoogleMap;
   markerId = signal<string>('');
@@ -38,6 +40,7 @@ export default class MapPage implements OnInit {
   currentLng = signal<number>(0);
   currentAddress = signal<string>('');
   isLoading = signal<boolean>(true);
+  isViewOnly = signal<boolean>(false);
 
   private clickSubject = new Subject<{ lat: number, lng: number }>();
 
@@ -51,8 +54,22 @@ export default class MapPage implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.loadCurrentLocation();
+  ionViewWillEnter() {
+    // Obtén las coordenadas desde el segmento de ruta
+    this.route.params.subscribe(params => {
+      const lat = params['lat'];
+      const lng = params['lng'];
+
+      if (lat && lng) {
+        // Modo de solo visualización
+        this.isViewOnly.set(true);
+        this.initMap(parseFloat(lat), parseFloat(lng));
+      } else {
+        // Modo interactivo
+        this.isViewOnly.set(false);
+        this.loadCurrentLocation();
+      }
+    });
   }
 
   // Inicializa el mapa en las coordenadas actuales
@@ -106,6 +123,10 @@ export default class MapPage implements OnInit {
   }
 
   async confirmUbicationSelection() {
+    if (this.isViewOnly()) {
+      return; // No hace nada si es solo visualización
+    }
+
     const alert = await this.alertController.create({
       header: 'Confirmar ubicación',
       message: `¿Estás seguro de usar la ubicación seleccionada?`,
@@ -201,6 +222,9 @@ export default class MapPage implements OnInit {
   }
 
   async centerMapOnCurrentLocation() {
+    if (this.isViewOnly()) {
+      return; // No hace nada si es solo visualización
+    }
     try {
       const position = await Geolocation.getCurrentPosition();
       const { latitude, longitude } = position.coords;

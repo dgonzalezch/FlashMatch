@@ -123,7 +123,7 @@
                       <ion-card-title class="title-modern">
                         <div class="header-with-button" style="margin-bottom: 5px;">
                           <h5 class="ion-no-margin">{{ cancha.nombre_cancha }}</h5>
-                          <ion-button size="small">
+                          <ion-button size="small" [routerLink]="['/private/map/' + cancha.latitud + '/' + cancha.longitud]">
                             Ver en mapa
                           </ion-button>
                         </div>

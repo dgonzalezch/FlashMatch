@@ -23,30 +23,6 @@ export class UserInfoComponent implements OnInit {
   selectedSegment = signal<'info' | 'historial'>('info');
   partidosFinalizados = signal<any[]>([]);
 
-  matchesHistory = [
-    {
-      opponentName: 'Carlos Pérez',
-      date: new Date(),
-      location: 'Cancha Central',
-      opponentAvatar: 'https://i.pravatar.cc/300?u=a',
-      result: 'Ganado'
-    },
-    {
-      opponentName: 'María González',
-      date: new Date(new Date().setDate(new Date().getDate() - 2)),
-      location: 'Parque Norte',
-      opponentAvatar: 'https://i.pravatar.cc/300?u=b',
-      result: 'Perdido'
-    },
-    {
-      opponentName: 'Juan Herrera',
-      date: new Date(new Date().setDate(new Date().getDate() - 7)),
-      location: 'Centro Deportivo',
-      opponentAvatar: '',
-      result: 'Empate'
-    }
-  ];
-
   getStarIcon(starNumber: number): string {
     const rating = this.usuarioData().promedio_evaluacion;
     if (rating >= starNumber) {
@@ -82,7 +58,6 @@ export class UserInfoComponent implements OnInit {
     const finalizados = this.usuarioData().partidos.filter(
       (partidoUsuario: any) => partidoUsuario.partido.estado === 'finalizado'
     );
-    debugger
     this.partidosFinalizados.set(finalizados);
   }
 }

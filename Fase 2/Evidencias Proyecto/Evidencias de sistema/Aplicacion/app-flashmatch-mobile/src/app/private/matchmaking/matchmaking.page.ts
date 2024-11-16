@@ -17,7 +17,7 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './matchmaking.page.html',
   styleUrls: ['./matchmaking.page.scss'],
   standalone: true,
-  imports: [IonToggle, IonProgressBar, IonText, IonAccordion, IonAccordionGroup, IonBadge, IonFooter, IonSegmentButton, IonModal, IonDatetimeButton, IonChip, IonAvatar, IonDatetime, IonSpinner, IonCardTitle, IonCardHeader, IonCardSubtitle, IonCard, IonCardContent, IonAccordion, IonAccordionGroup, IonCol, IonRow, IonGrid, IonIcon, IonLabel, IonItem, IonList, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, IonDatetime, RouterLink, UserInfoComponent, CommonModule, FormsModule],
+  imports: [IonToggle, IonProgressBar, IonText, IonAccordion, IonAccordionGroup, IonBadge, IonFooter, IonSegmentButton, IonModal, IonDatetimeButton, IonChip, IonAvatar, IonDatetime, IonSpinner, IonCardTitle, IonCardHeader, IonCardSubtitle, IonCard, IonCardContent, IonAccordion, IonAccordionGroup, IonCol, IonRow, IonGrid, IonIcon, IonLabel, IonItem, IonList, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, IonDatetime, RouterLink, UserInfoComponent, CommonModule, FormsModule, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class MatchmakingPage {

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, inject, OnI
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonRow, IonGrid, IonCol, IonCard, IonCardHeader, IonCardTitle, IonBadge, IonCardContent, IonItem, IonLabel, IonList, IonButton, IonAvatar, IonBackButton, IonButtons, IonSpinner, IonProgressBar, IonIcon, IonFooter, IonModal, IonSearchbar, IonImg, IonNote, IonChip, IonCardSubtitle } from '@ionic/angular/standalone';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PartidoService } from 'src/app/services/partido.service';
 import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { AlertService } from 'src/app/shared/common/alert.service';
@@ -20,7 +20,7 @@ register()
   templateUrl: './detail-partido.page.html',
   styleUrls: ['./detail-partido.page.scss'],
   standalone: true,
-  imports: [IonCardSubtitle, IonChip, IonNote, IonImg, IonSearchbar, IonModal, IonFooter, IonIcon, IonProgressBar, IonSpinner, IonButtons, IonBackButton, IonAvatar, IonButton, IonList, IonLabel, IonItem, IonCardContent, IonBadge, IonCardTitle, IonCardHeader, IonCard, IonCol, IonGrid, IonRow, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, UserInfoComponent, UserEvaluationComponent],
+  imports: [IonCardSubtitle, IonChip, IonNote, IonImg, IonSearchbar, IonModal, IonFooter, IonIcon, IonProgressBar, IonSpinner, IonButtons, IonBackButton, IonAvatar, IonButton, IonList, IonLabel, IonItem, IonCardContent, IonBadge, IonCardTitle, IonCardHeader, IonCard, IonCol, IonGrid, IonRow, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, UserInfoComponent, RouterLink, UserEvaluationComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
@@ -38,10 +38,14 @@ export default class DetailPartidoPage {
   isModalOpen = signal<boolean>(false);
   isModalOpenEvaluate = signal<boolean>(false);
 
+  jugadoresConfirmados = signal<any>([]);
+  jugadoresPendientes = signal<any>([]);
+  jugadoresInvitados = signal<any>([]);
+  jugadoresRechazados = signal<any>([]);
 
   usuarioId = signal<any>('');
 
-  async ionViewWillEnter () {
+  async ionViewWillEnter() {
     this.usuarioId.set(await this.storageService.get('user'));
     this.route.paramMap.subscribe(params => {
       this.partidoId.set(params.get('id_partido'));
@@ -54,6 +58,10 @@ export default class DetailPartidoPage {
     this.partidoService.getPartido(this.partidoId()).subscribe({
       next: (resp: responseSuccess) => {
         this.partidoActual.set(resp.data);
+        this.jugadoresConfirmados.set(resp.data.jugadores.filter((jugador: any) => jugador.estado === 'confirmado'));
+        this.jugadoresPendientes.set(resp.data.jugadores.filter((jugador: any) => jugador.estado === 'pendiente'));
+        this.jugadoresInvitados.set(resp.data.jugadores.filter((jugador: any) => jugador.estado === 'invitado'));
+        this.jugadoresRechazados.set(resp.data.jugadores.filter((jugador: any) => jugador.estado === 'rechazada'));
       },
       error: (err: responseError) => {
         this.alertService.error(err.message);
@@ -70,7 +78,31 @@ export default class DetailPartidoPage {
   getJugadoresDisponibles() {
     this.usuarioService.getUsuarios().subscribe({
       next: (resp: responseSuccess) => {
-        this.jugadoresDisponibles.set(resp.data);
+        const jugadores = resp.data.filter((usuario: any) => {
+          // Verifica si el usuario tiene el rol "jugador"
+          const esJugador = usuario.roles.includes("jugador");
+
+          // Verifica si el usuario ya está en el partido
+          const estaEnPartido = this.partidoActual().jugadores.some(
+            (jugador: any) => jugador.usuario.id_usuario === usuario.id_usuario
+          );
+
+          return esJugador && !estaEnPartido;
+        });
+
+        this.jugadoresDisponibles.set(jugadores);
+      },
+      error: (err: responseError) => {
+        this.alertService.error(err.message);
+      },
+    });
+  }
+
+  invitarJugador(idJugador: string) {
+    this.partidoService.sendInvitacion({ usuario_id: idJugador, partido_id: this.partidoId() }).subscribe({
+      next: (resp: responseSuccess) => {
+        this.alertService.message(resp.message);
+        this.getDatosPartido();
       },
       error: (err: responseError) => {
         this.alertService.error(err.message);
@@ -78,15 +110,10 @@ export default class DetailPartidoPage {
     })
   }
 
-  invitarJugadores() {
-    console.log("Invitando jugadores...");
-    // Lógica para invitar jugadores
-  }
-
   openModal(creador: any, typeModal: string) {
     this.detalleJugador.set(creador);
 
-    switch(typeModal) {
+    switch (typeModal) {
       case 'detail':
         this.isModalOpen.set(true);
         break;

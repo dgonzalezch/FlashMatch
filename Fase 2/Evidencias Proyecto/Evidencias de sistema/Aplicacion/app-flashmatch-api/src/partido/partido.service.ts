@@ -4,7 +4,7 @@ import { UpdatePartidoDto } from './dto/update-partido.dto';
 import { ResponseMessage } from 'src/common/interfaces/response.interface';
 import { Partido } from './entities/partido.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LessThan, LessThanOrEqual, Repository } from 'typeorm';
+import { In, LessThan, LessThanOrEqual, Repository } from 'typeorm';
 import { ErrorHandlingService } from 'src/common/services/error-handling.service';
 import { Deporte } from 'src/deporte/entities/deporte.entity';
 import { NivelHabilidad } from 'src/nivel-habilidad/entities/nivel-habilidad.entity';
@@ -143,8 +143,15 @@ export class PartidoService {
   
     const partidos = await this.partidoRepository.find({
       where: [
-        { creador: { id_usuario: userId } }, // Partidos donde el usuario es el creador
-        { jugadores: { usuario: { id_usuario: userId } } } // Partidos donde el usuario es jugador
+        // Partidos donde el usuario es el creador
+        { creador: { id_usuario: userId } },
+        // Partidos donde el usuario es jugador con estado confirmado o pendiente
+        {
+          jugadores: {
+            usuario: { id_usuario: userId },
+            estado: In(['confirmado', 'pendiente']),
+          },
+        },
       ],
       // take: limit,
       // skip: offset,
@@ -153,7 +160,7 @@ export class PartidoService {
           evaluaciones: true,
           rangoEdad: true,
           nivelHabilidad: true,
-          tipoPartido: true
+          tipoPartido: true,
         },
         deporte: true,
         nivelHabilidad: true,
@@ -161,22 +168,23 @@ export class PartidoService {
         tipoPartido: true,
         reserva: {
           cancha: {
-            material: true
-          }
+            material: true,
+          },
         },
         jugadores: {
           usuario: {
             evaluaciones: true,
             rangoEdad: true,
             nivelHabilidad: true,
-            tipoPartido: true
-          }
-        }
-      }
+            tipoPartido: true,
+          },
+        },
+      },
     });
   
     return { message: 'Registros obtenidos exitosamente.', data: partidos };
   }
+  
   
 
   async findAvailablePartidos(findAvailablePartidosDto: FindAvailablePartidosDto): Promise<ResponseMessage<Partido[]>> {
@@ -210,20 +218,19 @@ export class PartidoService {
       .andWhere('tipoPartido.id_tipo_partido = :tipoPartido', { tipoPartido: tipoPartido.id_tipo_partido })
       .andWhere('nivelHabilidad.id_nivel_habilidad = :nivelHabilidad', { nivelHabilidad: nivelHabilidad.id_nivel_habilidad })
       .andWhere('partido.partido_privado = :privado', { privado: false })
-          // .andWhere('deporte.nombre = :deporte', { deporte_id })
-      // .andWhere('partido.fecha_partido = :fecha', { fecha })
-      
-      // Excluir partidos en los que el usuario ya está unido
+      // Excluir partidos en los que el usuario ya está unido en estado 'pendiente' o 'confirmado'
       .andWhere(qb => {
         const subQuery = qb.subQuery()
           .select('1')
           .from('usuario_partido', 'up')
           .where('up.partido_id = partido.id_partido')
           .andWhere('up.usuario_id = :usuarioId')
+          .andWhere('up.estado IN (:...estados)')
           .getQuery();
         return `NOT EXISTS (${subQuery})`;
       })
-      .setParameter('usuarioId', usuario_id);
+      .setParameter('usuarioId', usuario_id)
+      .setParameter('estados', ['pendiente', 'confirmado']);
   
     const partidos = await queryBuilder.getMany();
   
@@ -240,6 +247,7 @@ export class PartidoService {
   
     return { message: 'Partidos disponibles obtenidos exitosamente.', data: partidosFiltrados };
   }
+  
 
   async findOne(term: string): Promise<ResponseMessage<Partido>> {
     let partido: Partido;

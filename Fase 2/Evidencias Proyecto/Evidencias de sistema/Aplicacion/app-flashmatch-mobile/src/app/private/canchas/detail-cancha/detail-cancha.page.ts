@@ -5,7 +5,7 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonCol, IonRow, IonGrid, I
 import { StorageService } from 'src/app/services/storage.service';
 import { CanchaService } from 'src/app/services/cancha.service';
 import { AlertService } from 'src/app/shared/common/alert.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { responseError } from 'src/app/interfaces/response-error.interface';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
@@ -17,7 +17,7 @@ register()
   templateUrl: './detail-cancha.page.html',
   styleUrls: ['./detail-cancha.page.scss'],
   standalone: true,
-  imports: [IonCardTitle, IonCardSubtitle, IonCardContent, IonCardHeader, IonCard, IonGrid, IonRow, IonCol, IonContent, IonHeader, IonTitle, IonToolbar, IonBackButton, CommonModule, FormsModule],
+  imports: [IonCardTitle, IonCardSubtitle, IonCardContent, IonCardHeader, IonCard, IonGrid, IonRow, IonCol, IonContent, IonHeader, IonTitle, IonToolbar, IonBackButton, CommonModule, FormsModule, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

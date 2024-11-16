@@ -8,7 +8,6 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<!-- <app-header-map [ubication]="ubication()"/> -->
 
 <ion-content [fullscreen]="true" color="light">
   <ion-grid>
@@ -17,11 +16,51 @@
       <ion-col size="12">
         <ion-searchbar class="searchbar-modern animated" placeholder="Buscar partidos..." debounce="500"/>
       </ion-col>
+      <ion-col size="12">
+        <ion-row class="ion-justify-content-center ion-wrap animated">
+          <ion-chip (click)="onFilterChange('todos')"
+            [outline]="true"
+            [color]="currentFilter() === 'todos' ? 'primary' : 'medium'"
+          >
+            <ion-label>Todos</ion-label>
+          </ion-chip>
+          <ion-chip (click)="onFilterChange('listo')"
+            [outline]="true"
+            [color]="currentFilter() === 'listo' ? 'primary' : 'medium'"
+          >
+            <ion-label>Listo</ion-label>
+          </ion-chip>
+          <ion-chip (click)="onFilterChange('confirmado')"
+            [outline]="true"
+            [color]="currentFilter() === 'confirmado' ? 'primary' : 'medium'"
+          >
+            <ion-label>Confirmado</ion-label>
+          </ion-chip>
+          <ion-chip (click)="onFilterChange('pendiente_reserva')"
+            [outline]="true"
+            [color]="currentFilter() === 'pendiente_reserva' ? 'primary' : 'medium'"
+          >
+            <ion-label>Pendiente</ion-label>
+          </ion-chip>
+          <ion-chip (click)="onFilterChange('cancelado')"
+            [outline]="true"
+            [color]="currentFilter() === 'cancelado' ? 'primary' : 'medium'"
+          >
+            <ion-label>Cancelado</ion-label>
+          </ion-chip>
+          <ion-chip (click)="onFilterChange('finalizado')"
+            [outline]="true"
+            [color]="currentFilter() === 'finalizado' ? 'primary' : 'medium'"
+          >
+            <ion-label>Finalizado</ion-label>
+          </ion-chip>
+        </ion-row>
+      </ion-col>
     </ion-row>
 
     <!-- Sección de Partidos Disponibles -->
     <ion-row >
-      @for (partido of listPartidos(); track $index) {
+      @for (partido of filteredPartidos(); track $index) {
         <ion-col size="12" size-md="6">
           <ion-card class="modern-card" color="dark">
             <ion-card-header>
@@ -84,7 +123,9 @@
                               @if(partido.reserva) {
                                 <h3>Ubicación ({{partido.reserva.cancha.nombre_cancha}})</h3>
                                 <p style="font-size: small;">{{partido.reserva.cancha.ubicacion}}</p>
-                                <ion-button class="ion-no-margin">Ver en mapa</ion-button>
+                                <ion-button class="ion-no-margin" [routerLink]="['/private/map/' + partido.reserva.cancha.latitud + '/' + partido.reserva.cancha.longitud]">
+                                  Ver en mapa
+                                </ion-button>
                               } @else {
                                 <h3>Ubicación</h3>
                                 <p>Sin cancha confirmada</p>
@@ -156,7 +197,7 @@
       @empty {
         <ion-col size="12" class="animated">
           <ion-item lines="none" color="light">
-            <ion-label color="medium" class="ion-text-center">Aún no estás en ningún partido.</ion-label>
+            <ion-label color="medium" class="ion-text-center">Sin registros.</ion-label>
           </ion-item>
         </ion-col>
       }
