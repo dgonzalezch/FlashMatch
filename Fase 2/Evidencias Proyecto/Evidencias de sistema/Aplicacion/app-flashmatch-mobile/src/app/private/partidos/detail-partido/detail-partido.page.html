@@ -2,53 +2,60 @@
 
 <ion-header >
   @if (partido) {
-      <ion-card class="ion-no-margin" color="dark" style="border-radius: 0;">
-        <ion-card-content class="ion-text-center">
-          @switch (partido.estado) {
-            @case('confirmado') {
-              <ion-spinner name="crescent" color="primary"/>
-              <p>Esperando jugadores...</p>
-            }
-            @case('listo') {
-              <ion-icon color="success" size="large" name="checkmark-circle-outline"/>
-              <p>¡Partido listo!</p>
-            }
-            @case('pendiente_reserva') {
-              <ion-spinner name="crescent" color="primary"/>
-              <p>Esperando cancha...</p>
-            }
-            @case('finalizado') {
-              <ion-icon color="success" size="large" name="checkmark-circle-outline"/>
-              <p>¡Partido terminado!</p>
-            }
-            @case('cancelado') {
-              <ion-icon color="danger" size="large" name="close-circle-outline"/>
-              <p>Partido cancelado.</p>
-            }
+    <ion-card class="ion-no-margin" color="dark" style="border-radius: 0;">
+      <ion-card-content class="ion-text-center">
+        @switch (partido.estado) {
+          @case('confirmado') {
+            <ion-spinner name="crescent" color="primary"/>
+            <p>Esperando jugadores...</p>
           }
-
-          <ion-progress-bar [color]="partido.jugadores_actuales == partido.jugadores_requeridos ? 'success' : 'secondary'" [value]="partido.jugadores_actuales / partido.jugadores_requeridos"/>
-          <small>{{ partido.jugadores_actuales }} / {{ partido.jugadores_requeridos }} jugadores</small>
-
-          @switch (partido.estado) {
-            @case('confirmado') {
-              <p style="color: rgb(163, 163, 163); font-size: 14px;">¡Espera a que se unan los usuarios requeridos para empezar a jugar!</p>
-            }
-            @case('listo') {
-              <p style="color: rgb(163, 163, 163); font-size: 14px;">¡Prepárate para jugar en la fecha y hora programada!</p>
-            }
-            @case('pendiente_reserva') {
-              <p style="color: rgb(163, 163, 163); font-size: 14px;">Tu reserva aún no está confirmada, se te notificará a penas esta sea aceptada.</p>
-            }
-            @case('finalizado') {
-              <p style="color: rgb(163, 163, 163); font-size: 14px;">El partido ha terminado, a continuación puedes evaluar a los jugadores del partido.</p>
-            }
-            @case('cancelado') {
-              <p style="color: rgb(163, 163, 163); font-size: 14px;">El partido ha sido cancelado porque no se reservó una cancha a tiempo.</p>
-            }
+          @case('listo') {
+            <ion-icon color="success" size="large" name="checkmark-circle-outline"/>
+            <p>¡Partido listo!</p>
           }
-        </ion-card-content>
-      </ion-card>
+          @case('pendiente_reserva') {
+            <ion-spinner name="crescent" color="primary"/>
+            <p>Esperando cancha...</p>
+          }
+          @case('finalizado') {
+            <ion-icon color="success" size="large" name="checkmark-circle-outline"/>
+            <p>¡Partido terminado!</p>
+          }
+          @case('cancelado') {
+            <ion-icon color="danger" size="large" name="close-circle-outline"/>
+            <p>Partido cancelado.</p>
+          }
+          @case('en_curso') {
+            <ion-spinner name="crescent" color="tertiary"/>
+            <p>Partido en curso...</p>
+          }
+        }
+
+        <ion-progress-bar [color]="partido.jugadores_actuales == partido.jugadores_requeridos ? 'success' : 'secondary'" [value]="partido.jugadores_actuales / partido.jugadores_requeridos"/>
+        <small>{{ partido.jugadores_actuales }} / {{ partido.jugadores_requeridos }} jugadores</small>
+
+        @switch (partido.estado) {
+          @case('confirmado') {
+            <p style="color: rgb(163, 163, 163); font-size: 14px;">¡Espera a que se unan los usuarios requeridos para empezar a jugar!</p>
+          }
+          @case('listo') {
+            <p style="color: rgb(163, 163, 163); font-size: 14px;">¡Prepárate para jugar en la fecha y hora programada!</p>
+          }
+          @case('pendiente_reserva') {
+            <p style="color: rgb(163, 163, 163); font-size: 14px;">Tu reserva aún no está confirmada, se te notificará a penas esta sea aceptada.</p>
+          }
+          @case('finalizado') {
+            <p style="color: rgb(163, 163, 163); font-size: 14px;">El partido ha terminado, a continuación puedes evaluar a los jugadores del partido.</p>
+          }
+          @case('cancelado') {
+            <p style="color: rgb(163, 163, 163); font-size: 14px;">El partido ha sido cancelado porque no se reservó/confirmó una cancha a tiempo.</p>
+          }
+          @case('en_curso') {
+            <p style="color: rgb(163, 163, 163); font-size: 14px;">El partido está en curso. Al finalizar podrás evaluar a los usuarios.</p>
+          }
+        }
+      </ion-card-content>
+    </ion-card>
   }
 </ion-header>
 
@@ -166,10 +173,10 @@
             </ion-card-header>
             <ion-card-content>
               @if (jugadoresConfirmados().length > 0) {
-                <h3>Confirmados</h3>
+                <h3>Confirmados ({{jugadoresConfirmados().length}})</h3>
                 <ion-list class="jugadores ion-no-padding">
                   @for (jugador of jugadoresConfirmados(); track $index) {
-                    <ion-item lines="none" button (click)="openModal(jugador.usuario, 'detail')" color="dark">
+                    <ion-item lines="none" button (click)="openModal(jugador.usuario, partido.estado != 'finalizado' ? 'detail' : 'evaluate')" color="dark" [disabled]="usuarioId() == jugador.usuario.id_usuario || haEvaluadoJugador(jugador)">
                       <ion-avatar slot="start">
                         <img [src]="jugador.usuario.imagen_perfil ? 'http://localhost:3000' + jugador.usuario.imagen_perfil : 'assets/images/default-avatar.svg'" />
                       </ion-avatar>
@@ -180,7 +187,7 @@
                         </h3>
                         <div class="rating-stars">
                           @for (star of [1, 2, 3, 4, 5]; track $index) {
-                            <ion-icon [name]="getStarIcon(star, jugador.usuario.promedio_evaluacion)" class="rating-star-gold" size="small"></ion-icon>
+                            <ion-icon [name]="getStarIcon(star, jugador.usuario.promedio_evaluacion)" class="rating-star-gold" size="small"/>
                           }
                           <h6 class="ion-no-margin">
                             {{ jugador.usuario.promedio_evaluacion }} / 5
@@ -188,99 +195,115 @@
                           </h6>
                         </div>
                       </ion-label>
-                      <ion-icon name="checkmark-circle-outline" color="success" slot="end"></ion-icon>
+                      @if (partido.estado != 'finalizado') {
+                        <ion-icon name="checkmark-circle-outline" color="success" slot="end"/>
+                      } @else {
+                        @if (haEvaluadoJugador(jugador)) {
+                          <ion-badge color="success">Evaluado</ion-badge>
+                        } @else if(usuarioId() == jugador.usuario.id_usuario) {
+                          <ion-icon name="person-outline" color="primary" slot="end"/>
+                        } @else {
+                          <ion-icon name="ribbon-outline" color="warning" slot="end"/>
+                        }
+                      }
                     </ion-item>
                   }
                 </ion-list>
               }
 
-              <!-- Sección de Pendientes -->
-              @if (jugadoresPendientes().length > 0) {
-                <h3>Pendientes</h3>
-                <ion-list class="jugadores ion-no-padding">
-                  @for (jugador of jugadoresPendientes(); track $index) {
-                    <ion-item lines="none" button (click)="openModal(jugador.usuario, 'detail')" color="dark">
-                      <ion-avatar slot="start">
-                        <img [src]="jugador.usuario.imagen_perfil ? 'http://localhost:3000' + jugador.usuario.imagen_perfil : 'assets/images/default-avatar.svg'" />
-                      </ion-avatar>
-                      <ion-label>
-                        <h3>
-                          {{ jugador.usuario.nombre }} {{ jugador.usuario.apellido }}
-                          {{ usuarioId() === jugador.usuario.id_usuario ? '(Tú)' : '' }}
-                        </h3>
-                        <div class="rating-stars">
-                          @for (star of [1, 2, 3, 4, 5]; track $index) {
-                            <ion-icon [name]="getStarIcon(star, jugador.usuario.promedio_evaluacion)" class="rating-star-gold" size="small"></ion-icon>
-                          }
-                          <h6 class="ion-no-margin">
-                            {{ jugador.usuario.promedio_evaluacion }} / 5
-                            <span class="evaluation-count">({{ jugador.usuario.evaluaciones.length }})</span>
-                          </h6>
-                        </div>
-                      </ion-label>
-                      <ion-icon name="hourglass-outline" color="secondary" slot="end"></ion-icon>
-                    </ion-item>
-                  }
-                </ion-list>
+              @if(partido.estado != 'finalizado') {
+                <!-- Sección de Pendientes -->
+                @if (jugadoresPendientes().length > 0) {
+                  <h3>Pendientes ({{jugadoresPendientes().length}})</h3>
+                  <ion-list class="jugadores ion-no-padding">
+                    @for (jugador of jugadoresPendientes(); track $index) {
+                      <ion-item lines="none" button (click)="openModal(jugador.usuario, 'detail')" color="dark">
+                        <ion-avatar slot="start">
+                          <img [src]="jugador.usuario.imagen_perfil ? 'http://localhost:3000' + jugador.usuario.imagen_perfil : 'assets/images/default-avatar.svg'" />
+                        </ion-avatar>
+                        <ion-label>
+                          <h3>
+                            {{ jugador.usuario.nombre }} {{ jugador.usuario.apellido }}
+                            {{ usuarioId() === jugador.usuario.id_usuario ? '(Tú)' : '' }}
+                          </h3>
+                          <div class="rating-stars">
+                            @for (star of [1, 2, 3, 4, 5]; track $index) {
+                              <ion-icon [name]="getStarIcon(star, jugador.usuario.promedio_evaluacion)" class="rating-star-gold" size="small"></ion-icon>
+                            }
+                            <h6 class="ion-no-margin">
+                              {{ jugador.usuario.promedio_evaluacion }} / 5
+                              <span class="evaluation-count">({{ jugador.usuario.evaluaciones.length }})</span>
+                            </h6>
+                          </div>
+                        </ion-label>
+                        <ion-icon name="hourglass-outline" color="secondary" slot="end"></ion-icon>
+                      </ion-item>
+                    }
+                  </ion-list>
+                }
               }
 
-              <!-- Similar estructura para Invitados y Rechazados -->
-              @if (jugadoresInvitados().length > 0) {
-                <h3>Invitados</h3>
-                <ion-list class="jugadores ion-no-padding">
-                  @for (jugador of jugadoresInvitados(); track $index) {
-                    <ion-item lines="none" button (click)="openModal(jugador.usuario, 'detail')" color="dark">
-                      <ion-avatar slot="start">
-                        <img [src]="jugador.usuario.imagen_perfil ? 'http://localhost:3000' + jugador.usuario.imagen_perfil : 'assets/images/default-avatar.svg'" />
-                      </ion-avatar>
-                      <ion-label>
-                        <h3>
-                          {{ jugador.usuario.nombre }} {{ jugador.usuario.apellido }}
-                          {{ usuarioId() === jugador.usuario.id_usuario ? '(Tú)' : '' }}
-                        </h3>
-                        <div class="rating-stars">
-                          @for (star of [1, 2, 3, 4, 5]; track $index) {
-                            <ion-icon [name]="getStarIcon(star, jugador.usuario.promedio_evaluacion)" class="rating-star-gold" size="small"></ion-icon>
-                          }
-                          <h6 class="ion-no-margin">
-                            {{ jugador.usuario.promedio_evaluacion }} / 5
-                            <span class="evaluation-count">({{ jugador.usuario.evaluaciones.length }})</span>
-                          </h6>
-                        </div>
-                      </ion-label>
-                      <ion-icon name="mail-outline" color="secondary" slot="end"></ion-icon>
-                    </ion-item>
-                  }
-                </ion-list>
+              @if(partido.estado != 'finalizado') {
+                <!-- Similar estructura para Invitados y Rechazados -->
+                @if (jugadoresInvitados().length > 0) {
+                  <h3>Invitados ({{jugadoresInvitados().length}})</h3>
+                  <ion-list class="jugadores ion-no-padding">
+                    @for (jugador of jugadoresInvitados(); track $index) {
+                      <ion-item lines="none" button (click)="openModal(jugador.usuario, 'detail')" color="dark">
+                        <ion-avatar slot="start">
+                          <img [src]="jugador.usuario.imagen_perfil ? 'http://localhost:3000' + jugador.usuario.imagen_perfil : 'assets/images/default-avatar.svg'" />
+                        </ion-avatar>
+                        <ion-label>
+                          <h3>
+                            {{ jugador.usuario.nombre }} {{ jugador.usuario.apellido }}
+                            {{ usuarioId() === jugador.usuario.id_usuario ? '(Tú)' : '' }}
+                          </h3>
+                          <div class="rating-stars">
+                            @for (star of [1, 2, 3, 4, 5]; track $index) {
+                              <ion-icon [name]="getStarIcon(star, jugador.usuario.promedio_evaluacion)" class="rating-star-gold" size="small"></ion-icon>
+                            }
+                            <h6 class="ion-no-margin">
+                              {{ jugador.usuario.promedio_evaluacion }} / 5
+                              <span class="evaluation-count">({{ jugador.usuario.evaluaciones.length }})</span>
+                            </h6>
+                          </div>
+                        </ion-label>
+                        <ion-icon name="mail-outline" color="secondary" slot="end"></ion-icon>
+                      </ion-item>
+                    }
+                  </ion-list>
+                }
               }
 
-              @if (jugadoresRechazados().length > 0) {
-                <h3>Rechazados</h3>
-                <ion-list class="jugadores ion-no-padding">
-                  @for (jugador of jugadoresRechazados(); track $index) {
-                    <ion-item lines="none" button (click)="openModal(jugador.usuario, 'detail')" color="dark">
-                      <ion-avatar slot="start">
-                        <img [src]="jugador.usuario.imagen_perfil ? 'http://localhost:3000' + jugador.usuario.imagen_perfil : 'assets/images/default-avatar.svg'" />
-                      </ion-avatar>
-                      <ion-label>
-                        <h3>
-                          {{ jugador.usuario.nombre }} {{ jugador.usuario.apellido }}
-                          {{ usuarioId() === jugador.usuario.id_usuario ? '(Tú)' : '' }}
-                        </h3>
-                        <div class="rating-stars">
-                          @for (star of [1, 2, 3, 4, 5]; track $index) {
-                            <ion-icon [name]="getStarIcon(star, jugador.usuario.promedio_evaluacion)" class="rating-star-gold" size="small"></ion-icon>
-                          }
-                          <h6 class="ion-no-margin">
-                            {{ jugador.usuario.promedio_evaluacion }} / 5
-                            <span class="evaluation-count">({{ jugador.usuario.evaluaciones.length }})</span>
-                          </h6>
-                        </div>
-                      </ion-label>
-                      <ion-icon name="close-circle-outline" color="danger" slot="end"></ion-icon>
-                    </ion-item>
-                  }
-                </ion-list>
+              @if(partido.estado != 'finalizado') {
+                @if (jugadoresRechazados().length > 0) {
+                  <h3>Rechazados ({{jugadoresRechazados().length}})</h3>
+                  <ion-list class="jugadores ion-no-padding">
+                    @for (jugador of jugadoresRechazados(); track $index) {
+                      <ion-item lines="none" button (click)="openModal(jugador.usuario, 'detail')" color="dark">
+                        <ion-avatar slot="start">
+                          <img [src]="jugador.usuario.imagen_perfil ? 'http://localhost:3000' + jugador.usuario.imagen_perfil : 'assets/images/default-avatar.svg'" />
+                        </ion-avatar>
+                        <ion-label>
+                          <h3>
+                            {{ jugador.usuario.nombre }} {{ jugador.usuario.apellido }}
+                            {{ usuarioId() === jugador.usuario.id_usuario ? '(Tú)' : '' }}
+                          </h3>
+                          <div class="rating-stars">
+                            @for (star of [1, 2, 3, 4, 5]; track $index) {
+                              <ion-icon [name]="getStarIcon(star, jugador.usuario.promedio_evaluacion)" class="rating-star-gold" size="small"></ion-icon>
+                            }
+                            <h6 class="ion-no-margin">
+                              {{ jugador.usuario.promedio_evaluacion }} / 5
+                              <span class="evaluation-count">({{ jugador.usuario.evaluaciones.length }})</span>
+                            </h6>
+                          </div>
+                        </ion-label>
+                        <ion-icon name="close-circle-outline" color="danger" slot="end"></ion-icon>
+                      </ion-item>
+                    }
+                  </ion-list>
+                }
               }
             </ion-card-content>
 

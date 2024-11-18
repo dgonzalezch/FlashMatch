@@ -24,6 +24,12 @@
           >
             <ion-label>Todos</ion-label>
           </ion-chip>
+          <ion-chip (click)="onFilterChange('en_curso')"
+            [outline]="true"
+            [color]="currentFilter() === 'en_curso' ? 'primary' : 'medium'"
+          >
+            <ion-label>En curso</ion-label>
+          </ion-chip>
           <ion-chip (click)="onFilterChange('listo')"
             [outline]="true"
             [color]="currentFilter() === 'listo' ? 'primary' : 'medium'"

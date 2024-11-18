@@ -52,7 +52,7 @@ export default class DetailCanchaPage {
     })
   }
 
-  OnUploadImagesToggle() {
+  onUploadImagesToggle() {
     this.isImageUploadPressed.set(!this.isImageUploadPressed());
   }
 

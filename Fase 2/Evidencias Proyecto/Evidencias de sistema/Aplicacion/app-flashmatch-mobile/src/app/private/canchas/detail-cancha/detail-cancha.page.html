@@ -15,12 +15,12 @@
   @if (cancha) {
     <ion-grid>
       <ion-row class="ion-padding animated">
-        <swiper-container [loop]="true" [pagination]="true" [autoplay]="true">
+        <swiper-container  [pagination]="true" [autoplay]="true">
           @for (imagen of cancha.imagenes; track $index) {
             <swiper-slide>
               <ion-img [src]="'http://localhost:3000' + imagen.url_imagen" class="cancha-img-modern" />
             </swiper-slide>
-          }@empty {
+          } @empty {
             <ion-img [src]="'assets/images/default-card-media.png'" class="cancha-img-modern" />
           }
         </swiper-container>
@@ -112,12 +112,11 @@
                   }
                 </ion-row>
               }
-
             </ion-card-content>
 
             <ion-footer class="animated ion-no-border ion-padding">
               @if (cancha.administrador?.id_usuario == usuarioId()) {
-                <ion-button size="block" (click)="OnUploadImagesToggle()">{{!isImageUploadPressed() ? 'Subir imágenes' : 'Atrás'}}</ion-button>
+                <ion-button size="block" (click)="onUploadImagesToggle()">{{!isImageUploadPressed() ? 'Subir imágenes' : 'Atrás'}}</ion-button>
               }
             </ion-footer>
           </ion-card>

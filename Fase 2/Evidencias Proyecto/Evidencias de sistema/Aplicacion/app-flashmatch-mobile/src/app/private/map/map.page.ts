@@ -25,7 +25,7 @@ const apiKey = environment.googleMapsApiKey;
   changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export default class MapPage {
+export default class MapPage implements OnInit{
   alertController = inject(AlertController);
   navController = inject(NavController);
   locationService = inject(LocationService);
@@ -46,7 +46,7 @@ export default class MapPage {
 
   constructor() {
     this.clickSubject.pipe(
-      debounceTime(100) // Retraso de 500ms para evitar múltiples solicitudes
+      debounceTime(200) // Retraso de 500ms para evitar múltiples solicitudes
     ).subscribe(({ lat, lng }) => {
       this.getAddressFromCoordinates(lat, lng);
       this.updateMarker(lat, lng);
@@ -54,7 +54,7 @@ export default class MapPage {
     });
   }
 
-  ionViewWillEnter() {
+  ngOnInit() {
     // Obtén las coordenadas desde el segmento de ruta
     this.route.params.subscribe(params => {
       const lat = params['lat'];
@@ -93,7 +93,7 @@ export default class MapPage {
     });
 
     // Añade un marcador en la ubicación inicial
-    this.addMarker(lat, lng);
+    await this.addMarker(lat, lng);
 
     // Establece isLoading en false una vez que el mapa se ha inicializado
     this.isLoading.set(false);
@@ -240,7 +240,7 @@ export default class MapPage {
 
       // Obtener y establecer la dirección de la ubicación actual
       await this.getAddressFromCoordinates(latitude, longitude);
-
+      this.saveLocation(latitude, longitude, this.currentAddress())
       console.log('Centrado en la ubicación actual:', latitude, longitude, this.currentAddress());
     } catch (error) {
       this.handleError(error, 'Error al centrar el mapa en la ubicación actual');

@@ -163,6 +163,8 @@ export default class ListPartidosPage {
         return 'warning';
       case 'cancelado':
         return 'danger';
+      case 'en_curso':
+          return 'primary';
       default:
         return 'primary'; // Color por defecto, si necesitas alguno para otros estados
     }

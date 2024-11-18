@@ -49,11 +49,11 @@ export class UsuarioService {
 
   async findAll(paginationDto: PaginationDto): Promise<ResponseMessage<Usuario[]>> {
     try {
-      const { limit = 10, offset = 0 } = paginationDto;
+      // const { limit = 10, offset = 0 } = paginationDto;
 
       const usuarios = await this.usuarioRepository.find({
-        take: limit,
-        skip: offset,
+        // take: limit,
+        // skip: offset,
         relations: ['equipos', 'deportesPosicionesUsuarios.deportePosicion', 'estadisticasDetalladasUsuarios.parametroRendimiento'],
       });
 
