@@ -176,7 +176,7 @@
                 <h3>Confirmados ({{jugadoresConfirmados().length}})</h3>
                 <ion-list class="jugadores ion-no-padding">
                   @for (jugador of jugadoresConfirmados(); track $index) {
-                    <ion-item lines="none" button (click)="openModal(jugador.usuario, partido.estado != 'finalizado' ? 'detail' : 'evaluate')" color="dark" [disabled]="usuarioId() == jugador.usuario.id_usuario || haEvaluadoJugador(jugador)">
+                    <ion-item lines="none" button (click)="openModal(jugador.usuario, partido.estado != 'finalizado' ? 'detail' : 'evaluate')" color="dark" [disabled]="partido.estado == 'finalizado' && usuarioId() == jugador.usuario.id_usuario || haEvaluadoJugador(jugador)">
                       <ion-avatar slot="start">
                         <img [src]="jugador.usuario.imagen_perfil ? 'http://localhost:3000' + jugador.usuario.imagen_perfil : 'assets/images/default-avatar.svg'" />
                       </ion-avatar>
