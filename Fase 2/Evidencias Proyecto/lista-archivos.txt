@@ -1,5 +1,0 @@
-Presentacion Proyecto
-Evidencias de documentacion
-Evidencias de sistema:
-    - Aplicacion
-    - Base de datos
