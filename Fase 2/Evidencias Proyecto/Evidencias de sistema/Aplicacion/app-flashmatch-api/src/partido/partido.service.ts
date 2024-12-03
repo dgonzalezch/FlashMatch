@@ -535,6 +535,7 @@ export class PartidoService {
 
     // Actualizar partidos a "en curso" si la hora del partido coincide con la hora actual
     const partidosEnCurso = await this.partidoRepository.find({
+      relations: ['jugadores'],
       where: {
         estado: 'confirmado',
         fecha_partido: LessThanOrEqual(new Date(now.getTime() + 1 * 60 * 1000)), // 1 minuto de margen
@@ -571,6 +572,7 @@ export class PartidoService {
 
     // Cancelar partidos "Pendiente de Reserva" si están a menos de 5 horas del inicio
     const partidosPendiente = await this.partidoRepository.find({
+      relations: ['jugadores'],
       where: { estado: 'pendiente_reserva' },
     });
 
@@ -587,6 +589,7 @@ export class PartidoService {
     // Cancelar partidos "Reservado" si no están "Confirmado" 2 horas antes del inicio
     const partidosReservado = await this.partidoRepository.find({
       where: { estado: 'reservado' },
+      relations: ['jugadores']
     });
 
     for (const partido of partidosReservado) {
