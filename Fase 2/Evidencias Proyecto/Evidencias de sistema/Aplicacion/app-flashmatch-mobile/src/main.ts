@@ -5,7 +5,7 @@ import { defineCustomElements } from '@ionic/pwa-elements/loader';
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { IonicStorageModule, provideStorage } from '@ionic/storage-angular';
 import { importProvidersFrom } from '@angular/core';
 import { Drivers } from '@ionic/storage';
@@ -15,6 +15,7 @@ import localeES from '@angular/common/locales/es-CL'; // Importa la configuraci�
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 import { DatePipe, registerLocaleData } from '@angular/common';
+import { httpRequestInterceptor } from './app/shared/common/http-request.interceptor';
 registerLocaleData(localeES);
 const config: SocketIoConfig = {
   url: 'http://localhost:3000', // URL del servidor de WebSocket
@@ -30,10 +31,10 @@ bootstrapApplication(AppComponent, {
       driverOrder: [Drivers.IndexedDB]
     })),
     provideRouter(routes, withPreloading(PreloadAllModules)),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([httpRequestInterceptor])),
     provideCharts(withDefaultRegisterables()),
     { provide: LOCALE_ID, useValue: 'es-CL' }, // Establece la configuración regional aquí
-    DatePipe
+    DatePipe,
   ],
 });
 defineCustomElements(window);

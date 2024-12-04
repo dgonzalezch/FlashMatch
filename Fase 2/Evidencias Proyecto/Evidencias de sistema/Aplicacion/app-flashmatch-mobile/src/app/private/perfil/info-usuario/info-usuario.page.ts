@@ -154,7 +154,7 @@ export default class InfoUsuarioPage {
         this.infoUsuario.set(resp.data);
 
         if(resp.data.imagen_perfil) {
-          this.selectedImage.set(`http://localhost:3000${resp.data.imagen_perfil}`);
+          this.selectedImage.set(`https://2tl2q3qm-3000.brs.devtunnels.ms${resp.data.imagen_perfil}`);
         }
         this.storageService.fullName.set(`${resp.data.nombre} ${resp.data.apellido}`);
 
@@ -423,7 +423,7 @@ export default class InfoUsuarioPage {
     this.usuarioService.uploadProfilePicture(this.idUsuario(), file).subscribe({
       next: async (response: any) => {
         this.storageService.imageUrl.set(`${response.filePath}`);
-        this.selectedImage.set(`http://localhost:3000${response.filePath}`);
+        this.selectedImage.set(`https://2tl2q3qm-3000.brs.devtunnels.ms${response.filePath}`);
         await this.storageService.set('imagen_perfil', response.filePath);
         this.alertService.message('Imagen de perfil actualizada con éxito');
       },

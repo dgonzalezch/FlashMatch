@@ -3,5 +3,12 @@
   "integrations": {
     "capacitor": {}
   },
-  "type": "angular-standalone"
+  "type": "angular-standalone",
+  "proxy": {
+    "/api": {
+      "target": "https://2tl2q3qm-3000.brs.devtunnels.ms",
+      "changeOrigin": true,
+      "secure": false
+    }
+  }
 }

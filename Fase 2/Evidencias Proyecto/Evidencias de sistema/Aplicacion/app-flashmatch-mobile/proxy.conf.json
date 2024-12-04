@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://localhost:3000",
+    "target": "https://2tl2q3qm-3000.brs.devtunnels.ms",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
