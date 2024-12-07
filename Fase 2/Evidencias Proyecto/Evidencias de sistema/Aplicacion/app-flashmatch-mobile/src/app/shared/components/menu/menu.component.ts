@@ -31,9 +31,10 @@ export class MenuComponent {
     this.locationService.address.set('');
     this.locationService.lat.set(0);
     this.locationService.lng.set(0);
-    this.router.navigate(['/auth']).then(() => {
-      window.location.reload();
+
+    // Navegar a la misma ruta, forzando la recarga del componente
+    await this.router.navigateByUrl('/auth', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/auth']);
     });
   }
-
 }

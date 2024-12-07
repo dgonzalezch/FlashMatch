@@ -28,9 +28,9 @@ export class MercadoPagoService {
             email: userEmail
           },
           back_urls: {
-            success: `http://localhost:8100/private/voucher`,
-            failure: `http://localhost:8100/private/voucher`,
-            pending: `http://localhost:8100/private/voucher`
+            success: `myapp://private/voucher`,
+            failure: `myapp://private/voucher`,
+            pending: `myapp://private/voucher`
           },
           auto_return: 'approved',
           metadata: {

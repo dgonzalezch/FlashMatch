@@ -16,9 +16,10 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 import { DatePipe, registerLocaleData } from '@angular/common';
 import { httpRequestInterceptor } from './app/shared/common/http-request.interceptor';
+import { environment } from './environments/environment';
 registerLocaleData(localeES);
 const config: SocketIoConfig = {
-  url: 'http://localhost:3000', // URL del servidor de WebSocket
+  url: environment.hostUrl, // URL del servidor de WebSocket
   options: { autoConnect: false }, // Desactiva la conexión automática
 };
 bootstrapApplication(AppComponent, {

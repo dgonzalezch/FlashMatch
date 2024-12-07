@@ -20,6 +20,15 @@
       android:launchMode="singleTask"
       android:exported="true">
 
+      <!-- Intent para manejar los Deep Links -->
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="myapp" android:host="private" android:pathPrefix="/voucher" />
+      </intent-filter>
+
+      <!-- Intent para el inicio principal de la app -->
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />

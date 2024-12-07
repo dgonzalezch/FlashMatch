@@ -93,7 +93,7 @@
                         <ion-button size="small" color="danger" class="delete-button" (click)="deleteImage(imagen.id_imagen_cancha)">
                           <ion-icon slot="icon-only" name="trash-outline"/>
                         </ion-button>
-                        <ion-img [src]="'http://localhost:3000' + imagen.url_imagen" class="cancha-img-mini" />
+                        <ion-img [src]="urlHost() + imagen.url_imagen" class="cancha-img-mini" />
                       </ion-card>
                     </ion-col>
                   } @empty {
