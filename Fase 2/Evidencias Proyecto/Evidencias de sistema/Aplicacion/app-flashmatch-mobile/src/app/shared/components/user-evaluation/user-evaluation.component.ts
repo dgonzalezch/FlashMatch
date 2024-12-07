@@ -6,6 +6,7 @@ import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { AlertService } from '../../common/alert.service';
 import { StorageService } from 'src/app/services/storage.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-user-evaluation',
@@ -29,8 +30,10 @@ export class UserEvaluationComponent implements OnInit {
   comentario = signal<string>('');
   usuarioActualId = signal<string>('');
   stars = [1, 2, 3, 4, 5]; // Array para iterar en la plantilla
+  urlHost = signal<any>('');
 
   ngOnInit() {
+    this.urlHost.set(environment.hostUrl);
     this.usuarioService.getUsuario(this.idUsuario()).subscribe({
       next: (resp: responseSuccess) => {
         this.usuarioData.set(resp.data);

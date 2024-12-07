@@ -5,6 +5,7 @@ import { responseError } from 'src/app/interfaces/response-error.interface';
 import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { AlertService } from '../../common/alert.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-user-info',
@@ -22,6 +23,7 @@ export class UserInfoComponent implements OnInit {
   usuarioData = signal<any>({});
   selectedSegment = signal<'info' | 'historial'>('info');
   partidosFinalizados = signal<any[]>([]);
+  urlHost = signal<any>('');
 
   getStarIcon(starNumber: number): string {
     const rating = this.usuarioData().promedio_evaluacion;
@@ -38,6 +40,7 @@ export class UserInfoComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.urlHost.set(environment.hostUrl);
     this.usuarioService.getUsuario(this.idUsuario()).subscribe({
       next: (resp: responseSuccess) => {
         this.usuarioData.set(resp.data);

@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { Usuario } from 'src/usuario/entities/usuario.entity';
 import { Partido } from 'src/partido/entities/partido.entity';
 import { NotificacionService } from '../notificacion/notificacion.service';
-import { Cron, CronExpression } from '@nestjs/schedule';
 import * as geolib from 'geolib';
 
 @Injectable()

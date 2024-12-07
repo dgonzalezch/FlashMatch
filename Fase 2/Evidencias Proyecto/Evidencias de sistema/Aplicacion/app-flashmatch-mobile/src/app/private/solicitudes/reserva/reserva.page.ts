@@ -7,6 +7,7 @@ import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { responseError } from 'src/app/interfaces/response-error.interface';
 import { AlertService } from 'src/app/shared/common/alert.service';
 import { ReservaCancha } from 'src/app/interfaces/reserva-cancha.interface';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-reserva',
@@ -23,8 +24,10 @@ export default class ReservaPage implements OnInit {
 
   listReservasCancha = signal<ReservaCancha[]>([]);
   currentFilter = signal<string>('todos');
+  urlHost = signal<any>('');
 
   ngOnInit() {
+    this.urlHost.set(environment.hostUrl)
     this.getListReservas();
   }
 

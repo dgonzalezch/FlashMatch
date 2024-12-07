@@ -12,6 +12,7 @@ import { responseError } from 'src/app/interfaces/response-error.interface';
 import { ReservaCanchaService } from 'src/app/services/reserva-cancha.service';
 import { PartidoService } from 'src/app/services/partido.service';
 import { register } from 'swiper/element/bundle'
+import { environment } from 'src/environments/environment';
 
 register()
 @Component({
@@ -43,6 +44,7 @@ export default class Step2Page {
   listCanchas = signal<any[]>([]);
   partidoId = signal<any>('');
   partido = signal<any>({});
+  urlHost = signal<any>('');
 
   step2FormCreatePartido = this.fb.group({
     id_cancha: ['', [
@@ -54,6 +56,7 @@ export default class Step2Page {
   });
 
   ionViewWillEnter() {
+    this.urlHost.set(environment.hostUrl)
     this.selectedLocation.set(this.locationService.getLocation().ubicacion);
 
     this.route.paramMap.subscribe(params => {

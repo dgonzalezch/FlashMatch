@@ -10,6 +10,7 @@ import { responseSuccess } from 'src/app/interfaces/response-success.interface';
 import { responseError } from 'src/app/interfaces/response-error.interface';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { register } from 'swiper/element/bundle'
+import { environment } from 'src/environments/environment';
 
 register()
 @Component({
@@ -27,12 +28,14 @@ export default class DetailCanchaPage {
   private storageService = inject(StorageService);
   private canchaService = inject(CanchaService);
 
+  urlHost = signal<any>('');
   usuarioId = signal<any>('');
   canchaId = signal<any>('');
   datosCancha = signal<any>({})
   isImageUploadPressed = signal<boolean>(false);
 
   async ionViewWillEnter () {
+    this.urlHost.set(environment.hostUrl)
     this.usuarioId.set(await this.storageService.get('user'));
     this.route.paramMap.subscribe(params => {
       this.canchaId.set(params.get('id_cancha'));

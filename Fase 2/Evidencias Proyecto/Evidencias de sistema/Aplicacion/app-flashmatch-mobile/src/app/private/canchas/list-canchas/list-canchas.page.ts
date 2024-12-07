@@ -10,6 +10,7 @@ import { responseError } from 'src/app/interfaces/response-error.interface';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
 import { RouterLink } from '@angular/router';
 import { register } from 'swiper/element/bundle'
+import { environment } from 'src/environments/environment';
 
 register()
 @Component({
@@ -26,9 +27,11 @@ export default class ListCanchasPage {
   private alertService = inject(AlertService);
   private canchaService = inject(CanchaService);
 
+  urlHost = signal<any>('');
   listCanchas = signal<any[]>([]);
 
   ionViewWillEnter() {
+    this.urlHost.set(environment.hostUrl)
     this.loadCanchas();
   }
 

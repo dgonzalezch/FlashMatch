@@ -19,7 +19,7 @@
   <ion-content color="dark">
     <div class="user-info ion-text-center">
       <ion-avatar class="modern-avatar">
-        <ion-img [src]="storageService.imageUrl() ? 'https://2tl2q3qm-3000.brs.devtunnels.ms' + storageService.imageUrl() : 'assets/images/default-avatar.svg'" alt="Usuario"/>
+        <ion-img [src]="storageService.imageUrl() ? urlHost() + storageService.imageUrl() : 'assets/images/default-avatar.svg'" alt="Usuario"/>
       </ion-avatar>
       <ion-label>
         <h2>{{ storageService.fullName() }}</h2>

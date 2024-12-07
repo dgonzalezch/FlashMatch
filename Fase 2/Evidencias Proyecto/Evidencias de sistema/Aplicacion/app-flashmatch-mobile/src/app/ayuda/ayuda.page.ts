@@ -21,7 +21,6 @@ export default class AyudaPage implements OnInit {
   alertService = inject(AlertService);
   faqs = signal<any>([]);
 
-
   ngOnInit() {
     this.getListFaq();
   }

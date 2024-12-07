@@ -13,6 +13,7 @@ import { UserInfoComponent } from 'src/app/shared/components/user-info/user-info
 import { StorageService } from 'src/app/services/storage.service';
 import { UserEvaluationComponent } from 'src/app/shared/components/user-evaluation/user-evaluation.component';
 import { register } from 'swiper/element/bundle'
+import { environment } from 'src/environments/environment';
 
 register()
 @Component({
@@ -42,10 +43,12 @@ export default class DetailPartidoPage {
   jugadoresPendientes = signal<any>([]);
   jugadoresInvitados = signal<any>([]);
   jugadoresRechazados = signal<any>([]);
+  urlHost = signal<any>('');
 
   usuarioId = signal<any>('');
 
   async ionViewWillEnter() {
+    this.urlHost.set(environment.hostUrl)
     this.usuarioId.set(await this.storageService.get('user'));
     this.route.paramMap.subscribe(params => {
       this.partidoId.set(params.get('id_partido'));

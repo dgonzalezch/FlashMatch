@@ -198,3 +198,7 @@
     transform: translateY(0); /* Posición final */
   }
 }
+
+ion-content::part(background) {
+  background: transparent !important;
+}

@@ -62,7 +62,7 @@
           <ion-card color="dark" class="ion-margin-bottom modern-card">
             <ion-item color="dark" lines="none">
               <ion-avatar slot="start" class="user-avatar-container" style="width: 50px; height: 50px;">
-                <img [src]="reserva.partido.creador.imagen_perfil ? 'https://2tl2q3qm-3000.brs.devtunnels.ms' + reserva.partido.creador.imagen_perfil : 'assets/images/default-avatar.svg'" />
+                <img [src]="reserva.partido.creador.imagen_perfil ? urlHost() + reserva.partido.creador.imagen_perfil : 'assets/images/default-avatar.svg'" />
               </ion-avatar>
               <ion-label>
                 <ion-chip color="tertiary" class="ion-no-margin calendar-chip" [outline]="true">

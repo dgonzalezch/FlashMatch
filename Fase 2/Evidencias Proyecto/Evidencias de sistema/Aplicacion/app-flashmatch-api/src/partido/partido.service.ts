@@ -4,11 +4,10 @@ import { UpdatePartidoDto } from './dto/update-partido.dto';
 import { ResponseMessage } from 'src/common/interfaces/response.interface';
 import { Partido } from './entities/partido.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, LessThan, LessThanOrEqual, Repository } from 'typeorm';
+import { In, LessThanOrEqual, Repository } from 'typeorm';
 import { ErrorHandlingService } from 'src/common/services/error-handling.service';
 import { Deporte } from 'src/deporte/entities/deporte.entity';
 import { NivelHabilidad } from 'src/nivel-habilidad/entities/nivel-habilidad.entity';
-import { TipoEmparejamiento } from 'src/tipo-emparejamiento/entities/tipo-emparejamiento.entity';
 import { RangoEdad } from 'src/rango-edad/entities/rango-edad.entity';
 import { TipoPartido } from 'src/tipo-partido/entities/tipo-partido.entity';
 import { Usuario } from 'src/usuario/entities/usuario.entity';
@@ -572,8 +571,8 @@ export class PartidoService {
 
     // Cancelar partidos "Pendiente de Reserva" si están a menos de 5 horas del inicio
     const partidosPendiente = await this.partidoRepository.find({
-      relations: ['jugadores'],
-      where: { estado: 'pendiente_reserva' },
+      relations: ['jugadores', 'creador'],
+      where: { estado: 'pendiente_reserva', },
     });
 
     for (const partido of partidosPendiente) {
@@ -589,7 +588,7 @@ export class PartidoService {
     // Cancelar partidos "Reservado" si no están "Confirmado" 2 horas antes del inicio
     const partidosReservado = await this.partidoRepository.find({
       where: { estado: 'reservado' },
-      relations: ['jugadores']
+      relations: ['jugadores', 'creador']
     });
 
     for (const partido of partidosReservado) {

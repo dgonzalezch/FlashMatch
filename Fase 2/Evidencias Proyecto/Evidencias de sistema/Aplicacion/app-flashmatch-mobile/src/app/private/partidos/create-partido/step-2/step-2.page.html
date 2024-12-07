@@ -80,7 +80,7 @@
                   @for (cancha of listCanchas(); track $index) {
                     <ion-item color="dark modern-card ion-margin-bottom">
                       <ion-thumbnail slot="start">
-                        <img [src]="cancha.imagenes?.length ? 'https://2tl2q3qm-3000.brs.devtunnels.ms' + cancha.imagenes[0].url_imagen : 'assets/images/default-thumbnail.svg'" alt="cancha">
+                        <img [src]="cancha.imagenes?.length ? urlHost() + cancha.imagenes[0].url_imagen : 'assets/images/default-thumbnail.svg'" alt="cancha">
 
                       </ion-thumbnail>
                       <ion-label>
@@ -105,7 +105,7 @@
                     <swiper-container [loop]="true" [pagination]="true" [autoplay]="true">
                       @for (imagen of cancha.imagenes; track $index) {
                         <swiper-slide>
-                          <ion-img [src]="'https://2tl2q3qm-3000.brs.devtunnels.ms' + imagen.url_imagen" class="cancha-img-modern" />
+                          <ion-img [src]="urlHost() + imagen.url_imagen" class="cancha-img-modern" />
                         </swiper-slide>
                         <!-- <div class="price-badge">
                           <p>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }} / hora</p>

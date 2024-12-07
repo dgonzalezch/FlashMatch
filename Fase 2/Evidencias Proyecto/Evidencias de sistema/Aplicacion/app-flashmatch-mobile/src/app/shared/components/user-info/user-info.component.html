@@ -16,7 +16,7 @@
         <ion-row class="ion-justify-content-center ion-text-center ion-margin-top animated">
           <ion-col size="auto" class="ion-text-center">
             <ion-avatar class="user-avatar-container">
-              <img [src]="usuario.imagen_perfil ? 'https://2tl2q3qm-3000.brs.devtunnels.ms' + usuario.imagen_perfil : 'assets/images/default-avatar.svg'" alt="Imagen del usuario" class="user-avatar" />
+              <img [src]="usuario.imagen_perfil ? urlHost() + usuario.imagen_perfil : 'assets/images/default-avatar.svg'" alt="Imagen del usuario" class="user-avatar" />
             </ion-avatar>
           </ion-col>
           <ion-col size="12">

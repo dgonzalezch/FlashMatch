@@ -3,6 +3,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { IonContent, IonList, IonItem, IonHeader, IonToolbar, IonTitle, IonGrid, IonRow, IonCol, IonImg, IonIcon, IonLabel, IonMenu, IonButton, IonMenuToggle, IonFooter, IonListHeader, IonCardHeader, IonCard, IonText, IonAvatar, IonCardContent } from "@ionic/angular/standalone";
 import { StorageService } from 'src/app/services/storage.service';
 import { LocationService } from '../../common/location.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-menu',
@@ -19,6 +20,11 @@ export class MenuComponent {
 
   menuItems = input.required<any[]>();
   userData = input.required<any>({});
+  urlHost = signal<any>('');
+
+  ionViewWillEnter() {
+    this.urlHost.set(environment.hostUrl);
+  }
 
   async logOut() {
     await this.storageService.clear();

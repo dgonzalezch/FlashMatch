@@ -12,6 +12,7 @@ import { responseError } from 'src/app/interfaces/response-error.interface';
 import { Partido } from 'src/app/interfaces/partido.interface';
 import { StorageService } from 'src/app/services/storage.service';
 import { UserInfoComponent } from 'src/app/shared/components/user-info/user-info.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-list-partidos',
@@ -37,8 +38,10 @@ export default class ListPartidosPage {
   isModalOpen = signal<boolean>(false);
   currentFilter = signal<string>('todos'); // Filtro seleccionado
   searchTerm = signal<string>(''); // Término de búsqueda
+  urlHost = signal<any>('');
 
   ionViewWillEnter() {
+    this.urlHost.set(environment.hostUrl)
     this.ubication.set(this.locationService.getLocation().ubicacion);
     this.loadUserId();
     this.loadPartidos();

@@ -11,6 +11,7 @@ import { AlertService } from 'src/app/shared/common/alert.service';
 import { PartidoService } from 'src/app/services/partido.service';
 import { UserInfoComponent } from 'src/app/shared/components/user-info/user-info.component';
 import { Router, RouterLink } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-matchmaking',
@@ -47,9 +48,12 @@ export default class MatchmakingPage {
     '¡Invita a tus amigos para hacer el partido aún más divertido!',
   ];
   mensajeActual = signal<string>('');
+  urlHost = signal<any>('');
+
   private mensajeIntervalo: any;
 
   ionViewWillEnter() {
+    this.urlHost.set(environment.hostUrl)
     this.getInfoUsuario();
   }
 

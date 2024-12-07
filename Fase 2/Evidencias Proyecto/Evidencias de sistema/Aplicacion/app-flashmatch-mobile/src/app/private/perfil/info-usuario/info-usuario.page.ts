@@ -23,6 +23,7 @@ import { NivelHabilidadService } from 'src/app/services/nivel-habilidad.service'
 import { RangoEdadService } from 'src/app/services/rango-edad.service';
 import { NivelHabilidad, RangoEdad, TipoEmparejamiento, TipoPartido } from 'src/app/interfaces/partido.interface';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-info-usuario',
@@ -59,6 +60,7 @@ export default class InfoUsuarioPage {
   editModeFormUserData = signal<boolean>(false);
   editModeFormUserPreferences = signal<boolean>(false);
   selectedSegment = signal<'perfil' | 'datos'>('datos');
+  urlHost = signal<any>('');
 
   // Para verificación de permisos
   isJugador = signal<boolean>(false);
@@ -122,6 +124,7 @@ export default class InfoUsuarioPage {
   }
 
   async ionViewWillEnter() {
+    this.urlHost.set(environment.hostUrl)
     this.ubication.set(this.locationService.getLocation().ubicacion);
     this.idUsuario.set(await this.storageService.get('user'));
     this.selectedSegment.set('perfil');
@@ -154,7 +157,7 @@ export default class InfoUsuarioPage {
         this.infoUsuario.set(resp.data);
 
         if(resp.data.imagen_perfil) {
-          this.selectedImage.set(`https://2tl2q3qm-3000.brs.devtunnels.ms${resp.data.imagen_perfil}`);
+          this.selectedImage.set(`${this.urlHost()}${resp.data.imagen_perfil}`);
         }
         this.storageService.fullName.set(`${resp.data.nombre} ${resp.data.apellido}`);
 
@@ -423,7 +426,7 @@ export default class InfoUsuarioPage {
     this.usuarioService.uploadProfilePicture(this.idUsuario(), file).subscribe({
       next: async (response: any) => {
         this.storageService.imageUrl.set(`${response.filePath}`);
-        this.selectedImage.set(`https://2tl2q3qm-3000.brs.devtunnels.ms${response.filePath}`);
+        this.selectedImage.set(`${this.urlHost()}${response.filePath}`);
         await this.storageService.set('imagen_perfil', response.filePath);
         this.alertService.message('Imagen de perfil actualizada con éxito');
       },

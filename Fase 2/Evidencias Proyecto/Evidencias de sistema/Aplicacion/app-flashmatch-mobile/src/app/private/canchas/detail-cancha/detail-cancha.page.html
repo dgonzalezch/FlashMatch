@@ -18,7 +18,7 @@
         <swiper-container  [pagination]="true" [autoplay]="true">
           @for (imagen of cancha.imagenes; track $index) {
             <swiper-slide>
-              <ion-img [src]="'https://2tl2q3qm-3000.brs.devtunnels.ms' + imagen.url_imagen" class="cancha-img-modern" />
+              <ion-img [src]="urlHost() + imagen.url_imagen" class="cancha-img-modern" />
             </swiper-slide>
           } @empty {
             <ion-img [src]="'assets/images/default-card-media.png'" class="cancha-img-modern" />

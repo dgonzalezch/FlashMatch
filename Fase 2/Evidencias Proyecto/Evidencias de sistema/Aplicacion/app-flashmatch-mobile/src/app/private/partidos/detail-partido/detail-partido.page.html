@@ -126,7 +126,7 @@
               <swiper-container [loop]="true" [pagination]="true" [autoplay]="true">
                 @for (imagen of partido.reserva.cancha.imagenes; track $index) {
                   <swiper-slide>
-                    <ion-img [src]="'https://2tl2q3qm-3000.brs.devtunnels.ms' + imagen.url_imagen" class="cancha-img-modern" />
+                    <ion-img [src]="urlHost() + imagen.url_imagen" class="cancha-img-modern" />
                   </swiper-slide>
                   <!-- <div class="price-badge">
                     <p>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }} / hora</p>
@@ -178,7 +178,7 @@
                   @for (jugador of jugadoresConfirmados(); track $index) {
                     <ion-item lines="none" button (click)="openModal(jugador.usuario, partido.estado != 'finalizado' ? 'detail' : 'evaluate')" color="dark" [disabled]="partido.estado == 'finalizado' && usuarioId() == jugador.usuario.id_usuario || haEvaluadoJugador(jugador)">
                       <ion-avatar slot="start">
-                        <img [src]="jugador.usuario.imagen_perfil ? 'https://2tl2q3qm-3000.brs.devtunnels.ms' + jugador.usuario.imagen_perfil : 'assets/images/default-avatar.svg'" />
+                        <img [src]="jugador.usuario.imagen_perfil ? urlHost() + jugador.usuario.imagen_perfil : 'assets/images/default-avatar.svg'" />
                       </ion-avatar>
                       <ion-label>
                         <h3>
@@ -219,7 +219,7 @@
                     @for (jugador of jugadoresPendientes(); track $index) {
                       <ion-item lines="none" button (click)="openModal(jugador.usuario, 'detail')" color="dark">
                         <ion-avatar slot="start">
-                          <img [src]="jugador.usuario.imagen_perfil ? 'https://2tl2q3qm-3000.brs.devtunnels.ms' + jugador.usuario.imagen_perfil : 'assets/images/default-avatar.svg'" />
+                          <img [src]="jugador.usuario.imagen_perfil ? urlHost() + jugador.usuario.imagen_perfil : 'assets/images/default-avatar.svg'" />
                         </ion-avatar>
                         <ion-label>
                           <h3>
@@ -251,7 +251,7 @@
                     @for (jugador of jugadoresInvitados(); track $index) {
                       <ion-item lines="none" button (click)="openModal(jugador.usuario, 'detail')" color="dark">
                         <ion-avatar slot="start">
-                          <img [src]="jugador.usuario.imagen_perfil ? 'https://2tl2q3qm-3000.brs.devtunnels.ms' + jugador.usuario.imagen_perfil : 'assets/images/default-avatar.svg'" />
+                          <img [src]="jugador.usuario.imagen_perfil ? urlHost() + jugador.usuario.imagen_perfil : 'assets/images/default-avatar.svg'" />
                         </ion-avatar>
                         <ion-label>
                           <h3>
@@ -282,7 +282,7 @@
                     @for (jugador of jugadoresRechazados(); track $index) {
                       <ion-item lines="none" button (click)="openModal(jugador.usuario, 'detail')" color="dark">
                         <ion-avatar slot="start">
-                          <img [src]="jugador.usuario.imagen_perfil ? 'https://2tl2q3qm-3000.brs.devtunnels.ms' + jugador.usuario.imagen_perfil : 'assets/images/default-avatar.svg'" />
+                          <img [src]="jugador.usuario.imagen_perfil ? urlHost() + jugador.usuario.imagen_perfil : 'assets/images/default-avatar.svg'" />
                         </ion-avatar>
                         <ion-label>
                           <h3>
@@ -346,7 +346,7 @@
                 @if (usuarioId() != jugador.id_usuario) {
                   <ion-item>
                     <ion-avatar slot="start">
-                      <img [src]="jugador.imagen_perfil ? 'https://2tl2q3qm-3000.brs.devtunnels.ms' + jugador.imagen_perfil : 'assets/images/default-avatar.svg'" />
+                      <img [src]="jugador.imagen_perfil ? urlHost() + jugador.imagen_perfil : 'assets/images/default-avatar.svg'" />
                     </ion-avatar>
                     <ion-label>
                       <h2>{{jugador.nombre}} {{jugador.apellido}}</h2>

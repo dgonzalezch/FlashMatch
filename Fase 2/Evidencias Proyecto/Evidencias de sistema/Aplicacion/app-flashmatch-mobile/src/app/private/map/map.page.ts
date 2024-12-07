@@ -25,7 +25,7 @@ const apiKey = environment.googleMapsApiKey;
   changeDetection: ChangeDetectionStrategy.OnPush,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export default class MapPage implements OnInit{
+export default class MapPage {
   alertController = inject(AlertController);
   navController = inject(NavController);
   locationService = inject(LocationService);
@@ -54,26 +54,38 @@ export default class MapPage implements OnInit{
     });
   }
 
-  ngOnInit() {
-    // Obtén las coordenadas desde el segmento de ruta
+  ionViewDidEnter() {
     this.route.params.subscribe(params => {
       const lat = params['lat'];
       const lng = params['lng'];
-
       if (lat && lng) {
-        // Modo de solo visualización
         this.isViewOnly.set(true);
-        this.initMap(parseFloat(lat), parseFloat(lng));
+        requestAnimationFrame(async () => {
+          setTimeout(async () => {
+            await this.initMap(parseFloat(lat), parseFloat(lng));
+          }, 1000);
+
+          // await this.initMap(parseFloat(lat), parseFloat(lng));
+        });
       } else {
-        // Modo interactivo
         this.isViewOnly.set(false);
         this.loadCurrentLocation();
       }
     });
   }
 
-  // Inicializa el mapa en las coordenadas actuales
+  async ngOnDestroy() {
+    await this.map.destroy();
+  }
+
   async initMap(lat: number, lng: number) {
+    // Asegúrate de que los permisos están concedidos
+    const hasPermission = await this.checkPermissions();
+    if (!hasPermission) {
+      console.error('Permisos de ubicación no concedidos');
+      return;
+    }
+
     this.currentLat.set(lat); // Almacena latitud inicial
     this.currentLng.set(lng); // Almacena longitud inicial
 
@@ -91,6 +103,7 @@ export default class MapPage implements OnInit{
         },
       },
     });
+    console.log('Mapa creado:', this.map);
 
     // Añade un marcador en la ubicación inicial
     await this.addMarker(lat, lng);
@@ -99,12 +112,30 @@ export default class MapPage implements OnInit{
     this.isLoading.set(false);
 
     // Escucha el evento de clic en el mapa
-    this.map.setOnMapClickListener((event) => {
+    this.map.setOnMapClickListener((event: any) => {
       const lat = event.latitude;
       const lng = event.longitude;
       this.clickSubject.next({ lat, lng });
     });
   }
+
+  async checkPermissions(): Promise<boolean> {
+    try {
+      const permissions = await Geolocation.checkPermissions();
+      console.log('Permisos de geolocalización:', permissions);
+      if (permissions.location === 'granted') {
+        return true;
+      } else {
+        const status = await Geolocation.requestPermissions();
+        console.log('Permisos solicitados:', status);
+        return status.location === 'granted';
+      }
+    } catch (error) {
+      console.error('Error al verificar los permisos de geolocalización:', error);
+      return false;
+    }
+  }
+
 
   async getAddressFromCoordinates(lat: number, lng: number) {
     const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
@@ -162,7 +193,7 @@ export default class MapPage implements OnInit{
   // Obtiene la ubicación actual del usuario
   async loadCurrentLocation() {
     try {
-      if(!await this.storageService.get('ubicacion')) {
+      if (!await this.storageService.get('ubicacion')) {
         const position = await Geolocation.getCurrentPosition();
         const { latitude, longitude } = position.coords;
         this.initMap(latitude, longitude); // Inicializa el mapa centrado en la ubicación actual
