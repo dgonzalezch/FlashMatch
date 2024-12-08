@@ -22,7 +22,7 @@ export class MenuComponent {
   userData = input.required<any>({});
   urlHost = signal<any>('');
 
-  ionViewWillEnter() {
+  ngOnInit() {
     this.urlHost.set(environment.hostUrl);
   }
 

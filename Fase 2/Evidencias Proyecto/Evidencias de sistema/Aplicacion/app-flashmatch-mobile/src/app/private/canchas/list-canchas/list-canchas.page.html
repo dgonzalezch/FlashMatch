@@ -26,7 +26,7 @@
             <swiper-container [loop]="true" [pagination]="true" [autoplay]="true">
               @for (imagen of cancha.imagenes; track $index) {
                 <swiper-slide>
-                  <ion-img [src]="urlHost + imagen.url_imagen" class="cancha-img-modern" />
+                  <ion-img [src]="urlHost() + imagen.url_imagen" class="cancha-img-modern" />
                 </swiper-slide>
                 <!-- <div class="price-badge">
                   <p>{{ cancha.precio_por_hora | currency:'CLP':'symbol' }} / hora</p>
